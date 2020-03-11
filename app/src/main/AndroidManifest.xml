@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".StartupActivity"></activity>
+        <activity android:name=".startup.StartupActivity"></activity>
         <activity
             android:name=".SplashActivity"
             android:noHistory="true"
