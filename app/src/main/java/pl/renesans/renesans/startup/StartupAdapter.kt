@@ -10,7 +10,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
 import pl.renesans.renesans.R
 
-class SlideAdapter(val context: Context): PagerAdapter() {
+class StartupAdapter(private val context: Context): PagerAdapter() {
+
+    private val images = listOf(context.getDrawable(R.drawable.img_cracow_castle))
 
     private val titles = listOf("Poznaj Leonarda da Vinci z innej strony", "Odkrywaj bogactwo sztuki",
         "Przenieś się do czasów Mikołaja Kopernika")
@@ -30,8 +32,7 @@ class SlideAdapter(val context: Context): PagerAdapter() {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.startup_slide_layout, container, false)
-        view.findViewById<ImageView>(R.id.startupImage)
-            .setImageDrawable(context.getDrawable(R.drawable.img_cracow_castle))
+        view.findViewById<ImageView>(R.id.startupImage).setImageDrawable(images[0])
         view.findViewById<TextView>(R.id.titleView).text = titles[position]
         view.findViewById<TextView>(R.id.descriptionView).text = descriptions[position]
         container.addView(view)
