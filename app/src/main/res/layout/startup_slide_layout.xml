@@ -11,33 +11,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/startupImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="3">
-
-            <ImageView
-                android:id="@+id/abstractBackground"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/vec_abstract_backgr" />
-
-            <ImageView
-                android:id="@+id/startupImage"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginBottom="32dp"
-                android:paddingLeft="95dp"
-                android:paddingRight="95dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/img_cracow_castle" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginBottom="32dp"
+            android:paddingLeft="95dp"
+            android:paddingRight="95dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/img_cracow_castle"
+            android:layout_weight="3"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -53,10 +39,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:gravity="center"
-                android:text="Poznaj Leonarda da Vinci z innej strony"
                 android:textColor="@color/colorDarkGray"
                 android:textSize="23sp"
                 android:textStyle="bold"
+                android:text="Tytuł"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -67,13 +53,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingTop="20dp"
-                android:text="Czy wiedziałeś, że Leonardo był leworęczny? Ale to nie wszystko. Oprócz tego pisał od prawej do lewej strony. "
+                android:text="Opis"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titleView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
