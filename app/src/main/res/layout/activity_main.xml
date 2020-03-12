@@ -1,19 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorGray"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MainActivity"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/mainToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="@android:color/white"
+            app:title="@string/app_name"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/mainFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="51dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/mainToolbar" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/mainNav"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:menu="@menu/bottom_tabs_menu"
+        app:itemIconTint="@drawable/selector_bottom_tabs"
+        android:background="@android:color/white"
+        app:itemIconSize="25dp"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/discover"
+        android:icon="@drawable/ic_home"
+        android:title="@string/discover"/>
+    <item
+        android:id="@+id/map"
+        android:icon="@drawable/ic_marker"
+        android:title="@string/map" />
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_screw"
+        android:title="@string/settings" />
+</menu>
