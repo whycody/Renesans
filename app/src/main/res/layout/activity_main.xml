@@ -25,7 +25,7 @@
         android:id="@+id/mainFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="51dp"
+        android:layout_marginBottom="46dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,7 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:menu="@menu/bottom_tabs_menu"
         app:itemIconTint="@drawable/selector_bottom_tabs"
-        android:background="@android:color/white"
+        android:background="@color/colorLightGray"
         app:itemIconSize="25dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

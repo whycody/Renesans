@@ -15,11 +15,11 @@ class SplashActivity : AppCompatActivity() {
 
     private fun checkFirstLogin(){
         val prefs = getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
-        if(prefs.getBoolean(firstLogin, true)) startActivity(Intent(this, StartupActivity::class.java))
+        if(prefs.getBoolean(firstLogin, false)) startActivity(Intent(this, StartupActivity::class.java))
         else startActivity(Intent(this, MainActivity::class.java))
     }
 
     companion object{
-        val firstLogin = "FIRST LOGIN"
+        const val firstLogin = "FIRST LOGIN"
     }
 }
