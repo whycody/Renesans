@@ -22,14 +22,20 @@ class ClusterManagerRenderer(val context: Context, val map: GoogleMap, val clust
 
     fun prepareMarker(){
         iconGenerator = IconGenerator(context)
+        setupTextView()
+        iconGenerator.setContentView(textView)
+    }
+
+    private fun setupTextView(){
         textView = TextView(context)
         textView.setTextColor(ContextCompat.getColor(context, android.R.color.white))
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11f)
         textView.setPadding(10,5,10,5)
-        iconGenerator.setContentView(textView)
+        textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
     }
 
     override fun onBeforeClusterItemRendered(item: ClusterMarker?, markerOptions: MarkerOptions?) {
+        iconGenerator.setContentView(textView)
         textView.text = item?.tit
         iconGenerator.setColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
         val icon: Bitmap = iconGenerator.makeIcon()
