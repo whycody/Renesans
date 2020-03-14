@@ -16,8 +16,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterManager
 
 import pl.renesans.renesans.R
+import pl.renesans.renesans.data.Paragraph
+import pl.renesans.renesans.data.Photo
+import pl.renesans.renesans.data.PhotoArticle
 
-class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
+class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener,
+    ClusterManager.OnClusterItemClickListener<ClusterMarker>, GoogleMap.CancelableCallback {
 
     private var googleMap: GoogleMap? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -25,6 +29,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private var clusterManagerRenderer: ClusterManagerRenderer? = null
     private var markersList = mutableListOf<ClusterMarker>()
     private val zoomLevel = 12f
+    private val animatingCamera = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -38,7 +43,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         this.googleMap = googleMap
         setUiSettings()
         prepareManagers()
-        addExampleMarkers()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             if(location!=null) moveMapToLastLocation(location)
@@ -61,17 +65,22 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
             clusterManagerRenderer = ClusterManagerRenderer(activity!!, googleMap!!, clusterManager!!)
             clusterManagerRenderer?.prepareMarker()
             clusterManager?.renderer = clusterManagerRenderer
+            clusterManager?.setOnClusterItemClickListener(this)
+            addExampleMarkers()
         }
     }
 
     private fun addExampleMarkers(){
-        addMarker(ClusterMarker("KAPLICA MARIACKA", LatLng(53.775711, 20.477980)))
-        addMarker(ClusterMarker("ZAMEK KRÓLEWSKI", LatLng(53.760, 20.475)))
+        addMarker(ClusterMarker(PhotoArticle(title = "Kaplica Mariacka"), LatLng(53.775711, 20.477980)))
+        addMarker(ClusterMarker(PhotoArticle(title = "Zamek Królewski"), LatLng(53.760, 20.475)))
     }
 
     private fun addMarker(clusterMarker: ClusterMarker){
+        clusterMarker.photoArticle.photo = Photo(describe = "Zamek Królewski na Wawelu")
+        clusterMarker.photoArticle.paragraph = Paragraph(content = "Budowla była na przestrzeni wieków wielokrotnie rozbudowywana i odnawiana. Zamek wielokrotnie był poddawany różnym próbom takim jak pożary, grabieże i przemarsze obcych wojsk wobec czego był wielokrotnie był odbudowywany w kolejnych nowych stylach architektonicznych.")
         markersList.add(clusterMarker)
         clusterManager?.addItem(clusterMarker)
+        clusterManager?.cluster()
     }
 
     private fun moveMapToLastLocation(location: Location){
@@ -91,6 +100,27 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
             for(marker in clusterManager!!.markerCollection.markers)
                 marker.isVisible = googleMap?.cameraPosition!!.zoom > 10.0f
         }
+    }
+
+    private var lastClusterMarker: ClusterMarker? = null
+
+    override fun onClusterItemClick(p0: ClusterMarker?): Boolean {
+        if(animatingCamera)
+            googleMap?.animateCamera(CameraUpdateFactory.newLatLng(p0?.position), 200, this)
+        else
+            PhotoBottomSheetDialog(p0?.photoArticle)
+                .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
+        lastClusterMarker = p0
+        return true
+    }
+
+    override fun onFinish() {
+        PhotoBottomSheetDialog(lastClusterMarker?.photoArticle)
+            .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
+    }
+
+    override fun onCancel() {
+
     }
 
 }

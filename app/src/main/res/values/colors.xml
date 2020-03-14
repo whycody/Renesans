@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#C76429</color>
     <color name="colorAccent">#FFEBE0</color>
     <color name="colorDarkGray">#010101</color>
+    <color name="colorTitleGray">#CD000000</color>
+    <color name="colorParagraphGray">#B3000000</color>
     <color name="colorGray">#F8F8F8</color>
     <color name="colorLightGray">#FDFDFD</color>
     <color name="colorTransparentWhite">#B2FFFFFF</color>

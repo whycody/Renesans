@@ -2,15 +2,18 @@ package pl.renesans.renesans.map
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
+import pl.renesans.renesans.data.PhotoArticle
 
-class ClusterMarker(val tit: String, val pos: LatLng): ClusterItem {
+class ClusterMarker(val photoArticle: PhotoArticle, val pos: LatLng): ClusterItem {
 
     override fun getSnippet(): String {
-        return "None"
+        return if(photoArticle.paragraph?.content != null) photoArticle.paragraph?.content!!
+        else "Snippet"
     }
 
     override fun getTitle(): String {
-        return tit
+        return if(photoArticle.title != null) photoArticle.title!!.toUpperCase()
+        else "Title"
     }
 
     override fun getPosition(): LatLng {

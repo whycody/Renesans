@@ -36,7 +36,7 @@ class ClusterManagerRenderer(val context: Context, val map: GoogleMap, val clust
 
     override fun onBeforeClusterItemRendered(item: ClusterMarker?, markerOptions: MarkerOptions?) {
         iconGenerator.setContentView(textView)
-        textView.text = item?.tit
+        textView.text = item?.title
         iconGenerator.setColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
         val icon: Bitmap = iconGenerator.makeIcon()
         markerOptions!!.icon(BitmapDescriptorFactory.fromBitmap(icon))
