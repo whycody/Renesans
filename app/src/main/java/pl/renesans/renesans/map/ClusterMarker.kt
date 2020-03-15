@@ -4,7 +4,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 import pl.renesans.renesans.data.PhotoArticle
 
-class ClusterMarker(val photoArticle: PhotoArticle, val pos: LatLng): ClusterItem {
+class ClusterMarker(val photoArticle: PhotoArticle): ClusterItem {
 
     override fun getSnippet(): String {
         return if(photoArticle.paragraph?.content != null) photoArticle.paragraph?.content!!
@@ -17,6 +17,7 @@ class ClusterMarker(val photoArticle: PhotoArticle, val pos: LatLng): ClusterIte
     }
 
     override fun getPosition(): LatLng {
-        return pos
+        return if(photoArticle.latLng != null) photoArticle.latLng!!
+        else LatLng(1.0, 1.0)
     }
 }

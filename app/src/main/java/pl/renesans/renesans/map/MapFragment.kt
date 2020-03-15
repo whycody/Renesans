@@ -71,8 +71,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     }
 
     private fun addExampleMarkers(){
-        addMarker(ClusterMarker(PhotoArticle(title = "Kaplica Mariacka"), LatLng(53.775711, 20.477980)))
-        addMarker(ClusterMarker(PhotoArticle(title = "Zamek Królewski"), LatLng(53.760, 20.475)))
+        addMarker(ClusterMarker
+            (PhotoArticle(title = "Kaplica Mariacka", latLng = LatLng(53.775711, 20.477980))))
+        addMarker(ClusterMarker
+            (PhotoArticle(title = "Zamek Królewski", latLng = LatLng(53.760, 20.475))))
     }
 
     private fun addMarker(clusterMarker: ClusterMarker){

@@ -1,5 +1,6 @@
 package pl.renesans.renesans.data
 
+import com.google.android.gms.maps.model.LatLng
 import java.io.Serializable
 
 data class Source(var sourceType: String? = null,
@@ -41,6 +42,7 @@ data class Article(var objectId: String? = null,
 data class PhotoArticle(var objectId: String? = null,
                 var objectType: String? = null,
                 var title: String? = null,
+                var latLng: LatLng? = null,
                 var header: Header? = null,
                 var paragraph: Paragraph? = null,
                 var photo: Photo? = null,
