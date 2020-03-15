@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="dialogSheetPaddingStart">18dp</dimen>
+    <dimen name="locationRowRadius">30dp</dimen>
 </resources>
 
