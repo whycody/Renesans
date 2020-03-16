@@ -1,8 +1,13 @@
 package pl.renesans.renesans.map.recycler
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Paragraph
@@ -11,7 +16,7 @@ import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.map.ClusterMarker
 import pl.renesans.renesans.map.MapView
 
-class LocationPresenterImpl(val mapView: MapView? = null, val context: Context): LocationPresenter {
+class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity): LocationPresenter {
 
     private var photoArticlesList = mutableListOf(ClusterMarker(PhotoArticle()))
     private val examplePhotoDescribe = Photo(describe = "Zamek Królewski na Wawelu")
@@ -44,7 +49,15 @@ class LocationPresenterImpl(val mapView: MapView? = null, val context: Context):
 
     override fun itemClicked(pos: Int) {
         if(pos!=0) mapView?.openMarkerBottomSheet(photoArticlesList[pos])
-        else Toast.makeText(context, "Włącz lokalizację", Toast.LENGTH_SHORT).show()
+        else checkLocationPermission()
+    }
+
+    private fun checkLocationPermission(){
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -54,8 +67,8 @@ class LocationPresenterImpl(val mapView: MapView? = null, val context: Context):
     override fun onBindViewHolder(holder: LocationRowHolder, position: Int) {
         resetVariables(holder)
         if(position == 0){
-            holder.setText(context.getString(R.string.my_location))
-            holder.setDrawable(context.getDrawable(R.drawable.sh_my_location_row)!!)
+            holder.setText(activity.getString(R.string.my_location))
+            holder.setDrawable(activity.getDrawable(R.drawable.sh_my_location_row)!!)
             holder.setTextColor(R.color.colorGray)
         }else holder.setText(photoArticlesList[position].title)
         holder.setOnRowClickListener(position)
@@ -64,7 +77,7 @@ class LocationPresenterImpl(val mapView: MapView? = null, val context: Context):
     private fun resetVariables(holder: LocationRowHolder){
         holder.setText(" ")
         holder.setTextColor(Color.WHITE)
-        holder.setDrawable(context.getDrawable(R.drawable.sh_location_row)!!)
+        holder.setDrawable(activity.getDrawable(R.drawable.sh_location_row)!!)
         holder.setOnRowClickListener(0)
     }
 }
