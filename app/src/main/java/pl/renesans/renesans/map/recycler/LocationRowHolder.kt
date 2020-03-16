@@ -2,6 +2,7 @@ package pl.renesans.renesans.map.recycler
 
 import android.graphics.drawable.Drawable
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.renesans.renesans.R
@@ -18,8 +19,12 @@ class LocationRowHolder(itemView: View, val presenter: LocationPresenter? = null
     }
 
     override fun setOnRowClickListener(pos: Int) {
-        itemView.findViewById<TextView>(R.id.locationRow).setOnClickListener{
+        itemView.findViewById<LinearLayout>(R.id.locationLayout).setOnClickListener{
             presenter?.itemClicked(pos)
         }
+    }
+
+    override fun setTextColor(color: Int) {
+        itemView.findViewById<TextView>(R.id.locationRow).setTextColor(color)
     }
 }

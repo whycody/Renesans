@@ -9,4 +9,6 @@ interface LocationRowView {
     fun setText(text: String)
 
     fun setOnRowClickListener(pos: Int)
+
+    fun setTextColor(color: Int)
 }

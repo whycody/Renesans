@@ -4,11 +4,11 @@
     <string name="back">Wróć</string>
     <string name="end">Zakończ</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="discover">Odkrywaj</string>
     <string name="map">Mapa</string>
     <string name="settings">Ustawienia</string>
     <string name="title_activity_maps">Map</string>
     <string name="sources">Źródła</string>
+    <string name="my_location">Moja lokalizacja</string>
 </resources>
