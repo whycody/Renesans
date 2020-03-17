@@ -11,4 +11,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="sources">Źródła</string>
     <string name="my_location">Moja lokalizacja</string>
+    <string name="turn_on_location">Włącz usługę lokalizacji</string>
+    <string name="cant_get_location">Nie rozpoznano aktualnej lokalizacji</string>
 </resources>

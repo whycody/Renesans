@@ -5,6 +5,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -16,11 +20,14 @@ import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.map.ClusterMarker
 import pl.renesans.renesans.map.MapView
 
-class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity): LocationPresenter {
+class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity): LocationPresenter,
+        LocationListener{
 
     private var photoArticlesList = mutableListOf(ClusterMarker(PhotoArticle()))
     private val examplePhotoDescribe = Photo(describe = "Zamek Królewski na Wawelu")
     private val exampleParagraph = Paragraph(content = "Budowla była na przestrzeni wieków wielokrotnie rozbudowywana i odnawiana. Zamek wielokrotnie był poddawany różnym próbom takim jak pożary, grabieże i przemarsze obcych wojsk wobec czego był wielokrotnie był odbudowywany w kolejnych nowych stylach architektonicznych.")
+    private var currentLocation: LatLng? = null
+    private var locationManager: LocationManager? = null
 
     override fun onCreate() {
         addExampleMarkers()
@@ -33,8 +40,6 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
         val secondCluster = ClusterMarker(PhotoArticle(title = "Zamek Królewski",
             latLng = LatLng(53.760, 20.475), paragraph = exampleParagraph,
             photo = examplePhotoDescribe))
-        photoArticlesList.add(firstCluster)
-        photoArticlesList.add(secondCluster)
         mapView?.addClusterMarkerToMap(firstCluster)
         mapView?.addClusterMarkerToMap(secondCluster)
     }
@@ -47,16 +52,40 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
         return photoArticlesList
     }
 
+    override fun getCurrentLocation(): LatLng? {
+        return currentLocation
+    }
+
     override fun itemClicked(pos: Int) {
         if(pos!=0) mapView?.openMarkerBottomSheet(photoArticlesList[pos])
         else checkLocationPermission()
     }
 
     private fun checkLocationPermission(){
+        val locationManagerIsNull = locationManager == null
+        val gpsIsTurnedOn = locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val currentLocationIsNull = currentLocation == null
+
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+        } else if(!locationManagerIsNull){
+            if(!gpsIsTurnedOn!!) sendToast(activity.getString(R.string.turn_on_location))
+            else if(currentLocationIsNull) sendToast(activity.getString(R.string.cant_get_location))
+            else mapView?.moveToPosition(currentLocation)
+        }
+    }
+
+    private fun sendToast(message: String){
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun setLocationManager(){
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
+            locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 800, 1000f, this)
         }
     }
 
@@ -79,5 +108,21 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
         holder.setTextColor(Color.WHITE)
         holder.setDrawable(activity.getDrawable(R.drawable.sh_location_row)!!)
         holder.setOnRowClickListener(0)
+    }
+
+    override fun onLocationChanged(p0: Location?) {
+        if(p0!=null) currentLocation = LatLng(p0.latitude, p0.longitude)
+    }
+
+    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
+
+    }
+
+    override fun onProviderEnabled(p0: String?) {
+
+    }
+
+    override fun onProviderDisabled(p0: String?) {
+
     }
 }

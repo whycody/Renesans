@@ -9,10 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.clustering.ClusterManager
@@ -36,6 +33,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private val animatingCamera = false
     private var presenter: LocationPresenterImpl? = null
     private var adapter: LocationAdapter? = null
+    private var currentLocation: LatLng? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -58,6 +56,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         prepareFusedLocationClient()
         googleMap.setOnCameraMoveListener(this)
         presenter?.onCreate()
+        presenter?.setLocationManager()
+        refreshLocationMarkersList()
     }
 
     private fun setUiSettings(){
@@ -154,6 +154,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
 
     override fun addClusterMarkerToMap(clusterMarker: ClusterMarker) {
         addMarker(clusterMarker)
+    }
+
+    override fun moveToPosition(position: LatLng?) {
+        if(position!=null){
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(position, 14f)
+            googleMap?.animateCamera(cameraUpdate)
+        }
     }
 
     private fun addMarker(clusterMarker: ClusterMarker){
