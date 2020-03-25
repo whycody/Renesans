@@ -2,10 +2,10 @@ package pl.renesans.renesans.map
 
 import android.location.Location
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -14,12 +14,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.fragment_map.view.*
-
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.map.recycler.LocationAdapter
 import pl.renesans.renesans.map.recycler.LocationPresenterImpl
 import pl.renesans.renesans.map.recycler.LocationRecyclerDecoration
+
 
 class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener,
     ClusterManager.OnClusterItemClickListener<ClusterMarker>, GoogleMap.CancelableCallback, MapView {
@@ -33,7 +33,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private val animatingCamera = false
     private var presenter: LocationPresenterImpl? = null
     private var adapter: LocationAdapter? = null
-    private var currentLocation: LatLng? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -57,7 +56,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         googleMap.setOnCameraMoveListener(this)
         presenter?.onCreate()
         presenter?.setLocationManager()
-        refreshLocationMarkersList()
     }
 
     private fun setUiSettings(){
@@ -65,6 +63,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         googleMap?.uiSettings?.isZoomControlsEnabled = false
         googleMap?.uiSettings?.isCompassEnabled = false
         googleMap?.uiSettings?.isMyLocationButtonEnabled = false
+        googleMap?.isMyLocationEnabled = true
     }
 
     private fun prepareFusedLocationClient(){
@@ -72,6 +71,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             if(location!=null) moveMapToLastLocation(location)
             else moveMapToOlsztyn()
+            refreshLocationMarkersList()
         }.addOnFailureListener{ moveMapToOlsztyn() }
     }
 
@@ -158,7 +158,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
 
     override fun moveToPosition(position: LatLng?) {
         if(position!=null){
-            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(position, 14f)
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(position, 16f)
             googleMap?.animateCamera(cameraUpdate)
         }
     }

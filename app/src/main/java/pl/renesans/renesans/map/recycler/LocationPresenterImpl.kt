@@ -28,6 +28,7 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
     private val exampleParagraph = Paragraph(content = "Budowla była na przestrzeni wieków wielokrotnie rozbudowywana i odnawiana. Zamek wielokrotnie był poddawany różnym próbom takim jak pożary, grabieże i przemarsze obcych wojsk wobec czego był wielokrotnie był odbudowywany w kolejnych nowych stylach architektonicznych.")
     private var currentLocation: LatLng? = null
     private var locationManager: LocationManager? = null
+    private var isWaitingToMoveToCurrentLocation = false
 
     override fun onCreate() {
         addExampleMarkers()
@@ -72,7 +73,7 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         } else if(!locationManagerIsNull){
             if(!gpsIsTurnedOn!!) sendToast(activity.getString(R.string.turn_on_location))
-            else if(currentLocationIsNull) sendToast(activity.getString(R.string.cant_get_location))
+            else if(currentLocationIsNull) isWaitingToMoveToCurrentLocation = true
             else mapView?.moveToPosition(currentLocation)
         }
     }
@@ -111,7 +112,13 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
     }
 
     override fun onLocationChanged(p0: Location?) {
-        if(p0!=null) currentLocation = LatLng(p0.latitude, p0.longitude)
+        if(p0!=null){
+            currentLocation = LatLng(p0.latitude, p0.longitude)
+            if(isWaitingToMoveToCurrentLocation){
+                isWaitingToMoveToCurrentLocation = false
+                mapView?.moveToPosition(currentLocation)
+            }
+        }
     }
 
     override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
