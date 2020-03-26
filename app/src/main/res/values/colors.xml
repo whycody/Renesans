@@ -6,6 +6,7 @@
     <color name="colorDarkGray">#010101</color>
     <color name="colorTitleGray">#CD000000</color>
     <color name="colorParagraphGray">#B3000000</color>
+    <color name="colorImageGray">#9A9A9A</color>
     <color name="colorGray">#F8F8F8</color>
     <color name="colorLightGray">#FDFDFD</color>
     <color name="colorTransparentWhite">#B2FFFFFF</color>

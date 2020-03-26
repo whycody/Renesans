@@ -2,5 +2,6 @@
 <resources>
     <dimen name="dialogSheetPaddingStart">18dp</dimen>
     <dimen name="locationRowRadius">30dp</dimen>
+    <dimen name="discoverMargin">20dp</dimen>
 </resources>
 

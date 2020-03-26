@@ -1,14 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:tag="discover"
     tools:context=".discover.DiscoverFragment">
 
-    <TextView
+
+    <LinearLayout
+        android:id="@+id/discoverLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Discover Fragment" />
+        android:orientation="vertical">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorAccent"
+            android:paddingStart="@dimen/discoverMargin"
+            android:paddingEnd="@dimen/discoverMargin"
+            android:paddingTop="30dp"
+            android:paddingBottom="45dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sztuka świata"
+                android:textColor="@color/colorTitleGray"
+                android:textStyle="bold"
+                android:textSize="32sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Na bieżąco dowiaduj się o nowościach z zakresu sztuki, kultury i wiedzy o ubiegłych epokach"
+                android:lineSpacingExtra="4dp"
+                android:textColor="@color/colorParagraphGray"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sh_dialog_bottom_sheet_photo"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:maxLines="1"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:drawableStart="@drawable/ic_search_black_24dp"
+                android:drawablePadding="10dp"
+                android:hint="@string/search"
+                android:enabled="false"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

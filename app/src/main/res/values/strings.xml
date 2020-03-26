@@ -13,4 +13,9 @@
     <string name="my_location">Moja lokalizacja</string>
     <string name="turn_on_location">Włącz usługę lokalizacji</string>
     <string name="cant_get_location">Nie rozpoznano aktualnej lokalizacji</string>
+    <string name="search">Szukaj...</string>
+    <string name="important_people">Ważni ludzie</string>
+    <string name="important_arts">Wyróżnione dzieła</string>
+    <string name="important_events">Ważne wydarzenia</string>
+    <string name="other_eras">Inne epoki</string>
 </resources>
