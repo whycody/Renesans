@@ -12,7 +12,7 @@ class DiscoverRecyclerAdapter(val context: Context, val presenter: DiscoverRecyc
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscoverRowHolder {
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.item_discover_row, parent, false)
-        return DiscoverRowHolder(view, presenter)
+        return DiscoverRowHolder(view, context, presenter)
     }
 
     override fun getItemCount(): Int {

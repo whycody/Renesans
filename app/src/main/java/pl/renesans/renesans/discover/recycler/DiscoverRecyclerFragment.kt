@@ -22,7 +22,7 @@ class DiscoverRecyclerFragment(val objectType: Int) : Fragment() {
         val view = inflater.inflate(R.layout.fragment_discover_recycler, container, false)
         discoverRecycler = view.findViewById(R.id.discoverRecycler)
         discoverTitle = view.findViewById(R.id.discoverTitle)
-        presenter = DiscoverRecyclerPresenterImpl()
+        presenter = DiscoverRecyclerPresenterImpl(objectType)
         presenter.onCreate(objectType)
         adapter = DiscoverRecyclerAdapter(activity!!, presenter)
         discoverRecycler.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)

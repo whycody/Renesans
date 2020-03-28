@@ -2,7 +2,7 @@ package pl.renesans.renesans.discover.recycler
 
 import pl.renesans.renesans.data.Article
 
-class DiscoverRecyclerPresenterImpl: DiscoverRecyclerPresenter {
+class DiscoverRecyclerPresenterImpl(val objectType: Int): DiscoverRecyclerPresenter {
 
     private val articlesList = mutableListOf<Article>()
 
@@ -23,6 +23,7 @@ class DiscoverRecyclerPresenterImpl: DiscoverRecyclerPresenter {
     override fun onBindViewHolder(holder: DiscoverRowHolder, position: Int) {
         resetVariables(holder)
         holder.setArticleTitle(articlesList[position].title!!)
+        holder.setArticlePhotoSize(objectType)
         // TODO set Photo
     }
 

@@ -63,7 +63,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         googleMap?.uiSettings?.isZoomControlsEnabled = false
         googleMap?.uiSettings?.isCompassEnabled = false
         googleMap?.uiSettings?.isMyLocationButtonEnabled = false
-        googleMap?.isMyLocationEnabled = true
     }
 
     private fun prepareFusedLocationClient(){
@@ -161,6 +160,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(position, 16f)
             googleMap?.animateCamera(cameraUpdate)
         }
+    }
+
+    override fun turnOnMyLocationOnMap() {
+        googleMap?.isMyLocationEnabled = true
     }
 
     private fun addMarker(clusterMarker: ClusterMarker){

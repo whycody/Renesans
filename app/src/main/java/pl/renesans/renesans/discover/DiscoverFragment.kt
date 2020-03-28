@@ -26,8 +26,14 @@ class DiscoverFragment : Fragment() {
     private fun addFragmentsToDiscoverLayout(){
         val fragMan: FragmentManager? = fragmentManager
         val fragTransaction: FragmentTransaction = fragMan!!.beginTransaction()
-        val myFrag = DiscoverRecyclerFragment(0)
-        fragTransaction.add(discoverLayout.id, myFrag, "fragment")
+        val peopleFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.PEOPLE)
+        val artsFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.ARTS)
+        val eventsFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.EVENTS)
+        val otherErasFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.OTHER_ERAS)
+        fragTransaction.add(discoverLayout.id, peopleFrag, "peopleFrag")
+        fragTransaction.add(discoverLayout.id, artsFrag, "artsFrag")
+        fragTransaction.add(discoverLayout.id, eventsFrag, "eventsFrag")
+        fragTransaction.add(discoverLayout.id, otherErasFrag, "otherErasFrag")
         fragTransaction.commit()
     }
 }

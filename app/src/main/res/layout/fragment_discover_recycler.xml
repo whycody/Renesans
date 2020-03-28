@@ -15,12 +15,12 @@
         android:text="Przykładowy tytuł"
         android:textColor="@color/colorParagraphGray"
         android:textStyle="bold"
-        android:textSize="24sp"/>
+        android:textSize="22sp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/discoverRecycler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="6dp"/>
 
 </LinearLayout>

@@ -63,18 +63,23 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
     }
 
     private fun checkLocationPermission(){
+        val permissionGranted = (ContextCompat.checkSelfPermission(activity,
+            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
         val locationManagerIsNull = locationManager == null
         val gpsIsTurnedOn = locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER)
         val currentLocationIsNull = currentLocation == null
 
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
+        if(permissionGranted) mapView?.turnOnMyLocationOnMap()
+        if (!permissionGranted) {
             ActivityCompat.requestPermissions(activity,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         } else if(!locationManagerIsNull){
             if(!gpsIsTurnedOn!!) sendToast(activity.getString(R.string.turn_on_location))
             else if(currentLocationIsNull) isWaitingToMoveToCurrentLocation = true
             else mapView?.moveToPosition(currentLocation)
+        } else{
+            isWaitingToMoveToCurrentLocation = true
+            setLocationManager()
         }
     }
 
