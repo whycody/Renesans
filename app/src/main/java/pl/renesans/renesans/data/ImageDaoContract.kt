@@ -6,6 +6,6 @@ interface ImageDaoContract {
 
     interface ImageDao {
 
-        fun getPhotoUriFromID(holder: DiscoverRowHolder?, id: String, highQuality: Boolean = true)
+        fun loadPhotoToHolder(holder: DiscoverRowHolder?, id: String, highQuality: Boolean = true)
     }
 }

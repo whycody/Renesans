@@ -1,7 +1,7 @@
 package pl.renesans.renesans.discover.recycler
 
 import android.content.Context
-import android.graphics.drawable.Drawable
+import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
@@ -16,14 +16,20 @@ import pl.renesans.renesans.R
 class DiscoverRowHolder(itemView: View, val context: Context, val presenter: DiscoverRecyclerPresenter) :
     RecyclerView.ViewHolder(itemView), DiscoverRowView {
 
-    override fun setArticlePhoto(drawable: Drawable) {
-        itemView.findViewById<ImageView>(R.id.articleImage).setImageDrawable(drawable)
+    override fun setArticlePhoto(bitmap: Bitmap) {
+        var requestOptions = RequestOptions()
+        requestOptions = requestOptions.transform(CenterCrop(), RoundedCorners(28))
+        Glide.with(context).load(bitmap).apply(requestOptions).into(itemView.findViewById(R.id.articleImage))
     }
 
     override fun setArticleHighQualityPhoto(uri: Uri) {
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transform(CenterCrop(), RoundedCorners(28))
-        Glide.with(context).load(uri).apply(requestOptions).into(itemView.findViewById(R.id.articleImage))
+        Glide.with(context)
+            .load(uri)
+            .apply(requestOptions)
+            .placeholder(itemView.findViewById<ImageView>(R.id.articleImage).drawable)
+            .into(itemView.findViewById(R.id.articleImage))
     }
 
     override fun setArticlePhotoSize(objectType: Int) {

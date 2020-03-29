@@ -1,11 +1,11 @@
 package pl.renesans.renesans.discover.recycler
 
-import android.graphics.drawable.Drawable
+import android.graphics.Bitmap
 import android.net.Uri
 
 interface DiscoverRowView {
 
-    fun setArticlePhoto(drawable: Drawable)
+    fun setArticlePhoto(bitmap: Bitmap)
 
     fun setArticleHighQualityPhoto(uri: Uri)
 

@@ -1,17 +1,17 @@
 package pl.renesans.renesans.discover.recycler
 
-import pl.renesans.renesans.data.Article
-import pl.renesans.renesans.data.ArticleDaoImpl
-import pl.renesans.renesans.data.ImageDaoImpl
+import android.content.Context
+import pl.renesans.renesans.data.*
 
-class DiscoverRecyclerPresenterImpl(val objectType: Int): DiscoverRecyclerPresenter {
+class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context): DiscoverRecyclerPresenter {
 
     private var articlesList = listOf<Article>()
-    private val imageDao = ImageDaoImpl()
+    private var imageDao: ImageDao? = null
 
     override fun onCreate(articleId: Int) {
         val articleDao = ArticleDaoImpl()
         articlesList = articleDao.getArticlesList(articleId)
+        imageDao = ImageDaoImpl(context)
     }
 
     override fun itemClicked(pos: Int) {
@@ -26,8 +26,8 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int): DiscoverRecyclerPresen
         resetVariables(holder)
         holder.setArticleTitle(articlesList[position].title!!)
         holder.setArticlePhotoSize(objectType)
-        imageDao.getPhotoUriFromID(holder, "${articlesList[position].objectId!!}_0")
-        // TODO set Photo
+        imageDao?.loadPhotoToHolder(holder, "${articlesList[position].objectId!!}_0", false)
+        imageDao?.loadPhotoToHolder(holder, "${articlesList[position].objectId!!}_0", true)
     }
 
     private fun resetVariables(holder: DiscoverRowHolder){
