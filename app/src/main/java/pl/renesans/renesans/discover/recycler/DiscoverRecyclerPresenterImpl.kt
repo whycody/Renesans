@@ -1,15 +1,15 @@
 package pl.renesans.renesans.discover.recycler
 
 import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.ArticleDaoImpl
 
 class DiscoverRecyclerPresenterImpl(val objectType: Int): DiscoverRecyclerPresenter {
 
-    private val articlesList = mutableListOf<Article>()
+    private var articlesList = listOf<Article>()
 
     override fun onCreate(articleId: Int) {
-        articlesList.add(Article(title = "Mikołaj Kopernik"))
-        articlesList.add(Article(title = "Michał Anioł"))
-        articlesList.add(Article(title = "Rafael Santi"))
+        val articleDao = ArticleDaoImpl()
+        articlesList = articleDao.getArticlesList(articleId)
     }
 
     override fun itemClicked(pos: Int) {
