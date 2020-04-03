@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import pl.renesans.renesans.R
-import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
+import pl.renesans.renesans.discover.recycler.fragment.DiscoverRecyclerFragment
 
 class DiscoverFragment : Fragment() {
 

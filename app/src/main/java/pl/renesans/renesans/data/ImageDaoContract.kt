@@ -1,11 +1,19 @@
 package pl.renesans.renesans.data
 
-import pl.renesans.renesans.discover.recycler.DiscoverRowHolder
+import android.graphics.Bitmap
+import android.net.Uri
 
 interface ImageDaoContract {
 
     interface ImageDao {
 
-        fun loadPhotoToHolder(holder: DiscoverRowHolder?, id: String, highQuality: Boolean = true)
+        fun loadPhoto(pos: Int = 0, id: String, highQuality: Boolean = true)
+    }
+
+    interface ImageDaoInterractor {
+
+        fun loadPhotoFromUri(photoUri: Uri, pos: Int)
+
+        fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int)
     }
 }

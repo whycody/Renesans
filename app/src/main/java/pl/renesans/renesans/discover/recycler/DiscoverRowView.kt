@@ -5,9 +5,9 @@ import android.net.Uri
 
 interface DiscoverRowView {
 
-    fun setArticlePhoto(bitmap: Bitmap)
+    fun setArticleBitmapPhoto(bitmap: Bitmap)
 
-    fun setArticleHighQualityPhoto(uri: Uri)
+    fun setArticleUriPhoto(uri: Uri)
 
     fun setArticlePhotoSize(objectType: Int)
 

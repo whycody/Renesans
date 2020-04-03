@@ -12,17 +12,18 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import pl.renesans.renesans.R
+import pl.renesans.renesans.discover.recycler.fragment.DiscoverRecyclerFragment
 
 class DiscoverRowHolder(itemView: View, val context: Context, val presenter: DiscoverRecyclerPresenter) :
     RecyclerView.ViewHolder(itemView), DiscoverRowView {
 
-    override fun setArticlePhoto(bitmap: Bitmap) {
+    override fun setArticleBitmapPhoto(bitmap: Bitmap) {
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transform(CenterCrop(), RoundedCorners(28))
         Glide.with(context).load(bitmap).apply(requestOptions).into(itemView.findViewById(R.id.articleImage))
     }
 
-    override fun setArticleHighQualityPhoto(uri: Uri) {
+    override fun setArticleUriPhoto(uri: Uri) {
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transform(CenterCrop(), RoundedCorners(28))
         Glide.with(context)

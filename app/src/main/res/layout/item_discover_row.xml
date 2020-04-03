@@ -23,7 +23,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
-        android:maxLines="2"
+        android:maxLines="1"
         android:text="Opis zdjęcia"
         android:textColor="@color/colorParagraphGray"
         android:textSize="15sp"

@@ -1,6 +1,6 @@
 package pl.renesans.renesans.data
 
-import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
+import pl.renesans.renesans.discover.recycler.fragment.DiscoverRecyclerFragment
 
 class ArticleDaoImpl: ArticleDao {
 
