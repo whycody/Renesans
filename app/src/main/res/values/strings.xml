@@ -18,4 +18,6 @@
     <string name="important_arts">Wyróżnione dzieła</string>
     <string name="important_events">Ważne wydarzenia</string>
     <string name="other_eras">Inne epoki</string>
+    <string name="one_minute_more">Jeszcze tylko chwila..</string>
+    <string name="need_storage_permission">Potrzebujemy twojej zgody do pamięci urządzenia aby zapisywać zdjęcia w niskiej jakości do pamięci urządzenia. W ten sposób będziesz mógł korzystać z aplikacji offline. Obiecujemy, że nie zajmiemy dużo miejsca.</string>
 </resources>

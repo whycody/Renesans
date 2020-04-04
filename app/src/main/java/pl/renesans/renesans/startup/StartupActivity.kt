@@ -1,6 +1,8 @@
 package pl.renesans.renesans.startup
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -11,17 +13,21 @@ import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_startup.*
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
+import pl.renesans.renesans.permission.PermissionActivity
 
 class StartupActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
 
     private var dots = mutableListOf<View>()
     private var currentPage = 0
+    private var permissionGranted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
         changeStatusBarColor()
         val startupAdapter = StartupAdapter(this)
+        permissionGranted = (ContextCompat.checkSelfPermission(this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
         startupPager.adapter = startupAdapter
         startupPager.addOnPageChangeListener(this)
         backBtn.setOnClickListener{ showPreviousPage() }
@@ -85,13 +91,16 @@ class StartupActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     private fun setNextBtnProperties(position: Int){
         if(position==dots.size-1){
             nextBtn.text = getString(R.string.end)
-            nextBtn.setOnClickListener{
-                finish()
-                startActivity(Intent(this, MainActivity::class.java))
-            }
+            nextBtn.setOnClickListener{ startNewActivity() }
         }else{
             nextBtn.text = getString(R.string.next)
             nextBtn.setOnClickListener{ showNextPage() }
         }
+    }
+
+    private fun startNewActivity() {
+        finish()
+        if(permissionGranted) startActivity(Intent(this, MainActivity::class.java))
+        else startActivity(Intent(this, PermissionActivity::class.java))
     }
 }
