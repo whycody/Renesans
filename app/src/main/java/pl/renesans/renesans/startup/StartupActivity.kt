@@ -1,7 +1,9 @@
 package pl.renesans.renesans.startup
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
@@ -13,6 +15,7 @@ import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_startup.*
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
+import pl.renesans.renesans.SplashActivity
 import pl.renesans.renesans.permission.PermissionActivity
 
 class StartupActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
@@ -20,11 +23,15 @@ class StartupActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     private var dots = mutableListOf<View>()
     private var currentPage = 0
     private var permissionGranted = false
+    private var prefs: SharedPreferences? = null
+    private var editor: SharedPreferences.Editor? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
         changeStatusBarColor()
+        prefs = getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
+        editor = prefs!!.edit()
         val startupAdapter = StartupAdapter(this)
         permissionGranted = (ContextCompat.checkSelfPermission(this,
             Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
@@ -100,6 +107,8 @@ class StartupActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
 
     private fun startNewActivity() {
         finish()
+        editor?.putBoolean(SplashActivity.firstLogin, false)
+        editor?.apply()
         if(permissionGranted) startActivity(Intent(this, MainActivity::class.java))
         else startActivity(Intent(this, PermissionActivity::class.java))
     }
