@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import pl.renesans.renesans.R
-import pl.renesans.renesans.discover.recycler.fragment.DiscoverRecyclerFragment
+import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 
 class DiscoverFragment : Fragment() {
 
@@ -26,10 +26,22 @@ class DiscoverFragment : Fragment() {
     private fun addFragmentsToDiscoverLayout(){
         val fragMan: FragmentManager? = fragmentManager
         val fragTransaction: FragmentTransaction = fragMan!!.beginTransaction()
-        val peopleFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.PEOPLE)
-        val artsFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.ARTS)
-        val eventsFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.EVENTS)
-        val otherErasFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.OTHER_ERAS)
+        val peopleFrag =
+            DiscoverRecyclerFragment(
+                DiscoverRecyclerFragment.PEOPLE
+            )
+        val artsFrag =
+            DiscoverRecyclerFragment(
+                DiscoverRecyclerFragment.ARTS
+            )
+        val eventsFrag =
+            DiscoverRecyclerFragment(
+                DiscoverRecyclerFragment.EVENTS
+            )
+        val otherErasFrag =
+            DiscoverRecyclerFragment(
+                DiscoverRecyclerFragment.OTHER_ERAS
+            )
         fragTransaction.add(discoverLayout.id, peopleFrag, "peopleFrag")
         fragTransaction.add(discoverLayout.id, artsFrag, "artsFrag")
         fragTransaction.add(discoverLayout.id, eventsFrag, "eventsFrag")

@@ -1,16 +1,14 @@
 package pl.renesans.renesans.discover.recycler
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
+import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
-import pl.renesans.renesans.discover.recycler.fragment.DiscoverRecyclerView
 
-class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context,
-                                    val discoverRecyclerView: DiscoverRecyclerView
-): DiscoverRecyclerPresenter,
-    ImageDaoContract.ImageDaoInterractor {
+class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
+    DiscoverRecyclerPresenter, ImageDaoContract.ImageDaoInterractor {
 
     private var articlesList = listOf<Article>()
     private var imageDao: ImageDaoContract.ImageDao? = null
@@ -23,7 +21,9 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context,
     }
 
     override fun itemClicked(pos: Int) {
-
+        val intent = Intent(context, ArticleActivity::class.java)
+        intent.putExtra(ArticleActivity.ARTICLE, articlesList[pos])
+        context.startActivity(intent)
     }
 
     override fun getItemCount(): Int {
@@ -35,6 +35,7 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context,
         refreshHoldersList(holder, position)
         holder.setArticleTitle(articlesList[position].title!!)
         holder.setArticlePhotoSize(objectType)
+        holder.setOnRowClickListener(position)
         imageDao?.loadPhoto(position, "${articlesList[position].objectId!!}_0", false)
         imageDao?.loadPhoto(position, "${articlesList[position].objectId!!}_0", true)
     }

@@ -17,13 +17,13 @@ data class Photo(var objectId: String? = null,
 
 data class Paragraph(var objectId: String? = null,
                 var objectType: Int? = null,
-                var subtitle: Int? = null,
+                var subtitle: String? = null,
                 var content: String? = null): Serializable
 
 data class Header(var objectId: String? = null,
                 var objectType: String? = null,
                 var title: String? = null,
-                var content: Pair<String, String>): Serializable
+                var content: List<Pair<String, String>>? = null): Serializable
 
 data class RelationArticle(var relatedId: String? = null,
                 var relatedType: String? = null,

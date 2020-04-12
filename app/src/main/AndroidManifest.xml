@@ -17,22 +17,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".permission.PermissionActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+        <activity android:name=".article.ArticleActivity"></activity>
+        <activity
+            android:name=".permission.PermissionActivity"
+            android:screenOrientation="portrait"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".startup.StartupActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".startup.StartupActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SplashActivity"
             android:noHistory="true"
-            android:theme="@style/SplashTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -41,8 +42,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

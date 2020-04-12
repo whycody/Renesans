@@ -27,4 +27,31 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="ArticleTextView">
+        <item name="android:paddingLeft">@dimen/articleMargin</item>
+        <item name="android:paddingRight">@dimen/articleMargin</item>
+    </style>
+
+    <style name="ArticleHeaderTitleTextviewStyle" parent="ArticleTextView">
+        <item name="android:textColor">@color/colorTitleGray</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ArticleHeaderContentTextviewStyle" parent="ArticleTextView">
+        <item name="android:textColor">@color/colorParagraphGray</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ArticleContentTitleTextviewStyle" parent="ArticleTextView">
+        <item name="android:textColor">@color/colorTitleGray</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ArticleContentContentTextviewStyle" parent="ArticleTextView">
+        <item name="android:textColor">@color/colorParagraphGray</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

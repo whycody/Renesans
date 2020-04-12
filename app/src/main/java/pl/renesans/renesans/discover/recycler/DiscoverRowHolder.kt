@@ -12,7 +12,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import pl.renesans.renesans.R
-import pl.renesans.renesans.discover.recycler.fragment.DiscoverRecyclerFragment
 
 class DiscoverRowHolder(itemView: View, val context: Context, val presenter: DiscoverRecyclerPresenter) :
     RecyclerView.ViewHolder(itemView), DiscoverRowView {
@@ -37,9 +36,9 @@ class DiscoverRowHolder(itemView: View, val context: Context, val presenter: Dis
         val articleImage = itemView.findViewById<ImageView>(R.id.articleImage)
         val articleImageHeight = articleImage.layoutParams.height
         val articleImageWidth = articleImage.layoutParams.width
-        if(objectType==DiscoverRecyclerFragment.ARTS){
+        if(objectType== DiscoverRecyclerFragment.ARTS){
             articleImage.layoutParams.height = (articleImageHeight * 1.5).toInt()
-        }else if(objectType==DiscoverRecyclerFragment.EVENTS||objectType==DiscoverRecyclerFragment.OTHER_ERAS){
+        }else if(objectType== DiscoverRecyclerFragment.EVENTS||objectType== DiscoverRecyclerFragment.OTHER_ERAS){
             articleImage.layoutParams.width = (articleImageWidth * 1.8).toInt()
             articleImage.layoutParams.height = (articleImageHeight * 1.2).toInt()
         }
@@ -50,6 +49,6 @@ class DiscoverRowHolder(itemView: View, val context: Context, val presenter: Dis
     }
 
     override fun setOnRowClickListener(pos: Int) {
-        presenter.itemClicked(pos)
+        itemView.setOnClickListener{presenter.itemClicked(pos)}
     }
 }
