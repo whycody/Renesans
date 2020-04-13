@@ -27,7 +27,7 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
         articleToolbar.navigationIcon?.setColorFilter(ContextCompat.getColor(this,
             android.R.color.white), PorterDuff.Mode.SRC_ATOP)
         imagesList.add(articleImage)
-        presenter = ArticlePresenterImpl(this, this)
+        presenter = ArticlePresenterImpl(applicationContext, this)
         presenter.loadContent()
     }
 
@@ -45,11 +45,11 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
     }
 
     override fun loadBitmapToImage(bitmap: Bitmap, pos: Int) {
-        Glide.with(this).load(bitmap).into(getImageAtPos(pos))
+        Glide.with(applicationContext).load(bitmap).into(getImageAtPos(pos))
     }
 
     override fun loadUriToImage(uri: Uri, pos: Int) {
-        Glide.with(this).load(uri).placeholder(getImageAtPos(pos).drawable).into(getImageAtPos(pos))
+        Glide.with(applicationContext).load(uri).placeholder(getImageAtPos(pos).drawable).into(getImageAtPos(pos))
     }
 
     private fun getImageAtPos(pos: Int): ImageView{

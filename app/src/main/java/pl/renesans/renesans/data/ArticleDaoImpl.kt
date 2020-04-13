@@ -19,7 +19,8 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Mikołaj Kopernik",
             objectId = "P0",
             header = Header(content = listOf(Pair("Profesje","badacz, astronom, lekarz"), Pair("Lata życia", "1473 - 1543"))),
-            listOfPhotos = listOf(Photo(objectId = "P0_1", describe = "Fragment \"O obrotach sfer niebieskich\", model heliocentryczny", numberOfParagraph = 1)),
+            listOfPhotos = listOf(Photo(objectId = "P0_0"),
+                Photo(objectId = "P0_1", describe = "Fragment \"O obrotach sfer niebieskich\", model heliocentryczny", numberOfParagraph = 1)),
             listOfParagraphs = listOf(Paragraph(subtitle = "Historia życia", content = "Mikołaj Kopernik to polski astronom, który swoją sławę zawdzięcza przede wszystkim swojemu dziełu \"O obrotach sfer niebieskich\" w którym szczegółowo przedstawił heliocentryczną wizję Wszechświata."),
                 Paragraph(content = "Należy w tym miejscu wspomnieć, że koncepcja heliocentryzmu pojawiła się już w starożytnej Grecji, ale to właśnie dzieło Kopernika było przełomem w postrzeganiu naszej galaktyki."),
                 Paragraph(subtitle = "Inne profesje", content = "Astronomia to dziedzina z której Kopernik był znany najbardziej, ale nie jedyna. Był renesansowym polihistorem, czyli osobą posiadającą rozległą wiedzę z wielu, różnych dziedzin. Interesował się matematyką, prawem, ekonomią, strategią wojskową czy też astrologią."))))

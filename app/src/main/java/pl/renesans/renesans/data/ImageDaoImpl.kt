@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
+import java.lang.Exception
 
 class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.ImageDaoInterractor):
     ImageDaoContract.ImageDao {
@@ -11,6 +12,11 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
     private val storage = FirebaseStorage.getInstance()
     private val storageReference = storage.reference
     private val externalStorage = android.os.Environment.getExternalStorageDirectory().path
+
+    override fun loadPhotoInBothQualities(pos: Int, id: String) {
+        loadPhoto(pos, id, false)
+        loadPhoto(pos, id, true)
+    }
 
     override fun loadPhoto(pos: Int, id: String, highQuality: Boolean){
         if(!highQuality) checkSavedPhoto(pos, id)
@@ -26,6 +32,12 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
         }else loadBadQualityPhotoToHolder(pos, fileName)
     }
 
+    private fun badQualityPhotoIsDownloaded(fileName: String): Boolean{
+        val filePath = "$externalStorage/Renesans/$fileName"
+        val file = File(filePath)
+        return file.exists()
+    }
+
     private fun getPhotoUriFromID(pos: Int, id: String, highQuality: Boolean) {
         var path: String = id
         if(highQuality) path += "h.jpg"
@@ -35,19 +47,21 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
         }
     }
 
-    private fun badQualityPhotoIsDownloaded(fileName: String): Boolean{
-        val filePath = "$externalStorage/Renesans/$fileName"
-        val file = File(filePath)
-        return file.exists()
-    }
-
     private fun downloadPhotoFromFirebase(id: String){
         val fileName = "${id}b.jpg"
         val photoReference = storageReference.child(fileName)
         val rootPath = File(externalStorage, "Renesans")
         if(!rootPath.exists()) rootPath.mkdirs()
+        createNoMediaFile(rootPath)
         val localFile = File(rootPath, fileName)
         photoReference.getFile(localFile)
+    }
+
+    private fun createNoMediaFile(rootPath: File){
+        val noMediaFile = File(rootPath.path + "/.nomedia")
+        try {
+            noMediaFile.createNewFile()
+        }catch(e: Exception){}
     }
 
     private fun loadBadQualityPhotoToHolder(pos: Int, fileName: String){

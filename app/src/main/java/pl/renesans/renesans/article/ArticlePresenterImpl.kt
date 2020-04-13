@@ -17,25 +17,29 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
     ArticleContract.ArticlePresenter, ImageDaoContract.ImageDaoInterractor {
 
     private lateinit var article: Article
+    private var listOfPhotos: List<Photo>? = null
+    private lateinit var imageDao: ImageDaoContract.ImageDao
     private var articleMargin = 0
     private var articleBigUpMargin = 0
     private var articleSmallUpMargin = 0
-    private var imageDao: ImageDaoContract.ImageDao? = null
-    private var listOfPhotos: List<Photo>? = null
-    private var numberOfPhoto = 0
+    private var numberOfPhoto = 1
 
     override fun loadContent() {
         article = articleView.getArticleObject()
+        listOfPhotos = article.listOfPhotos
+        imageDao = ImageDaoImpl(context, this)
         articleMargin = context.resources.getDimension(R.dimen.articleMargin).toInt()
         articleBigUpMargin = context.resources.getDimension(R.dimen.articleBigUpMargin).toInt()
         articleSmallUpMargin = context.resources.getDimension(R.dimen.articleSmallUpMargin).toInt()
-        listOfPhotos = article.listOfPhotos
         articleView.setTitle(article.title!!)
-        imageDao = ImageDaoImpl(context, this)
-        imageDao?.loadPhoto(0, article.objectId + "_0", false)
-        imageDao?.loadPhoto(0, article.objectId + "_0", true)
+        loadMainPhoto()
         loadHeader()
         loadParagraphs()
+    }
+
+    private fun loadMainPhoto(){
+        if(listOfPhotos!=null) imageDao.loadPhotoInBothQualities(0, listOfPhotos!![0].objectId!!)
+        else imageDao.loadPhotoInBothQualities(0, article.objectId + "_0")
     }
 
     private fun loadHeader(){
@@ -72,8 +76,7 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
 
     private fun loadParagraphs(){
         article.listOfParagraphs?.forEachIndexed { index, paragraph ->
-            if(listOfPhotos!!.any{ photo -> photo.numberOfParagraph == index-1 })
-                loadImageAsParagraph(listOfPhotos?.find { it.numberOfParagraph == index-1 })
+            loadImageAsParagraph(listOfPhotos?.find { it.numberOfParagraph == index-1 })
             val subtitleIsAvailable = paragraph.subtitle!=null
             if(subtitleIsAvailable)
                 articleView.addViewToArticleLinear(getParagraphTitleTextView(paragraph.subtitle!!))
@@ -101,7 +104,6 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
 
     private fun loadImageAsParagraph(photo: Photo?){
         if(photo!=null){
-            numberOfPhoto++
             val imageView = ImageView(context)
             imageView.adjustViewBounds = true
             imageView.layoutParams = LinearLayout.LayoutParams(
@@ -109,8 +111,8 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
                 LinearLayout.LayoutParams.WRAP_CONTENT)
             imageView.setPadding(0, articleBigUpMargin, 0, 0)
             articleView.addViewToArticleLinear(imageView)
-            imageDao?.loadPhoto(numberOfPhoto, photo.objectId!!, false)
-            imageDao?.loadPhoto(numberOfPhoto, photo.objectId!!, true)
+            imageDao.loadPhotoInBothQualities(numberOfPhoto, photo.objectId!!)
+            numberOfPhoto++
         }
     }
 

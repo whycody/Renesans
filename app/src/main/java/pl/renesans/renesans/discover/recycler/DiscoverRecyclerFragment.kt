@@ -22,12 +22,12 @@ class DiscoverRecyclerFragment(val objectType: Int) : Fragment() {
         val view = inflater.inflate(R.layout.fragment_discover_recycler, container, false)
         discoverRecycler = view.findViewById(R.id.discoverRecycler)
         discoverTitle = view.findViewById(R.id.discoverTitle)
-        presenter = DiscoverRecyclerPresenterImpl(objectType, activity!!)
+        presenter = DiscoverRecyclerPresenterImpl(objectType, context!!)
         presenter.onCreate(objectType)
-        adapter = DiscoverRecyclerAdapter(activity!!, presenter)
+        adapter = DiscoverRecyclerAdapter(context!!, presenter)
         discoverRecycler.adapter = adapter
-        discoverRecycler.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        discoverRecycler.addItemDecoration(DiscoverRecyclerDecoration(activity!!))
+        discoverRecycler.layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.HORIZONTAL, false)
+        discoverRecycler.addItemDecoration(DiscoverRecyclerDecoration(context!!))
         setRecyclerTitle()
         return view
     }

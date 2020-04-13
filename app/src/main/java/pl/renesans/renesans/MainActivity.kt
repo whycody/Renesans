@@ -42,11 +42,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     private fun changeFragment(fragment: Fragment, tagFragmentName: String) {
-        val mFragmentManager = supportFragmentManager
-        val fragmentTransaction = mFragmentManager.beginTransaction()
-        val currentFragment = mFragmentManager.primaryNavigationFragment
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        val currentFragment = fragmentManager.primaryNavigationFragment
         if (currentFragment != null) fragmentTransaction.hide(currentFragment)
-        var fragmentTemp = mFragmentManager.findFragmentByTag(tagFragmentName)
+        var fragmentTemp = fragmentManager.findFragmentByTag(tagFragmentName)
         if (fragmentTemp == null) {
             fragmentTemp = fragment
             fragmentTransaction.add(R.id.mainFrameLayout, fragmentTemp, tagFragmentName)

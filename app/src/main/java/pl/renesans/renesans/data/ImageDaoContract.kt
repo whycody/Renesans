@@ -7,6 +7,8 @@ interface ImageDaoContract {
 
     interface ImageDao {
 
+        fun loadPhotoInBothQualities(pos: Int = 0, id: String)
+
         fun loadPhoto(pos: Int = 0, id: String, highQuality: Boolean = true)
     }
 
