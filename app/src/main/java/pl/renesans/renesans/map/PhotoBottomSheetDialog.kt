@@ -28,7 +28,7 @@ class PhotoBottomSheetDialog(val photoArticle: PhotoArticle? = null): BottomShee
         setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
         view?.findViewById<TextView>(R.id.articleTitle)?.text = photoArticle?.title
         view?.findViewById<TextView>(R.id.articleParagraph)?.text = photoArticle?.paragraph?.content
-        view?.findViewById<TextView>(R.id.photoDescription)?.text = photoArticle?.photo?.describe
+        view?.findViewById<TextView>(R.id.photoDescription)?.text = photoArticle?.photo?.description
         view?.findViewById<ImageView>(R.id.articlePhoto)?.setBackgroundColor(Color.LTGRAY)
         return view
     }

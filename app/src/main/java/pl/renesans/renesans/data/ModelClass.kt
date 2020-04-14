@@ -9,11 +9,11 @@ data class Source(var sourceType: String? = null,
                 var imageSource: String? = null): Serializable
 
 data class Photo(var objectId: String? = null,
-                var objectType: String? = null,
-                var numberOfParagraph: Int? = null,
-                var describe: String? = null,
-                var path: String? = null,
-                var source: Source? = null): Serializable
+                 var objectType: String? = null,
+                 var numberOfParagraph: Int? = null,
+                 var description: String? = null,
+                 var path: String? = null,
+                 var source: Source? = null): Serializable
 
 data class Paragraph(var objectId: String? = null,
                 var objectType: Int? = null,

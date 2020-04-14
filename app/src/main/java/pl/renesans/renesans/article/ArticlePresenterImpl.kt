@@ -111,9 +111,19 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
                 LinearLayout.LayoutParams.WRAP_CONTENT)
             imageView.setPadding(0, articleBigUpMargin, 0, 0)
             articleView.addViewToArticleLinear(imageView)
+            if(photo.description!=null) loadDescriptionOfPhoto(photo)
             imageDao.loadPhotoInBothQualities(numberOfPhoto, photo.objectId!!)
             numberOfPhoto++
         }
+    }
+
+    private fun loadDescriptionOfPhoto(photo: Photo){
+        val descriptionTextView = TextView(context)
+        TextViewCompat.setTextAppearance(descriptionTextView, R.style.ArticleHeaderContentTextviewStyle)
+        descriptionTextView.text = photo.description!!
+        descriptionTextView.setLineSpacing(10f, 1f)
+        descriptionTextView.setPadding(articleMargin, articleSmallUpMargin, articleMargin, 0)
+        articleView.addViewToArticleLinear(descriptionTextView)
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {

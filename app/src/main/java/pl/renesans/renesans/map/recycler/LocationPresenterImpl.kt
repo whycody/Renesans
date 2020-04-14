@@ -24,7 +24,7 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
         LocationListener{
 
     private var photoArticlesList = mutableListOf(ClusterMarker(PhotoArticle()))
-    private val examplePhotoDescribe = Photo(describe = "Zamek Królewski na Wawelu")
+    private val examplePhotoDescribe = Photo(description = "Zamek Królewski na Wawelu")
     private val exampleParagraph = Paragraph(content = "Budowla była na przestrzeni wieków wielokrotnie rozbudowywana i odnawiana. Zamek wielokrotnie był poddawany różnym próbom takim jak pożary, grabieże i przemarsze obcych wojsk wobec czego był wielokrotnie był odbudowywany w kolejnych nowych stylach architektonicznych.")
     private var currentLocation: LatLng? = null
     private var locationManager: LocationManager? = null
