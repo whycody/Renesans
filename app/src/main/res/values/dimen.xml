@@ -7,5 +7,6 @@
     <dimen name="articleBigUpMargin">40dp</dimen>
     <dimen name="articleSmallUpMargin">16dp</dimen>
     <dimen name="discoverRecyclerMarginEnd">16dp</dimen>
+    <dimen name="relatedArticleViewRadius">10dp</dimen>
 </resources>
 

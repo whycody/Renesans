@@ -4,6 +4,32 @@ import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 
 class ArticleDaoImpl: ArticleDao {
 
+    override fun getRelatedArticlesList(article: Article): List<Article> {
+        val relatedArticles = mutableListOf<Article>()
+        relatedArticles.add(0, Article(objectType = DiscoverRecyclerFragment.SOURCES,
+            title = "Źródła", objectId = "Z0"))
+        if(article.objectId != "O4") relatedArticles.add(0, getArticleFromId("O4"))
+        article.relatedArticlesIdsList?.forEach { articleId ->
+            relatedArticles.add(0, getArticleFromId(articleId))
+        }
+        return relatedArticles
+    }
+
+    private fun getArticleFromId(objectId: String): Article{
+        val articlesList = getArticlesList(getObjectTypeFromObjectId(objectId))
+        return articlesList.find { it.objectId == objectId } ?: Article()
+    }
+
+    private fun getObjectTypeFromObjectId(objectID: String): Int{
+        return when(objectID.first()){
+            'P' -> 0
+            'A' -> 1
+            'E' -> 2
+            'O' -> 3
+            else -> 4
+        }
+    }
+
     override fun getArticlesList(articleId: Int): List<Article> {
         return when(articleId){
             DiscoverRecyclerFragment.PEOPLE -> getImportantPeoples()
@@ -50,6 +76,7 @@ class ArticleDaoImpl: ArticleDao {
 
     override fun getOtherEras(): List<Article> {
         val articlesList = mutableListOf<Article>()
+        articlesList.add(Article(title = "Renesans", objectId = "O4"))
         articlesList.add(Article(title = "Średniowiecze", objectId = "O0"))
         articlesList.add(Article(title = "Barok", objectId = "O1"))
         articlesList.add(Article(title = "Oświecenie", objectId = "O2"))

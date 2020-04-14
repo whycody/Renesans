@@ -25,16 +25,17 @@ data class Header(var objectId: String? = null,
                 var title: String? = null,
                 var content: List<Pair<String, String>>? = null): Serializable
 
-data class RelationArticle(var relatedId: String? = null,
-                var relatedType: String? = null,
-                var relatedPhoto: Photo? = null,
-                var relatedTitle: String? = null,
-                var listOfSources: List<Source>? = null): Serializable
+data class RelatedArticle(var relatedId: String? = null,
+                          var relatedType: Int? = null,
+                          var relatedPhoto: Photo? = null,
+                          var relatedTitle: String? = null,
+                          var listOfSources: List<Source>? = null): Serializable
 
 data class Article(var objectId: String? = null,
-                var objectType: String? = null,
+                var objectType: Int? = null,
                 var title: String? = null,
                 var header: Header? = null,
+                var relatedArticlesIdsList: List<String>? = null,
                 var listOfParagraphs: List<Paragraph>? = null,
                 var listOfPhotos: List<Photo>? = null,
                 var listOfSources: List<Source>? = null): Serializable

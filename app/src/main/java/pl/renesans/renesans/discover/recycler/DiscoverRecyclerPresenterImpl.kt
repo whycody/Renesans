@@ -36,8 +36,7 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
         holder.setArticleTitle(articlesList[position].title!!)
         holder.setArticlePhotoSize(objectType)
         holder.setOnRowClickListener(position)
-        imageDao?.loadPhoto(position, "${articlesList[position].objectId!!}_0", false)
-        imageDao?.loadPhoto(position, "${articlesList[position].objectId!!}_0", true)
+        imageDao?.loadPhotoInBothQualities(position, "${articlesList[position].objectId!!}_0")
     }
 
     private fun refreshHoldersList(holder: DiscoverRowHolder, position: Int){

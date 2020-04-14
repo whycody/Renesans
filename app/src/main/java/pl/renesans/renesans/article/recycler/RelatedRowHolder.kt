@@ -1,4 +1,4 @@
-package pl.renesans.renesans.discover.recycler
+package pl.renesans.renesans.article.recycler
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -13,8 +13,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import pl.renesans.renesans.R
 
-class DiscoverRowHolder(itemView: View, val context: Context, val presenter: DiscoverRecyclerPresenter) :
-    RecyclerView.ViewHolder(itemView), DiscoverRowView {
+class RelatedRowHolder(itemView: View, val context: Context, val presenter: RelatedPresenterImpl)
+    : RecyclerView.ViewHolder(itemView), RelatedContract.RelatedRowView {
 
     override fun setArticleBitmapPhoto(bitmap: Bitmap) {
         var requestOptions = RequestOptions()
@@ -32,18 +32,6 @@ class DiscoverRowHolder(itemView: View, val context: Context, val presenter: Dis
             .apply(requestOptions)
             .placeholder(itemView.findViewById<ImageView>(R.id.articleImage).drawable)
             .into(itemView.findViewById(R.id.articleImage))
-    }
-
-    override fun setArticlePhotoSize(objectType: Int) {
-        val articleImage = itemView.findViewById<ImageView>(R.id.articleImage)
-        val articleImageHeight = articleImage.layoutParams.height
-        val articleImageWidth = articleImage.layoutParams.width
-        if(objectType== DiscoverRecyclerFragment.ARTS){
-            articleImage.layoutParams.height = (articleImageHeight * 1.5).toInt()
-        }else if(objectType== DiscoverRecyclerFragment.EVENTS||objectType== DiscoverRecyclerFragment.OTHER_ERAS){
-            articleImage.layoutParams.width = (articleImageWidth * 1.8).toInt()
-            articleImage.layoutParams.height = (articleImageHeight * 1.2).toInt()
-        }
     }
 
     override fun setArticleTitle(title: String) {

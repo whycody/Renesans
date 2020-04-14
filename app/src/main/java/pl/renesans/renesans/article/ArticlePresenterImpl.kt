@@ -7,11 +7,16 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.widget.TextViewCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import pl.renesans.renesans.R
+import pl.renesans.renesans.article.recycler.RelatedAdapter
+import pl.renesans.renesans.article.recycler.RelatedPresenterImpl
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.ImageDaoContract
 import pl.renesans.renesans.data.ImageDaoImpl
 import pl.renesans.renesans.data.Photo
+import pl.renesans.renesans.discover.recycler.DiscoverRecyclerDecoration
 
 class ArticlePresenterImpl(val context: Context, val articleView: ArticleContract.ArticleView):
     ArticleContract.ArticlePresenter, ImageDaoContract.ImageDaoInterractor {
@@ -35,6 +40,7 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
         loadMainPhoto()
         loadHeader()
         loadParagraphs()
+        loadRelations()
     }
 
     private fun loadMainPhoto(){
@@ -124,6 +130,19 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
         descriptionTextView.setLineSpacing(10f, 1f)
         descriptionTextView.setPadding(articleMargin, articleSmallUpMargin, articleMargin, 0)
         articleView.addViewToArticleLinear(descriptionTextView)
+    }
+
+    private fun loadRelations(){
+        articleView.addViewToArticleLinear(getParagraphTitleTextView("Powiązania"))
+        val recyclerView = RecyclerView(context)
+        val relatedPresenter = RelatedPresenterImpl(context, article)
+        relatedPresenter.onCreate()
+        val relatedAdapter = RelatedAdapter(context, relatedPresenter)
+        recyclerView.addItemDecoration(DiscoverRecyclerDecoration(context))
+        recyclerView.layoutManager = LinearLayoutManager(context.applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = relatedAdapter
+        recyclerView.setPadding(0, articleSmallUpMargin, 0, 0)
+        articleView.addViewToArticleLinear(recyclerView)
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
