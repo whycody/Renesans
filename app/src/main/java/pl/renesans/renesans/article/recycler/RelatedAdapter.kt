@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import pl.renesans.renesans.R
 
-class RelatedAdapter(val context: Context, val presenter: RelatedPresenterImpl):
+class RelatedAdapter(val context: Context, val presenter: RelatedContract.RelatedPresenter):
     RecyclerView.Adapter<RelatedRowHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RelatedRowHolder {

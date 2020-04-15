@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pl.renesans.renesans.R
 import pl.renesans.renesans.article.recycler.RelatedAdapter
+import pl.renesans.renesans.article.recycler.RelatedContract
 import pl.renesans.renesans.article.recycler.RelatedPresenterImpl
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.ImageDaoContract
@@ -133,15 +134,19 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
     }
 
     private fun loadRelations(){
-        articleView.addViewToArticleLinear(getParagraphTitleTextView("Powiązania"))
-        val recyclerView = RecyclerView(context)
         val relatedPresenter = RelatedPresenterImpl(context, article)
         relatedPresenter.onCreate()
+        if(relatedPresenter.getItemCount()!=0) loadRelationsView(relatedPresenter)
+    }
+    
+    private fun loadRelationsView(relatedPresenter: RelatedContract.RelatedPresenter){
+        val recyclerView = RecyclerView(context)
         val relatedAdapter = RelatedAdapter(context, relatedPresenter)
         recyclerView.addItemDecoration(DiscoverRecyclerDecoration(context))
         recyclerView.layoutManager = LinearLayoutManager(context.applicationContext, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = relatedAdapter
         recyclerView.setPadding(0, articleSmallUpMargin, 0, 0)
+        articleView.addViewToArticleLinear(getParagraphTitleTextView(context.getString(R.string.relations)))
         articleView.addViewToArticleLinear(recyclerView)
     }
 

@@ -6,13 +6,21 @@ class ArticleDaoImpl: ArticleDao {
 
     override fun getRelatedArticlesList(article: Article): List<Article> {
         val relatedArticles = mutableListOf<Article>()
-        relatedArticles.add(0, Article(objectType = DiscoverRecyclerFragment.SOURCES,
-            title = "Źródła", objectId = "Z0"))
+        if(articleHasSources(article))
+            relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.SOURCES,
+                title = "Źródła", objectId = "Z0"))
         if(article.objectId != "O4") relatedArticles.add(0, getArticleFromId("O4"))
-        article.relatedArticlesIdsList?.forEach { articleId ->
+        article.listOfRelatedArticlesIds?.forEach { articleId ->
             relatedArticles.add(0, getArticleFromId(articleId))
         }
         return relatedArticles
+    }
+
+    private fun articleHasSources(article: Article): Boolean {
+        if (article.source != null) return true
+        if (article.listOfPhotos != null)
+            article.listOfPhotos!!.forEach { photo -> if (photo.source != null) return true }
+        return false
     }
 
     private fun getArticleFromId(objectId: String): Article{
@@ -44,9 +52,10 @@ class ArticleDaoImpl: ArticleDao {
         articlesList.add(Article
             (title = "Mikołaj Kopernik",
             objectId = "P0",
+            source = Source(srcDescription = "Treść główna", page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik"),
             header = Header(content = listOf(Pair("Profesje","badacz, astronom, lekarz"), Pair("Lata życia", "1473 - 1543"))),
-            listOfPhotos = listOf(Photo(objectId = "P0_0"),
-                Photo(objectId = "P0_1", description = "Fragment \"O obrotach sfer niebieskich\", model heliocentryczny", numberOfParagraph = 1)),
+            listOfPhotos = listOf(Photo(objectId = "P0_0", description = "Mikołaj Kopernik", source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                Photo(objectId = "P0_1", description = "Fragment \"O obrotach sfer niebieskich\", model heliocentryczny", numberOfParagraph = 1, source = Source(page = TVP_INFO, url = "https://www.tvp.info/12865831/przez-dwa-dni-mozna-ogladac-dzielo-kopernika"))),
             listOfParagraphs = listOf(Paragraph(subtitle = "Historia życia", content = "Mikołaj Kopernik to polski astronom, który swoją sławę zawdzięcza przede wszystkim swojemu dziełu \"O obrotach sfer niebieskich\" w którym szczegółowo przedstawił heliocentryczną wizję Wszechświata."),
                 Paragraph(content = "Należy w tym miejscu wspomnieć, że koncepcja heliocentryzmu pojawiła się już w starożytnej Grecji, ale to właśnie dzieło Kopernika było przełomem w postrzeganiu naszej galaktyki."),
                 Paragraph(subtitle = "Inne profesje", content = "Astronomia to dziedzina z której Kopernik był znany najbardziej, ale nie jedyna. Był renesansowym polihistorem, czyli osobą posiadającą rozległą wiedzę z wielu, różnych dziedzin. Interesował się matematyką, prawem, ekonomią, strategią wojskową czy też astrologią."))))
@@ -82,5 +91,10 @@ class ArticleDaoImpl: ArticleDao {
         articlesList.add(Article(title = "Oświecenie", objectId = "O2"))
         articlesList.add(Article(title = "Romantyzm", objectId = "O3"))
         return articlesList
+    }
+
+    companion object{
+        const val WIKIPEDIA_PL = "pl.wikipedia.org"
+        const val TVP_INFO = "tvp.info"
     }
 }

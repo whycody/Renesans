@@ -7,6 +7,7 @@ import android.net.Uri
 import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
+import pl.renesans.renesans.sources.SourcesActivity
 
 class RelatedPresenterImpl(val context: Context, val article: Article):
     RelatedContract.RelatedPresenter, ImageDaoContract.ImageDaoInterractor {
@@ -25,6 +26,11 @@ class RelatedPresenterImpl(val context: Context, val article: Article):
         if(relatedArticlesList[pos].objectType!=DiscoverRecyclerFragment.SOURCES){
             val intent = Intent(context, ArticleActivity::class.java)
             intent.putExtra(ArticleActivity.ARTICLE, relatedArticlesList[pos])
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        }else{
+            val intent = Intent(context, SourcesActivity::class.java)
+            intent.putExtra(ArticleActivity.ARTICLE, article)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }

@@ -4,15 +4,15 @@ import com.google.android.gms.maps.model.LatLng
 import java.io.Serializable
 
 data class Source(var sourceType: String? = null,
-                var url: String? = null,
-                var page: String? = null,
-                var imageSource: String? = null): Serializable
+                  var srcDescription: String? = null,
+                  var photoId: String? = "Z1_0",
+                  var url: String? = null,
+                  var page: String? = null): Serializable
 
 data class Photo(var objectId: String? = null,
-                 var objectType: String? = null,
+                 var objectType: Int? = null,
                  var numberOfParagraph: Int? = null,
                  var description: String? = null,
-                 var path: String? = null,
                  var source: Source? = null): Serializable
 
 data class Paragraph(var objectId: String? = null,
@@ -25,23 +25,17 @@ data class Header(var objectId: String? = null,
                 var title: String? = null,
                 var content: List<Pair<String, String>>? = null): Serializable
 
-data class RelatedArticle(var relatedId: String? = null,
-                          var relatedType: Int? = null,
-                          var relatedPhoto: Photo? = null,
-                          var relatedTitle: String? = null,
-                          var listOfSources: List<Source>? = null): Serializable
-
 data class Article(var objectId: String? = null,
-                var objectType: Int? = null,
-                var title: String? = null,
-                var header: Header? = null,
-                var relatedArticlesIdsList: List<String>? = null,
-                var listOfParagraphs: List<Paragraph>? = null,
-                var listOfPhotos: List<Photo>? = null,
-                var listOfSources: List<Source>? = null): Serializable
+                   var objectType: Int? = null,
+                   var title: String? = null,
+                   var header: Header? = null,
+                   var source: Source? = null,
+                   var listOfRelatedArticlesIds: List<String>? = null,
+                   var listOfParagraphs: List<Paragraph>? = null,
+                   var listOfPhotos: List<Photo>? = null): Serializable
 
 data class PhotoArticle(var objectId: String? = null,
-                var objectType: String? = null,
+                var objectType: Int? = null,
                 var title: String? = null,
                 var latLng: LatLng? = null,
                 var header: Header? = null,

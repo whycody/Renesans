@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import pl.renesans.renesans.R
 
-class RelatedRowHolder(itemView: View, val context: Context, val presenter: RelatedPresenterImpl)
+class RelatedRowHolder(itemView: View, val context: Context, val presenter: RelatedContract.RelatedPresenter)
     : RecyclerView.ViewHolder(itemView), RelatedContract.RelatedRowView {
 
     override fun setArticleBitmapPhoto(bitmap: Bitmap) {

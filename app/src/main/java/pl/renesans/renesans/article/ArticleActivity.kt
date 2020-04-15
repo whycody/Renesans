@@ -21,10 +21,10 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article)
-        setSupportActionBar(articleToolbar)
+        setSupportActionBar(sourcesToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        articleToolbar.navigationIcon?.setColorFilter(ContextCompat.getColor(this,
+        sourcesToolbar.navigationIcon?.setColorFilter(ContextCompat.getColor(this,
             android.R.color.white), PorterDuff.Mode.SRC_ATOP)
         imagesList.add(articleImage)
         presenter = ArticlePresenterImpl(applicationContext, this)
@@ -41,7 +41,7 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
     }
 
     override fun setTitle(title: String) {
-        articleToolbar.title = title
+        sourcesToolbar.title = title
     }
 
     override fun loadBitmapToImage(bitmap: Bitmap, pos: Int) {
