@@ -5,7 +5,7 @@ import pl.renesans.renesans.map.ClusterMarker
 
 interface LocationPresenter {
 
-    fun onCreate()
+    fun addMarkers()
 
     fun refreshMarkersList(photoArticlesList: MutableList<ClusterMarker>)
 

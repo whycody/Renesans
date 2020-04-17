@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/articlePhoto"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="240dp"
         android:scaleType="centerCrop"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
@@ -40,30 +40,44 @@
         android:paddingStart="@dimen/dialogSheetPaddingStart"
         android:paddingEnd="@dimen/dialogSheetPaddingStart"
         android:paddingTop="2dp"
+        android:paddingBottom="15dp"
         android:textSize="20sp"/>
 
-    <TextView
-        android:id="@+id/articleParagraph"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Example paragraph"
-        android:lineSpacingExtra="3dp"
-        android:paddingStart="@dimen/dialogSheetPaddingStart"
-        android:paddingEnd="@dimen/dialogSheetPaddingStart"
-        android:paddingTop="15dp"
-        android:textSize="14sp"
-        android:textColor="@color/colorParagraphGray"/>
-
-    <Button
-        android:id="@+id/sourcesBtn"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/sh_dialog_bottom_sources"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="15dp"
-        android:text="@string/sources"
-        android:paddingStart="@dimen/dialogSheetPaddingStart"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_marginBottom="30dp"
-        android:gravity="center_vertical"/>
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/articleParagraph"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Example paragraph"
+                android:lineSpacingExtra="3dp"
+                android:paddingStart="@dimen/dialogSheetPaddingStart"
+                android:paddingEnd="@dimen/dialogSheetPaddingStart"
+                android:textSize="14sp"
+                android:textColor="@color/colorParagraphGray"/>
+
+            <Button
+                android:id="@+id/sourcesBtn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/sh_dialog_bottom_sources"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
+                android:text="@string/sources"
+                android:paddingStart="@dimen/dialogSheetPaddingStart"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_marginBottom="30dp"
+                android:gravity="center_vertical"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>

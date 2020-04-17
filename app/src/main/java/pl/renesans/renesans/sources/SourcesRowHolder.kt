@@ -13,22 +13,26 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import pl.renesans.renesans.R
 
-class SourcesRowHolder(itemView: View, val context: Context,
+class SourcesRowHolder(itemView: View, val context: Context?,
                        val presenter: SourcesContract.SourcesPresenter) : RecyclerView.ViewHolder(itemView),
     SourcesContract.SourcesRowView {
 
     override fun setSourceBitmapPhoto(bitmap: Bitmap) {
+        if(context == null) return
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transform(CenterCrop(),
             RoundedCorners(context.resources.getDimension(R.dimen.relatedArticleViewRadius).toInt()))
-        Glide.with(context).load(bitmap).apply(requestOptions).into(itemView.findViewById(R.id.sourceImage))
+        Glide.with(context.applicationContext)
+            .load(bitmap).apply(requestOptions)
+            .into(itemView.findViewById(R.id.sourceImage))
     }
 
     override fun setSourceUriPhoto(uri: Uri) {
+        if(context == null) return
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transform(CenterCrop(),
             RoundedCorners(context.resources.getDimension(R.dimen.relatedArticleViewRadius).toInt()))
-        Glide.with(context)
+        Glide.with(context.applicationContext)
             .load(uri)
             .apply(requestOptions)
             .placeholder(itemView.findViewById<ImageView>(R.id.sourceImage).drawable)

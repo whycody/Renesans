@@ -14,8 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import pl.renesans.renesans.R
-import pl.renesans.renesans.data.Paragraph
-import pl.renesans.renesans.data.Photo
+import pl.renesans.renesans.data.ArticleDaoImpl
 import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.map.ClusterMarker
 import pl.renesans.renesans.map.MapView
@@ -24,25 +23,17 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
         LocationListener{
 
     private var photoArticlesList = mutableListOf(ClusterMarker(PhotoArticle()))
-    private val examplePhotoDescribe = Photo(description = "Zamek Królewski na Wawelu")
-    private val exampleParagraph = Paragraph(content = "Budowla była na przestrzeni wieków wielokrotnie rozbudowywana i odnawiana. Zamek wielokrotnie był poddawany różnym próbom takim jak pożary, grabieże i przemarsze obcych wojsk wobec czego był wielokrotnie był odbudowywany w kolejnych nowych stylach architektonicznych.")
     private var currentLocation: LatLng? = null
     private var locationManager: LocationManager? = null
     private var isWaitingToMoveToCurrentLocation = false
 
-    override fun onCreate() {
-        addExampleMarkers()
-    }
-
-    private fun addExampleMarkers(){
-        val firstCluster = ClusterMarker(PhotoArticle(title = "Kaplica Mariacka",
-            latLng = LatLng(53.775711, 20.477980), paragraph = exampleParagraph,
-            photo = examplePhotoDescribe))
-        val secondCluster = ClusterMarker(PhotoArticle(title = "Zamek Królewski",
-            latLng = LatLng(53.760, 20.475), paragraph = exampleParagraph,
-            photo = examplePhotoDescribe))
-        mapView?.addClusterMarkerToMap(firstCluster)
-        mapView?.addClusterMarkerToMap(secondCluster)
+    override fun addMarkers() {
+        val articleDao = ArticleDaoImpl()
+        val photoArticles = articleDao.getPhotoArticlesList()
+        photoArticles.forEach{ photoArticle ->
+            val cluster = ClusterMarker(photoArticle)
+            mapView?.addClusterMarkerToMap(cluster)
+        }
     }
 
     override fun refreshMarkersList(photoArticlesList: MutableList<ClusterMarker>) {
@@ -76,7 +67,7 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
         } else if(!locationManagerIsNull){
             if(!gpsIsTurnedOn!!) sendToast(activity.getString(R.string.turn_on_location))
             else if(currentLocationIsNull) isWaitingToMoveToCurrentLocation = true
-            else mapView?.moveToPosition(currentLocation)
+            else mapView?.moveToLocation(currentLocation)
         } else{
             isWaitingToMoveToCurrentLocation = true
             setLocationManager()
@@ -121,7 +112,7 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
             currentLocation = LatLng(p0.latitude, p0.longitude)
             if(isWaitingToMoveToCurrentLocation){
                 isWaitingToMoveToCurrentLocation = false
-                mapView?.moveToPosition(currentLocation)
+                mapView?.moveToLocation(currentLocation)
             }
         }
     }

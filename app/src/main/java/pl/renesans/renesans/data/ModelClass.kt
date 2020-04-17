@@ -41,5 +41,5 @@ data class PhotoArticle(var objectId: String? = null,
                 var header: Header? = null,
                 var paragraph: Paragraph? = null,
                 var photo: Photo? = null,
-                var listOfSources: List<Source>? = null): Serializable
+                var source: Source? = null): Serializable
 

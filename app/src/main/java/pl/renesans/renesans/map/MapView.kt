@@ -8,7 +8,7 @@ interface MapView {
 
     fun addClusterMarkerToMap(clusterMarker: ClusterMarker)
 
-    fun moveToPosition(location: LatLng?)
+    fun moveToLocation(location: LatLng?)
 
     fun turnOnMyLocationOnMap()
 }

@@ -4,6 +4,8 @@ interface ArticleDao {
 
     fun getRelatedArticlesList(article: Article): List<Article>
 
+    fun articleHasSources(article: Article): Boolean
+
     fun getArticlesList(articleId: Int): List<Article>
 
     fun getImportantPeoples(): List<Article>
@@ -13,4 +15,6 @@ interface ArticleDao {
     fun getImportantEvents(): List<Article>
 
     fun getOtherEras(): List<Article>
+
+    fun getPhotoArticlesList(): List<PhotoArticle>
 }

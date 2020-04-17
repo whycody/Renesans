@@ -42,8 +42,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         presenter = LocationPresenterImpl(this, activity!!)
         adapter = LocationAdapter(presenter!!, activity!!)
         view.locationRecycler.adapter = adapter
-        view.locationRecycler.layoutManager =
-            LinearLayoutManager(activity!!, LinearLayoutManager.HORIZONTAL, false)
+        view.locationRecycler.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.HORIZONTAL, false)
         view.locationRecycler.addItemDecoration(LocationRecyclerDecoration(activity!!))
         return view
     }
@@ -54,7 +53,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         prepareManagers()
         prepareFusedLocationClient()
         googleMap.setOnCameraMoveListener(this)
-        presenter?.onCreate()
+        presenter?.addMarkers()
         presenter?.setLocationManager()
     }
 
@@ -131,14 +130,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         if(animatingCamera)
             googleMap?.animateCamera(CameraUpdateFactory.newLatLng(p0?.position), 200, this)
         else
-            PhotoBottomSheetDialog(p0?.photoArticle)
+            PhotoBottomSheetDialog(p0!!.photoArticle)
                 .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
         lastClusterMarker = p0
         return true
     }
 
     override fun onFinish() {
-        PhotoBottomSheetDialog(lastClusterMarker?.photoArticle)
+        PhotoBottomSheetDialog(lastClusterMarker?.photoArticle!!)
             .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
     }
 
@@ -155,9 +154,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         addMarker(clusterMarker)
     }
 
-    override fun moveToPosition(position: LatLng?) {
-        if(position!=null){
-            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(position, 16f)
+    override fun moveToLocation(location: LatLng?) {
+        if(location!=null){
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, 16f)
             googleMap?.animateCamera(cameraUpdate)
         }
     }

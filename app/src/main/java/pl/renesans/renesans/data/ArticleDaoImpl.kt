@@ -1,5 +1,6 @@
 package pl.renesans.renesans.data
 
+import com.google.android.gms.maps.model.LatLng
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 
 class ArticleDaoImpl: ArticleDao {
@@ -16,7 +17,7 @@ class ArticleDaoImpl: ArticleDao {
         return relatedArticles
     }
 
-    private fun articleHasSources(article: Article): Boolean {
+    override fun articleHasSources(article: Article): Boolean {
         if (article.source != null) return true
         if (article.listOfPhotos != null)
             article.listOfPhotos!!.forEach { photo -> if (photo.source != null) return true }
@@ -93,8 +94,25 @@ class ArticleDaoImpl: ArticleDao {
         return articlesList
     }
 
+    override fun getPhotoArticlesList(): List<PhotoArticle> {
+        val photoArticles = mutableListOf<PhotoArticle>()
+        photoArticles.add(PhotoArticle(title = "Wysoka Brama",
+            objectId = "I0",
+            source = Source(srcDescription = "Treść główna", page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Brama_G%C3%B3rna_w_Olsztynie"),
+            latLng = LatLng(53.777574, 20.477587),
+            paragraph = Paragraph(content = "Jest jedyną bramą pozostałą z trzech, które znajdowały się w murach obronnych otaczających miasto. Górna Brama powstała po wytyczeniu północnych granic miasta w drugim akcie lokacyjnym z 4 maja 1378. W roku 2012 prace archeologiczne odsłoniły pierwotne kamienne fundamenty bramy z XIV wieku, tuż na północ od jej obecnego położenia. Podczas wykopalisk odkryto ok. 40 monet z XIV i XV wieku oraz około 120 kul armatnich."),
+            photo = Photo(objectId = "I0_0",
+                description = "Brama Górna, Olsztyn",
+                source = Source(page = ArticleDaoImpl.FOTOGRAFICZNIE16,
+                    url = "http://fotograficznie16.rssing.com/chan-38531473/all_p11.html"))
+        ))
+
+        return photoArticles
+    }
+
     companion object{
         const val WIKIPEDIA_PL = "pl.wikipedia.org"
         const val TVP_INFO = "tvp.info"
+        const val FOTOGRAFICZNIE16 = "fotograficznie16.rssing.com"
     }
 }
