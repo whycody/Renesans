@@ -47,6 +47,7 @@ class DiscoverRecyclerFragment(val objectType: Int) : Fragment() {
         const val EVENTS = 2
         const val OTHER_ERAS = 3
         const val SOURCES = 4
+        const val PHOTOS = 5
     }
 
 }

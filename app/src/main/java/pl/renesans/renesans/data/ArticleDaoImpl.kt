@@ -1,6 +1,7 @@
 package pl.renesans.renesans.data
 
 import com.google.android.gms.maps.model.LatLng
+import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 
 class ArticleDaoImpl: ArticleDao {
@@ -24,6 +25,22 @@ class ArticleDaoImpl: ArticleDao {
         return false
     }
 
+    override fun getAllArticlesWithTextInTitle(text: String): List<Article> {
+        val allFilteredArticles = getAllArticles()
+        allFilteredArticles.filter { article ->  article.title!!.toLowerCase().contains(text.toLowerCase())}
+        return allFilteredArticles
+    }
+
+    override fun getAllArticles(): List<Article> {
+        val allArticles = mutableListOf<Article>()
+        allArticles.addAll(getImportantPeoples())
+        allArticles.addAll(getImportantArts())
+        allArticles.addAll(getImportantEvents())
+        allArticles.addAll(getOtherEras())
+        allArticles.addAll(getArticlesOfPhotoArticlesList())
+        return allArticles
+    }
+
     private fun getArticleFromId(objectId: String): Article{
         val articlesList = getArticlesList(getObjectTypeFromObjectId(objectId))
         return articlesList.find { it.objectId == objectId } ?: Article()
@@ -35,7 +52,8 @@ class ArticleDaoImpl: ArticleDao {
             'A' -> 1
             'E' -> 2
             'O' -> 3
-            else -> 4
+            'S' -> 4
+            else -> 5
         }
     }
 
@@ -44,6 +62,7 @@ class ArticleDaoImpl: ArticleDao {
             DiscoverRecyclerFragment.PEOPLE -> getImportantPeoples()
             DiscoverRecyclerFragment.ARTS -> getImportantArts()
             DiscoverRecyclerFragment.EVENTS -> getImportantEvents()
+            DiscoverRecyclerFragment.PHOTOS -> getArticlesOfPhotoArticlesList()
             else -> getOtherEras()
         }
     }
@@ -91,6 +110,16 @@ class ArticleDaoImpl: ArticleDao {
         articlesList.add(Article(title = "Barok", objectId = "O1"))
         articlesList.add(Article(title = "Oświecenie", objectId = "O2"))
         articlesList.add(Article(title = "Romantyzm", objectId = "O3"))
+        return articlesList
+    }
+
+    private fun getArticlesOfPhotoArticlesList(): List<Article>{
+        val articleConverter = ArticleConverterImpl()
+        val photoArticles = getPhotoArticlesList()
+        val articlesList = mutableListOf<Article>()
+        photoArticles.forEach{ photoArticle ->
+            articlesList.add(articleConverter.convertPhotoArticleToArticle(photoArticle))
+        }
         return articlesList
     }
 

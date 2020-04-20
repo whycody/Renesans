@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".sources.SourcesActivity"></activity>
+        <activity android:name=".search.SearchActivity"></activity>
+        <activity android:name=".sources.SourcesActivity" />
         <activity android:name=".article.ArticleActivity" />
         <activity
             android:name=".permission.PermissionActivity"
