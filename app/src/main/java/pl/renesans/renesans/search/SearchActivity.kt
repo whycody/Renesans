@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_search.*
@@ -14,7 +15,8 @@ import pl.renesans.renesans.search.recycler.SearchContract
 import pl.renesans.renesans.search.recycler.SearchPresenterImpl
 import pl.renesans.renesans.search.recycler.SearchRecyclerAdapter
 
-class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SearchContract.SearchView {
+class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SearchContract.SearchView,
+    MenuItem.OnActionExpandListener {
 
     private lateinit var presenter: SearchContract.SearchPresenter
     private lateinit var adapter: SearchRecyclerAdapter
@@ -39,8 +41,11 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         menuInflater.inflate(R.menu.search_menu, menu)
         val menuItem = menu?.findItem(R.id.searchIcon)
         val searchView = menuItem?.actionView as SearchView
+        searchView.maxWidth = Integer.MAX_VALUE
         searchView.queryHint = menuItem.title
         searchView.setOnQueryTextListener(this)
+        menuItem.setOnActionExpandListener(this)
+        menuItem.expandActionView()
         return true
     }
 
@@ -57,5 +62,15 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         val intent = Intent(this, ArticleActivity::class.java)
         intent.putExtra(ArticleActivity.ARTICLE, article)
         startActivity(intent)
+    }
+
+    override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+        return true
+    }
+
+    override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+        finish()
+        overridePendingTransition(0, 0)
+        return true
     }
 }
