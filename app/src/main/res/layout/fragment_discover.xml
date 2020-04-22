@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:tag="discover"
-    android:focusable="false"
     tools:context=".discover.DiscoverFragment">
 
     <LinearLayout
         android:id="@+id/discoverLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="40dp">
 
@@ -29,7 +27,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sztuka świata"
+                android:text="@string/world_art"
                 android:textColor="@color/colorTitleGray"
                 android:textStyle="bold"
                 android:textSize="32sp"/>
@@ -37,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Na bieżąco dowiaduj się o nowościach z zakresu sztuki, kultury i wiedzy o ubiegłych epokach"
+                android:text="@string/know_about_culture"
                 android:lineSpacingExtra="4dp"
                 android:textColor="@color/colorParagraphGray"
                 android:layout_marginTop="15dp"
@@ -79,5 +77,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
+
     </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+
+</ScrollView>
