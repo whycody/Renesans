@@ -48,8 +48,6 @@ class SourcesRowHolder(itemView: View, val context: Context?,
     }
 
     override fun setOnClickListener(pos: Int) {
-        itemView.findViewById<ImageView>(R.id.sourceImage).setOnClickListener{
-            presenter.itemClicked(pos)
-        }
+        itemView.setOnClickListener{ presenter.itemClicked(pos) }
     }
 }

@@ -132,7 +132,7 @@ class ArticleDaoImpl: ArticleDao {
             paragraph = Paragraph(content = "Jest jedyną bramą pozostałą z trzech, które znajdowały się w murach obronnych otaczających miasto. Górna Brama powstała po wytyczeniu północnych granic miasta w drugim akcie lokacyjnym z 4 maja 1378. W roku 2012 prace archeologiczne odsłoniły pierwotne kamienne fundamenty bramy z XIV wieku, tuż na północ od jej obecnego położenia. Podczas wykopalisk odkryto ok. 40 monet z XIV i XV wieku oraz około 120 kul armatnich."),
             photo = Photo(objectId = "I0_0",
                 description = "Brama Górna, Olsztyn",
-                source = Source(page = ArticleDaoImpl.FOTOGRAFICZNIE16,
+                source = Source(page = FOTOGRAFICZNIE16,
                     url = "http://fotograficznie16.rssing.com/chan-38531473/all_p11.html"))
         ))
 

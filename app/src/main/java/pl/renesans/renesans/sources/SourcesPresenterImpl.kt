@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import pl.renesans.renesans.data.*
 
-class SourcesPresenterImpl(val context: Context, val sourcesView: SourcesContract.SourcesView):
+class SourcesPresenterImpl(val context: Context, val view: SourcesContract.SourcesView):
     SourcesContract.SourcesPresenter, ImageDaoContract.ImageDaoInterractor {
 
     private lateinit var article: Article
@@ -14,7 +14,7 @@ class SourcesPresenterImpl(val context: Context, val sourcesView: SourcesContrac
     private lateinit var imageDao: ImageDaoContract.ImageDao
 
     override fun onCreate() {
-        article = sourcesView.getArticleObject()
+        article = view.getArticleObject()
         imageDao = ImageDaoImpl(context, this)
         getSourcesList()
     }
@@ -33,7 +33,8 @@ class SourcesPresenterImpl(val context: Context, val sourcesView: SourcesContrac
     }
 
     override fun itemClicked(pos: Int) {
-
+        val url = sourcesList[pos].url
+        if(url!=null) view.startUrlActivity(url)
     }
 
     override fun getItemCount(): Int {
@@ -45,6 +46,7 @@ class SourcesPresenterImpl(val context: Context, val sourcesView: SourcesContrac
         refreshHoldersList(holder, position)
         holder.setDescription(sourcesList[position].page!!)
         holder.setTitle(sourcesList[position].srcDescription!!)
+        holder.setOnClickListener(position)
         imageDao.loadPhotoInBothQualities(position, sourcesList[position].photoId!!)
     }
 

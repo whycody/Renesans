@@ -9,6 +9,8 @@ interface SourcesContract {
     interface SourcesView {
 
         fun getArticleObject(): Article
+
+        fun startUrlActivity(url: String)
     }
 
     interface SourcesRowView {

@@ -1,6 +1,8 @@
 package pl.renesans.renesans.sources
 
+import android.content.Intent
 import android.graphics.PorterDuff
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
@@ -30,6 +32,11 @@ class SourcesActivity : AppCompatActivity(), SourcesContract.SourcesView {
         sourcesRecycler.adapter = adapter
     }
 
+    override fun onResume() {
+        overridePendingTransition(0, 0)
+        super.onResume()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
@@ -37,5 +44,12 @@ class SourcesActivity : AppCompatActivity(), SourcesContract.SourcesView {
 
     override fun getArticleObject(): Article {
         return intent.getSerializableExtra(ArticleActivity.ARTICLE) as Article
+    }
+
+    override fun startUrlActivity(url: String) {
+        val uriUrl = Uri.parse(url)
+        val launchBrowser = Intent(Intent.ACTION_VIEW, uriUrl)
+        startActivity(launchBrowser)
+        overridePendingTransition(0, 0)
     }
 }
