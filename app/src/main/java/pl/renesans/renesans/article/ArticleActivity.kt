@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_article.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.ArticleDaoImpl
+import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 
 class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
 
@@ -27,8 +29,21 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
         sourcesToolbar.navigationIcon?.setColorFilter(ContextCompat.getColor(this,
             android.R.color.white), PorterDuff.Mode.SRC_ATOP)
         imagesList.add(articleImage)
+        val articleDao = ArticleDaoImpl()
+        loadSizeOfImageView(articleDao.getObjectTypeFromObjectId(getArticleObject().objectId!!))
         presenter = ArticlePresenterImpl(applicationContext, this)
         presenter.loadContent()
+    }
+
+    private fun loadSizeOfImageView(objectType: Int){
+        val articleImageHeight = articleImage.layoutParams.height
+        when (objectType){
+            DiscoverRecyclerFragment.ARTS -> articleImage.layoutParams.height =
+                (articleImageHeight * 1.5).toInt()
+            DiscoverRecyclerFragment.OTHER_ERAS, DiscoverRecyclerFragment.PHOTOS,
+            DiscoverRecyclerFragment.EVENTS -> articleImage.layoutParams.height =
+                (articleImageHeight * 0.8).toInt()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

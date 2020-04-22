@@ -46,14 +46,14 @@ class ArticleDaoImpl: ArticleDao {
         return articlesList.find { it.objectId == objectId } ?: Article()
     }
 
-    private fun getObjectTypeFromObjectId(objectID: String): Int{
+    override fun getObjectTypeFromObjectId(objectID: String): Int{
         return when(objectID.first()){
-            'P' -> 0
-            'A' -> 1
-            'E' -> 2
-            'O' -> 3
-            'S' -> 4
-            else -> 5
+            'P' -> DiscoverRecyclerFragment.PEOPLE
+            'A' -> DiscoverRecyclerFragment.ARTS
+            'E' -> DiscoverRecyclerFragment.EVENTS
+            'O' -> DiscoverRecyclerFragment.OTHER_ERAS
+            'S' -> DiscoverRecyclerFragment.SOURCES
+            else -> DiscoverRecyclerFragment.PHOTOS
         }
     }
 

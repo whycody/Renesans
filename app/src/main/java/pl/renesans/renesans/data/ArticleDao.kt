@@ -12,6 +12,8 @@ interface ArticleDao {
 
     fun getArticleFromId(objectId: String): Article
 
+    fun getObjectTypeFromObjectId(objectID: String): Int
+
     fun getArticlesList(articleId: Int): List<Article>
 
     fun getImportantPeoples(): List<Article>
