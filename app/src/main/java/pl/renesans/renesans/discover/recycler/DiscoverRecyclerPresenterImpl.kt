@@ -6,23 +6,26 @@ import android.graphics.Bitmap
 import android.net.Uri
 import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
+import pl.renesans.renesans.data.converter.ArticleConverterImpl
 
 class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
     DiscoverRecyclerPresenter, ImageDaoContract.ImageDaoInterractor {
 
-    private var articlesList = listOf<Article>()
+    private lateinit var articleDao: ArticleDao
+    private var articlesList = listOf<ArticleItem>()
     private var imageDao: ImageDaoContract.ImageDao? = null
     private val holders: MutableList<DiscoverRowHolder> = mutableListOf()
+    private val converter = ArticleConverterImpl()
 
     override fun onCreate(articleId: Int) {
-        val articleDao = ArticleDaoImpl()
-        articlesList = articleDao.getArticlesList(articleId)
+        articleDao = ArticleDaoImpl()
+        articlesList = converter.convertArticlesToArticleItemsList(articleDao.getArticlesList(articleId))
         imageDao = ImageDaoImpl(context, this)
     }
 
     override fun itemClicked(pos: Int) {
         val intent = Intent(context, ArticleActivity::class.java)
-        intent.putExtra(ArticleActivity.ARTICLE, articlesList[pos])
+        intent.putExtra(ArticleActivity.ARTICLE, articleDao.getArticleFromId(articlesList[pos].objectId!!))
         context.startActivity(intent)
     }
 

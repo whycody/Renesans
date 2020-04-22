@@ -41,7 +41,7 @@ class ArticleDaoImpl: ArticleDao {
         return allArticles
     }
 
-    private fun getArticleFromId(objectId: String): Article{
+    override fun getArticleFromId(objectId: String): Article{
         val articlesList = getArticlesList(getObjectTypeFromObjectId(objectId))
         return articlesList.find { it.objectId == objectId } ?: Article()
     }

@@ -7,7 +7,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import pl.renesans.renesans.R
-import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.ArticleItem
 
 class SearchRecyclerAdapter(val context: Context, val presenter: SearchContract.SearchPresenter):
     RecyclerView.Adapter<SearchRowHolder>(), Filterable {
@@ -32,7 +32,7 @@ class SearchRecyclerAdapter(val context: Context, val presenter: SearchContract.
 
     private val articlesFilter = object : Filter() {
         override fun performFiltering(p0: CharSequence?): FilterResults {
-            val filteredList = mutableListOf<Article>()
+            val filteredList = mutableListOf<ArticleItem>()
             if (p0 != null && p0.isNotEmpty()) {
                 val pattern = p0.toString().toLowerCase().trim()
                 for (item in presenter.getAllArticles())
@@ -45,12 +45,10 @@ class SearchRecyclerAdapter(val context: Context, val presenter: SearchContract.
         }
 
         override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
-            if(!p1!!.values.equals(presenter.getCurrentArticlesList())) {
-                presenter.setCurentArticlesList(p1.values as List<Article>)
+            if(p1!!.values != presenter.getCurrentArticlesList()) {
+                presenter.setCurrentArticlesList(p1.values as List<ArticleItem>)
                 notifyDataSetChanged()
             }
         }
     }
-
-
 }

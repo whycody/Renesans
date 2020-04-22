@@ -4,36 +4,38 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import pl.renesans.renesans.data.*
+import pl.renesans.renesans.data.converter.ArticleConverterImpl
 
 class SearchPresenterImpl(private val context: Context,
                           private val searchView: SearchContract.SearchView):
     SearchContract.SearchPresenter, ImageDaoContract.ImageDaoInterractor {
 
-    private lateinit var articlesList: List<Article>
+    private lateinit var articlesList: List<ArticleItem>
     private lateinit var imageDao: ImageDaoContract.ImageDao
     private lateinit var articleDao: ArticleDao
     private val holders: MutableList<SearchRowHolder> = mutableListOf()
+    private val converter = ArticleConverterImpl()
 
     override fun onCreate() {
         articleDao = ArticleDaoImpl()
-        articlesList = articleDao.getAllArticles()
+        articlesList = converter.convertArticlesToArticleItemsList(articleDao.getAllArticles())
         imageDao = ImageDaoImpl(context, this)
     }
 
-    override fun getAllArticles(): List<Article> {
-        return articleDao.getAllArticles()
+    override fun getAllArticles(): List<ArticleItem> {
+        return converter.convertArticlesToArticleItemsList(articleDao.getAllArticles())
     }
 
-    override fun getCurrentArticlesList(): List<Article> {
+    override fun getCurrentArticlesList(): List<ArticleItem> {
         return articlesList
     }
 
-    override fun setCurentArticlesList(articlesList: List<Article>){
+    override fun setCurrentArticlesList(articlesList: List<ArticleItem>){
         this.articlesList = articlesList
     }
 
     override fun itemClicked(pos: Int) {
-        searchView.startArticleActivity(articlesList[pos])
+        searchView.startArticleActivity(articleDao.getArticleFromId(articlesList[pos].objectId!!))
     }
 
     override fun getItemCount(): Int {

@@ -3,6 +3,7 @@ package pl.renesans.renesans.search.recycler
 import android.graphics.Bitmap
 import android.net.Uri
 import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.ArticleItem
 
 interface SearchContract {
 
@@ -26,11 +27,11 @@ interface SearchContract {
 
         fun onCreate()
 
-        fun getAllArticles(): List<Article>
+        fun getAllArticles(): List<ArticleItem>
 
-        fun getCurrentArticlesList(): List<Article>
+        fun getCurrentArticlesList(): List<ArticleItem>
 
-        fun setCurentArticlesList(articlesList: List<Article>)
+        fun setCurrentArticlesList(articlesList: List<ArticleItem>)
 
         fun itemClicked(pos: Int)
 

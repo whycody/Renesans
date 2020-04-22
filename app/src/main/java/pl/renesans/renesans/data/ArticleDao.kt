@@ -10,6 +10,8 @@ interface ArticleDao {
 
     fun getAllArticles(): List<Article>
 
+    fun getArticleFromId(objectId: String): Article
+
     fun getArticlesList(articleId: Int): List<Article>
 
     fun getImportantPeoples(): List<Article>
