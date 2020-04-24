@@ -89,6 +89,7 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
                 articleView.addViewToArticleLinear(getParagraphTitleTextView(paragraph.subtitle!!))
             articleView.addViewToArticleLinear(getParagraphContentTextView(paragraph.content!!, subtitleIsAvailable))
         }
+        loadImageAsParagraph(listOfPhotos?.find { it.numberOfParagraph == article.listOfParagraphs?.size?.minus(1) })
     }
 
     private fun getParagraphTitleTextView(title: String): TextView{

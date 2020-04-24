@@ -73,13 +73,27 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Mikołaj Kopernik",
             objectId = "P0",
             source = Source(srcDescription = "Treść główna", page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik"),
-            header = Header(content = listOf(Pair("Profesje","badacz, astronom, lekarz"), Pair("Lata życia", "1473 - 1543"))),
+            header = Header(content = listOf(Pair(PROFESSIONS,"badacz, astronom, lekarz"), Pair(LIVE_YEARS, "1473 - 1543"))),
             listOfPhotos = listOf(Photo(objectId = "P0_0", description = "Mikołaj Kopernik", source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
                 Photo(objectId = "P0_1", description = "Fragment \"O obrotach sfer niebieskich\", model heliocentryczny", numberOfParagraph = 1, source = Source(page = TVP_INFO, url = "https://www.tvp.info/12865831/przez-dwa-dni-mozna-ogladac-dzielo-kopernika"))),
             listOfParagraphs = listOf(Paragraph(subtitle = "Historia życia", content = "Mikołaj Kopernik to polski astronom, który swoją sławę zawdzięcza przede wszystkim swojemu dziełu \"O obrotach sfer niebieskich\" w którym szczegółowo przedstawił heliocentryczną wizję Wszechświata."),
                 Paragraph(content = "Należy w tym miejscu wspomnieć, że koncepcja heliocentryzmu pojawiła się już w starożytnej Grecji, ale to właśnie dzieło Kopernika było przełomem w postrzeganiu naszej galaktyki."),
                 Paragraph(subtitle = "Inne profesje", content = "Astronomia to dziedzina z której Kopernik był znany najbardziej, ale nie jedyna. Był renesansowym polihistorem, czyli osobą posiadającą rozległą wiedzę z wielu, różnych dziedzin. Interesował się matematyką, prawem, ekonomią, strategią wojskową czy też astrologią."))))
-        articlesList.add(Article(title = "Michał Anioł", objectId = "P1"))
+        articlesList.add(Article
+            (title = "Michał Anioł",
+            objectId = "P1",
+            source = Source(srcDescription = "Treść główna", page = NIEZLA_SZTUKA, url = "https://niezlasztuka.net/artysta/michal-aniol/"),
+            header = Header(content = listOf(Pair(PROFESSIONS, "rzeźbiarz, malarz, poeta, architekt"),
+                Pair(LIVE_YEARS, "1475 - 1564"),
+                Pair(NATIONALITY, "włoska"))),
+            listOfRelatedArticlesIds = listOf("A1"),
+            listOfPhotos = listOf(Photo(objectId = "P1_0", description = "Michał Anioł",
+                    source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Micha%C5%82_Anio%C5%82")),
+                Photo(objectId = "P1_1", description = "Caprese Michelangelo", numberOfParagraph = 0,
+                    source = Source(page = VISITTUSCANY, url = "https://www.visittuscany.com/en/destinations/caprese-michelangelo/"))),
+            listOfParagraphs = listOf(Paragraph(subtitle = "Młodość", content = "Michał Anioł urodził się 6 marca 1475 w, znajdującym się we Włoszech, Caprese a zmarł 18 lutego 1564 w Rzymie. Włoski artysta epoki renesansu, który również, dzięki swoim nowatorskim dziełom jest uznawany też za prekursora baroku. Obecnie jest stawiany na równi z Leonardem da Vinci, jako jeden z najwybitniejszych twórców swoich czasów."),
+            Paragraph(subtitle = "Początki", content = "Wybitny rzeźbiarz pochodził z mieszczańskiej rodziny, która zaraz po jego narodzinach przeprowadziła się do Florencji. Żyjąc tam miał okazję uczyć się rzeźbiarskiego rzemiosła od florenckich twórców."),
+            Paragraph(content = "Już w wieku 25 lat stworzył Pietę a 4 lata później wyrzeźbił 5,5 metrowego Dawida. Artysta nie postanowił jednak zatrzymać się na rzeźbach. Swoją wszechstronność udowodnił tworząc m.in. freski na sklepieniu w Kaplicy Sykstyńskiej."))))
         articlesList.add(Article(title = "Rafael Santi", objectId = "P2"))
         articlesList.add(Article(title = "Mikołaj Sęp Szarzyński", objectId = "P3"))
         return articlesList
@@ -140,8 +154,15 @@ class ArticleDaoImpl: ArticleDao {
     }
 
     companion object{
+        const val PROFESSIONS = "Profesje"
+        const val LIVE_YEARS = "Lata życia"
+        const val NATIONALITY = "Narodowość"
+
         const val WIKIPEDIA_PL = "pl.wikipedia.org"
         const val TVP_INFO = "tvp.info"
         const val FOTOGRAFICZNIE16 = "fotograficznie16.rssing.com"
+        const val NIEZLA_SZTUKA = "niezlasztuka.net"
+        const val VISITTUSCANY = "visittuscany.com"
+        const val BELLITUDO = "bellitudo.pl"
     }
 }

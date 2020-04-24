@@ -32,11 +32,6 @@ class SourcesActivity : AppCompatActivity(), SourcesContract.SourcesView {
         sourcesRecycler.adapter = adapter
     }
 
-    override fun onResume() {
-        overridePendingTransition(0, 0)
-        super.onResume()
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
