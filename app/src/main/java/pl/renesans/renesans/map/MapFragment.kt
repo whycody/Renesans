@@ -1,5 +1,7 @@
 package pl.renesans.renesans.map
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +21,7 @@ import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.map.recycler.LocationAdapter
 import pl.renesans.renesans.map.recycler.LocationPresenterImpl
 import pl.renesans.renesans.map.recycler.LocationRecyclerDecoration
+import pl.renesans.renesans.settings.SettingsPresenterImpl
 
 
 class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener,
@@ -30,9 +33,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private var clusterManagerRenderer: ClusterManagerRenderer? = null
     private val markersList = mutableListOf<ClusterMarker>()
     private val zoomLevel = 12f
-    private val animatingCamera = false
+    private var cameraAnimations = false
     private var presenter: LocationPresenterImpl? = null
     private var adapter: LocationAdapter? = null
+    private lateinit var sharedPrefs: SharedPreferences
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,6 +45,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         mapFragment.getMapAsync(this)
         presenter = LocationPresenterImpl(this, activity!!)
         adapter = LocationAdapter(presenter!!, activity!!)
+        sharedPrefs = context!!.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
         view.locationRecycler.adapter = adapter
         view.locationRecycler.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.HORIZONTAL, false)
         view.locationRecycler.addItemDecoration(LocationRecyclerDecoration(activity!!))
@@ -127,26 +132,24 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private var lastClusterMarker: ClusterMarker? = null
 
     override fun onClusterItemClick(p0: ClusterMarker?): Boolean {
-        if(animatingCamera)
-            googleMap?.animateCamera(CameraUpdateFactory.newLatLng(p0?.position), 200, this)
-        else
-            PhotoBottomSheetDialog(p0!!.photoArticle)
-                .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
+        cameraAnimations = sharedPrefs.getBoolean(SettingsPresenterImpl.MAP_ANIMATIONS, false)
+        if(cameraAnimations)
+            googleMap?.animateCamera(CameraUpdateFactory.newLatLng(p0?.position), 400, this)
+        else openMarkerBottomSheet(p0)
         lastClusterMarker = p0
         return true
     }
 
     override fun onFinish() {
-        PhotoBottomSheetDialog(lastClusterMarker?.photoArticle!!)
-            .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
+        openMarkerBottomSheet(lastClusterMarker)
     }
 
     override fun onCancel() {
 
     }
 
-    override fun openMarkerBottomSheet(clusterMarker: ClusterMarker) {
-        PhotoBottomSheetDialog(clusterMarker.photoArticle)
+    private fun openMarkerBottomSheet(clusterMarker: ClusterMarker?) {
+        if(clusterMarker!=null) PhotoBottomSheetDialog(clusterMarker.photoArticle)
             .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
     }
 

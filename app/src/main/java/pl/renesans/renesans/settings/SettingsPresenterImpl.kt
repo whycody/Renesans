@@ -3,6 +3,8 @@ package pl.renesans.renesans.settings
 import android.content.Context
 import android.content.SharedPreferences
 import android.view.View
+import pl.renesans.renesans.BuildConfig
+import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Setting
 
 class SettingsPresenterImpl(val context: Context): SettingsContract.SettingsPresenter {
@@ -15,14 +17,19 @@ class SettingsPresenterImpl(val context: Context): SettingsContract.SettingsPres
 
     private fun getSettings(): List<Setting>{
         val settingsList = mutableListOf<Setting>()
-        settingsList.add(Setting(ERA, "Epoka", "Renesans", false))
-        settingsList.add(Setting(DOWNLOADING_PHOTOS, "Pobieranie zdjęć", "Pobieraj zdjęcia niskiej jakości aby później móc korzystać z " +
-                "aplikacji w trybie offline", true, sharedPrefs.getBoolean(DOWNLOADING_PHOTOS, true)))
-        settingsList.add(Setting(MAP_MODE, "Tryb mapy", "Pokazuj tylko te budowle, które zostały zbudowane w wybranej " +
-                "epoce", true, sharedPrefs.getBoolean(MAP_MODE, false)))
-        settingsList.add(Setting(MAP_ANIMATIONS, "Animacje mapy", "Włącz animacje podczas wybierania miejsc na mapie",
-                true, sharedPrefs.getBoolean(MAP_ANIMATIONS, false)))
-        settingsList.add(Setting(APP_VERSION, "Wersja aplikacji", "1.0", false))
+        settingsList.add(Setting(ERA, context.getString(R.string.era),
+            context.getString(R.string.renesans), false))
+        settingsList.add(Setting(DOWNLOAD_PHOTOS, context.getString(R.string.download_photos),
+            context.getString(R.string.download_photos_desc), true,
+            sharedPrefs.getBoolean(DOWNLOAD_PHOTOS, true)))
+        settingsList.add(Setting(MAP_MODE, context.getString(R.string.map_mode),
+            context.getString(R.string.map_mode_desc), true,
+            sharedPrefs.getBoolean(MAP_MODE, false)))
+        settingsList.add(Setting(MAP_ANIMATIONS, context.getString(R.string.map_animations), 
+            context.getString(R.string.map_animations_desc),
+            true, sharedPrefs.getBoolean(MAP_ANIMATIONS, false)))
+        settingsList.add(Setting(APP_VERSION,
+            context.getString(R.string.app_version), BuildConfig.VERSION_NAME, false))
         return settingsList
     }
 
@@ -64,7 +71,7 @@ class SettingsPresenterImpl(val context: Context): SettingsContract.SettingsPres
 
     companion object{
         val ERA = "era"
-        val DOWNLOADING_PHOTOS = "downloading photos"
+        val DOWNLOAD_PHOTOS = "download photos"
         val MAP_MODE = "map mode"
         val MAP_ANIMATIONS = "map animations"
         val APP_VERSION = "app version"

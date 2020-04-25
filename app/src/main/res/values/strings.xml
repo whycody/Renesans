@@ -25,4 +25,13 @@
     <string name="world_art">Sztuka świata</string>
     <string name="know_about_culture">Na bieżąco dowiaduj się o nowościach z zakresu sztuki, kultury i wiedzy o ubiegłych epokach</string>
     <string name="settings_describe">Dopasuj aplikację do swojej wygody i spraw aby była jeszcze przyjemniejsza w użytkowaniu</string>
+    <string name="app_version">Wersja aplikacji</string>
+    <string name="map_animations">Animacje mapy</string>
+    <string name="map_animations_desc">Włącz animacje podczas wybierania miejsc na mapie</string>
+    <string name="map_mode">Tryb mapy</string>
+    <string name="map_mode_desc">Pokazuj tylko te budowle, które zostały zbudowane w wybranej epoce</string>
+    <string name="download_photos">Pobieranie zdjęć</string>
+    <string name="download_photos_desc">Pobieraj zdjęcia niskiej jakości aby później móc korzystać z aplikacji w trybie offline</string>
+    <string name="era">Epoka</string>
+    <string name="renesans">Renesans</string>
 </resources>

@@ -3,6 +3,7 @@ package pl.renesans.renesans.data.image
 import android.content.Context
 import android.graphics.BitmapFactory
 import com.google.firebase.storage.FirebaseStorage
+import pl.renesans.renesans.settings.SettingsPresenterImpl
 import java.io.File
 import java.lang.Exception
 
@@ -12,6 +13,7 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
     private val storage = FirebaseStorage.getInstance()
     private val storageReference = storage.reference
     private val externalStorage = android.os.Environment.getExternalStorageDirectory().path
+    private val sharedPrefs = context.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
 
     override fun loadPhotoInBothQualities(pos: Int, id: String) {
         loadPhoto(pos, id, false)
@@ -20,15 +22,15 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
 
     override fun loadPhoto(pos: Int, id: String, highQuality: Boolean){
         if(!highQuality) checkSavedPhoto(pos, id)
-        else getPhotoUriFromID(pos, id, highQuality)
+        else getHighQualityPhotoUriFromID(pos, id)
     }
 
     private fun checkSavedPhoto(pos: Int, id: String){
         val fileName = "${id}b.jpg"
         val fileExists = badQualityPhotoIsDownloaded(fileName)
         if(!fileExists){
-            getPhotoUriFromID(pos, id, false)
-            downloadPhotoFromFirebase(id)
+            val downloadPhotos = sharedPrefs.getBoolean(SettingsPresenterImpl.DOWNLOAD_PHOTOS, true)
+            if(downloadPhotos) downloadPhotoFromFirebase(id)
         }else loadBadQualityPhotoToHolder(pos, fileName)
     }
 
@@ -38,10 +40,8 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
         return file.exists()
     }
 
-    private fun getPhotoUriFromID(pos: Int, id: String, highQuality: Boolean) {
-        var path: String = id
-        if(highQuality) path += "h.jpg"
-        else path += "b.jpg"
+    private fun getHighQualityPhotoUriFromID(pos: Int, id: String) {
+        var path: String = id + "h.jpg"
         storageReference.child(path).downloadUrl.addOnSuccessListener { photo ->
             interractor.loadPhotoFromUri(photo, pos)
         }

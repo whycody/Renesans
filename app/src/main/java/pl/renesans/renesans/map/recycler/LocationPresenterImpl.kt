@@ -49,7 +49,7 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
     }
 
     override fun itemClicked(pos: Int) {
-        if(pos!=0) mapView?.openMarkerBottomSheet(photoArticlesList[pos])
+        if(pos!=0) mapView?.onClusterItemClick(photoArticlesList[pos])
         else checkLocationPermission()
     }
 
