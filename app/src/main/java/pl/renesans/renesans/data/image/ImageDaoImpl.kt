@@ -1,4 +1,4 @@
-package pl.renesans.renesans.data
+package pl.renesans.renesans.data.image
 
 import android.content.Context
 import android.graphics.BitmapFactory

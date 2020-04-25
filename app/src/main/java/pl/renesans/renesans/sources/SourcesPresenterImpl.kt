@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import pl.renesans.renesans.data.*
+import pl.renesans.renesans.data.image.ImageDaoContract
+import pl.renesans.renesans.data.image.ImageDaoImpl
 
 class SourcesPresenterImpl(val context: Context, val view: SourcesContract.SourcesView):
     SourcesContract.SourcesPresenter, ImageDaoContract.ImageDaoInterractor {

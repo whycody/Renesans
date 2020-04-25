@@ -14,8 +14,8 @@ import pl.renesans.renesans.article.recycler.RelatedAdapter
 import pl.renesans.renesans.article.recycler.RelatedContract
 import pl.renesans.renesans.article.recycler.RelatedPresenterImpl
 import pl.renesans.renesans.data.Article
-import pl.renesans.renesans.data.ImageDaoContract
-import pl.renesans.renesans.data.ImageDaoImpl
+import pl.renesans.renesans.data.image.ImageDaoContract
+import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.data.Photo
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerDecoration
 
@@ -56,7 +56,7 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
 
     private fun addTitleToHeader(){
         val textView = TextView(context)
-        TextViewCompat.setTextAppearance(textView, R.style.ArticleHeaderTitleTextviewStyle)
+        TextViewCompat.setTextAppearance(textView, R.style.ArticleHeaderTitleTextViewStyle)
         textView.text = article.title
         textView.alpha = .8f
         textView.setPadding(0, 0, 0, 10)
@@ -65,7 +65,7 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
 
     private fun addContentToHeader(){
         val contentTextView = TextView(context)
-        TextViewCompat.setTextAppearance(contentTextView, R.style.ArticleHeaderContentTextviewStyle)
+        TextViewCompat.setTextAppearance(contentTextView, R.style.ArticleHeaderContentTextViewStyle)
         createContentFromHeaderPairs(contentTextView)
         contentTextView.alpha = .8f
         contentTextView.setLineSpacing(10f, 1f)
@@ -94,7 +94,7 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
 
     private fun getParagraphTitleTextView(title: String): TextView{
         val textView = TextView(context)
-        TextViewCompat.setTextAppearance(textView, R.style.ArticleContentTitleTextviewStyle)
+        TextViewCompat.setTextAppearance(textView, R.style.ArticleContentTitleTextViewStyle)
         textView.text = title
         textView.setPadding(articleMargin, articleBigUpMargin, articleMargin, 0)
         return textView
@@ -102,7 +102,7 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
 
     private fun getParagraphContentTextView(content: String, subtitleAvailable: Boolean): TextView{
         val textView = TextView(context)
-        TextViewCompat.setTextAppearance(textView, R.style.ArticleContentContentTextviewStyle)
+        TextViewCompat.setTextAppearance(textView, R.style.ArticleContentContentTextViewStyle)
         textView.text = content
         textView.setLineSpacing(25f, 1f)
         if(!subtitleAvailable) textView.setPadding(articleMargin, articleBigUpMargin, articleMargin, 0)
@@ -127,7 +127,7 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
 
     private fun loadDescriptionOfPhoto(photo: Photo){
         val descriptionTextView = TextView(context)
-        TextViewCompat.setTextAppearance(descriptionTextView, R.style.ArticleHeaderContentTextviewStyle)
+        TextViewCompat.setTextAppearance(descriptionTextView, R.style.ArticleHeaderContentTextViewStyle)
         descriptionTextView.text = photo.description!!
         descriptionTextView.setLineSpacing(10f, 1f)
         descriptionTextView.setPadding(articleMargin, articleSmallUpMargin, articleMargin, 0)

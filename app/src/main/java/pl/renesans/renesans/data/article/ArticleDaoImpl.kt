@@ -1,6 +1,7 @@
-package pl.renesans.renesans.data
+package pl.renesans.renesans.data.article
 
 import com.google.android.gms.maps.model.LatLng
+import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 
@@ -41,7 +42,7 @@ class ArticleDaoImpl: ArticleDao {
         return allArticles
     }
 
-    override fun getArticleFromId(objectId: String): Article{
+    override fun getArticleFromId(objectId: String): Article {
         val articlesList = getArticlesList(getObjectTypeFromObjectId(objectId))
         return articlesList.find { it.objectId == objectId } ?: Article()
     }

@@ -6,6 +6,9 @@ import android.graphics.Bitmap
 import android.net.Uri
 import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
+import pl.renesans.renesans.data.article.ArticleDaoImpl
+import pl.renesans.renesans.data.image.ImageDaoContract
+import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 import pl.renesans.renesans.sources.SourcesActivity
 

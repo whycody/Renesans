@@ -25,7 +25,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import pl.renesans.renesans.R
 import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
+import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
+import pl.renesans.renesans.data.image.ImageDaoContract
+import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.sources.SourcesActivity
 
 class PhotoBottomSheetDialog(private val photoArticle: PhotoArticle): BottomSheetDialogFragment(),
@@ -53,7 +56,8 @@ class PhotoBottomSheetDialog(private val photoArticle: PhotoArticle): BottomShee
     }
 
     private fun loadMainPhoto(){
-        val imageDao = ImageDaoImpl(context!!, this)
+        val imageDao =
+            ImageDaoImpl(context!!, this)
         if(photoArticle.photo!=null) imageDao.loadPhotoInBothQualities(id = photoArticle.photo!!.objectId!!)
         else imageDao.loadPhotoInBothQualities(0, photoArticle.objectId + "_0")
     }

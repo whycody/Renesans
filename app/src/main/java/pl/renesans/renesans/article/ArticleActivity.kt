@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_article.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Article
-import pl.renesans.renesans.data.ArticleDaoImpl
+import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 
 class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {

@@ -33,7 +33,7 @@ class StartupAdapter(private val context: Context): PagerAdapter() {
         val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.startup_slide_layout, container, false)
         view.findViewById<ImageView>(R.id.startupImage).setImageDrawable(images[0])
-        view.findViewById<TextView>(R.id.titleView).text = titles[position]
+        view.findViewById<TextView>(R.id.settingTitle).text = titles[position]
         view.findViewById<TextView>(R.id.descriptionView).text = descriptions[position]
         container.addView(view)
         return view

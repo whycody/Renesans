@@ -1,4 +1,7 @@
-package pl.renesans.renesans.data
+package pl.renesans.renesans.data.article
+
+import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.PhotoArticle
 
 interface ArticleDao {
 

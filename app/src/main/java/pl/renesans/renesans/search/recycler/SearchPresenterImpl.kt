@@ -4,7 +4,11 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import pl.renesans.renesans.data.*
+import pl.renesans.renesans.data.article.ArticleDao
+import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
+import pl.renesans.renesans.data.image.ImageDaoContract
+import pl.renesans.renesans.data.image.ImageDaoImpl
 
 class SearchPresenterImpl(private val context: Context,
                           private val searchView: SearchContract.SearchView):

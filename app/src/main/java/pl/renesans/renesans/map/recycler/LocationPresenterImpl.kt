@@ -14,7 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import pl.renesans.renesans.R
-import pl.renesans.renesans.data.ArticleDaoImpl
+import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.map.ClusterMarker
 import pl.renesans.renesans.map.MapView

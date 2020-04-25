@@ -46,3 +46,9 @@ data class PhotoArticle(var objectId: String? = null,
 data class ArticleItem(var objectId: String? = null,
                 var title: String? = null)
 
+data class Setting(var settingId: String? = null,
+                var settingTitle: String? = null,
+                var settingDescribe: String? = null,
+                var booleanValue: Boolean = true,
+                var defaultValue: Boolean = false)
+

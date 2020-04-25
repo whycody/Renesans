@@ -34,7 +34,7 @@
             android:paddingEnd="50dp">
 
             <TextView
-                android:id="@+id/titleView"
+                android:id="@+id/settingTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -56,7 +56,7 @@
                 android:text="Opis"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleView" />
+                app:layout_constraintTop_toBottomOf="@+id/settingTitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
