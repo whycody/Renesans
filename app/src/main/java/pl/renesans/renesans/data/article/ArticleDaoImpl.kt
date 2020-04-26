@@ -73,7 +73,7 @@ class ArticleDaoImpl: ArticleDao {
         articlesList.add(Article
             (title = "Mikołaj Kopernik",
             objectId = "P0",
-            source = Source(srcDescription = "Treść główna", page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik"),
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik"),
             header = Header(content = listOf(Pair(PROFESSIONS,"badacz, astronom, lekarz"), Pair(LIVE_YEARS, "1473 - 1543"))),
             listOfPhotos = listOf(Photo(objectId = "P0_0", description = "Mikołaj Kopernik", source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
                 Photo(objectId = "P0_1", description = "Fragment \"O obrotach sfer niebieskich\", model heliocentryczny", numberOfParagraph = 1, source = Source(page = TVP_INFO, url = "https://www.tvp.info/12865831/przez-dwa-dni-mozna-ogladac-dzielo-kopernika"))),
@@ -83,7 +83,7 @@ class ArticleDaoImpl: ArticleDao {
         articlesList.add(Article
             (title = "Michał Anioł",
             objectId = "P1",
-            source = Source(srcDescription = "Treść główna", page = NIEZLA_SZTUKA, url = "https://niezlasztuka.net/artysta/michal-aniol/"),
+            source = Source(srcDescription = MAIN_TEXT, page = NIEZLA_SZTUKA, url = "https://niezlasztuka.net/artysta/michal-aniol/"),
             header = Header(content = listOf(Pair(PROFESSIONS, "rzeźbiarz, malarz, poeta, architekt"),
                 Pair(LIVE_YEARS, "1475 - 1564"),
                 Pair(NATIONALITY, "włoska"))),
@@ -102,7 +102,21 @@ class ArticleDaoImpl: ArticleDao {
 
     override fun getImportantArts(): List<Article> {
         val articlesList = mutableListOf<Article>()
-        articlesList.add(Article(title = "Mona Lisa", objectId = "A0"))
+        articlesList.add(Article
+            (title = "Mona Lisa",
+            objectId = "A0",
+            source = Source(srcDescription = MAIN_TEXT, page = NIEZLA_SZTUKA, url = "https://niezlasztuka.net/o-sztuce/leonardo-da-vinci-mona-lisa/"),
+            header = Header(content = listOf(Pair(CREATEOR, "Leonardo da Vinci"),
+                Pair(CREATE_YEAR, "1503 - 1519"),
+                Pair(ART_PLACE, "Luwr, Paryż"))),
+            listOfPhotos = listOf(Photo(objectId = "A0_0", description = "Mona Lisa",
+                source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Mona_Lisa")),
+                Photo(objectId = "A0_1", description = "Cesare Maccari, Leonardo portretuje Giocondę", numberOfParagraph = 2,
+                source = Source(page = THE_ATLANTIC, url = "https://www.theatlantic.com/entertainment/archive/2019/05/leonardo-da-vinci-500-years-later-theories-still-abound/588757/"))),
+            listOfParagraphs = listOf(Paragraph(content = "Portret ukazuje młodą kobietę siedzącą na krześle. Jej dłonie ułożone są na widocznej u dołu obrazu poręczy krzesła. Ma ciemne włosy przykryte przezroczystym welonem, i równie ciemne oczny, nad którymi, co ciekawe, nie widać brwi."),
+                Paragraph(subtitle = "Zagadkowy uśmiech", content = "Nie da się przejść obok obrazu Mona Lisy nie zwracając uwagi na jej tajemniczy uśmiech. Być może gdyby nie on, nikt dziś nie pamiętałby o tym dziele a ten opis można byłoby przypasować do większości kobiecych portretów."),
+                Paragraph(content = "Od czasu incydentu z kradzieżą Monsa Lisy, obraz jest jednym z najbardziej chronionych dzieł sztuki na świecie co przenosi się też na jego popularność. Zagadkowy uśmiech był przyczyną kolejnych domysłów. Vasari uważał, że podczas malowania modelka była zabawiana przez muzyków i klaunów."),
+                Paragraph(content = "Portret Mona Lisy pod względem malarskim to portret doskonały, który mógł wyjść tylko spod pędzla geniusza, jakim z pewnością był da Vinci."))))
         articlesList.add(Article(title = "Dawid", objectId = "A1"))
         articlesList.add(Article(title = "Ostatnia Wieczerza", objectId = "A2"))
         articlesList.add(Article(title = "Narodziny Wenus", objectId = "A3"))
@@ -155,9 +169,13 @@ class ArticleDaoImpl: ArticleDao {
     }
 
     companion object{
+        const val MAIN_TEXT = "Treść główna"
         const val PROFESSIONS = "Profesje"
         const val LIVE_YEARS = "Lata życia"
         const val NATIONALITY = "Narodowość"
+        const val CREATE_YEAR = "Data powstania"
+        const val CREATEOR = "Twórca"
+        const val ART_PLACE = "Miejsce przebywania"
 
         const val WIKIPEDIA_PL = "pl.wikipedia.org"
         const val TVP_INFO = "tvp.info"
@@ -165,5 +183,6 @@ class ArticleDaoImpl: ArticleDao {
         const val NIEZLA_SZTUKA = "niezlasztuka.net"
         const val VISITTUSCANY = "visittuscany.com"
         const val BELLITUDO = "bellitudo.pl"
+        const val THE_ATLANTIC = "theatlantic.com"
     }
 }
