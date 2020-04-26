@@ -81,6 +81,25 @@ class ArticleDaoImpl: ArticleDao {
                 Paragraph(content = "Należy w tym miejscu wspomnieć, że koncepcja heliocentryzmu pojawiła się już w starożytnej Grecji, ale to właśnie dzieło Kopernika było przełomem w postrzeganiu naszej galaktyki."),
                 Paragraph(subtitle = "Inne profesje", content = "Astronomia to dziedzina z której Kopernik był znany najbardziej, ale nie jedyna. Był renesansowym polihistorem, czyli osobą posiadającą rozległą wiedzę z wielu, różnych dziedzin. Interesował się matematyką, prawem, ekonomią, strategią wojskową czy też astrologią."))))
         articlesList.add(Article
+            (title = "Leonardo da Vinci",
+            objectId = "P4",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Leonardo_da_Vinci"),
+            header = Header(content = listOf(Pair(PROFESSIONS, "malarz, architekt, rzeźbiarz, wynalazca"),
+                Pair(LIVE_YEARS, "1452 - 1519"),
+                Pair(NATIONALITY, "włoska"))),
+            listOfRelatedArticlesIds = listOf("A0", "A2"),
+            listOfPhotos = listOf(Photo(objectId = "P4_0", description = "Leonardo da Vinci",
+                    source = Source(page = FOCUS_PL, url = "https://www.focus.pl/artykul/choroba-wyczytana-z-reki-leonarda")),
+                Photo(objectId = "P4_1", description = "Vinci, Włochy", numberOfParagraph = 0,
+                    source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Vinci_(W%C5%82ochy)")),
+                Photo(objectId = "P4_2", description = "Kodeks Hammera", numberOfParagraph = 3,
+                    source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Leonardo_da_Vinci"))),
+            listOfParagraphs = listOf(Paragraph(subtitle = "Człowiek renesansu", content = "Leonardo da Vinci urodził się 15 kwietnia 1452 a zmarł 2 maja 1519. Miejsce jego urodzenia to Anchiano znajdujące się w gminie Vinci - stąd też wziął się jego przydomek. Studiował anatomię, matematykę, mechanikę, botanikę, a także optykę. Z tego wynika też jego bogaty zasób profesji wymienionych w nagłówku."),
+                Paragraph(subtitle = "Uczeń przerasta mistrza", content = "Pochodzenie artysty uniemożliwiało mu zdobycie uniwersyteckiego wykształcenia, ale prawdopodobnie to dzięki kontaktom zawodowym ojca mógł zacząć się uczyć u cenionego malarza i rzeźbiarza Andreę del Verrocchia."),
+                Paragraph(content = "Podczas nauki z Verrocchim mógł nauczyć się m.in. podstawowych zasad perspektywy i rysowania postaci, jednak z czasem, po kilku latach spędzonych w pracowni stał się dla nauczyciela równorzędnym kolegą."),
+                Paragraph(subtitle = "Notatki lustrzane", content = "Leonardo, dążąc do doskonałości w swoich dziełach, prowadził bardzo szczegółowe notatki, w których zawierał nie tylko obserwacje naukowe i artystyczne, ale także osobiste przemyślenia. Sporządzał je pismem lustrzanym, co prawdopodobnie wynikało z jego leworęczności. Dzięki takiemu sposobowi pisania nie rozmazywał atramentu."),
+                Paragraph(content = "Do dziś wiadomo o istnieniu o ok. 7000 stron notatek. Większość znajduje się w publicznych zbiorach, część należy do prywatnych kolekcji. Jedną z najbardziej znanych pozycji jest \"Kodeks Hammera\" kupiony w 1994 r. przez Billa Gateasa za 30 800 000 \$."))))
+        articlesList.add(Article
             (title = "Michał Anioł",
             objectId = "P1",
             source = Source(srcDescription = MAIN_TEXT, page = NIEZLA_SZTUKA, url = "https://niezlasztuka.net/artysta/michal-aniol/"),
@@ -164,7 +183,6 @@ class ArticleDaoImpl: ArticleDao {
                 source = Source(page = FOTOGRAFICZNIE16,
                     url = "http://fotograficznie16.rssing.com/chan-38531473/all_p11.html"))
         ))
-
         return photoArticles
     }
 
@@ -182,7 +200,7 @@ class ArticleDaoImpl: ArticleDao {
         const val FOTOGRAFICZNIE16 = "fotograficznie16.rssing.com"
         const val NIEZLA_SZTUKA = "niezlasztuka.net"
         const val VISITTUSCANY = "visittuscany.com"
-        const val BELLITUDO = "bellitudo.pl"
         const val THE_ATLANTIC = "theatlantic.com"
+        const val FOCUS_PL = "focus.pl"
     }
 }
