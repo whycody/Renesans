@@ -87,7 +87,7 @@ class ArticleDaoImpl: ArticleDao {
             header = Header(content = listOf(Pair(PROFESSIONS, "malarz, architekt, rzeźbiarz, wynalazca"),
                 Pair(LIVE_YEARS, "1452 - 1519"),
                 Pair(NATIONALITY, "włoska"))),
-            listOfRelatedArticlesIds = listOf("A0", "A2"),
+            listOfRelatedArticlesIds = listOf("P1", "P2", "A0", "A2"),
             listOfPhotos = listOf(Photo(objectId = "P4_0", description = "Leonardo da Vinci",
                     source = Source(page = FOCUS_PL, url = "https://www.focus.pl/artykul/choroba-wyczytana-z-reki-leonarda")),
                 Photo(objectId = "P4_1", description = "Vinci, Włochy", numberOfParagraph = 0,
@@ -106,7 +106,7 @@ class ArticleDaoImpl: ArticleDao {
             header = Header(content = listOf(Pair(PROFESSIONS, "rzeźbiarz, malarz, poeta, architekt"),
                 Pair(LIVE_YEARS, "1475 - 1564"),
                 Pair(NATIONALITY, "włoska"))),
-            listOfRelatedArticlesIds = listOf("A1"),
+            listOfRelatedArticlesIds = listOf("P4", "P2", "A1"),
             listOfPhotos = listOf(Photo(objectId = "P1_0", description = "Michał Anioł",
                     source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Micha%C5%82_Anio%C5%82")),
                 Photo(objectId = "P1_1", description = "Caprese Michelangelo", numberOfParagraph = 0,
@@ -121,6 +121,7 @@ class ArticleDaoImpl: ArticleDao {
             header = Header(content = listOf(Pair(PROFESSIONS, "malarz, architekt"),
                 Pair(LIVE_YEARS, "1483 - 1520"),
                 Pair(NATIONALITY, "włoska"))),
+            listOfRelatedArticlesIds = listOf("P1", "P4"),
             listOfPhotos = listOf(Photo(objectId = "P2_0", description = "Rafael Santi",
                     source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Rafael_Santi")),
                 Photo(objectId = "P2_1", description = "Urbino, Włochy", numberOfParagraph = 0,
@@ -132,9 +133,26 @@ class ArticleDaoImpl: ArticleDao {
                 Paragraph(subtitle = "U progu wieku XVI", content = "Wraz z nadchodzącym nowym stuleciem, pod koniec lat 90. XV w., aktywność zawodowa malarza rosła razem z popularnością, wreszcie sławą. Obracał się głównie w środowisku uczonych i intelektualistów. Zaczął podróżować tam, gdzie otrzymywał zlecenia - wolny od zobowiązań rodzinnych z powodu śmierci obu swoich rodziców."),
                 Paragraph(content = "Sanzio był niezwykle pracowity. Nie ubierał się w znaną wówczas maskę kapryśnego artysty. Trzymał się powierzonych mu zadań i sumiennie z nich wywiązywał, co również dodawało mu chwały i klientów."),
                 Paragraph(subtitle = "Wizyta w Wenecji", content = "Aby przybliżyć sobie dzieła tworzone przez równolegle żyjących artystów - Leonarda da Vinci oraz Michała Anioła, Rafael wybrał się w podróż do Florencji. Cały czas pracował nad swoim unikatowym, tak rozpoznawalnym dzisiaj, stylem."),
-                Paragraph(content = "To właśnie jego zapał, konserwatywność, ale także to, że umiał wykroczyć poza oficjalne konwencje sprawiły, że jest uznawany za „księcia malarstwa”.")))
-        )
-        articlesList.add(Article(title = "Mikołaj Sęp Szarzyński", objectId = "P3"))
+                Paragraph(content = "To właśnie jego zapał, konserwatywność, ale także to, że umiał wykroczyć poza oficjalne konwencje sprawiły, że jest uznawany za „księcia malarstwa”."))))
+        articlesList.add(Article
+            (title = "Mikołaj Sęp Szarzyński",
+            objectId = "P3",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL, url = "https://culture.pl/pl/tworca/mikolaj-sep-szarzynski"),
+            header = Header(content = listOf(Pair(PROFESSIONS, "poeta"),
+                Pair(LIVE_YEARS, "1550 - 1581"),
+                Pair(NATIONALITY, "polska"))),
+            listOfPhotos = listOf(Photo(objectId = "P3_0", description = "Mikołaj Sęp Sarzyński",
+                    source = Source(page = CULTURE_PL, url = "https://culture.pl/pl/tworca/mikolaj-sep-szarzynski")),
+                Photo(objectId = "P3_1", description = "Stare Miasto we Lwowie", numberOfParagraph = 1,
+                    source = Source(page = PODROZE_ONET, url = "https://podroze.onet.pl/ciekawe/stare-miasto-we-lwowie-najwazniejsze-informacje/nj564rg")),
+                Photo(objectId = "P3_2", description = "Strona z pierwszego wydania Rytmów abo wierszy polskich z 1601", numberOfParagraph = 3,
+                    source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Rytmy_abo_wiersze_polskie"))),
+            listOfParagraphs = listOf(Paragraph(content = "Mikołaj Sęp Szarzyński prawdopodobnie urodził się około roku 1550 (dokładna data nie jest znana) w Zimnej Wodzie we Lwowie. Jest uznawany za jednego z najważniejszych autorów późnego renesansu bądź początków baroku i równolegle omawiany w podręcznikach akademickich dotyczących obydwu epok."),
+                Paragraph(content = "Na temat jego życia można mieć jedynie pewność co do kilku faktów z jego biografii, takich jak jego data urodzenia, czy śmierci. Z dokumentów wynika też, że kilka razy stawał przed sądem w sprawach majątkowych, reprezentując ojca."),
+                Paragraph(subtitle = "Wykształcenie", content = "Pisarz swoją edukację zaczął w rodzinnym Lwowie gdzie nauczył się czytania i pisania, greki i łaciny. Później zaczął studiować w Writemberdze, na protestanckim uniwersytecie, a następnie w Lipsku. Przyjaźnił się z protestancką rodziną Starzechowskich, skąd domysły o jego zmianie wyznania."),
+                Paragraph(subtitle = "Twórczość", content = "Jego twórczość należy do nurtu poezji metafizycznej. W swoich wierszach porusza tematy sensu życia i wiary. Zgłębia się w tajniki ludzkiej natury, wyraża obawy, wynikające ze świadomości przemijania i niedoskonałości."),
+                Paragraph(content = "Do dzisiejszych czasów przetrwało niewiele jego utworów. Zachowały się utwory ze zbioru \"Rytmy abo wiersze polskie\", który wydał, dwadzieścia lat po jego śmierci, jego brat.",
+                    source = Source(srcDescription = MAIN_TEXT, photoId = "Z2_0", page = POLSKINA5_PL, url = "https://www.polskina5.pl/mikolaj_sep_szarzynski")))))
         return articlesList
     }
 
@@ -223,5 +241,8 @@ class ArticleDaoImpl: ArticleDao {
         const val FOCUS_PL = "focus.pl"
         const val THETIMES_CO_UK = "thetimes.co.uk"
         const val RADIO90_PL = "radio90.pl"
+        const val CULTURE_PL = "culture.pl"
+        const val PODROZE_ONET = "podroze.onet.pl"
+        const val POLSKINA5_PL = "polskina5.pl"
     }
 }

@@ -23,6 +23,9 @@ class SourcesPresenterImpl(val context: Context, val view: SourcesContract.Sourc
 
     private fun getSourcesList(){
         if(article.source!=null) sourcesList.add(article.source!!)
+        article.listOfParagraphs?.forEach{ paragraph ->
+            if(paragraph.source!=null) sourcesList.add(paragraph.source!!)
+        }
         article.listOfPhotos?.forEach { photo -> addPhotoSourceToList(photo) }
     }
 

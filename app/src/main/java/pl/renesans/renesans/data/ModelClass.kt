@@ -3,26 +3,21 @@ package pl.renesans.renesans.data
 import com.google.android.gms.maps.model.LatLng
 import java.io.Serializable
 
-data class Source(var sourceType: String? = null,
-                  var srcDescription: String? = null,
+data class Source(var srcDescription: String? = null,
                   var photoId: String? = "Z1_0",
                   var url: String? = null,
                   var page: String? = null): Serializable
 
 data class Photo(var objectId: String? = null,
-                 var objectType: Int? = null,
                  var numberOfParagraph: Int? = null,
                  var description: String? = null,
                  var source: Source? = null): Serializable
 
-data class Paragraph(var objectId: String? = null,
-                var objectType: Int? = null,
-                var subtitle: String? = null,
-                var content: String? = null): Serializable
+data class Paragraph(var subtitle: String? = null,
+                var content: String? = null,
+                var source: Source? = null): Serializable
 
-data class Header(var objectId: String? = null,
-                var objectType: String? = null,
-                var title: String? = null,
+data class Header(var title: String? = null,
                 var content: List<Pair<String, String>>? = null): Serializable
 
 data class Article(var objectId: String? = null,
