@@ -114,7 +114,26 @@ class ArticleDaoImpl: ArticleDao {
             listOfParagraphs = listOf(Paragraph(subtitle = "Młodość", content = "Michał Anioł urodził się 6 marca 1475 w, znajdującym się we Włoszech, Caprese a zmarł 18 lutego 1564 w Rzymie. Włoski artysta epoki renesansu, który również, dzięki swoim nowatorskim dziełom jest uznawany za prekursora baroku. Obecnie jest stawiany na równi z Leonardem da Vinci, jako jeden z najwybitniejszych twórców swoich czasów."),
             Paragraph(subtitle = "Początki", content = "Wybitny rzeźbiarz pochodził z mieszczańskiej rodziny, która zaraz po jego narodzinach przeprowadziła się do Florencji. Żyjąc tam miał okazję uczyć się rzeźbiarskiego rzemiosła od florenckich twórców."),
             Paragraph(content = "Już w wieku 25 lat stworzył Pietę a 4 lata później wyrzeźbił 5,5 metrowego Dawida. Artysta nie postanowił jednak zatrzymać się na rzeźbach. Swoją wszechstronność udowodnił tworząc m.in. freski na sklepieniu w Kaplicy Sykstyńskiej."))))
-        articlesList.add(Article(title = "Rafael Santi", objectId = "P2"))
+        articlesList.add(Article
+            (title = "Rafael Santi",
+            objectId = "P2",
+            source = Source(srcDescription = MAIN_TEXT, page = NIEZLA_SZTUKA, url = "https://niezlasztuka.net/o-sztuce/rafael-santi-madonna-sykstynska/"),
+            header = Header(content = listOf(Pair(PROFESSIONS, "malarz, architekt"),
+                Pair(LIVE_YEARS, "1483 - 1520"),
+                Pair(NATIONALITY, "włoska"))),
+            listOfPhotos = listOf(Photo(objectId = "P2_0", description = "Rafael Santi",
+                    source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Rafael_Santi")),
+                Photo(objectId = "P2_1", description = "Urbino, Włochy", numberOfParagraph = 0,
+                    source = Source(page = THETIMES_CO_UK, url = "https://www.thetimes.co.uk/article/step-back-in-time-in-urbino-italys-secret-renaissance-city-bqntlwc82")),
+                Photo(objectId = "P2_2", description = "Dzieła Rafaela Santi", numberOfParagraph = 3,
+                    source = Source(page = RADIO90_PL, url="https://www.radio90.pl/wirtualna-wystawa-dziel-rafaela-santi.html"))),
+            listOfParagraphs = listOf(Paragraph(subtitle = "Doceniany za życia", content = "Rafael (właściwie Raffaello Santi lub też Raffaello Sanzio) urodził się w 6 kwietnia 1483 roku w Urbino a zmarł tego samego dnia 1520 roku w Rzymie. Już podczas swojego życia zdobył miano wszechstronnie utalentowanego człowieka, a przede wszystkim malarza. Słynny kronnikarz artystów, Giorgio Vasari wyraził swoją fascynację nim w następujących słowach: „Jak dalece niebo okazało się szczodre i błogosławione, obdarzając łaskawie tylko jednego człowieka swymi skarbami, dzielonymi przez wieki między wielu, to właśnie widzi się w osobie świetnego i pełnego wdzięku Rafaela Sanzio z Urbino”"),
+                Paragraph(content = "Jest coś co wyróżniało Rafaela z czołówki najlepszych malarzy ówczesnej Europy. Artysta nie tylko tworzył swoje dzieła, ale też żywo był zainteresowany odkryciami archeologicznymi. Uznaje się go za jednego z pierwszych konserwatorów i obrońcę dzieł antycznych."),
+                Paragraph(subtitle = "U progu wieku XVI", content = "Wraz z nadchodzącym nowym stuleciem, pod koniec lat 90. XV w., aktywność zawodowa malarza rosła razem z popularnością, wreszcie sławą. Obracał się głównie w środowisku uczonych i intelektualistów. Zaczął podróżować tam, gdzie otrzymywał zlecenia - wolny od zobowiązań rodzinnych z powodu śmierci obu swoich rodziców."),
+                Paragraph(content = "Sanzio był niezwykle pracowity. Nie ubierał się w znaną wówczas maskę kapryśnego artysty. Trzymał się powierzonych mu zadań i sumiennie z nich wywiązywał, co również dodawało mu chwały i klientów."),
+                Paragraph(subtitle = "Wizyta w Wenecji", content = "Aby przybliżyć sobie dzieła tworzone przez równolegle żyjących artystów - Leonarda da Vinci oraz Michała Anioła, Rafael wybrał się w podróż do Florencji. Cały czas pracował nad swoim unikatowym, tak rozpoznawalnym dzisiaj, stylem."),
+                Paragraph(content = "To właśnie jego zapał, konserwatywność, ale także to, że umiał wykroczyć poza oficjalne konwencje sprawiły, że jest uznawany za „księcia malarstwa”.")))
+        )
         articlesList.add(Article(title = "Mikołaj Sęp Szarzyński", objectId = "P3"))
         return articlesList
     }
@@ -202,5 +221,7 @@ class ArticleDaoImpl: ArticleDao {
         const val VISITTUSCANY = "visittuscany.com"
         const val THE_ATLANTIC = "theatlantic.com"
         const val FOCUS_PL = "focus.pl"
+        const val THETIMES_CO_UK = "thetimes.co.uk"
+        const val RADIO90_PL = "radio90.pl"
     }
 }
