@@ -48,4 +48,5 @@ data class Setting(var settingId: String? = null,
                 var booleanValue: Boolean = true,
                 var defaultValue: Boolean = false)
 
-data class Tour(var photosArticlesList: List<PhotoArticle>? = null) : Serializable
+data class Tour(var title: String? = null,
+                var photosArticlesList: List<PhotoArticle>? = null) : Serializable
