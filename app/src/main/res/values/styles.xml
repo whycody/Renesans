@@ -20,6 +20,10 @@
         <item name="android:padding">3dp</item>
     </style>
 
+    <style name="TourButton" parent="StartupButton">
+        <item name="android:textColor">@color/colorTitleGray</item>
+    </style>
+
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
     </style>

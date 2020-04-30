@@ -23,10 +23,10 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article)
-        setSupportActionBar(sourcesToolbar)
+        setSupportActionBar(articleToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        sourcesToolbar.navigationIcon?.setColorFilter(ContextCompat.getColor(this,
+        articleToolbar.navigationIcon?.setColorFilter(ContextCompat.getColor(this,
             android.R.color.white), PorterDuff.Mode.SRC_ATOP)
         imagesList.add(articleImage)
         val articleDao = ArticleDaoImpl()
@@ -56,7 +56,7 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
     }
 
     override fun setTitle(title: String) {
-        sourcesToolbar.title = title
+        articleToolbar.title = title
     }
 
     override fun loadBitmapToImage(bitmap: Bitmap, pos: Int) {

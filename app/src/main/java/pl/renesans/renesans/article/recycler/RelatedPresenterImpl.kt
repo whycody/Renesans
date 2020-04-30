@@ -11,6 +11,7 @@ import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 import pl.renesans.renesans.sources.SourcesActivity
+import pl.renesans.renesans.tour.TourActivity
 
 class RelatedPresenterImpl(val context: Context, val article: Article):
     RelatedContract.RelatedPresenter, ImageDaoContract.ImageDaoInterractor {
@@ -26,14 +27,20 @@ class RelatedPresenterImpl(val context: Context, val article: Article):
     }
 
     override fun itemClicked(pos: Int) {
-        if(relatedArticlesList[pos].objectType!=DiscoverRecyclerFragment.SOURCES){
+        if(relatedArticlesList[pos].objectType!=DiscoverRecyclerFragment.SOURCES
+            && relatedArticlesList[pos].objectType!=DiscoverRecyclerFragment.TOUR){
             val intent = Intent(context, ArticleActivity::class.java)
             intent.putExtra(ArticleActivity.ARTICLE, relatedArticlesList[pos])
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
-        }else{
+        }else if(relatedArticlesList[pos].objectType==DiscoverRecyclerFragment.SOURCES){
             val intent = Intent(context, SourcesActivity::class.java)
             intent.putExtra(ArticleActivity.ARTICLE, article)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        }else{
+            val intent = Intent(context, TourActivity::class.java)
+            intent.putExtra(TourActivity.TOUR, article.tour)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }

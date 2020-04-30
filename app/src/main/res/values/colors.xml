@@ -10,6 +10,8 @@
     <color name="colorImageGray">#9A9A9A</color>
     <color name="colorGray">#F8F8F8</color>
     <color name="colorLightGray">#FDFDFD</color>
+    <color name="colorBackgrGray">#F5F5F5</color>
+    <color name="colorTransparentGray">#65000000</color>
     <color name="colorTransparentLightWhite">#34FFFFFF</color>
     <color name="colorTransparentPrimary">#9AC76429</color>
 </resources>

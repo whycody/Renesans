@@ -9,6 +9,9 @@ class ArticleDaoImpl: ArticleDao {
 
     override fun getRelatedArticlesList(article: Article): List<Article> {
         val relatedArticles = mutableListOf<Article>()
+        if(article.tour!=null)
+            relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.TOUR,
+                title = "Interaktywny szlak", objectId = "Z3"))
         if(articleHasSources(article))
             relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.SOURCES,
                 title = "Źródła", objectId = "Z0"))
@@ -79,7 +82,9 @@ class ArticleDaoImpl: ArticleDao {
                 Photo(objectId = "P0_1", description = "Fragment \"O obrotach sfer niebieskich\", model heliocentryczny", numberOfParagraph = 1, source = Source(page = TVP_INFO, url = "https://www.tvp.info/12865831/przez-dwa-dni-mozna-ogladac-dzielo-kopernika"))),
             listOfParagraphs = listOf(Paragraph(subtitle = "Historia życia", content = "Mikołaj Kopernik to polski astronom, który swoją sławę zawdzięcza przede wszystkim swojemu dziełu \"O obrotach sfer niebieskich\" w którym szczegółowo przedstawił heliocentryczną wizję Wszechświata."),
                 Paragraph(content = "Należy w tym miejscu wspomnieć, że koncepcja heliocentryzmu pojawiła się już w starożytnej Grecji, ale to właśnie dzieło Kopernika było przełomem w postrzeganiu naszej galaktyki."),
-                Paragraph(subtitle = "Inne profesje", content = "Astronomia to dziedzina z której Kopernik był znany najbardziej, ale nie jedyna. Był renesansowym polihistorem, czyli osobą posiadającą rozległą wiedzę z wielu, różnych dziedzin. Interesował się matematyką, prawem, ekonomią, strategią wojskową czy też astrologią."))))
+                Paragraph(subtitle = "Inne profesje", content = "Astronomia to dziedzina z której Kopernik był znany najbardziej, ale nie jedyna. Był renesansowym polihistorem, czyli osobą posiadającą rozległą wiedzę z wielu, różnych dziedzin. Interesował się matematyką, prawem, ekonomią, strategią wojskową czy też astrologią.")),
+            tour = Tour(photosArticlesList = listOf(PhotoArticle(objectId = "I0", source = Source(page = WIKIPEDIA_PL, url = "google.pl", srcDescription = MAIN_TEXT), title = "Miejsce studiów", paragraph = Paragraph(content = "Astronom spędzał długie noce patrząc w niebo i pisząc kolejne strony swojej słynnej książki."), photo = Photo(description = "Wysoka Brama")),
+                PhotoArticle(objectId = "I0", title = "Miejsce studiów", paragraph = Paragraph(content = "Astronom spędzał długie noce patrząc w niebo i pisząc kolejne strony swojej słynnej książki."), photo = Photo(description = "Wysoka Brama"))))))
         articlesList.add(Article
             (title = "Leonardo da Vinci",
             objectId = "P4",

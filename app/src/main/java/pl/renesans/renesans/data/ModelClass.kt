@@ -27,7 +27,8 @@ data class Article(var objectId: String? = null,
                    var source: Source? = null,
                    var listOfRelatedArticlesIds: List<String>? = null,
                    var listOfParagraphs: List<Paragraph>? = null,
-                   var listOfPhotos: List<Photo>? = null): Serializable
+                   var listOfPhotos: List<Photo>? = null,
+                   var tour: Tour? = null): Serializable
 
 data class PhotoArticle(var objectId: String? = null,
                 var objectType: Int? = null,
@@ -47,3 +48,4 @@ data class Setting(var settingId: String? = null,
                 var booleanValue: Boolean = true,
                 var defaultValue: Boolean = false)
 
+data class Tour(var photosArticlesList: List<PhotoArticle>? = null) : Serializable

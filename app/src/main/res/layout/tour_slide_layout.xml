@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/photoDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Example photo description"
+            android:paddingStart="@dimen/dialogSheetPaddingStart"
+            android:paddingEnd="@dimen/dialogSheetPaddingStart"
+            android:paddingTop="10dp"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/articleTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Example title"
+            android:textStyle="bold"
+            android:textColor="@color/colorTitleGray"
+            android:paddingStart="@dimen/dialogSheetPaddingStart"
+            android:paddingEnd="@dimen/dialogSheetPaddingStart"
+            android:paddingTop="2dp"
+            android:paddingBottom="20dp"
+            android:textSize="20sp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackgrGray"
+            android:layout_marginStart="@dimen/dialogSheetPaddingStart"
+            android:layout_marginEnd="@dimen/dialogSheetPaddingStart"
+            android:layout_marginBottom="20dp">
+
+            <View
+                android:id="@+id/decorationView"
+                android:layout_width="@dimen/dialogSheetPaddingStart"
+                android:layout_height="0dp"
+                android:background="@color/colorTitleGray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/hereText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingStart="@dimen/dialogSheetPaddingStart"
+                android:text="TO TUTAJ"
+                android:textColor="@color/colorTitleGray"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/decorationView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/articleParagraph"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/dialogSheetPaddingStart"
+                android:paddingEnd="@dimen/dialogSheetPaddingStart"
+                android:text="Astronom spędzał długie noce patrząc w niebo i pisząc kolejne strony swojej słynnej książki."
+                android:textColor="@color/colorTitleGray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/decorationView"
+                app:layout_constraintTop_toBottomOf="@+id/hereText"
+                android:paddingBottom="8dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/sourcesBtn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/sh_dialog_bottom_sources"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:text="@string/sources"
+            android:paddingStart="@dimen/dialogSheetPaddingStart"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_marginBottom="30dp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+
+</ScrollView>
