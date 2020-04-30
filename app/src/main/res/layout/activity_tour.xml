@@ -59,7 +59,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:background="@color/colorBackgrGray"/>
+            android:background="@color/colorAccent"/>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/tourPager"

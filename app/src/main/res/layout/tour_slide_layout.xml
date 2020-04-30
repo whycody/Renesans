@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Example photo description"
+            android:textStyle="bold"
             android:paddingStart="@dimen/dialogSheetPaddingStart"
             android:paddingEnd="@dimen/dialogSheetPaddingStart"
             android:paddingTop="10dp"
@@ -36,7 +37,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBackgrGray"
+            android:background="@color/colorAccent"
             android:layout_marginStart="@dimen/dialogSheetPaddingStart"
             android:layout_marginEnd="@dimen/dialogSheetPaddingStart"
             android:layout_marginBottom="20dp">
@@ -45,7 +46,7 @@
                 android:id="@+id/decorationView"
                 android:layout_width="@dimen/dialogSheetPaddingStart"
                 android:layout_height="0dp"
-                android:background="@color/colorTitleGray"
+                android:background="@color/colorPrimaryDark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +58,7 @@
                 android:layout_marginTop="8dp"
                 android:paddingStart="@dimen/dialogSheetPaddingStart"
                 android:text="TO TUTAJ"
-                android:textColor="@color/colorTitleGray"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/decorationView"

@@ -84,7 +84,8 @@ class ArticleDaoImpl: ArticleDao {
                 Paragraph(content = "Należy w tym miejscu wspomnieć, że koncepcja heliocentryzmu pojawiła się już w starożytnej Grecji, ale to właśnie dzieło Kopernika było przełomem w postrzeganiu naszej galaktyki."),
                 Paragraph(subtitle = "Inne profesje", content = "Astronomia to dziedzina z której Kopernik był znany najbardziej, ale nie jedyna. Był renesansowym polihistorem, czyli osobą posiadającą rozległą wiedzę z wielu, różnych dziedzin. Interesował się matematyką, prawem, ekonomią, strategią wojskową czy też astrologią.")),
             tour = Tour("Mikołaj Kopernik", listOf(PhotoArticle(objectId = "I0", lat = 53.777574, lng = 20.477587, title = "Miejsce studiów", paragraph = Paragraph(content = "Astronom spędzał długie noce patrząc w niebo i pisząc kolejne strony swojej słynnej książki."), photo = Photo(description = "Wysoka Brama")),
-                PhotoArticle(objectId = "P0", lat = 53.774574, lng= 20.477587, title = "Miejsce studiów", paragraph = Paragraph(content = "Astronom spędzał długie noce patrząc w niebo i pisząc kolejne strony swojej słynnej książki."), photo = Photo(description = "Wysoka Brama"))))))
+                PhotoArticle(objectId = "I0", lat = 53.774574, lng= 20.477587, title = "Miejsce studiów", paragraph = Paragraph(content = "Astronom spędzał długie noce patrząc w niebo i pisząc kolejne strony swojej słynnej książki."), photo = Photo(description = "Zamek Królewski")),
+                PhotoArticle(objectId = "I0", lat = 53.772574, lng = 20.477587, title = "Miejsce studiów", paragraph = Paragraph(content = "Astronom spędzał długie noce patrząc w niebo i pisząc kolejne strony swojej słynnej książki."), photo = Photo(description = "Wysoka Brama"))))))
         articlesList.add(Article
             (title = "Leonardo da Vinci",
             objectId = "P4",
