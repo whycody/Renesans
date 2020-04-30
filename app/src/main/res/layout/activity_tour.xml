@@ -27,29 +27,45 @@
         android:orientation="vertical"
         android:layout_weight="1">
 
-        <fragment
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            tools:context=".map.MapFragment" />
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".tour.TourActivity" />
+
+            <View
+                android:id="@+id/shadowView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/black"
+                android:alpha="0.45"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/articlePhoto"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:background="@color/colorAccent"/>
+            android:background="@color/colorBackgrGray"/>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/tourPager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 

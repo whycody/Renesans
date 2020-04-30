@@ -34,4 +34,6 @@
     <string name="download_photos_desc">Pobieraj zdjęcia niskiej jakości aby później móc korzystać z aplikacji w trybie offline</string>
     <string name="era">Epoka</string>
     <string name="renesans">Renesans</string>
+    <string name="tour_view">Widok szlaku</string>
+    <string name="tour_view_desc">Zmniejsz przezroczystość mapy i paska narzędzi w widoku interaktywnego szlaku, aby zwiększyć czytelność treści</string>
 </resources>

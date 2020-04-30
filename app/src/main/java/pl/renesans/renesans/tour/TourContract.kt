@@ -2,7 +2,9 @@ package pl.renesans.renesans.tour
 
 import android.graphics.Bitmap
 import android.net.Uri
+import com.google.android.gms.maps.model.LatLng
 import pl.renesans.renesans.data.Tour
+import pl.renesans.renesans.map.ClusterMarker
 
 interface TourContract {
 
@@ -13,6 +15,12 @@ interface TourContract {
         fun loadPhotoFromUri(photoUri: Uri, pos: Int)
 
         fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int)
+
+        fun addClusterMarkerToMap(cluster: ClusterMarker)
+
+        fun animateCamera(latLng: LatLng)
+
+        fun moveCamera(latLng: LatLng)
     }
 
     interface TourPresenter {
@@ -20,5 +28,9 @@ interface TourContract {
         fun onCreate()
 
         fun onPageSelected(position: Int)
+
+        fun addMarkers()
+
+        fun mapReady()
     }
 }

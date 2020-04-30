@@ -13,5 +13,8 @@
     <color name="colorBackgrGray">#F5F5F5</color>
     <color name="colorTransparentGray">#65000000</color>
     <color name="colorTransparentLightWhite">#34FFFFFF</color>
+    <color name="colorDarkWhite">#8C8581</color>
+    <color name="colorDarkPrimary">#85431C</color>
+    <color name="colorDarkPrimaryDark">#6E3717</color>
     <color name="colorTransparentPrimary">#9AC76429</color>
 </resources>

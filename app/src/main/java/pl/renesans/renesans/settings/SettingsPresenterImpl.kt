@@ -28,6 +28,9 @@ class SettingsPresenterImpl(val context: Context): SettingsContract.SettingsPres
         settingsList.add(Setting(MAP_ANIMATIONS, context.getString(R.string.map_animations), 
             context.getString(R.string.map_animations_desc),
             true, sharedPrefs.getBoolean(MAP_ANIMATIONS, false)))
+        settingsList.add(Setting(MAP_OPACITY, context.getString(R.string.tour_view),
+            context.getString(R.string.tour_view_desc),
+            true, sharedPrefs.getBoolean(MAP_OPACITY, true)))
         settingsList.add(Setting(APP_VERSION,
             context.getString(R.string.app_version), BuildConfig.VERSION_NAME, false))
         return settingsList
@@ -74,6 +77,7 @@ class SettingsPresenterImpl(val context: Context): SettingsContract.SettingsPres
         val DOWNLOAD_PHOTOS = "download photos"
         val MAP_MODE = "map mode"
         val MAP_ANIMATIONS = "map animations"
+        val MAP_OPACITY = "map opacity"
         val APP_VERSION = "app version"
     }
 }
