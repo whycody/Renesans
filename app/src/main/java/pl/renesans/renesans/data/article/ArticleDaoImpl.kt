@@ -12,13 +12,13 @@ class ArticleDaoImpl: ArticleDao {
         if(article.tour!=null)
             relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.TOUR,
                 title = "Interaktywny szlak", objectId = "Z3"))
+        article.listOfRelatedArticlesIds?.forEach { articleId ->
+            relatedArticles.add(getArticleFromId(articleId))
+        }
+        if(article.objectId != "O4") relatedArticles.add(getArticleFromId("O4"))
         if(articleHasSources(article))
             relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.SOURCES,
                 title = "Źródła", objectId = "Z0"))
-        if(article.objectId != "O4") relatedArticles.add(0, getArticleFromId("O4"))
-        article.listOfRelatedArticlesIds?.forEach { articleId ->
-            relatedArticles.add(0, getArticleFromId(articleId))
-        }
         return relatedArticles
     }
 
@@ -93,7 +93,7 @@ class ArticleDaoImpl: ArticleDao {
             header = Header(content = listOf(Pair(PROFESSIONS, "malarz, architekt, rzeźbiarz, wynalazca"),
                 Pair(LIVE_YEARS, "1452 - 1519"),
                 Pair(NATIONALITY, "włoska"))),
-            listOfRelatedArticlesIds = listOf("P1", "P2", "A0", "A2"),
+            listOfRelatedArticlesIds = listOf("A0", "A2", "P1", "P2"),
             listOfPhotos = listOf(Photo(objectId = "P4_0", description = "Leonardo da Vinci",
                     source = Source(page = FOCUS_PL, url = "https://www.focus.pl/artykul/choroba-wyczytana-z-reki-leonarda")),
                 Photo(objectId = "P4_1", description = "Vinci, Włochy", numberOfParagraph = 0,
@@ -112,7 +112,7 @@ class ArticleDaoImpl: ArticleDao {
             header = Header(content = listOf(Pair(PROFESSIONS, "rzeźbiarz, malarz, poeta, architekt"),
                 Pair(LIVE_YEARS, "1475 - 1564"),
                 Pair(NATIONALITY, "włoska"))),
-            listOfRelatedArticlesIds = listOf("P4", "P2", "A1"),
+            listOfRelatedArticlesIds = listOf("A1", "P4", "P2"),
             listOfPhotos = listOf(Photo(objectId = "P1_0", description = "Michał Anioł",
                     source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Micha%C5%82_Anio%C5%82")),
                 Photo(objectId = "P1_1", description = "Caprese Michelangelo", numberOfParagraph = 0,
@@ -127,7 +127,7 @@ class ArticleDaoImpl: ArticleDao {
             header = Header(content = listOf(Pair(PROFESSIONS, "malarz, architekt"),
                 Pair(LIVE_YEARS, "1483 - 1520"),
                 Pair(NATIONALITY, "włoska"))),
-            listOfRelatedArticlesIds = listOf("P1", "P4"),
+            listOfRelatedArticlesIds = listOf("P4", "P1"),
             listOfPhotos = listOf(Photo(objectId = "P2_0", description = "Rafael Santi",
                     source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Rafael_Santi")),
                 Photo(objectId = "P2_1", description = "Urbino, Włochy", numberOfParagraph = 0,
@@ -171,6 +171,7 @@ class ArticleDaoImpl: ArticleDao {
             header = Header(content = listOf(Pair(CREATEOR, "Leonardo da Vinci"),
                 Pair(CREATE_YEAR, "1503 - 1519"),
                 Pair(ART_PLACE, "Luwr, Paryż"))),
+            listOfRelatedArticlesIds = listOf("P4"),
             listOfPhotos = listOf(Photo(objectId = "A0_0", description = "Mona Lisa",
                 source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Mona_Lisa")),
                 Photo(objectId = "A0_1", description = "Cesare Maccari, Leonardo portretuje Giocondę", numberOfParagraph = 2,
@@ -192,7 +193,7 @@ class ArticleDaoImpl: ArticleDao {
                 Photo(objectId = "A1_1", description = "Posąg Dawida w Galleria dell'Accademia", numberOfParagraph = 0,
                     source = Source(page = FAKTY_INTERA_PL, url = "https://fakty.interia.pl/nauka/news-naukowcy-rzezba-dawida-dluta-michala-aniola-zagrozona,nId,1418818"))),
             listOfParagraphs = listOf(Paragraph(content = "Rzeźba Michała Anioła przedstawia biblijnego Dawid bezpośrednio przed walką z Goliatem. Jest uznawana za jedno z najważniejszych dzieł renesansowej rzeźby. Artysta stworzył tą rzeźbę z dbałością o najmniejsze szczegóły, na Dawidze widać nawet naczynia krwionośne."),
-                Paragraph(subtitle = "Rozpoczęcie pracy", content = "To od katedry florenckiej wiosną 1501 Michał dostał zlecenie na wykonanie rzeźby, którą zaczął 13 września. Do swojego dzieła wykorzystał złom marmuru. Podobno kiedy zobaczył kamień, powiedział: „Widzę rzeźbę, teraz muszę tylko odrzucić to, co zbędne”."),
+                Paragraph(subtitle = "Przebieg pracy", content = "To od katedry florenckiej wiosną 1501 Michał dostał zlecenie na wykonanie rzeźby, którą zaczął 13 września. Do swojego dzieła wykorzystał złom marmuru. Podobno kiedy zobaczył kamień, powiedział: „Widzę rzeźbę, teraz muszę tylko odrzucić to, co zbędne”."),
                 Paragraph(content = "Po ukończeniu, 8 września 1504 posąg stanął obok wejścia do Palazzo Vecchio we Florencji. Miał symbolizować wolność zdobytą przez mieszkańców miasta i ich gotowość do jej obrony. Dawid stał tam aż 369 lat, do 1873 roku. Obecnie stoi tam jego kopia."))))
         articlesList.add(Article
             (title = "Ostatnia Wieczerza",
@@ -210,7 +211,20 @@ class ArticleDaoImpl: ArticleDao {
                 Paragraph(content = "Ukazuje scenę ostatniego wspólnego posiłku Chrystusa z apostołami przed pojmaniem na Górze Oliwnej i ukrzyżowaniem. Artysta ukazał tu moment tuż po tym, jak Jezus wypowiedział słowa: „Zaprawdę powiadam wam: jeden z was mnie zdradzi”. To zdanie wywołało duże poruszenie pośród apostołów, co postanowił uwiecznić Leonardo."),
                 Paragraph(subtitle = "Technika Malarska", content = "Leonardo użył tutaj farb temperowych wymieszanych z olejnymi, które nakładał na zagruntowaną ścianę. To mu z kolei umożliwiło zadbać o każdy szczegół obrazu, bez koniecznego pośpiechu, który byłby konieczny przy zastosowaniu techniki fresku, w której specjalna farba odporna wymagała nakładania na mokry tynk."),
                 Paragraph(content = "Niestety nowatorskie pomysły Leonarda z techniką malarską i stosowanymi farbami sprawiły, że Ostatnia Wieczerza z czasem zaczęła blaknąć i łuszczyć się już kilka lat po jej wykonaniu."))))
-        articlesList.add(Article(title = "Narodziny Wenus", objectId = "A3"))
+        articlesList.add(Article
+            (title = "Narodziny Wenus",
+            objectId = "A3",
+            source = Source(srcDescription = MAIN_TEXT, page = NIEZLA_SZTUKA, url = "https://niezlasztuka.net/o-sztuce/sandro-botticelli-narodziny-wenus/"),
+            header = Header(content = listOf(Pair(CREATEOR, "Sandro Botticelli"),
+                Pair(CREATE_YEAR, "ok. 1485"),
+                Pair(ART_PLACE, "Galeria Uffizi, Włochy"))),
+            listOfPhotos = listOf(Photo(objectId = "A3_0", description = "Narodziny Wenus",
+                    source = Source(page = NIEZLA_SZTUKA, url = "https://niezlasztuka.net/o-sztuce/sandro-botticelli-narodziny-wenus/")),
+                Photo(objectId = "A3_1", description = "Cypr", numberOfParagraph = 1,
+                    source = Source(page = DZIECKOWDORDZE_COM, url = "https://dzieckowdrodze.com/cypr-10-rzeczy-ktore-musisz-zobaczyc/"))),
+            listOfParagraphs = listOf(Paragraph(subtitle = "Symbol Renesansu", content = "Narodziny Wenus włoskiego malarza Sandro Botticeli jest przykładem odrodzenia antycznych motywów mitologicznych w malarstwie wczesnego renesansu floranckiego. To właśnie dzieła o takiej tematyce tworzył Botticelli, stworzył również m.in. Wenus i Marsa."),
+                Paragraph(content = "Nie została dokładnie ustalona data stworzenia dzieła, większość historyków sztuki wskazuje lata 1482 - 1485. Obraz został namalowany na tańszym materiale, płótnie, co może wskazywać na to, że miał być przeznaczony do rezydencji wiejskiej."),
+                Paragraph(subtitle = "Kontekst mitologiczny", content = "Według greckiego poety Hezjoda bogini miłości Wenus powstała z piany morskiej, kiedy Krotos obciął swojemu ojcu genitalia i wrzucił je do oceanu, aby ukarać go za okrucieństwo. Wenus wynurzyła się spomiędzy fal i skierowała w stronę brzegu jednej z greckich wysp – Cypru lub Cytery."))))
         return articlesList
     }
 
@@ -283,5 +297,6 @@ class ArticleDaoImpl: ArticleDao {
         const val FAKTY_INTERA_PL = "fakty.interia.pl"
         const val GALERIA_ZDJEC_COM = "galeria-zdjec.com"
         const val GETYOURGUIDE_PL= "getyourguide.pl"
+        const val DZIECKOWDORDZE_COM = "dzieckowdrodze.com"
     }
 }
