@@ -49,7 +49,7 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         setupMap()
         setupTheme(mapOpacity)
         tour = getTourObject()
-        tourToolbar.title = tour.title
+        tourToolbar.title = "${tour.title}・Interaktywny szlak"
         presenter = TourPresenterImpl(applicationContext, this)
         val tourAdapter = TourAdapter(this, tour)
         tourPager.adapter = tourAdapter

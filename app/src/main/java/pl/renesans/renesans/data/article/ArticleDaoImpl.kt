@@ -179,8 +179,37 @@ class ArticleDaoImpl: ArticleDao {
                 Paragraph(subtitle = "Zagadkowy uśmiech", content = "Nie da się przejść obok obrazu Mona Lisy nie zwracając uwagi na jej tajemniczy uśmiech. Być może gdyby nie on, nikt dziś nie pamiętałby o tym dziele a ten opis można byłoby przypasować do większości kobiecych portretów."),
                 Paragraph(content = "Od czasu incydentu z kradzieżą Monsa Lisy, obraz jest jednym z najbardziej chronionych dzieł sztuki na świecie co przenosi się też na jego popularność. Zagadkowy uśmiech był przyczyną kolejnych domysłów. Vasari uważał, że podczas malowania modelka była zabawiana przez muzyków i klaunów."),
                 Paragraph(content = "Portret Mona Lisy pod względem malarskim to portret doskonały, który mógł wyjść tylko spod pędzla geniusza, jakim z pewnością był da Vinci."))))
-        articlesList.add(Article(title = "Dawid", objectId = "A1"))
-        articlesList.add(Article(title = "Ostatnia Wieczerza", objectId = "A2"))
+        articlesList.add(Article
+            (title = "Dawid",
+            objectId = "A1",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Dawid_(rze%C5%BAba)"),
+            listOfRelatedArticlesIds = listOf("P1"),
+            header = Header(content = listOf(Pair(CREATEOR, "Michał Anioł"),
+                Pair(CREATE_YEAR, "1501 - 1504"),
+                Pair(ART_PLACE, "Galleria dell'Accademia, Florencja"))),
+            listOfPhotos = listOf(Photo(objectId = "A1_0", description = "Dawid",
+                    source = Source(page = LATIMES_COM, url = "https://www.latimes.com/entertainment/arts/culture/la-et-cm-michelangelo-david-statue-florence-20140502-story.html")),
+                Photo(objectId = "A1_1", description = "Posąg Dawida w Galleria dell'Accademia", numberOfParagraph = 0,
+                    source = Source(page = FAKTY_INTERA_PL, url = "https://fakty.interia.pl/nauka/news-naukowcy-rzezba-dawida-dluta-michala-aniola-zagrozona,nId,1418818"))),
+            listOfParagraphs = listOf(Paragraph(content = "Rzeźba Michała Anioła przedstawia biblijnego Dawid bezpośrednio przed walką z Goliatem. Jest uznawana za jedno z najważniejszych dzieł renesansowej rzeźby. Artysta stworzył tą rzeźbę z dbałością o najmniejsze szczegóły, na Dawidze widać nawet naczynia krwionośne."),
+                Paragraph(subtitle = "Rozpoczęcie pracy", content = "To od katedry florenckiej wiosną 1501 Michał dostał zlecenie na wykonanie rzeźby, którą zaczął 13 września. Do swojego dzieła wykorzystał złom marmuru. Podobno kiedy zobaczył kamień, powiedział: „Widzę rzeźbę, teraz muszę tylko odrzucić to, co zbędne”."),
+                Paragraph(content = "Po ukończeniu, 8 września 1504 posąg stanął obok wejścia do Palazzo Vecchio we Florencji. Miał symbolizować wolność zdobytą przez mieszkańców miasta i ich gotowość do jej obrony. Dawid stał tam aż 369 lat, do 1873 roku. Obecnie stoi tam jego kopia."))))
+        articlesList.add(Article
+            (title = "Ostatnia Wieczerza",
+            objectId = "A2",
+            source = Source(srcDescription = MAIN_TEXT, page = NIEZLA_SZTUKA, url = "https://niezlasztuka.net/o-sztuce/ostatnia-wieczerza-leonarda-da-vinci/"),
+            listOfRelatedArticlesIds = listOf("P4"),
+            header = Header(content = listOf(Pair(CREATEOR, "Leonardo da Vinci"),
+                Pair(CREATE_YEAR, "1495 - 1498"),
+                Pair(ART_PLACE, "Muzeum Santia Maria delle Grazie, Mediolan"))),
+            listOfPhotos = listOf(Photo(objectId = "A2_0", description = "Ostatnia Wieczerza",
+                    source = Source(page = GALERIA_ZDJEC_COM, url = "https://galeria-zdjec.com/ostatnia-wieczerza-leonardo-da-vinci/")),
+                Photo(objectId = "A2_1", description = "Kościół Santa Maria delle Grazie, Mediolan", numberOfParagraph = 1,
+                    source = Source(page = GETYOURGUIDE_PL, url = "https://www.getyourguide.pl/discovery/-l4955/?utm_force=0"))),
+            listOfParagraphs = listOf(Paragraph(content = "Ostatnia Wieczerza Leonarda da Vinci została namalowana w latach 1495-1498 na zlecenie księcia Mediolanu, Ludovico Sforzy. Zostało wykonane w jadali klasztoru dominikanów przy kościele Santa Maria delle Grazie w Mediolanie."),
+                Paragraph(content = "Ukazuje scenę ostatniego wspólnego posiłku Chrystusa z apostołami przed pojmaniem na Górze Oliwnej i ukrzyżowaniem. Artysta ukazał tu moment tuż po tym, jak Jezus wypowiedział słowa: „Zaprawdę powiadam wam: jeden z was mnie zdradzi”. To zdanie wywołało duże poruszenie pośród apostołów, co postanowił uwiecznić Leonardo."),
+                Paragraph(subtitle = "Technika Malarska", content = "Leonardo użył tutaj farb temperowych wymieszanych z olejnymi, które nakładał na zagruntowaną ścianę. To mu z kolei umożliwiło zadbać o każdy szczegół obrazu, bez koniecznego pośpiechu, który byłby konieczny przy zastosowaniu techniki fresku, w której specjalna farba odporna wymagała nakładania na mokry tynk."),
+                Paragraph(content = "Niestety nowatorskie pomysły Leonarda z techniką malarską i stosowanymi farbami sprawiły, że Ostatnia Wieczerza z czasem zaczęła blaknąć i łuszczyć się już kilka lat po jej wykonaniu."))))
         articlesList.add(Article(title = "Narodziny Wenus", objectId = "A3"))
         return articlesList
     }
@@ -250,5 +279,9 @@ class ArticleDaoImpl: ArticleDao {
         const val CULTURE_PL = "culture.pl"
         const val PODROZE_ONET = "podroze.onet.pl"
         const val POLSKINA5_PL = "polskina5.pl"
+        const val LATIMES_COM = "latimes.com"
+        const val FAKTY_INTERA_PL = "fakty.interia.pl"
+        const val GALERIA_ZDJEC_COM = "galeria-zdjec.com"
+        const val GETYOURGUIDE_PL= "getyourguide.pl"
     }
 }
