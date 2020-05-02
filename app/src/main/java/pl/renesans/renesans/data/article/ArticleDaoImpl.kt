@@ -230,10 +230,62 @@ class ArticleDaoImpl: ArticleDao {
 
     override fun getImportantEvents(): List<Article> {
         val articlesList = mutableListOf<Article>()
-        articlesList.add(Article(title = "Niewola awiniońska papieży", objectId = "E0"))
-        articlesList.add(Article(title = "Wynalazek druku", objectId = "E1"))
-        articlesList.add(Article(title = "Upadek cesarstwa bizantyjskiego", objectId = "E2"))
-        articlesList.add(Article(title = "Odkrycie Ameryki", objectId = "E3"))
+        articlesList.add(Article
+            (title = "Niewola awiniońska papieży",
+            objectId = "E0",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Niewola_awinio%C5%84ska"),
+            header = Header(content = listOf(Pair(TIME, "1309 - 1377"),
+                Pair(PLACE, "Awinion, Francja"))),
+            listOfPhotos = listOf(Photo(objectId = "E0_0", description = "Niewola awiniońska papieży",
+                    source = Source(page = POLITYKA_PL, url = "https://www.polityka.pl/pomocnikhistoryczny/1640215,1,papieze-w-niewoli.read")),
+                Photo(objectId = "E0_1", description = "Gulden, Lubeka, 1341 rok", numberOfParagraph = 0,
+                    source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Gulden"))),
+            listOfParagraphs = listOf(Paragraph(content = "Niewolą awiniońską papieży nazywa się okres rezydowania papieży w Awinionie - miasta położonego na południu Francji. Awinion stał się rezydencją papieży w 1309 roku, kiedy osiadł tam papież Klemens V wraz z Kurią. Dopiero jednak w roku 1348 roku stało się ich własnością, kiedy papież Klemens VI kupił je za 80 tys. złotych guldenów od królowej Joanny Neapolitańskiej. Rezydencja ostatniego papieża trwała aż do roku 1377 roku."),
+                Paragraph(subtitle = "Wsparcie królów Francji", content = "Papieże korzystali ze wsparcia królów Francji, lecz byli też od nich uzależnieni i zagrożeni politycznie i militarnie ze strony silnej monarchii francuskiej. Dopiero Grzegorz XI, wsłuchując się w napomnienia św. Katarzyny Sieneńskiej, powrócił do Rzymu w 1377 roku."))))
+        articlesList.add(Article
+            (title = "Wynalazek druku",
+            objectId = "E1",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Johannes_Gutenberg"),
+            header = Header(content = listOf(Pair(CREATEOR, "Johannes Gutenberg"),
+                    Pair(TIME, "ok. 1445"))),
+            listOfPhotos = listOf(Photo(objectId = "E1_0", description = "Wynalazek druku",
+                    source = Source(page = YOUTUBE_COM, url = "https://www.youtube.com/watch?v=CtDnTj8XGUM")),
+                Photo(objectId = "E1_1", description = "Kaszta zecerska pełna czcionek", numberOfParagraph = 1,
+                    source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Czcionka"))),
+            listOfParagraphs = listOf(Paragraph(subtitle = "Twórca", content = "Jan Gutenberg to niemiecki rzemieślnik, złotnik i drukarz. To on jest twórcą pierwszej przemysłowej metody druku na świecie. Data powstania pierwszych druków wciąż pozostaje dla nas zagadką, badacze spierają się, czy pierwsze druki powstały podczas jego pobytu w Strasburgu (1434 - 1444), czy dopiero w drukarni założonej przez niego w 1448 roku w Moguncji."),
+                Paragraph(content = "Rok 1440 lub 1450 umownie uznaje się za rok, w którym po raz pierwszy Gutenberg użył swojej ruchomej czcionki. Jego najdoskonalszą i najpopularniejszą wydrukowaną publikacją jest Biblia Gutenberga, która została wydrukowana w latach 1452 - 1455."),
+                Paragraph(subtitle = "Prędkość druku", content = "Dla dzisiejszych możliwości technicznych tempo w drukarni Gutenberga było bardzo powolne – wydrukowanie jednej strony zajmowało trzy dni. – Jeden dzień drukarz moczył papier, drugi drukował, a trzeci dzień suszył stronę, dopiero potem zadrukowane strony trafiały do oprawy, czasami nawet w ciągu 20 lat – wyjaśniał Tadeusz Sarocki."),
+                Paragraph(content = "Jednak był to nadzwyczajny wynalazek biorąc pod uwagę, że średniowiecznemu mnichowi-skrybie przepisanie odręczne jednej księgi zabierało czasami nawet połowę życia, a księgi te trafiały tylko do najbogatszych – na dwory panujących.",
+                    source = Source(photoId = "Z2_0", srcDescription = "Prędkość druku", page = POLSKIE_RADIO_PL, url = "https://www.polskieradio.pl/39/156/Artykul/1038182,Wynalazek-pana-Gutenberga")))))
+        articlesList.add(Article
+            (title = "Upadek cesarstwa bizantyjskiego",
+            objectId = "E2",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Upadek_Konstantynopola#Bibliografia"),
+            header = Header(content = listOf(Pair(TIME, "2 kwietnia - 29 maja 1453"),
+                    Pair(PLACE, "Konstantynopol"))),
+            listOfPhotos = listOf(Photo(objectId = "E2_0", description = "Upadek cesarstwa bizantyjskiego",
+                    source = Source(page = ARCHIWUM_RP_PL, url = "https://archiwum.rp.pl/artykul/952943-Zmierzch-cesarstwa--bizantyjskiego.html")),
+                Photo(objectId = "E2_1", description = "Mapa Konstantynopola", numberOfParagraph = 1,
+                    source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Upadek_Konstantynopola#Bibliografia"))),
+            listOfParagraphs = listOf(Paragraph(subtitle = "Śmierć cesarza", content = "We wtorek 29 maja 1453 roku wojska Imperium Osmańskiego zajęły Konstantynopol. Zdobyte miasto stało się stolicą tego Imperium i pozostało nią do powstania republiki w 1923 roku. Zdobycie miasta oraz śmierć ostatniego cesarza bizantyjskiego Konstantyna XI pociągneły za sobą nieodwracalny już upadek Cesarstwa wschodniorzmskiego."),
+                Paragraph(content = "Zwycięstwo Turków zapewniło im panowanie nad wschodnim basenem Morza Śródziemnego i otworzyło drogę do podboju Europy. Turcy zaczęli też stosować w odniesieniu do miasta nazwę Stambuł, co pochodzi od zniekształconego w ustach Turków greckiego wyrażenia i oznacza „do miasta”.",
+                    source = Source(photoId = "Z2_0", srcDescription = "Pochodzenie nazwy Stambuł", page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Stambu%C5%82#Nazwa")),
+                Paragraph(subtitle = "Dwie strony muru", content = "Armia turecka składała się z około 80 tysięcy regularnego wojska, około 20 tysięcy baszybuzuków (żołnierzy nieregularnego wojska tureckiego, pochodzących z ochotniczego naboru) oraz kilku tysięcy żołnierzy służ tyłowych i 70 dział."),
+                Paragraph(content = "Wszystkich zdolnych do walki żołnierzy bizantyjskich było około 7 tysięcy, w tym 2 tysiące sprzymierzeńców. Pomoc dla Bizancjum zaoferował Giovanni Giustiniani Longo wystawiając około 700 ludzi oraz Katalonia."))))
+        articlesList.add(Article
+            (title = "Odkrycie Ameryki",
+            objectId = "E3",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Odkrycie_Ameryki"),
+            header = Header(content = listOf(Pair(EXPLORER, "Krzysztof Kolumb"),
+                    Pair(DATE, "12 października 1492"))),
+            listOfPhotos = listOf(Photo(objectId = "E3_0", description = "Odkrycie Ameryki",
+                    source = Source(page = WOJCIECH_PIESTRAK_PL, url = "https://wojciechpiestrak.pl/odkrycie-ameryki-przez-kolumba/")),
+                Photo(objectId = "E3_1", description = "Podróże Krzysztofa Kolumba", numberOfParagraph = 2,
+                    source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Odkrycie_Ameryki"))),
+            listOfParagraphs = listOf(Paragraph(subtitle = "„Odkrycie” Ameryki", content = "Bardzo popularne określenie faktu dotarcia Kolumba do Ameryki nazywa się odkryciem tego kontynentu. W rzeczywistości jednak jest to trochę naciągnięte. To mongoloidzi (ludność rasy żółtej) przybywając z Azji jako pierwsi dotarli do kontynentu amerykańskiego. Z kolei za pierwszego europejczyka, który dotarł do Ameryki, uznaje się Islandczyka Leifa Erikssona (na początku XI w.)."),
+                Paragraph(subtitle = "Podróż do Indii", content = "Krzysztof Kolumb postawił sobie cel dotarcia do Indii, jednak zamierzał przepłynąć przez Ocean Atlantycki w kierunku zachodnim. Na podstawie dzieła greckiego geografa Ptolemeusza, przyjął, że Ziemia jest kulista. Po wielu latach w końcu udało mu się przekonać hiszpańską królową Izabelę Kastylijską do sfinansowania jego pomysłu i 3 sierpnia 1492 r. wyruszył w dziewiczy rejs przez Atlantyk."),
+                Paragraph(content = "12 października trzy statki, z flagową „Santa Marią” na czele, dotarły do brzegów wyspy San Salvador, którą uznano za jedną z wysp japońskich. Po opłynięciu jeszcze kilku innych wysp wrócił do Hiszpanii, gdzie w Barcelonie został przyjęty z gorącym entuzjazmem. Z czasem zorganizował tam jeszcze kolejne trzy podróże. Tym razem dotarł do wybrzeży Wenezueli, Hondurasu i Panamy, które ponownie zostały uznane przez odkrywców za kontynent azjatycki."),
+                Paragraph(content = "Dopiero 20 lat później podróżujący do Ameryki Południowej żeglarz Amerigo Vespucci stwierdził jako pierwszy, że odkryte przez Kolumba lądy to nie Azja, lecz nowy, nieznany do tego czasu ląd. Nazwano go od jego imienia Ameryką."))))
         return articlesList
     }
 
@@ -279,7 +331,11 @@ class ArticleDaoImpl: ArticleDao {
         const val NATIONALITY = "Narodowość"
         const val CREATE_YEAR = "Data powstania"
         const val CREATEOR = "Twórca"
+        const val EXPLORER = "Odkrywca"
         const val ART_PLACE = "Miejsce przebywania"
+        const val TIME = "Okres"
+        const val PLACE = "Miejsce"
+        const val DATE = "Data"
 
         const val WIKIPEDIA_PL = "pl.wikipedia.org"
         const val TVP_INFO = "tvp.info"
@@ -298,5 +354,10 @@ class ArticleDaoImpl: ArticleDao {
         const val GALERIA_ZDJEC_COM = "galeria-zdjec.com"
         const val GETYOURGUIDE_PL= "getyourguide.pl"
         const val DZIECKOWDORDZE_COM = "dzieckowdrodze.com"
+        const val POLITYKA_PL = "polityka.pl"
+        const val YOUTUBE_COM = "youtube.com"
+        const val ARCHIWUM_RP_PL = "archiwum.rp.pl"
+        const val WOJCIECH_PIESTRAK_PL = "wojciechpiestrak.pl"
+        const val POLSKIE_RADIO_PL = "polskieradio.pl"
     }
 }
