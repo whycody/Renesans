@@ -4,10 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.activity_tour.*
@@ -26,6 +28,7 @@ import pl.renesans.renesans.map.ClusterManagerRenderer
 import pl.renesans.renesans.map.ClusterMarker
 import pl.renesans.renesans.settings.SettingsPresenterImpl
 
+
 class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     ImageDaoContract.ImageDaoInterractor, TourContract.TourView, OnMapReadyCallback {
 
@@ -33,6 +36,7 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     private lateinit var presenter: TourContract.TourPresenter
     private lateinit var sharedPrefs: SharedPreferences
     private var dots = mutableListOf<View>()
+    private var markers = mutableListOf<ClusterMarker>()
     private var currentPage = 0
 
     private var googleMap: GoogleMap? = null
@@ -135,6 +139,8 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     }
 
     override fun onPageSelected(position: Int) {
+        checkUserHasEndedTour(position)
+        if(position == dots.size - 2 && currentPage == dots.size - 1) return
         presenter.onPageSelected(position)
         dots[currentPage].background = getDrawable(R.drawable.sh_circle_transp_gray)
         dots[position].background = getDrawable(R.drawable.sh_circle_gray)
@@ -143,8 +149,14 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         setNextBtnProperties(position)
     }
 
+    private fun checkUserHasEndedTour(position: Int){
+        if(position == dots.size - 2 && currentPage == dots.size - 1)
+            tourPager.currentItem = currentPage
+        else if(position == dots.size - 1 && currentPage != dots.size - 1) showAllTour()
+    }
+
     private fun setBackBtnProperties(position: Int){
-        if(position==0) backBtn.visibility = View.INVISIBLE
+        if(position==0 || position==dots.size-1) backBtn.visibility = View.INVISIBLE
         else backBtn.visibility = View.VISIBLE
     }
 
@@ -152,10 +164,29 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         if(position==dots.size-1){
             nextBtn.text = getString(R.string.end)
             nextBtn.setOnClickListener{ finish() }
+        }else if(position==dots.size-2){
+            nextBtn.text = getString(R.string.end)
+            nextBtn.setOnClickListener{ showAllTour() }
         }else{
             nextBtn.text = getString(R.string.next)
             nextBtn.setOnClickListener{ showNextPage() }
         }
+    }
+
+    private fun showAllTour(){
+        showNextPage()
+        val params = mapConstraint.layoutParams as LinearLayout.LayoutParams
+        params.weight = 2f
+        articlePhoto.visibility = View.GONE
+        animateWholeTourCamera()
+    }
+
+    private fun animateWholeTourCamera(){
+        val builder = LatLngBounds.Builder()
+        for (marker in markers) builder.include(marker.position)
+        val bounds = builder.build()
+        val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 0)
+        googleMap?.animateCamera(cameraUpdate)
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
@@ -166,8 +197,9 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         Glide.with(applicationContext).load(photoBitmap).placeholder(articlePhoto.drawable).into(articlePhoto)
     }
 
-    override fun addClusterMarkerToMap(clusterMakrer: ClusterMarker) {
-        clusterManager?.addItem(clusterMakrer)
+    override fun addClusterMarkerToMap(clusterMarker: ClusterMarker) {
+        markers.add(clusterMarker)
+        clusterManager?.addItem(clusterMarker)
         clusterManager?.cluster()
     }
 
