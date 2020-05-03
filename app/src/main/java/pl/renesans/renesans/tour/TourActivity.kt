@@ -140,7 +140,6 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
 
     override fun onPageSelected(position: Int) {
         checkUserHasEndedTour(position)
-        if(position == dots.size - 2 && currentPage == dots.size - 1) return
         presenter.onPageSelected(position)
         dots[currentPage].background = getDrawable(R.drawable.sh_circle_transp_gray)
         dots[position].background = getDrawable(R.drawable.sh_circle_gray)
@@ -150,14 +149,22 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     }
 
     private fun checkUserHasEndedTour(position: Int){
-        if(position == dots.size - 2 && currentPage == dots.size - 1)
-            tourPager.currentItem = currentPage
-        else if(position == dots.size - 1 && currentPage != dots.size - 1) showAllTour()
+        if(position == dots.size - 1 && currentPage != dots.size - 1) showAllTour()
     }
 
     private fun setBackBtnProperties(position: Int){
-        if(position==0 || position==dots.size-1) backBtn.visibility = View.INVISIBLE
+        if(position==0) backBtn.visibility = View.INVISIBLE
         else backBtn.visibility = View.VISIBLE
+        checkTourLayout()
+    }
+
+    private fun checkTourLayout(){
+        val photoIsVisible = articlePhoto.visibility == View.VISIBLE
+        if(currentPage != dots.size -1 && !photoIsVisible){
+            val params = mapConstraint.layoutParams as LinearLayout.LayoutParams
+            params.weight = 1f
+            articlePhoto.visibility = View.VISIBLE
+        }
     }
 
     private fun setNextBtnProperties(position: Int){
@@ -165,7 +172,7 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
             nextBtn.text = getString(R.string.end)
             nextBtn.setOnClickListener{ finish() }
         }else if(position==dots.size-2){
-            nextBtn.text = getString(R.string.end)
+            nextBtn.text = getString(R.string.next)
             nextBtn.setOnClickListener{ showAllTour() }
         }else{
             nextBtn.text = getString(R.string.next)

@@ -98,7 +98,7 @@ class ArticleDaoImpl: ArticleDao {
                 PhotoArticle(objectId = "T0_10",  lat = 54.356836, lng = 19.681768, title = "Frombork", paragraph = Paragraph(content = "Powrócił Kopernik, gdzie mógł spokojnie oddać się pracy naukowej. Nikt nie podzielał astronomicznych zainteresowań Mikołaja, był za to ceniony jako ekonomista i lekarz."), photo = Photo(description = "Zespół katedralny")),
                 PhotoArticle(objectId = "T0_13",  lat = 49.451838, lng = 11.076397, title = "Norymberga, miejsce druku dzieła", paragraph = Paragraph(content = "W połowie 1542 r. Kopernik wysłał dzieło De revolutionibus do druku."), photo = Photo(description = "Norymberga")),
                 PhotoArticle(objectId = "T0_14",  lat = 54.357551, lng = 19.682014, title = "Frombork, miejsce śmierci", paragraph = Paragraph(content = "Kopernik zmarł przed 21 maja 1543, niemal w tym samym czasie, kiedy w Norymerdze wydrukowano epokowe dzieło De revolutionibus orbium coelestium."), photo = Photo(description = "Frombork")),
-                PhotoArticle(objectId = "T0_13",  title = "Szlak Mikołaja Kopernika", paragraph = Paragraph(content = "Rozegrały się najważniejsze wydarzenia z życia Mikołaja Kopernika. Dziękujemy, że prześledziłeś te chwile z nami."), photo = Photo(description = "Europa")))
+                PhotoArticle(objectId = "T0",  title = "Szlak Mikołaja Kopernika", paragraph = Paragraph(content = "Rozegrały się najważniejsze wydarzenia z życia Mikołaja Kopernika. Dziękujemy, że prześledziłeś te chwile z nami."), photo = Photo(description = "Europa")))
             )
         ))
         articlesList.add(Article
