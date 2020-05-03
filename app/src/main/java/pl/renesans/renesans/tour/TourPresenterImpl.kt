@@ -26,16 +26,21 @@ class TourPresenterImpl(val context: Context, val view: TourContract.TourView): 
     override fun onPageSelected(position: Int) {
         currentPage = position
         imageDao.loadPhotoInBothQualities(position, tour.photosArticlesList!![position].objectId+"_0")
-        view.animateCamera(LatLng(tour.photosArticlesList!![position].lat!!, tour.photosArticlesList!![position].lng!!))
+        if(tour.photosArticlesList!![position].lat != null &&  tour.photosArticlesList!![position].lng != null)
+            view.animateCamera(LatLng(tour.photosArticlesList!![position].lat!!, tour.photosArticlesList!![position].lng!!))
     }
 
     override fun addMarkers() {
         tour.photosArticlesList?.forEach { photoArticle ->
-            photoArticle.latLng = LatLng(photoArticle.lat!!, photoArticle.lng!!)
-            val newPhotoArticle = PhotoArticle(title = photoArticle.photo!!.description,
-                latLng = photoArticle.latLng)
-            val cluster = ClusterMarker(newPhotoArticle)
-            view.addClusterMarkerToMap(cluster)
+            if(photoArticle.lat != null && photoArticle.lng != null) {
+                photoArticle.latLng = LatLng(photoArticle.lat!!, photoArticle.lng!!)
+                val newPhotoArticle = PhotoArticle(
+                    title = photoArticle.photo!!.description,
+                    latLng = photoArticle.latLng
+                )
+                val cluster = ClusterMarker(newPhotoArticle)
+                view.addClusterMarkerToMap(cluster)
+            }
         }
     }
 

@@ -172,7 +172,7 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     }
 
     override fun animateCamera(latLng: LatLng) {
-        googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f), 800, null)
+        googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f), 1500, null)
     }
 
     override fun moveCamera(latLng: LatLng) {
