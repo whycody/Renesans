@@ -307,11 +307,64 @@ class ArticleDaoImpl: ArticleDao {
 
     override fun getOtherEras(): List<Article> {
         val articlesList = mutableListOf<Article>()
-        articlesList.add(Article(title = "Renesans", objectId = "O4"))
-        articlesList.add(Article(title = "Średniowiecze", objectId = "O0"))
-        articlesList.add(Article(title = "Barok", objectId = "O1"))
-        articlesList.add(Article(title = "Oświecenie", objectId = "O2"))
-        articlesList.add(Article(title = "Romantyzm", objectId = "O3"))
+        articlesList.add(Article
+            (title = "Renesans",
+            objectId = "O4",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Renesans"),
+            header = Header(content = listOf(Pair(TIME_FRAME_ITALY, "XIV w. - XVI w."),
+                Pair(TIME_FRAME_EUROPE, "koniec XV w. - koniec XVI w."),
+                Pair(TIME_FRAME_POLAND, "XVI w. - lata 30. XVII w."))),
+            listOfRelatedArticlesIds = listOf("E2", "E3", "P0"),
+            listOfPhotos = listOf(Photo(objectId = "O4_0", description = "Renesans",
+                source = Source(page = LICEALISTA_PL, url = "http://licealista.pl/renesans/")),
+                Photo(objectId = "O4_1", description = "Ostateczne zerwanie Marcina Lutra z Kościołem katolickim", numberOfParagraph = 2,
+                    source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Reformacja")),
+                Photo(objectId = "P0_1", description = "Fragment \"O obrotach sfer niebieskich\", model heliocentryczny", numberOfParagraph = 3,
+                    source = Source(page = TVP_INFO, url = "https://www.tvp.info/12865831/przez-dwa-dni-mozna-ogladac-dzielo-kopernika"))),
+            listOfParagraphs = listOf(Paragraph(subtitle = "Znaczenie nazwy", content = "Termin „renesans” jest równoznaczny z terminem „odrodzenie”. Oba te słowa stosuje się wymiennie na określenie epoki w dziejach kultury. Pierwsze z nich, renesans, pochodzi od francuskiego słowa renaissance, użytego przez Jules’a Micheleta i Jakoba Burckhardta w połowie XIX w. Określenie renaissance przyjęło się w wielu językach europejskich, w tym francuskim, angielskim i niemieckim."),
+                Paragraph(subtitle = "Ramy czasowe", content = "Początek epoki pokrywa się z końcem średniowiecza, dlatego za jej początek można uznać takie daty jak upadek Konstantynopola, koniec wojny stuletniej, czy odkrycie Ameryki. Ustalenie początku epoki renesansu utrudnia fakt, że do różnych krajów dotarł on w różnym czasie, a w żadnej dziedzinie kultury nie wyparł do końca form średniowiecznych."),
+                Paragraph(content = "Równie sporna jest data końca renesansu. Często wymienia się „okrągłą” datę 1600, lecz również daty różnych wydarzeń, takich jak wystąpienie Lutra (1517), sobór trydencki (1548), czy koniec wojny trzydziestoletniej (1648)."),
+                Paragraph(subtitle = "Odrodzenie sztuk i nauk", content = "Wiek XIX postrzegał odrodzenie jako epokę postępu naukowo-technicznego, wyrafinowanej kultury materialnej, indywidualizmu, a nawet ateizmu, przeciwstawiając go ostro średniowieczu. Renesans jest często określany jako „odrodzenie sztuk i nauk”. Nowa epoka oznaczała przede wszystkim inne spojrzenie na wszechświat. Dzięki m.in. odkryciu Kopernika zaczęto obdarzać większym zaufaniem naukę i rozum."),
+                Paragraph(content = "Mniejszym zaufaniem z kolei obdarzono religię. Przez m.in. nurt reformacji zapoczątkowany przez Marcina Lutra pozycja Kościoła osłabła, co również rozbiło jedność religijną Europy. Należy również w kontekście renesansu wspomnieć o takich ważnych faktach jak odkrycia geograficzne, czy rozpowszechnienie druku."))))
+        articlesList.add(Article
+            (title = "Średniowiecze",
+            objectId = "O0",
+            source = Source(srcDescription = MAIN_TEXT, page = CIEKAWOSTKI_HISTORYCZNE_PL, url = "https://ciekawostkihistoryczne.pl/category/epoka/sredniowiecze/"),
+            header = Header(content = listOf(Pair(TIME_FRAME_EUROPE, "V w. - XV w."))),
+            listOfRelatedArticlesIds = listOf("E2"),
+            listOfPhotos = listOf(Photo(objectId = "O0_0", description = "Średniowiecze",
+                    source = Source(page = ALEKLASA_PL, url = "http://aleklasa.pl/category/liceum/c155-powtorka-z-epok-literackich/c159-sredniowiecze")),
+                Photo(objectId = "O0_1", description = "Statek wikngów XX w, model 3D", numberOfParagraph = 1,
+                    source = Source(page = MOZAWEB_COM, url = "https://www.mozaweb.com/pl/Extra-Modele_3D-Statek_Wikingow_X_wiek-45104"))),
+            listOfParagraphs = listOf(Paragraph(subtitle = "Ramy czasowe i nazwa epoki", content = "Czas trwania epoki datuje się na od V wieku do XV. Za początek średniowiecza uważa się upadek cesarstwa zachodniorzymskiego, a za koniec takie wydarzeni jak upadek Konstantynopola (1453), czy wynalezienie druku. Jest środkowym okresem w podziale Europy na starożytność, średniowiecze i nowożytność. Sama również dzieli się na trzy etapy: średniowiecze wczesne, pełne (dojrzałe) i późne."),
+                Paragraph(content = "Nazwa epoki wywodzi się od łacińskiego zwrotu „media aetas”, co oznacza „wieki średnie”. Nadali ją tej epoce twórcy renesansowi na przełomie XV/XVI w. Miała ona sugerować pośredniość epoki pomiędzy tym, co autentyczne a tym, co renesansowe. Używano ją więc w sensie negatywnym. Oprócz tej nazwy funkcjonuje również metaforyczne okreslenie średniowiecza jako wieków ciemnych.",
+                    source = Source(srcDescription = "Znaczenie nazwy epoki", photoId = "Z2_0", page = SCIAGA_PL, url = "https://sciaga.pl/tekst/61216-62-wyjasnienie_nazwy_sredniowiecze_i_zakres_uzycia")),
+                Paragraph(subtitle = "Niepochlebne zabarwienie", content = "Termin średniowiecza od początku miał wyraźnie oskarżycielskie, krytyczne zabarwienie. Średniowiecze zawsze postrzegano w ściśle negatywnych kategoriach: jako czas ciemnoty i barbarzyństwa, a także bezprecedensowego zacofania cywilizacyjnego. W wieku XVIII, a więc okresie tak zwanego oświecenia, rozpowszechnił się z kolei nie mniej negatywny termin „mrocznych wieków”."),
+                Paragraph(content = "W świetle obecnej wiedzy wcześniejsze wyobrażenie o dziesięciu wiekach europejskiej ciemnoty ma niewiele wspólnego z rzeczywistością. Choć nadal większość postrzega Średniowiecze jako nic postępowego, to jednak jest to okres kluczowych przemian, ale nie stałego i głębokiego regresu. W tej epoce następowały istotne innowacje w przeróżnych dziedzinach, takich jak transport, rolnictwo i handlu. Był to również czas wielkich odkryć geograficznych, jak choćby dopłynięcie wikingów do Ameryki."))))
+        articlesList.add(Article
+            (title = "Barok",
+            objectId = "O1",
+            source = Source(srcDescription = MAIN_TEXT),
+            header = Header(content = listOf()),
+            listOfPhotos = listOf(Photo(objectId = "O1_0", description = "Barok",
+                source = Source(page = EPODRECZNIKI_PL, url = "https://epodreczniki.pl/a/od-renesansu-do-baroku/Ds47GuVAU"))),
+            listOfParagraphs = listOf(Paragraph(content = "Ten artykuł jeszcze nie powstał"))))
+        articlesList.add(Article
+            (title = "Oświecenie",
+            objectId = "O2",
+            source = Source(srcDescription = MAIN_TEXT),
+            header = Header(content = listOf()),
+            listOfPhotos = listOf(Photo(objectId = "O2_0", description = "Oświecenie",
+                source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/O%C5%9Bwiecenie_w_Polsce"))),
+            listOfParagraphs = listOf(Paragraph(content = "Ten artykuł jeszcze nie powstał"))))
+        articlesList.add(Article
+            (title = "Romantyzm",
+            objectId = "O3",
+            source = Source(srcDescription = MAIN_TEXT),
+            header = Header(content = listOf()),
+            listOfPhotos = listOf(Photo(objectId = "O3_0", description = "Romantyzm",
+                source = Source(page = RADYKALNYSLON_ORG, url = "http://radykalnyslon.org/romantyzm-epoka-trentowskiego-i-mickiewicza/"))),
+            listOfParagraphs = listOf(Paragraph(content = "Ten artykuł jeszcze nie powstał"))))
         return articlesList
     }
 
@@ -350,6 +403,10 @@ class ArticleDaoImpl: ArticleDao {
         const val EXPLORER = "Odkrywca"
         const val ART_PLACE = "Miejsce przebywania"
         const val TIME = "Okres"
+        const val TIME_FRAME = "Ramy czasowe"
+        const val TIME_FRAME_POLAND = "Ramy czasowe w Polsce"
+        const val TIME_FRAME_EUROPE = "Ramy czasowe w Europie"
+        const val TIME_FRAME_ITALY = "Ramy czasowe we Włoszech"
         const val PLACE = "Miejsce"
         const val DATE = "Data"
 
@@ -375,5 +432,12 @@ class ArticleDaoImpl: ArticleDao {
         const val ARCHIWUM_RP_PL = "archiwum.rp.pl"
         const val WOJCIECH_PIESTRAK_PL = "wojciechpiestrak.pl"
         const val POLSKIE_RADIO_PL = "polskieradio.pl"
+        const val LICEALISTA_PL = "licealista.pl"
+        const val ALEKLASA_PL = "aleklasa.pl"
+        const val EPODRECZNIKI_PL = "epodreczniki.pl"
+        const val RADYKALNYSLON_ORG = "radykalnyslon.org"
+        const val SCIAGA_PL = "sciaga.pl"
+        const val CIEKAWOSTKI_HISTORYCZNE_PL = "ciekawostkihistoryczne.pl"
+        const val MOZAWEB_COM = "mozaweb.com"
     }
 }
