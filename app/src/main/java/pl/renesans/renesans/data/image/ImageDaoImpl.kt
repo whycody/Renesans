@@ -14,6 +14,7 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
     private val storageReference = storage.reference
     private val externalStorage = android.os.Environment.getExternalStorageDirectory().path
     private val sharedPrefs = context.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
+    private var downloadPhotos = true
 
     override fun loadPhotoInBothQualities(pos: Int, id: String) {
         loadPhoto(pos, id, false)
@@ -29,7 +30,7 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
         val fileName = "${id}b.jpg"
         val fileExists = badQualityPhotoIsDownloaded(fileName)
         if(!fileExists){
-            val downloadPhotos = sharedPrefs.getBoolean(SettingsPresenterImpl.DOWNLOAD_PHOTOS, true)
+            downloadPhotos = sharedPrefs.getBoolean(SettingsPresenterImpl.DOWNLOAD_PHOTOS, true)
             if(downloadPhotos) downloadPhotoFromFirebase(id)
         }else loadBadQualityPhotoToHolder(pos, fileName)
     }
@@ -69,7 +70,16 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
         val file = File(filePath)
         if(file.exists()){
             val myBitmap = BitmapFactory.decodeFile(file.absolutePath)
-            interractor.loadPhotoFromBitmap(myBitmap, pos)
+            if(myBitmap!=null) interractor.loadPhotoFromBitmap(myBitmap, pos)
+            else downloadPhotoAgain(fileName)
+        }
+    }
+
+    private fun downloadPhotoAgain(fileName: String){
+        if(downloadPhotos){
+            val filePath = "$externalStorage/Renesans/$fileName"
+            val file = File(filePath)
+            if(file.delete()) downloadPhotoFromFirebase(fileName.substring(0, fileName.length - 5))
         }
     }
 }

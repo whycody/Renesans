@@ -15,7 +15,8 @@ class ArticleDaoImpl: ArticleDao {
         article.listOfRelatedArticlesIds?.forEach { articleId ->
             relatedArticles.add(getArticleFromId(articleId))
         }
-        if(article.objectId != "O4") relatedArticles.add(getArticleFromId("O4"))
+        if(getObjectTypeFromObjectId(article.objectId!!) != DiscoverRecyclerFragment.OTHER_ERAS)
+            relatedArticles.add(getArticleFromId("O4"))
         if(articleHasSources(article))
             relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.SOURCES,
                 title = "Źródła", objectId = "Z0"))

@@ -123,7 +123,7 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
 
     private fun getDefaultView(): View {
         val view = View(this)
-        val params = LinearLayout.LayoutParams(18, 18, 0.0f)
+        val params = LinearLayout.LayoutParams(12, 12, 0.0f)
         params.setMargins(6, 1, 6, 0)
         view.layoutParams = params
         view.background = getDrawable(R.drawable.sh_circle_transp_gray)
