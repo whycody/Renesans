@@ -336,35 +336,63 @@ class ArticleDaoImpl: ArticleDao {
                     source = Source(page = ALEKLASA_PL, url = "http://aleklasa.pl/category/liceum/c155-powtorka-z-epok-literackich/c159-sredniowiecze")),
                 Photo(objectId = "O0_1", description = "Statek wikngów XX w, model 3D", numberOfParagraph = 1,
                     source = Source(page = MOZAWEB_COM, url = "https://www.mozaweb.com/pl/Extra-Modele_3D-Statek_Wikingow_X_wiek-45104"))),
-            listOfParagraphs = listOf(Paragraph(subtitle = "Ramy czasowe i nazwa epoki", content = "Czas trwania epoki datuje się na od V wieku do XV. Za początek średniowiecza uważa się upadek cesarstwa zachodniorzymskiego, a za koniec takie wydarzeni jak upadek Konstantynopola (1453), czy wynalezienie druku. Jest środkowym okresem w podziale Europy na starożytność, średniowiecze i nowożytność. Sama również dzieli się na trzy etapy: średniowiecze wczesne, pełne (dojrzałe) i późne."),
-                Paragraph(content = "Nazwa epoki wywodzi się od łacińskiego zwrotu „media aetas”, co oznacza „wieki średnie”. Nadali ją tej epoce twórcy renesansowi na przełomie XV/XVI w. Miała ona sugerować pośredniość epoki pomiędzy tym, co autentyczne a tym, co renesansowe. Używano ją więc w sensie negatywnym. Oprócz tej nazwy funkcjonuje również metaforyczne okreslenie średniowiecza jako wieków ciemnych.",
+            listOfParagraphs = listOf(Paragraph(subtitle = "Ramy czasowe", content = "Czas trwania epoki datuje się na od V wieku do XV. Za początek średniowiecza uważa się upadek cesarstwa zachodniorzymskiego, a za koniec takie wydarzeni jak upadek Konstantynopola (1453), czy wynalezienie druku. Jest środkowym okresem w podziale Europy na starożytność, średniowiecze i nowożytność. Sama również dzieli się na trzy etapy: średniowiecze wczesne, pełne (dojrzałe) i późne."),
+                Paragraph(subtitle = "Nazwa epoki", content = "Nazwa epoki wywodzi się od łacińskiego zwrotu „media aetas”, co oznacza „wieki średnie”. Nadali ją tej epoce twórcy renesansowi na przełomie XV/XVI w. Miała ona sugerować pośredniość epoki pomiędzy tym, co autentyczne a tym, co renesansowe. Używano ją więc w sensie negatywnym. Oprócz tej nazwy funkcjonuje również metaforyczne okreslenie średniowiecza jako wieków ciemnych.",
                     source = Source(srcDescription = "Znaczenie nazwy epoki", photoId = "Z2_0", page = SCIAGA_PL, url = "https://sciaga.pl/tekst/61216-62-wyjasnienie_nazwy_sredniowiecze_i_zakres_uzycia")),
                 Paragraph(subtitle = "Niepochlebne zabarwienie", content = "Termin średniowiecza od początku miał wyraźnie oskarżycielskie, krytyczne zabarwienie. Średniowiecze zawsze postrzegano w ściśle negatywnych kategoriach: jako czas ciemnoty i barbarzyństwa, a także bezprecedensowego zacofania cywilizacyjnego. W wieku XVIII, a więc okresie tak zwanego oświecenia, rozpowszechnił się z kolei nie mniej negatywny termin „mrocznych wieków”."),
                 Paragraph(content = "W świetle obecnej wiedzy wcześniejsze wyobrażenie o dziesięciu wiekach europejskiej ciemnoty ma niewiele wspólnego z rzeczywistością. Choć nadal większość postrzega Średniowiecze jako nic postępowego, to jednak jest to okres kluczowych przemian, ale nie stałego i głębokiego regresu. W tej epoce następowały istotne innowacje w przeróżnych dziedzinach, takich jak transport, rolnictwo i handlu. Był to również czas wielkich odkryć geograficznych, jak choćby dopłynięcie wikingów do Ameryki."))))
         articlesList.add(Article
             (title = "Barok",
             objectId = "O1",
-            source = Source(srcDescription = MAIN_TEXT),
-            header = Header(content = listOf()),
+            source = Source(srcDescription = MAIN_TEXT, page = KLP_PL, url = "https://klp.pl/barok/"),
+            header = Header(content = listOf(Pair(TIME_FRAME, "koniec XVI w. - XVIII w."))),
             listOfPhotos = listOf(Photo(objectId = "O1_0", description = "Barok",
-                source = Source(page = EPODRECZNIKI_PL, url = "https://epodreczniki.pl/a/od-renesansu-do-baroku/Ds47GuVAU"))),
-            listOfParagraphs = listOf(Paragraph(content = "Ten artykuł jeszcze nie powstał"))))
+                    source = Source(page = EPODRECZNIKI_PL, url = "https://epodreczniki.pl/a/od-renesansu-do-baroku/Ds47GuVAU")),
+                Photo(objectId = "O1_1", description = "Mapa Rzeczypospolitej z 1701 roku", numberOfParagraph = 4,
+                    source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Historia_Polski_(1697%E2%80%931763)")),
+                Photo(objectId = "O1_2", description = "Fontanna di Trevi", numberOfParagraph = 5,
+                    source = Source(page = EPODRECZNIKI_PL, url = "https://epodreczniki.pl/a/barok-w-europie-i-polsce/DQDA2uZal")),
+                Photo(objectId = "O1_3", description = "Perły o nieregularnych kształtach", numberOfParagraph = 0,
+                    source = Source(page = STAGE_ODBICIA_BLOGSPOT_COM, url = "https://stage-odbicia.blogspot.com/2011/09/barocco.html"))),
+            listOfParagraphs = listOf(Paragraph(subtitle = "Nazwa epoki", content = "Nazwa epoki baroku wywodzi się z portugalskiego lub włoskiego słowa „barocco”, co oznacza „perłę o nieregularnych kształtach”. W takim znaczeniu po raz pierwszy użył go przyrodnik Garcia de Orta. Początkowo sporadycznie używana nazwa „barok” miała negatywne zabarwienie."),
+                Paragraph(content = "Nie zawsze patrzono na barok jako na ciekawą i wartościową epokę. Rozpatrywano go jedynie jako przykład zepsucia smaku w odniesieniu do renesansu, był utożsamiany ze złym gustem i zacofaniem. W myśl epoki oświecienia, nie zasługiwał nawet na miano osobnego nurtu."),
+                Paragraph(content = "Należne miejsce sztuce baroku przywróciły dopiero badania XX-wieczne. To dwaj niemieccy literaturoznawcy: Heinrich Wölfflin i Fritz Strich byli jednymi z pierwszych, którzy zaczęli patrzeć na barok jako na osobną, pełną wartościowego stylu epokę."),
+                Paragraph(subtitle = "Powrót do religijności", content = "Główną cechą baroku było powrót do wartości duchowych, religijnych, ale nie tylko katolickich. Był to czas wyłonienia się nowych niezależnych nurtów wyznaniowych i myślowych takich jak luteranizm, kalwinizm czy arianizm."),
+                Paragraph(subtitle = "Świetność Rzeczypospolitej", content = "Okres baroku to najlepsze czasy w historii Rzeczypospolitej. Była wówczas jednym z największych mocarstw Europy. Jednocześnie Polska stawała się największym państwem chrześcijańskim w Europie. Rosnąca potęga międzynarodowa nie oznaczała jednak, że wewnątrz państwa ma być równie wspaniale, czego przykładem jest chociażby wybuch powstania Chmielnickiego."),
+                Paragraph(subtitle = "Sztuka baroku", content = "Artyści renesansu byli dość niekonsekwentni. Artyści uważali się za następców sztuki renesansu, jednak naruszali jego zasady i ustalenia. Harmona, jasność, logika i racjonalność ubiegłej epoki zaczęły zanikać. Barok szukał czegoś nowego, kreatywnego. Był to nurt stawiający przede wszystkim na przepych i blask. Miał za zadanie oddziaływać na fantazję i zachwycać swoich odbiorców."),
+                Paragraph(content = "Renesansowy spokój i harmonia, proste formy ze sztuki renesansu zostały zastąpione przez dynamiczne krzywizny, oryginalne, wykwintne i dziwne formy. Niewątpliwe pozwalało to stworzyć wrażenie ruchu, pulsowania."))))
         articlesList.add(Article
             (title = "Oświecenie",
             objectId = "O2",
-            source = Source(srcDescription = MAIN_TEXT),
-            header = Header(content = listOf()),
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/O%C5%9Bwiecenie_(epoka)"),
+            header = Header(content = listOf(Pair(TIME_FRAME, "koniec XVII w. - początek XIX w."))),
+            listOfRelatedArticlesIds = listOf("O4"),
             listOfPhotos = listOf(Photo(objectId = "O2_0", description = "Oświecenie",
-                source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/O%C5%9Bwiecenie_w_Polsce"))),
-            listOfParagraphs = listOf(Paragraph(content = "Ten artykuł jeszcze nie powstał"))))
+                    source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/O%C5%9Bwiecenie_w_Polsce")),
+                Photo(objectId = "O2_1", description = "Repliki pierwszego mikroskopu", numberOfParagraph = 3,
+                    source = Source(page = MICROSCOPE_ANITQUES_COM, url = "http://www.microscope-antiques.com/vlleiden.html"))),
+            listOfParagraphs = listOf(Paragraph(content = "Oświecenie określa się jako wiek rozumu, lub wiek filozofów i przypada na koniec XVII wieku do początku XIX. W tym okresie zaczął się szerzyć deizm, naturalizm, czy, podobnie jak w epoce renesansu, krytyka kościoła. Głównym mottem epoki stała się sentencja, autorstwa Horacego, „Miej odwagę być mądrym”, którą rozsławił niemiecki filozof Immanuel Kant.",
+                    source = Source(srcDescription = "Motto epoki", photoId = "Z2_0", page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Sapere_aude")),
+                Paragraph(subtitle = "Nazwa epoki", content = "Nazwa epoki we wszystkich językach europejskich nawiązuje do światła lub świateł, rozumianego jako siła rozpraszająca mrok i zabobon. Światło jest jedną z głównych metafor całej epoki. Oświecenie w każdym z krajów przybierało swoją specyficzną formę, wynikającą z lokalnych warunków."),
+                Paragraph(subtitle = "Nauka", content = "W epoce oświecenie dokonało się wiele kluczowych wynalazków. Był to również okres doskonalenia dokonań poprzedniej epoki, w której rozpoczęła się rewolucja i powstała nowożytna nauka. Doszło także do wyodrębnienia niektórych dziedzin naukowych."),
+                Paragraph(content = "Kluczowe znaczenie w chemii miało odkrycie tlenu przez Carla Wilhelma Scheele'a i Josepha Priestleya, a następnie badania nad nim przez Antoine'a Lavoisiera, który nadał mu łacińską nazwę oxygen. W dziedzinie biologii natomiast przełomowy okazał się wynalazek mikroskopu dokonany przez Antoniego van Leeuwenhoeka."),
+                Paragraph(content = "Oświecenie jest również epoką w której żył Izaak Newton - matematyk, fizyk, alchemik, teolog, autor trzech praw dynamiki oraz prawa powszechnego ciążenia. Jego dokonania pozwoliły wyjaśnić prawa Keplera na temat ruchu planet oraz ostatecznie potwierdziły heliocentryczny system Kopernika."))))
         articlesList.add(Article
             (title = "Romantyzm",
             objectId = "O3",
-            source = Source(srcDescription = MAIN_TEXT),
-            header = Header(content = listOf()),
+            source = Source(srcDescription = MAIN_TEXT, page = KLP_PL, url = "https://klp.pl/romantyzm/"),
+            header = Header(content = listOf(Pair(TIME_FRAME, "lata 90. XVIII w. - lata 40. XIX w."))),
             listOfPhotos = listOf(Photo(objectId = "O3_0", description = "Romantyzm",
-                source = Source(page = RADYKALNYSLON_ORG, url = "http://radykalnyslon.org/romantyzm-epoka-trentowskiego-i-mickiewicza/"))),
-            listOfParagraphs = listOf(Paragraph(content = "Ten artykuł jeszcze nie powstał"))))
+                    source = Source(page = RADYKALNYSLON_ORG, url = "http://radykalnyslon.org/romantyzm-epoka-trentowskiego-i-mickiewicza/")),
+                Photo(objectId = "O3_1", description = "Krajobraz nordycki. Wiosna, Caspar David Friedriech", numberOfParagraph = 3,
+                    source = Source(page = RYNEKISZTUKA_PL, url = "https://rynekisztuka.pl/2014/09/25/10-ponadczasowych-romantycznych-przedstawien/")),
+                Photo(objectId = "O3_2", description = "Caspar David Friedrich, Wędrowiec nad morzem mgły", numberOfParagraph = 0,
+                    source = Source(page = PRZEKROJ_PL, url = "https://przekroj.pl/kultura/modlitwa-bez-slow-anna-arno"))),
+            listOfParagraphs = listOf(Paragraph(content = "Można pokusić się na powiedzenie, że romantyzm ma równą ilość gorących zwolenników, co zagorzałych przeciwników. Przyczyną może być światopogląd romantycznych bohaterów, których autorzy kreowali w oparciu o własne doświadczenia, wnioski podjęte w trakcie częstych podróży. Wygłaszali kontrowersyjne opinie z punktu widzenia współczesnego czytelnika. Niezrozumiałe wydaje nam się dziś przekonanie o konieczności oddania życia czy pokutowania do ostatnich chwil za zbrodnię popełnioną w młodości."),
+                Paragraph(subtitle = "Epoka skrajności", content = "Z jednej strony ludowość z jej archaicznym językiem, religijnością czy barwnymi strojami i obrzędami (Romantyczność, Ballady i romanse Mickiewicza), z drugiej egzotyka przepełniona tajemnicą, grzechem i seksualnością (Giaur Byrona). Z jednej strony chęć oddania życia za ojczyznę (Kordian Słowackiego), z drugiej negacja wszystkiego (Cierpienia młodego Wertera Goethego)."),
+                Paragraph(subtitle = "Malarstwo", content = "Natchnieniem dla malarzy romantycznych stała się natura, jej tajemniczość, potęga i żywiołowość. Artyści zorientowali się, że nie ujmą tych cech przyrody bez zmian warsztatowych. Postanowili znacznie rozszerzyć paletę barw. Zmianom uległy również zasady kompozycji, dla malarzy bardzo ważny stał się konstrast."),
+                Paragraph(content = "Tematem wielu dzieł stały się zjawiska fantastyczne, lecz malowano również wiele pejzaży. Malarze większą uwagę także zwrócili na to aby ich dzieła niosły ze sobą pewną symbolikę. Za najważniejsze uważano ekspresję, co spowodowało to, że każdy artysta mógł wypracować swój własny styl."),
+                Paragraph(content = "Poza przyrodą dużym zainteresowaniem malarzy romantycznych cieszył się człowiek i jego uczuciowość oraz patriotyczne wydarzenia historyczne. Za romantycznych malarzy uchodzą takie postacie jak: Johann Füssli, Francisco Goya, czy Joseph Mallord William Turner."))))
         return articlesList
     }
 
@@ -439,5 +467,10 @@ class ArticleDaoImpl: ArticleDao {
         const val SCIAGA_PL = "sciaga.pl"
         const val CIEKAWOSTKI_HISTORYCZNE_PL = "ciekawostkihistoryczne.pl"
         const val MOZAWEB_COM = "mozaweb.com"
+        const val KLP_PL = "klp.pl"
+        const val MICROSCOPE_ANITQUES_COM = "microscope-antiques.com"
+        const val RYNEKISZTUKA_PL = "rynekisztuka.pl"
+        const val PRZEKROJ_PL = "przekroj.pl"
+        const val STAGE_ODBICIA_BLOGSPOT_COM = "stage-odbicia.blogspot.com"
     }
 }
