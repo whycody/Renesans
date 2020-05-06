@@ -403,7 +403,8 @@ class ArticleDaoImpl: ArticleDao {
         val photoArticles = getPhotoArticlesList()
         val articlesList = mutableListOf<Article>()
         photoArticles.forEach{ photoArticle ->
-            articlesList.add(articleConverter.convertPhotoArticleToArticle(photoArticle))
+            if(photoArticle.objectType != CITY_TYPE)
+                articlesList.add(articleConverter.convertPhotoArticleToArticle(photoArticle))
         }
         return articlesList
     }
@@ -422,6 +423,62 @@ class ArticleDaoImpl: ArticleDao {
             paragraph = Paragraph(content = "Jest jedyną bramą pozostałą z trzech, które znajdowały się w murach obronnych otaczających miasto. Górna Brama powstała po wytyczeniu północnych granic miasta w drugim akcie lokacyjnym z 4 maja 1378. W roku 2012 prace archeologiczne odsłoniły pierwotne kamienne fundamenty bramy z XIV wieku, tuż na północ od jej obecnego położenia. Podczas wykopalisk odkryto ok. 40 monet z XIV i XV wieku oraz około 120 kul armatnich."),
             photo = Photo(objectId = "I0_0", description = "Brama Górna, Olsztyn",
                 source = Source(page = FOTOGRAFICZNIE16, url = "http://fotograficznie16.rssing.com/chan-38531473/all_p11.html"))))
+        photoArticles.add(PhotoArticle
+            (title = "Zamek",
+            objectId = "I1",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Zamek_Kapitu%C5%82y_Warmi%C5%84skiej_w_Olsztynie"),
+            latLng = LatLng(53.777832, 20.474515),
+            paragraph = Paragraph(content = "Zamek Kapituły Warmińskiej został wybudowany w połowie XIV wieku w stylu gotyckim przez kapitułę warmińską, która była jego właścicielem do roku 1772. Budowla pełniła funkcje obronne oraz była siedzibą min. administratora dóbr kapituły. Najsławniejszym mieszkańcem zamku był Mikołaj Kopernik, który pełnił obowiązki administratora w latach 1516–1521. Na jednej ze ścian zachowała się po nim oryginalna tablica astronomiczna."),
+            photo = Photo(objectId = "I1_0", description = "Zamek w Olsztynie, około 1900 rok",
+                source = Source(page = ZAMKIPOLSKIE_COM, url = "http://www.zamkipolskie.com/olszt/olszt.html"))))
+        photoArticles.add(PhotoArticle
+            (title = "Stary Ratusz",
+            objectId = "I2",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Stary_Ratusz_w_Olsztynie"),
+            latLng = LatLng(53.776378, 20.475753),
+            paragraph = Paragraph(content = "Początkowo budynek – jego południowe skrzydło – zbudowany był w stylu późnego gotyku jako budowla o planie prostokąta, piętrowa. Do dziś zachowały się gotyckie ściany północna, wschodnia i południowa, a po stronie południowej również gotycka elewacja. W 1620 roku uległ spaleniu, podobnie jak większa część miasta. Cztery lata później został odbudowany. Jego oblicze zmieniło się wówczas całkowicie. Władze miasta zajmowały wówczas całe piętro budynku, podczas gdy parter przeznaczony był dla celów handlowych."),
+            photo = Photo(objectId = "I2_0", description = "Rynek i stary ratusz w Olsztynie, około 1910-1914 rok",
+                source = Source(page = POLSKA_ORG_PL, url = "https://polska-org.pl/7802416,foto.html"))))
+        photoArticles.add(PhotoArticle
+            (title = "Teatr Stefana Jaracza",
+            objectId = "I3",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Teatr_im._Stefana_Jaracza_w_Olsztynie"),
+            latLng = LatLng(53.780122, 20.479785),
+            paragraph = Paragraph(content = "Teatr został założony w 1925 jako niem. Treudank-Theater w podzięce dla ówczesnych mieszkańców za wygrany plebiscyt. Teatr funkcjonował pod tą nazwą do 1945, wystawiane wówczas sztuki grano wyłącznie w języku niemieckim. Architektem teatru był August Feddersen. Po II wojnie światowej 18 listopada 1945 roku działalność Teatru jako polskiej sceny zainaugurowano premierą spektaklu „Moralność pani Dulskiej” Gabrieli Zapolskiej, w reżyserii Artura Młodnickiego."),
+            photo = Photo(objectId = "I3_0", description = "Teatr im. Stefana Jaracza w Olsztynie, około 1930-1935 rok",
+                source = Source(page = POLSKA_ORG_PL, url = "https://polska-org.pl/7900593,foto.html"))))
+        photoArticles.add(PhotoArticle
+            (title = "Dąbrowszczaków",
+            objectId = "I4",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/%C5%9Ar%C3%B3dmiejskie_ulice_i_place_w_Olsztynie"),
+            latLng = LatLng(53.778578, 20.482421),
+            paragraph = Paragraph(content = "Pierwotnie do roku 1904 nazwa ulicy brzmiała Wartenburger-Straße (ulica Wartemborska). W roku 1904 zmieniono jej nazwę na Kaiser-Straße (ulica Cesarska), na cześć cesarza Wilhelma I, którego pomnik wzniesiono przed gmachem Gimnazjum Męskiego. Po 1945 roku nosiła nazwę ulicy Stalina, lecz po jego śmierci w okresie 'odwilży' 1956 roku zmieniono nazwę na Dąbrowszczaków."),
+            photo = Photo(objectId = "I4_0", description = "Tramwaje w Olsztynie, ulica Dąbrowszczaków (dawniej Kaiserstrasse), 1910",
+                source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/560824,foto.html"))))
+        photoArticles.add(PhotoArticle
+            (title = "Urząd Pocztowy",
+            objectId = "I5",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Poczta_G%C5%82%C3%B3wna_w_Olsztynie"),
+            latLng = LatLng(53.776478, 20.479686),
+            paragraph = Paragraph(content = "Budynek został zbudowany w 1887 na parceli wykupionej od gminy katolickiej, w stylu neogotyckim, z bogatą dekoracją zewnętrzną z glazurowanej cegły. Na dachu obiektu znajdowały się wieżyczki odciągowe, od których od 1892 rozchodziły się napowietrzne linie telefoniczne. W 1907 budynek został rozbudowany o dodatkowe skrzydło, przeznaczone wyłącznie do obsługi paczek nadsyłanych do żołnierzy służących w garnizonie w Olsztynie."),
+            photo = Photo(objectId = "I5_0", description = "Urząd Pocztowy w Olsztynie, 1915",
+                source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/612/612079/803/Olsztyn_Urzad_Pocztowy_Olsztyn_1.jpg?m=1433563294"))))
+        photoArticles.add(PhotoArticle
+            (title = "Remiza Straży Pożarnej",
+            objectId = "I6",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Remiza_Stra%C5%BCy_Po%C5%BCarnej_w_Olsztynie"),
+            latLng = LatLng(53.772541, 20.476943),
+            paragraph = Paragraph(content = "Remiza Straży Pożarnej w Olsztynie została wybudowana na początku XX wieku w pobliżu Placu Roosevelta. Jej powstanie datuje się na lata 1908-1909. W 1990 roku przeszedł generalny remont. Jest to piętrowy budynek z użytkowym poddaszem o cechach stylu renesansowego z elementami baroku."),
+            photo = Photo(objectId = "I6_0", description = "Remiza Straży Pożarnej w Olsztynie, 1920",
+                source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/46573,obiekt.html?map_z=18&f=1405774-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Budynek Rejencji",
+            objectId = "I7",
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Budynek_Rejencji_w_Olsztynie"),
+            latLng = LatLng(53.776454, 20.486388),
+            paragraph = Paragraph(content = "Gmach wybudowano w latach 1908–1911 na potrzeby urzędu Rejencji Olsztyńskiej (Regierungsbezirk Allenstein) wydzielonej w południowej części Prus Wschodnich w roku 1905 (odpowiednik polskiego województwa). W gmachu urzędował prezydent Rejencji oraz inni jej urzędnicy, znajdowały się taż kasy ubezpieczeń społecznych oraz mieścił się Urząd Powiatów Prus Wschodnich."),
+            photo = Photo(objectId = "I7_0", description = "Urząd Marszałkowski oraz Wojewódzki Sąd Administracyjny w Olsztynie, 1912",
+                source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/7842,obiekt.html?map_z=16&f=837097-foto"))))
         return photoArticles
     }
 
@@ -476,6 +533,9 @@ class ArticleDaoImpl: ArticleDao {
         const val RYNEKISZTUKA_PL = "rynekisztuka.pl"
         const val PRZEKROJ_PL = "przekroj.pl"
         const val STAGE_ODBICIA_BLOGSPOT_COM = "stage-odbicia.blogspot.com"
+        const val ZAMKIPOLSKIE_COM = "zamkipolskie.com"
+        const val POLSKA_ORG_PL = "polska-org.pl"
+        const val OLSZTYN_FOTOPOLSKA_EU = "olsztyn.fotopolska.eu"
 
         const val PLACE_TYPE = 10
         const val CITY_TYPE = 11

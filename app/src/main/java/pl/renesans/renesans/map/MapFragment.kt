@@ -32,7 +32,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private var clusterManager: ClusterManager<ClusterMarker>? = null
     private var clusterManagerRenderer: ClusterManagerRenderer? = null
     private val markersList = mutableListOf<ClusterMarker>()
-    private val zoomLevel = 12f
+    private val zoomLevel = 10f
     private var cameraAnimations = false
     private var presenter: LocationPresenterImpl? = null
     private var adapter: LocationAdapter? = null
@@ -54,7 +54,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(googleMap.cameraPosition.target, 12f))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(googleMap.cameraPosition.target, zoomLevel))
         setUiSettings()
         prepareManagers()
         prepareFusedLocationClient()
@@ -108,7 +108,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
                     clusterMarker.position == marker.position }
                 if(cluster?.getCLusterType() == ArticleDaoImpl.PLACE_TYPE)
                     marker.isVisible = googleMap?.cameraPosition!!.zoom > 10.0f
-                else marker.isVisible = googleMap?.cameraPosition!!.zoom < 10.0f
+                else marker.isVisible = googleMap?.cameraPosition!!.zoom <= 10.0f
             }
         }
         refreshLocationMarkersList()
@@ -127,7 +127,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
                 bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom > 10f)
                 newList.add(marker)
             else if (marker.getCLusterType() == ArticleDaoImpl.CITY_TYPE &&
-                bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom < 10f)
+                bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom <= 10f)
                 newList.add(marker)
         }
         return newList
@@ -171,7 +171,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         if(clusterMarker!=null && clusterMarker.getCLusterType() == ArticleDaoImpl.PLACE_TYPE)
             PhotoBottomSheetDialog(clusterMarker.photoArticle)
             .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
-        else if (clusterMarker!=null) moveToLocation(clusterMarker.position, 12f)
+        else if (clusterMarker!=null) moveToLocation(clusterMarker.position, 15f)
     }
 
     override fun addClusterMarkerToMap(clusterMarker: ClusterMarker) {
@@ -181,7 +181,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     override fun moveToLocation(location: LatLng?, zoom: Float) {
         if(location!=null){
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, zoom)
-            googleMap?.animateCamera(cameraUpdate)
+            googleMap?.animateCamera(cameraUpdate, 2000, null)
         }
     }
 
