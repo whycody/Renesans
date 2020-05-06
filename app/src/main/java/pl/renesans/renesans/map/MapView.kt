@@ -8,7 +8,9 @@ interface MapView {
 
     fun onClusterItemClick(p0: ClusterMarker?): Boolean
 
-    fun moveToLocation(location: LatLng?)
+    fun moveToLocation(location: LatLng?, zoom: Float = 16f)
+
+    fun onCameraMove()
 
     fun turnOnMyLocationOnMap()
 }

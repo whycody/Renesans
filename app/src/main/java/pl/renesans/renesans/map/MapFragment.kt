@@ -18,11 +18,11 @@ import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.fragment_map.view.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.PhotoArticle
+import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.map.recycler.LocationAdapter
 import pl.renesans.renesans.map.recycler.LocationPresenterImpl
 import pl.renesans.renesans.map.recycler.LocationRecyclerDecoration
 import pl.renesans.renesans.settings.SettingsPresenterImpl
-
 
 class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener,
     ClusterManager.OnClusterItemClickListener<ClusterMarker>, GoogleMap.CancelableCallback, MapView {
@@ -54,6 +54,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(googleMap.cameraPosition.target, 12f))
         setUiSettings()
         prepareManagers()
         prepareFusedLocationClient()
@@ -81,7 +82,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private fun prepareManagers(){
         if(clusterManager == null) clusterManager = ClusterManager(activity, googleMap)
         if(clusterManagerRenderer == null){
-            clusterManagerRenderer = ClusterManagerRenderer(activity!!, googleMap!!, clusterManager!!)
+            clusterManagerRenderer = ClusterManagerRenderer(activity!!, googleMap!!, clusterManager!!, this)
             clusterManagerRenderer?.prepareMarker()
             clusterManager?.renderer = clusterManagerRenderer
             clusterManager?.setOnClusterItemClickListener(this)
@@ -102,8 +103,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
 
     override fun onCameraMove() {
         if(clusterManager!=null && clusterManager?.markerCollection!=null){
-            for(marker in clusterManager!!.markerCollection.markers)
-                marker.isVisible = googleMap?.cameraPosition!!.zoom > 10.0f
+            clusterManager!!.markerCollection.markers.forEach{ marker ->
+                val cluster = markersList.find { clusterMarker ->
+                    clusterMarker.position == marker.position }
+                if(cluster?.getCLusterType() == ArticleDaoImpl.PLACE_TYPE)
+                    marker.isVisible = googleMap?.cameraPosition!!.zoom > 10.0f
+                else marker.isVisible = googleMap?.cameraPosition!!.zoom < 10.0f
+            }
         }
         refreshLocationMarkersList()
     }
@@ -116,17 +122,30 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
 
     private fun getListOfVisibleMarkers(bounds: LatLngBounds): MutableList<ClusterMarker>{
         val newList = mutableListOf(ClusterMarker(PhotoArticle()))
-        for(marker in markersList)
-            if(bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom > 10f)
+        for(marker in markersList){
+            if(marker.getCLusterType() == ArticleDaoImpl.PLACE_TYPE &&
+                bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom > 10f)
                 newList.add(marker)
+            else if (marker.getCLusterType() == ArticleDaoImpl.CITY_TYPE &&
+                bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom < 10f)
+                newList.add(marker)
+        }
         return newList
     }
 
     private fun refreshRecyclerView(newList: MutableList<ClusterMarker>){
-        if(!presenter?.getItemCount()?.equals(newList.size)!!) {
+        if(!listsEqual(presenter?.getMarkersList()!!, newList)) {
             presenter?.refreshMarkersList(newList)
             adapter?.notifyDataSetChanged()
         }
+    }
+
+    private fun listsEqual(list1: List<ClusterMarker>, list2: List<ClusterMarker>): Boolean {
+        if (list1.size != list2.size) return false
+        list1.forEachIndexed{ index, marker ->
+            if(list2[index].position!=marker.position) return false
+        }
+        return true
     }
 
     private var lastClusterMarker: ClusterMarker? = null
@@ -149,17 +168,19 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     }
 
     private fun openMarkerBottomSheet(clusterMarker: ClusterMarker?) {
-        if(clusterMarker!=null) PhotoBottomSheetDialog(clusterMarker.photoArticle)
+        if(clusterMarker!=null && clusterMarker.getCLusterType() == ArticleDaoImpl.PLACE_TYPE)
+            PhotoBottomSheetDialog(clusterMarker.photoArticle)
             .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
+        else if (clusterMarker!=null) moveToLocation(clusterMarker.position, 12f)
     }
 
     override fun addClusterMarkerToMap(clusterMarker: ClusterMarker) {
         addMarker(clusterMarker)
     }
 
-    override fun moveToLocation(location: LatLng?) {
+    override fun moveToLocation(location: LatLng?, zoom: Float) {
         if(location!=null){
-            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, 16f)
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, zoom)
             googleMap?.animateCamera(cameraUpdate)
         }
     }
@@ -173,6 +194,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         clusterManager?.addItem(clusterMarker)
         clusterManager?.cluster()
         adapter?.notifyDataSetChanged()
+        onCameraMove()
     }
 
 }

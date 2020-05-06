@@ -96,6 +96,9 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
             holder.setText(activity.getString(R.string.my_location))
             holder.setDrawable(activity.getDrawable(R.drawable.sh_my_location_row)!!)
             holder.setTextColor(R.color.colorGray)
+        }else if(photoArticlesList[position].getCLusterType() == ArticleDaoImpl.CITY_TYPE) {
+            holder.setText(photoArticlesList[position].title)
+            holder.setDrawable(activity.getDrawable(R.drawable.sh_red_location_row)!!)
         }else holder.setText(photoArticlesList[position].title)
         holder.setOnRowClickListener(position)
     }
@@ -103,7 +106,7 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
     private fun resetVariables(holder: LocationRowHolder){
         holder.setText(" ")
         holder.setTextColor(Color.WHITE)
-        holder.setDrawable(activity.getDrawable(R.drawable.sh_location_row)!!)
+        holder.setDrawable(activity.getDrawable(R.drawable.sh_orange_location_row)!!)
         holder.setOnRowClickListener(0)
     }
 

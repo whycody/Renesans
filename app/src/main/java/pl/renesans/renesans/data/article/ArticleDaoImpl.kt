@@ -78,10 +78,12 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Mikołaj Kopernik",
             objectId = "P0",
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik"),
-            header = Header(content = listOf(Pair(PROFESSIONS,"badacz, astronom, lekarz"), Pair(LIVE_YEARS, "1473 - 1543"))),
+            header = Header(content = listOf(Pair(PROFESSIONS,"badacz, astronom, lekarz"),
+                    Pair(LIVE_YEARS, "1473 - 1543"),
+                    Pair(NATIONALITY, "polska"))),
             listOfPhotos = listOf(Photo(objectId = "P0_0", description = "Mikołaj Kopernik", source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
                 Photo(objectId = "P0_1", description = "Fragment \"O obrotach sfer niebieskich\", model heliocentryczny", numberOfParagraph = 1, source = Source(page = TVP_INFO, url = "https://www.tvp.info/12865831/przez-dwa-dni-mozna-ogladac-dzielo-kopernika"))),
-            listOfParagraphs = listOf(Paragraph(subtitle = "Historia życia", content = "Mikołaj Kopernik to polski astronom, który swoją sławę zawdzięcza przede wszystkim swojemu dziełu \"O obrotach sfer niebieskich\" w którym szczegółowo przedstawił heliocentryczną wizję Wszechświata."),
+            listOfParagraphs = listOf(Paragraph(subtitle = "Historia życia", content = "Mikołaj Kopernik urodził się 19 lutego 1473 w Toruniu, a zmarł przed 21 maja 1543 we Fromborku. Jest to polski astronom, który swoją sławę zawdzięcza przede wszystkim swojemu dziełu „O obrotach sfer niebieskich”, w którym szczegółowo przedstawił heliocentryczną wizję Wszechświata. Dzieło dokonało przełomu i wywołało jedną z najważniejszych rewolucji naukowych od czasów starożytnych, którą nazwano potem przewrotem kopernikańskim."),
                 Paragraph(content = "Należy w tym miejscu wspomnieć, że koncepcja heliocentryzmu pojawiła się już w starożytnej Grecji, ale to właśnie dzieło Kopernika było przełomem w postrzeganiu naszej galaktyki."),
                 Paragraph(subtitle = "Inne profesje", content = "Astronomia to dziedzina z której Kopernik był znany najbardziej, ale nie jedyna. Był renesansowym polihistorem, czyli osobą posiadającą rozległą wiedzę z wielu, różnych dziedzin. Interesował się matematyką, prawem, ekonomią, strategią wojskową czy też astrologią.")),
             tour = Tour("Mikołaj Kopernik", listOf(PhotoArticle(objectId = "T0_0", lat = 53.009311, lng = 18.603962, title = "Toruń, miejsce urodzenia", paragraph = Paragraph(content = "19 lutego 1473 najprawdopodobniej urodził się Mikołaj Kopernik, w rodzinie kupca Mikołaja i Barbary pochodzącej z rodziny Watzenrode."), photo = Photo(description = "Dom Mikołaja Kopernika")),
@@ -408,16 +410,18 @@ class ArticleDaoImpl: ArticleDao {
 
     override fun getPhotoArticlesList(): List<PhotoArticle> {
         val photoArticles = mutableListOf<PhotoArticle>()
-        photoArticles.add(PhotoArticle(title = "Wysoka Brama",
+        photoArticles.add(PhotoArticle
+            (title = "Olsztyn",
+            latLng = LatLng(53.776948, 20.480047),
+            objectType = CITY_TYPE))
+        photoArticles.add(PhotoArticle
+            (title = "Wysoka Brama",
             objectId = "I0",
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Brama_G%C3%B3rna_w_Olsztynie"),
             latLng = LatLng(53.777574, 20.477587),
             paragraph = Paragraph(content = "Jest jedyną bramą pozostałą z trzech, które znajdowały się w murach obronnych otaczających miasto. Górna Brama powstała po wytyczeniu północnych granic miasta w drugim akcie lokacyjnym z 4 maja 1378. W roku 2012 prace archeologiczne odsłoniły pierwotne kamienne fundamenty bramy z XIV wieku, tuż na północ od jej obecnego położenia. Podczas wykopalisk odkryto ok. 40 monet z XIV i XV wieku oraz około 120 kul armatnich."),
-            photo = Photo(objectId = "I0_0",
-                description = "Brama Górna, Olsztyn",
-                source = Source(page = FOTOGRAFICZNIE16,
-                    url = "http://fotograficznie16.rssing.com/chan-38531473/all_p11.html"))
-        ))
+            photo = Photo(objectId = "I0_0", description = "Brama Górna, Olsztyn",
+                source = Source(page = FOTOGRAFICZNIE16, url = "http://fotograficznie16.rssing.com/chan-38531473/all_p11.html"))))
         return photoArticles
     }
 
@@ -472,5 +476,8 @@ class ArticleDaoImpl: ArticleDao {
         const val RYNEKISZTUKA_PL = "rynekisztuka.pl"
         const val PRZEKROJ_PL = "przekroj.pl"
         const val STAGE_ODBICIA_BLOGSPOT_COM = "stage-odbicia.blogspot.com"
+
+        const val PLACE_TYPE = 10
+        const val CITY_TYPE = 11
     }
 }

@@ -1,6 +1,7 @@
 package pl.renesans.renesans.data
 
 import com.google.android.gms.maps.model.LatLng
+import pl.renesans.renesans.data.article.ArticleDaoImpl
 import java.io.Serializable
 
 data class Source(var srcDescription: String? = null,
@@ -31,15 +32,15 @@ data class Article(var objectId: String? = null,
                    var tour: Tour? = null): Serializable
 
 data class PhotoArticle(var objectId: String? = null,
-                var objectType: Int? = null,
-                var title: String? = null,
-                var lat: Double? = null,
-                var lng: Double? = null,
-                var latLng: LatLng? = null,
-                var header: Header? = null,
-                var paragraph: Paragraph? = null,
-                var photo: Photo? = null,
-                var source: Source? = null): Serializable
+                        var objectType: Int = ArticleDaoImpl.PLACE_TYPE,
+                        var title: String? = null,
+                        var lat: Double? = null,
+                        var lng: Double? = null,
+                        var latLng: LatLng? = null,
+                        var header: Header? = null,
+                        var paragraph: Paragraph? = null,
+                        var photo: Photo? = null,
+                        var source: Source? = null): Serializable
 
 data class ArticleItem(var objectId: String? = null,
                 var title: String? = null)
