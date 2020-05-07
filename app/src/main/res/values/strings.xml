@@ -29,7 +29,7 @@
     <string name="map_animations">Animacje mapy</string>
     <string name="map_animations_desc">Włącz animacje podczas wybierania miejsc na mapie</string>
     <string name="map_mode">Tryb mapy</string>
-    <string name="map_mode_desc">Pokazuj tylko te budowle, które zostały zbudowane w wybranej epoce</string>
+    <string name="map_mode_desc">Nie pokazuj budowli, które zostały zbudowane w późniejszych epokach</string>
     <string name="download_photos">Pobieranie zdjęć</string>
     <string name="download_photos_desc">Pobieraj zdjęcia niskiej jakości aby później móc korzystać z aplikacji w trybie offline</string>
     <string name="era">Epoka</string>

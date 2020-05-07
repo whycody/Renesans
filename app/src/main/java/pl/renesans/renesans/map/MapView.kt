@@ -4,6 +4,8 @@ import com.google.android.gms.maps.model.LatLng
 
 interface MapView {
 
+    fun reloadMap()
+
     fun addClusterMarkerToMap(clusterMarker: ClusterMarker)
 
     fun onClusterItemClick(p0: ClusterMarker?): Boolean

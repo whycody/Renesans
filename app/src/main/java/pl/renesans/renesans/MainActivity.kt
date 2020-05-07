@@ -1,8 +1,8 @@
 package pl.renesans.renesans
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -14,8 +14,9 @@ import pl.renesans.renesans.settings.SettingsFragment
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private val discoverFragment = DiscoverFragment()
-    private val mapFragment = MapFragment()
+    private var mapFragment = MapFragment()
     private val settingsFragment = SettingsFragment()
+    private var refreshMapFragment = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +24,10 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         setSupportActionBar(mainToolbar as Toolbar)
         mainNav.setOnNavigationItemSelectedListener(this)
         changeFragment(discoverFragment, "discover")
+    }
+
+    fun refreshMapFragment(){
+        refreshMapFragment = true
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
@@ -47,6 +52,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         val currentFragment = fragmentManager.primaryNavigationFragment
         if (currentFragment != null) fragmentTransaction.hide(currentFragment)
         var fragmentTemp = fragmentManager.findFragmentByTag(tagFragmentName)
+        val firstLoadOfFragment = fragmentTemp == null
         if (fragmentTemp == null) {
             fragmentTemp = fragment
             fragmentTransaction.add(R.id.mainFrameLayout, fragmentTemp, tagFragmentName)
@@ -54,5 +60,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         fragmentTransaction.setPrimaryNavigationFragment(fragmentTemp)
         fragmentTransaction.setReorderingAllowed(true)
         fragmentTransaction.commitNowAllowingStateLoss()
+        if(refreshMapFragment && tagFragmentName == "map" && !firstLoadOfFragment){
+            refreshMapFragment = false
+            mapFragment.reloadMap()
+        }
     }
 }

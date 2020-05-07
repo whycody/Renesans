@@ -2,6 +2,11 @@ package pl.renesans.renesans.settings
 
 interface SettingsContract {
 
+    interface SettingsView{
+
+        fun refreshMapFragment()
+    }
+
     interface SettingsRowView {
 
         fun setSettingTitle(title: String)

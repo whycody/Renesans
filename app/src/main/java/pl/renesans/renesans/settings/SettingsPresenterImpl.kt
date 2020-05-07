@@ -7,7 +7,8 @@ import pl.renesans.renesans.BuildConfig
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Setting
 
-class SettingsPresenterImpl(val context: Context): SettingsContract.SettingsPresenter {
+class SettingsPresenterImpl(val context: Context, val settingsView: SettingsContract.SettingsView)
+    : SettingsContract.SettingsPresenter {
 
     private val holders: MutableList<SettingsRowHolder> = mutableListOf()
     private val sharedPrefs: SharedPreferences =
@@ -40,6 +41,8 @@ class SettingsPresenterImpl(val context: Context): SettingsContract.SettingsPres
         if(settingsList[pos].booleanValue){
             editor.putBoolean(settingsList[pos].settingId!!, checkBoxValue)
             editor.apply()
+            if(settingsList[pos].settingId == MAP_MODE)
+                settingsView.refreshMapFragment()
         }
     }
 

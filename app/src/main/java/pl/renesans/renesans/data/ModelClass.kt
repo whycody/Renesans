@@ -33,6 +33,7 @@ data class Article(var objectId: String? = null,
 
 data class PhotoArticle(var objectId: String? = null,
                         var objectType: Int = ArticleDaoImpl.PLACE_TYPE,
+                        var yearOfBuild: Int? = null,
                         var title: String? = null,
                         var lat: Double? = null,
                         var lng: Double? = null,

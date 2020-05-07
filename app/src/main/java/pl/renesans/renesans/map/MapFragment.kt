@@ -31,8 +31,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var clusterManager: ClusterManager<ClusterMarker>? = null
     private var clusterManagerRenderer: ClusterManagerRenderer? = null
-    private val markersList = mutableListOf<ClusterMarker>()
-    private val zoomLevel = 10f
+    private var markersList = mutableListOf<ClusterMarker>()
+    private val zoomLevel = 11f
+    private val limitOfZoom = 11f
     private var cameraAnimations = false
     private var presenter: LocationPresenterImpl? = null
     private var adapter: LocationAdapter? = null
@@ -50,6 +51,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         view.locationRecycler.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.HORIZONTAL, false)
         view.locationRecycler.addItemDecoration(LocationRecyclerDecoration(activity!!))
         return view
+    }
+
+    override fun reloadMap() {
+        googleMap?.clear()
+        clusterManager?.clearItems()
+        markersList = mutableListOf()
+        presenter?.addMarkers()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -107,27 +115,27 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
                 val cluster = markersList.find { clusterMarker ->
                     clusterMarker.position == marker.position }
                 if(cluster?.getCLusterType() == ArticleDaoImpl.PLACE_TYPE)
-                    marker.isVisible = googleMap?.cameraPosition!!.zoom > 10.0f
-                else marker.isVisible = googleMap?.cameraPosition!!.zoom <= 10.0f
+                    marker.isVisible = googleMap?.cameraPosition!!.zoom > limitOfZoom
+                else marker.isVisible = googleMap?.cameraPosition!!.zoom <= limitOfZoom
             }
         }
         refreshLocationMarkersList()
     }
 
     private fun refreshLocationMarkersList(){
-        val bounds = googleMap?.projection?.visibleRegion?.latLngBounds
-        val newList = getListOfVisibleMarkers(bounds!!)
-        refreshRecyclerView(newList)
+        val bounds = googleMap?.projection?.visibleRegion?.latLngBounds ?: return
+        val newList = getListOfVisibleMarkers(bounds)
+        if(newList!=null) refreshRecyclerView(newList)
     }
 
-    private fun getListOfVisibleMarkers(bounds: LatLngBounds): MutableList<ClusterMarker>{
+    private fun getListOfVisibleMarkers(bounds: LatLngBounds): MutableList<ClusterMarker>?{
         val newList = mutableListOf(ClusterMarker(PhotoArticle()))
         for(marker in markersList){
             if(marker.getCLusterType() == ArticleDaoImpl.PLACE_TYPE &&
-                bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom > 10f)
+                bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom > limitOfZoom)
                 newList.add(marker)
             else if (marker.getCLusterType() == ArticleDaoImpl.CITY_TYPE &&
-                bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom <= 10f)
+                bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom <= limitOfZoom)
                 newList.add(marker)
         }
         return newList

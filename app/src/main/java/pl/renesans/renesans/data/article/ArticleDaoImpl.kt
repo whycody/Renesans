@@ -1,5 +1,6 @@
 package pl.renesans.renesans.data.article
 
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
@@ -398,6 +399,16 @@ class ArticleDaoImpl: ArticleDao {
         return articlesList
     }
 
+    override fun getPhotoArticlesListFromYear(year: Int): List<PhotoArticle> {
+        val photoArticles = getPhotoArticlesList()
+        val filteredPhotoArticles = mutableListOf<PhotoArticle>()
+        for(article in photoArticles)
+            if (article.objectType == CITY_TYPE) filteredPhotoArticles.add(article)
+            else if (article.yearOfBuild != null && article.yearOfBuild!! <= year)
+                filteredPhotoArticles.add(article)
+        return filteredPhotoArticles
+    }
+
     private fun getArticlesOfPhotoArticlesList(): List<Article>{
         val articleConverter = ArticleConverterImpl()
         val photoArticles = getPhotoArticlesList()
@@ -418,6 +429,7 @@ class ArticleDaoImpl: ArticleDao {
         photoArticles.add(PhotoArticle
             (title = "Wysoka Brama",
             objectId = "I0",
+            yearOfBuild = 1400,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Brama_G%C3%B3rna_w_Olsztynie"),
             latLng = LatLng(53.777574, 20.477587),
             paragraph = Paragraph(content = "Jest jedyną bramą pozostałą z trzech, które znajdowały się w murach obronnych otaczających miasto. Górna Brama powstała po wytyczeniu północnych granic miasta w drugim akcie lokacyjnym z 4 maja 1378. W roku 2012 prace archeologiczne odsłoniły pierwotne kamienne fundamenty bramy z XIV wieku, tuż na północ od jej obecnego położenia. Podczas wykopalisk odkryto ok. 40 monet z XIV i XV wieku oraz około 120 kul armatnich."),
@@ -426,6 +438,7 @@ class ArticleDaoImpl: ArticleDao {
         photoArticles.add(PhotoArticle
             (title = "Zamek",
             objectId = "I1",
+            yearOfBuild = 1353,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Zamek_Kapitu%C5%82y_Warmi%C5%84skiej_w_Olsztynie"),
             latLng = LatLng(53.777832, 20.474515),
             paragraph = Paragraph(content = "Zamek Kapituły Warmińskiej został wybudowany w połowie XIV wieku w stylu gotyckim przez kapitułę warmińską, która była jego właścicielem do roku 1772. Budowla pełniła funkcje obronne oraz była siedzibą min. administratora dóbr kapituły. Najsławniejszym mieszkańcem zamku był Mikołaj Kopernik, który pełnił obowiązki administratora w latach 1516–1521. Na jednej ze ścian zachowała się po nim oryginalna tablica astronomiczna."),
@@ -434,6 +447,7 @@ class ArticleDaoImpl: ArticleDao {
         photoArticles.add(PhotoArticle
             (title = "Stary Ratusz",
             objectId = "I2",
+            yearOfBuild = 1500,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Stary_Ratusz_w_Olsztynie"),
             latLng = LatLng(53.776378, 20.475753),
             paragraph = Paragraph(content = "Początkowo budynek – jego południowe skrzydło – zbudowany był w stylu późnego gotyku jako budowla o planie prostokąta, piętrowa. Do dziś zachowały się gotyckie ściany północna, wschodnia i południowa, a po stronie południowej również gotycka elewacja. W 1620 roku uległ spaleniu, podobnie jak większa część miasta. Cztery lata później został odbudowany. Jego oblicze zmieniło się wówczas całkowicie. Władze miasta zajmowały wówczas całe piętro budynku, podczas gdy parter przeznaczony był dla celów handlowych."),
@@ -442,6 +456,7 @@ class ArticleDaoImpl: ArticleDao {
         photoArticles.add(PhotoArticle
             (title = "Teatr Stefana Jaracza",
             objectId = "I3",
+            yearOfBuild = 1925,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Teatr_im._Stefana_Jaracza_w_Olsztynie"),
             latLng = LatLng(53.780122, 20.479785),
             paragraph = Paragraph(content = "Teatr został założony w 1925 jako niem. Treudank-Theater w podzięce dla ówczesnych mieszkańców za wygrany plebiscyt. Teatr funkcjonował pod tą nazwą do 1945, wystawiane wówczas sztuki grano wyłącznie w języku niemieckim. Architektem teatru był August Feddersen. Po II wojnie światowej 18 listopada 1945 roku działalność Teatru jako polskiej sceny zainaugurowano premierą spektaklu „Moralność pani Dulskiej” Gabrieli Zapolskiej, w reżyserii Artura Młodnickiego."),
@@ -458,6 +473,7 @@ class ArticleDaoImpl: ArticleDao {
         photoArticles.add(PhotoArticle
             (title = "Urząd Pocztowy",
             objectId = "I5",
+            yearOfBuild = 1887,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Poczta_G%C5%82%C3%B3wna_w_Olsztynie"),
             latLng = LatLng(53.776478, 20.479686),
             paragraph = Paragraph(content = "Budynek został zbudowany w 1887 na parceli wykupionej od gminy katolickiej, w stylu neogotyckim, z bogatą dekoracją zewnętrzną z glazurowanej cegły. Na dachu obiektu znajdowały się wieżyczki odciągowe, od których od 1892 rozchodziły się napowietrzne linie telefoniczne. W 1907 budynek został rozbudowany o dodatkowe skrzydło, przeznaczone wyłącznie do obsługi paczek nadsyłanych do żołnierzy służących w garnizonie w Olsztynie."),
@@ -466,6 +482,7 @@ class ArticleDaoImpl: ArticleDao {
         photoArticles.add(PhotoArticle
             (title = "Remiza Straży Pożarnej",
             objectId = "I6",
+            yearOfBuild = 1910,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Remiza_Stra%C5%BCy_Po%C5%BCarnej_w_Olsztynie"),
             latLng = LatLng(53.772541, 20.476943),
             paragraph = Paragraph(content = "Remiza Straży Pożarnej w Olsztynie została wybudowana na początku XX wieku w pobliżu Placu Roosevelta. Jej powstanie datuje się na lata 1908-1909. W 1990 roku przeszedł generalny remont. Jest to piętrowy budynek z użytkowym poddaszem o cechach stylu renesansowego z elementami baroku."),
@@ -474,11 +491,17 @@ class ArticleDaoImpl: ArticleDao {
         photoArticles.add(PhotoArticle
             (title = "Budynek Rejencji",
             objectId = "I7",
+            yearOfBuild = 1908,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Budynek_Rejencji_w_Olsztynie"),
             latLng = LatLng(53.776454, 20.486388),
             paragraph = Paragraph(content = "Gmach wybudowano w latach 1908–1911 na potrzeby urzędu Rejencji Olsztyńskiej (Regierungsbezirk Allenstein) wydzielonej w południowej części Prus Wschodnich w roku 1905 (odpowiednik polskiego województwa). W gmachu urzędował prezydent Rejencji oraz inni jej urzędnicy, znajdowały się taż kasy ubezpieczeń społecznych oraz mieścił się Urząd Powiatów Prus Wschodnich."),
             photo = Photo(objectId = "I7_0", description = "Urząd Marszałkowski oraz Wojewódzki Sąd Administracyjny w Olsztynie, 1912",
                 source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/7842,obiekt.html?map_z=16&f=837097-foto"))))
+
+        photoArticles.add(PhotoArticle
+            (title = "Toruń",
+            latLng = LatLng(53.013918, 18.598068),
+            objectType = CITY_TYPE))
         return photoArticles
     }
 

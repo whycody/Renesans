@@ -14,10 +14,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import pl.renesans.renesans.R
+import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.map.ClusterMarker
 import pl.renesans.renesans.map.MapView
+import pl.renesans.renesans.settings.SettingsPresenterImpl
 
 class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity): LocationPresenter,
         LocationListener{
@@ -26,10 +28,14 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
     private var currentLocation: LatLng? = null
     private var locationManager: LocationManager? = null
     private var isWaitingToMoveToCurrentLocation = false
+    private val sharedPrefs = activity.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
+    private lateinit var photoArticles: List<PhotoArticle>
 
     override fun addMarkers() {
         val articleDao = ArticleDaoImpl()
-        val photoArticles = articleDao.getPhotoArticlesList()
+        val dontShowAllBuildings = sharedPrefs.getBoolean(SettingsPresenterImpl.MAP_MODE, false)
+        photoArticles = if(dontShowAllBuildings) articleDao.getPhotoArticlesListFromYear(1630)
+        else articleDao.getPhotoArticlesList()
         photoArticles.forEach{ photoArticle ->
             val cluster = ClusterMarker(photoArticle)
             mapView?.addClusterMarkerToMap(cluster)
