@@ -14,7 +14,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import pl.renesans.renesans.R
-import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.map.ClusterMarker
@@ -102,10 +101,10 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
             holder.setText(activity.getString(R.string.my_location))
             holder.setDrawable(activity.getDrawable(R.drawable.sh_my_location_row)!!)
             holder.setTextColor(R.color.colorGray)
-        }else if(photoArticlesList[position].getCLusterType() == ArticleDaoImpl.CITY_TYPE) {
-            holder.setText(photoArticlesList[position].title)
+        }else if(photoArticlesList[position].getClusterType() == ArticleDaoImpl.CITY_TYPE) {
+            holder.setText(photoArticlesList[position].getFullTitle())
             holder.setDrawable(activity.getDrawable(R.drawable.sh_red_location_row)!!)
-        }else holder.setText(photoArticlesList[position].title)
+        }else holder.setText(photoArticlesList[position].getFullTitle())
         holder.setOnRowClickListener(position)
     }
 

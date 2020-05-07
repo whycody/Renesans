@@ -12,7 +12,8 @@ class ClusterMarker(val photoArticle: PhotoArticle): ClusterItem, ClusterView {
     }
 
     override fun getTitle(): String {
-        return if(photoArticle.title != null) photoArticle.title!!.toUpperCase()
+        return if(photoArticle.shortTitle != null) photoArticle.shortTitle!!.toUpperCase()
+        else if(photoArticle.title != null) photoArticle.title!!.toUpperCase()
         else "Title"
     }
 
@@ -21,7 +22,11 @@ class ClusterMarker(val photoArticle: PhotoArticle): ClusterItem, ClusterView {
         else LatLng(1.0, 1.0)
     }
 
-    override fun getCLusterType(): Int {
+    override fun getClusterType(): Int {
         return photoArticle.objectType
+    }
+
+    override fun getFullTitle(): String {
+        return photoArticle.title!!
     }
 }

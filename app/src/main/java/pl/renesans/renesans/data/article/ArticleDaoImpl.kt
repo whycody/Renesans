@@ -428,6 +428,7 @@ class ArticleDaoImpl: ArticleDao {
             objectType = CITY_TYPE))
         photoArticles.add(PhotoArticle
             (title = "Wysoka Brama",
+            shortTitle = "W. Brama",
             objectId = "I0",
             yearOfBuild = 1400,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Brama_G%C3%B3rna_w_Olsztynie"),
@@ -436,7 +437,8 @@ class ArticleDaoImpl: ArticleDao {
             photo = Photo(objectId = "I0_0", description = "Brama Górna, Olsztyn",
                 source = Source(page = FOTOGRAFICZNIE16, url = "http://fotograficznie16.rssing.com/chan-38531473/all_p11.html"))))
         photoArticles.add(PhotoArticle
-            (title = "Zamek",
+            (title = "Zamek Kapituły Warmińskiej",
+            shortTitle = "Zamek K.W.",
             objectId = "I1",
             yearOfBuild = 1353,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Zamek_Kapitu%C5%82y_Warmi%C5%84skiej_w_Olsztynie"),
@@ -455,6 +457,7 @@ class ArticleDaoImpl: ArticleDao {
                 source = Source(page = POLSKA_ORG_PL, url = "https://polska-org.pl/7802416,foto.html"))))
         photoArticles.add(PhotoArticle
             (title = "Teatr Stefana Jaracza",
+            shortTitle = "Teatr S.J.",
             objectId = "I3",
             yearOfBuild = 1925,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Teatr_im._Stefana_Jaracza_w_Olsztynie"),
@@ -481,6 +484,7 @@ class ArticleDaoImpl: ArticleDao {
                 source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/612/612079/803/Olsztyn_Urzad_Pocztowy_Olsztyn_1.jpg?m=1433563294"))))
         photoArticles.add(PhotoArticle
             (title = "Remiza Straży Pożarnej",
+            shortTitle = "Remiza S.P.",
             objectId = "I6",
             yearOfBuild = 1910,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Remiza_Stra%C5%BCy_Po%C5%BCarnej_w_Olsztynie"),
@@ -502,6 +506,66 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Toruń",
             latLng = LatLng(53.013918, 18.598068),
             objectType = CITY_TYPE))
+        photoArticles.add(PhotoArticle
+            (title = "Ratusz Staromiejski",
+            shortTitle = "Ratusz",
+            objectId = "I8",
+            yearOfBuild = 1390,
+            source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/ratusz-staromiejski"),
+            latLng = LatLng(53.010652, 18.604079),
+            paragraph = Paragraph(content = "Ratusz wzniesiono w stylu gotyckim w końcu XIV w. włączając w jego mury zbudowaną ponad wiek wcześniej wieżę, którą dodatkowo podwyższono i ozdobiono blaszanym hełmem. W ten sposób powstał jednopiętrowy budynek z obszernym dziedzińcem, naśladujący najlepsze wzorce architektury flandryjskiej. Jego wnętrze codziennie zapełniało się tłumem kramarzy, kupców, rajców i rzezimieszków. W wieży krył się skarbiec, miejskie archiwum i więzienie, zaś w obszernych piwnicach szynkowano piwo i wino."),
+            photo = Photo(objectId = "I8_0", description = "Ratusz Staromiejski w Toruniu, 1912",
+                source = Source(page = NOWOSCI_COM_PL, url = "https://nowosci.com.pl/ratusz-staromiejski-na-zdjeciach-z-archiwum-galeria/ga/11712120/zd/22354776"))))
+        photoArticles.add(PhotoArticle
+            (title = "Pomnik Mikołaja Kopernika",
+            shortTitle = "Pomnik M.K.",
+            objectId = "I9",
+            yearOfBuild = 1853,
+            source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/pomnik-mikolaja-kopernika"),
+            latLng = LatLng(53.010261, 18.604582),
+            paragraph = Paragraph(content = "Odlany w pracowni znanego berlińskiego rzeźbiarza Fryderyka Tiecka, został ustawiony w obecnym miejscu w 1853 roku. Spiżowy pomnik przedstawia astronoma jako postać ubraną w profesorską togę i trzymającą w lewej ręce narzędzie astronomiczne zwane sferą armilarną (astrolabium sferyczne). Inaczej niż na większości innych pomników i portretów, młodzieńcza twarz Kopernika ozdobiona jest delikatnym, widocznym z bliska wąsem."),
+            photo = Photo(objectId = "I9_0", description = "Pomnik Mikołaja Kopernika w Toruniu",
+                source = Source(page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/pomnik-mikolaja-kopernika"))))
+        photoArticles.add(PhotoArticle
+            (title = "Dom Mikołaja Kopernika",
+            shortTitle = "Dom M.K.",
+            objectId = "I10",
+            yearOfBuild = 1350,
+            source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/dom-mikolaja-kopernika"),
+            latLng = LatLng(53.009309, 18.603962),
+            paragraph = Paragraph(content = "Dom Mikołaja Kopernika to średniowieczna kamienica, która w drugiej połowie XV wieku należała do rodziny Koperników. Wielu historyków wskazuje ją jako miejsce, gdzie w 1473 roku przyszedł na świat wielki astronom. Budowla swój obecny wygląd otrzymał w XV wieku. Fasada kamienicy ozdobiona jest ostrołukowym portalem, ceglanymi fryzami i pionowymi wnękami, w których namalowano charakterystyczne dla średniowiecznego Torunia dwubarwne wzory."),
+            photo = Photo(objectId = "I10_0", description = "Dom Mikołaja Kopernika w Toruniu",
+                source = Source(page = YOUTUBE_COM, url = "https://www.youtube.com/watch?v=j1HWY4XKJUY"))))
+        photoArticles.add(PhotoArticle
+            (title = "Krzywa Wieża",
+            shortTitle = "K. Wieża",
+            objectId = "I11",
+            yearOfBuild = 1350,
+            source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/krzywa-wieza"),
+            latLng = LatLng(53.008410, 18.602081),
+            paragraph = Paragraph(content = "Krzywa Wieża została wzniesiona w XIV wieku jako jedna z kilkudziesięciu podobnych baszt w murach obronnych dawnego Torunia. Jej pochylenie było prawdopodobnie wynikiem osunięcia się piaszczystego podłoża. W przeszłości nie brakowało jednak i takich, którzy widzieli w skrzywieniu wieży karę boską za rzekomo bluźniercze odkrycie Kopernika. Wiadomość o tym dotarła nawet do Rzymu i była poważnym argumentem za wpisaniem książki toruńskiego astronoma do indeksu ksiąg zakazanych."),
+            photo = Photo(objectId = "I11_0", description = "Krzywa Wieża w Toruniu, 1910",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krzywa_Wieza_Torun?f=671539-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Katedra Świętych Janów",
+            shortTitle = "Katedra Ś.J.",
+            objectId = "I12",
+            yearOfBuild = 1240,
+            source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/koscioly-na-starowce/katedra-swietych-janow"),
+            latLng = LatLng(53.009383, 18.606259),
+            paragraph = Paragraph(content = "Gotycka katedra pod wezwaniem św. Jana Chrzciciela i św. Jana Ewangelisty swoją formę uzyskała w wyniku wieloetapowej budowy, którą po blisko 200 latach przerwano na przełomie XV i XVI w. Już w średniowieczu był to najważniejszy z toruńskich kościołów, pełniący funkcję staromiejskiej fary, w której skupiało się religijne życie mieszkańców miasta."),
+            photo = Photo(objectId = "I12_0", description = "Katedra Świętych Janów w Toruniu, 1905 - 1915",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/21417,foto.html?o=b4642"))))
+        photoArticles.add(PhotoArticle
+            (title = "Brama Mostowa",
+            shortTitle = "Brama M.",
+            objectId = "I13",
+            yearOfBuild = 1432,
+            source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zabytki/bramy-i-baszty/brama-mostowa"),
+            latLng = LatLng(53.008622, 18.608895),
+            paragraph = Paragraph(content = "Brama Mostowa była najbardziej nowoczesną ze wszystkich średniowiecznych bram strzegących miasta od strony portu. Jej zaokrąglone boki zmniejszały skutki artyleryjskiego ataku, zaś specjalnie przygotowane otwory strzelnicze umożliwiały użycie dział do bronienia dostępu do miasta. Brama była jednocześnie najniżej położonym punktem murów obronnych Torunia, stąd też to właśnie na niej oznaczano poziom wody w Wiśle w czasie najwyższych powodzi."),
+            photo = Photo(objectId = "I13_0", description = "Brama Mostowa w Toruniu, 1915",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Torun/b69874,Mury_miejskie.html?f=344927-foto"))))
         return photoArticles
     }
 
@@ -559,6 +623,9 @@ class ArticleDaoImpl: ArticleDao {
         const val ZAMKIPOLSKIE_COM = "zamkipolskie.com"
         const val POLSKA_ORG_PL = "polska-org.pl"
         const val OLSZTYN_FOTOPOLSKA_EU = "olsztyn.fotopolska.eu"
+        const val FOTOPOLSKA_EU = "fotopolska.eu"
+        const val TORUN_PL = "torun.pl"
+        const val NOWOSCI_COM_PL = "nowosci.com.pl"
 
         const val PLACE_TYPE = 10
         const val CITY_TYPE = 11

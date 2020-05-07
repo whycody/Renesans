@@ -40,7 +40,7 @@ class ClusterManagerRenderer(val context: Context, val map: GoogleMap,
     override fun onBeforeClusterItemRendered(item: ClusterMarker?, markerOptions: MarkerOptions?) {
         iconGenerator.setContentView(textView)
         textView.text = item?.title
-        if(item?.getCLusterType() == ArticleDaoImpl.PLACE_TYPE)
+        if(item?.getClusterType() == ArticleDaoImpl.PLACE_TYPE)
             iconGenerator.setColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
         else iconGenerator.setColor(ContextCompat.getColor(context, android.R.color.holo_red_dark))
         val icon: Bitmap = iconGenerator.makeIcon()

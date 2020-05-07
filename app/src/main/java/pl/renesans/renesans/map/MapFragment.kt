@@ -14,6 +14,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.fragment_map.view.*
 import pl.renesans.renesans.R
@@ -32,7 +33,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private var clusterManager: ClusterManager<ClusterMarker>? = null
     private var clusterManagerRenderer: ClusterManagerRenderer? = null
     private var markersList = mutableListOf<ClusterMarker>()
-    private val zoomLevel = 11f
+    private val zoomLevel = 7f
     private val limitOfZoom = 11f
     private var cameraAnimations = false
     private var presenter: LocationPresenterImpl? = null
@@ -76,6 +77,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         googleMap?.uiSettings?.isZoomControlsEnabled = false
         googleMap?.uiSettings?.isCompassEnabled = false
         googleMap?.uiSettings?.isMyLocationButtonEnabled = false
+        googleMap?.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style))
     }
 
     private fun prepareFusedLocationClient(){
@@ -114,7 +116,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
             clusterManager!!.markerCollection.markers.forEach{ marker ->
                 val cluster = markersList.find { clusterMarker ->
                     clusterMarker.position == marker.position }
-                if(cluster?.getCLusterType() == ArticleDaoImpl.PLACE_TYPE)
+                if(cluster?.getClusterType() == ArticleDaoImpl.PLACE_TYPE)
                     marker.isVisible = googleMap?.cameraPosition!!.zoom > limitOfZoom
                 else marker.isVisible = googleMap?.cameraPosition!!.zoom <= limitOfZoom
             }
@@ -131,10 +133,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private fun getListOfVisibleMarkers(bounds: LatLngBounds): MutableList<ClusterMarker>?{
         val newList = mutableListOf(ClusterMarker(PhotoArticle()))
         for(marker in markersList){
-            if(marker.getCLusterType() == ArticleDaoImpl.PLACE_TYPE &&
+            if(marker.getClusterType() == ArticleDaoImpl.PLACE_TYPE &&
                 bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom > limitOfZoom)
                 newList.add(marker)
-            else if (marker.getCLusterType() == ArticleDaoImpl.CITY_TYPE &&
+            else if (marker.getClusterType() == ArticleDaoImpl.CITY_TYPE &&
                 bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom <= limitOfZoom)
                 newList.add(marker)
         }
@@ -176,7 +178,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     }
 
     private fun openMarkerBottomSheet(clusterMarker: ClusterMarker?) {
-        if(clusterMarker!=null && clusterMarker.getCLusterType() == ArticleDaoImpl.PLACE_TYPE)
+        if(clusterMarker!=null && clusterMarker.getClusterType() == ArticleDaoImpl.PLACE_TYPE)
             PhotoBottomSheetDialog(clusterMarker.photoArticle)
             .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
         else if (clusterMarker!=null) moveToLocation(clusterMarker.position, 15f)
