@@ -504,7 +504,7 @@ class ArticleDaoImpl: ArticleDao {
 
         photoArticles.add(PhotoArticle
             (title = "Toruń",
-            latLng = LatLng(53.013918, 18.598068),
+            latLng = LatLng(53.008477, 18.606382),
             objectType = CITY_TYPE))
         photoArticles.add(PhotoArticle
             (title = "Ratusz Staromiejski",
@@ -566,6 +566,46 @@ class ArticleDaoImpl: ArticleDao {
             paragraph = Paragraph(content = "Brama Mostowa była najbardziej nowoczesną ze wszystkich średniowiecznych bram strzegących miasta od strony portu. Jej zaokrąglone boki zmniejszały skutki artyleryjskiego ataku, zaś specjalnie przygotowane otwory strzelnicze umożliwiały użycie dział do bronienia dostępu do miasta. Brama była jednocześnie najniżej położonym punktem murów obronnych Torunia, stąd też to właśnie na niej oznaczano poziom wody w Wiśle w czasie najwyższych powodzi."),
             photo = Photo(objectId = "I13_0", description = "Brama Mostowa w Toruniu, 1915",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Torun/b69874,Mury_miejskie.html?f=344927-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Brama Klasztorna",
+            shortTitle = "Brama K.",
+            objectId = "I14",
+            yearOfBuild = 1350,
+            source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/bramy-i-baszty/brama-klasztorna"),
+            latLng = LatLng(53.008283, 18.603601),
+            paragraph = Paragraph(content = "Mimo drobnych przebudowań, brama zachowała do dzisiaj oryginalną formę gotyckiej wieży bramnej z trzema ostrołukowymi wnękami. Zewnętrzna skrywała drewnianą bronę, spuszczaną w razie oblężenia. Za środkową znajduje się pusta przestrzeń, przez którą usadowieni na szczycie bramy obrońcy zrzucali ciężkie przedmioty lub wylewali gorące płyny. Najczęściej była to wrząca, długo trzymająca ciepło i niemiłosiernie parząca kasza, od której przydatny w walce otwór nazwano kaszownikiem."),
+            photo = Photo(objectId = "I14_0", description = "Brama Klasztorna w Toruniu, 1910 - 1915",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/1000653,foto.html?o=b4493"))))
+        photoArticles.add(PhotoArticle
+            (title = "Brama Żeglarska",
+            shortTitle = "Brama Ż.",
+            objectId = "I15",
+            yearOfBuild = 1250,
+            source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/bramy-i-baszty/brama-zeglarska"),
+            latLng = LatLng(53.008260, 18.606192),
+            paragraph = Paragraph(content = "Brama Żeglarska zbudowana została w średniowieczu, jednak jej obecny kształt jest rezultatem gruntownej dziewiętnastowiecznej przebudowy. Otwierając się z jednej strony na port, zaś z drugiej na ulicę prowadzącą do farnego kościoła św. Janów i staromiejskiego rynku, brama ta była najważniejszym wejściem do miasta. To właśnie tutaj, przy dźwięku wielkiego dzwonu Tuba Dei, uroczyście witano przybywających do Torunia polskich królów."),
+            photo = Photo(objectId = "I15_0", description = "Brama Żeglarska w Toruniu, 1950",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Brama_Zeglarska_Torun?f=1127184-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Ruiny Zamku Krzyżackiego",
+            shortTitle = "Ruiny Z.K.",
+            objectId = "I16",
+            yearOfBuild = 1250,
+            source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zabytki/zamki/ruiny-zamku-krzyzackiego"),
+            latLng = LatLng(53.009367, 18.610718),
+            paragraph = Paragraph(content = "Zamek, początkowo drewniany, później wznoszony z kamienia i cegły, był rozbudowywany aż do połowy XV wieku. Wraz z przedzamczem i znajdującymi się na nim budynkami gospodarczymi zajmował przestrzeń między Starym i Nowym Miastem Toruniem. Toruński zamek miał duże znaczenie strategiczne i związane z tym silne fortyfikacje. Za wysokim murem głównego zamku znajdował się kilkupiętrowy budynek z kaplicą, refektarzem i dormitorium, w którym mieszkali krzyżaccy rycerze."),
+            photo = Photo(objectId = "I16_0", description = "Rekonstrukcja wyglądu zamku krzyżackiego w Toruniu przed zburzeniem w 1454 roku, 1450",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Torun/b4790,Zamek_Krzyzacki.html?f=288318-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Zamek Dybowski",
+            shortTitle = "Zamek D.",
+            objectId = "I17",
+            yearOfBuild = 1423,
+            source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zabytki/zamki/zamek-dybowski"),
+            latLng = LatLng(53.001166, 18.599937),
+            paragraph = Paragraph(content = "Zamek Dybowski został wzniesiony na lewym brzegu Wisły przez Władysława Jagiełłę jako siedziba polskich starostów i strategiczny punkt militarny do kontroli ruchu na Wiśle i granicy polsko-krzyżackiej. Jego budowę rozpoczęto prawdopodobnie ok. 1423-1425 r., ale już w początkowym okresie był kilkakrotnie przebudowywany."),
+            photo = Photo(objectId = "I17_0", description = "Ruiny zamku Dybów i panorama Torunia, 1927-1933",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Torun/b46845,Zamek_Dybow.html?f=1019098-foto"))))
         return photoArticles
     }
 
