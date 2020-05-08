@@ -27,7 +27,9 @@ interface ArticleDao {
 
     fun getOtherEras(): List<Article>
 
-    fun getPhotoArticlesListFromYear(year: Int): List<PhotoArticle>
+    fun getPhotoArticlesListBuiltToYear(year: Int): List<PhotoArticle>
+
+    fun getPhotoArticlesListBuiltInYears(fromYear: Int, toYear: Int): List<PhotoArticle>
 
     fun getPhotoArticlesList(): List<PhotoArticle>
 }

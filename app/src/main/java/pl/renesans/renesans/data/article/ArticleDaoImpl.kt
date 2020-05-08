@@ -399,12 +399,23 @@ class ArticleDaoImpl: ArticleDao {
         return articlesList
     }
 
-    override fun getPhotoArticlesListFromYear(year: Int): List<PhotoArticle> {
+    override fun getPhotoArticlesListBuiltToYear(year: Int): List<PhotoArticle> {
         val photoArticles = getPhotoArticlesList()
         val filteredPhotoArticles = mutableListOf<PhotoArticle>()
         for(article in photoArticles)
             if (article.objectType == CITY_TYPE) filteredPhotoArticles.add(article)
             else if (article.yearOfBuild != null && article.yearOfBuild!! <= year)
+                filteredPhotoArticles.add(article)
+        return filteredPhotoArticles
+    }
+
+    override fun getPhotoArticlesListBuiltInYears(fromYear: Int, toYear: Int): List<PhotoArticle> {
+        val photoArticles = getPhotoArticlesList()
+        val filteredPhotoArticles = mutableListOf<PhotoArticle>()
+        for(article in photoArticles)
+            if (article.objectType == CITY_TYPE) filteredPhotoArticles.add(article)
+            else if (article.yearOfBuild != null
+                && article.yearOfBuild!! >= fromYear && article.yearOfBuild!! <= toYear)
                 filteredPhotoArticles.add(article)
         return filteredPhotoArticles
     }

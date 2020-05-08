@@ -5,6 +5,8 @@ interface SettingsContract {
     interface SettingsView{
 
         fun refreshMapFragment()
+
+        fun notifyItemChangedAtPosition(pos: Int)
     }
 
     interface SettingsRowView {

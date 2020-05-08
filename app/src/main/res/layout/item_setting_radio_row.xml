@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/ripple_settings_list_item">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="20dp">
+
+        <RadioButton
+            android:id="@+id/settingRadio"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:theme="@style/MyCheckbox"
+            android:layout_marginLeft="5dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/settingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Example setting"
+                android:textSize="16sp"
+                android:textColor="@color/colorTitleGray"/>
+
+            <TextView
+                android:id="@+id/settingDescribe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Example setting description"
+                android:textSize="13sp"
+                android:textColor="@color/colorParagraphGray"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/underline"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.1"
+        android:background="@color/colorParagraphGray"/>
+
+</LinearLayout>

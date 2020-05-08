@@ -49,10 +49,16 @@ data class ArticleItem(var objectId: String? = null,
                 var title: String? = null)
 
 data class Setting(var settingId: String? = null,
-                var settingTitle: String? = null,
-                var settingDescribe: String? = null,
-                var booleanValue: Boolean = true,
-                var defaultValue: Boolean = false)
+                   var settingTitle: String? = null,
+                   var settingDescription: String? = null,
+                   var booleanValue: Boolean = true,
+                   var defaultValue: Boolean = false,
+                   var listOfOptions: List<SettingListItem>? = null,
+                   var defaultSettingsItemPos: Int = 0)
+
+data class SettingListItem(var settingsItemId: Int? = null,
+                var settingItemTitle: String? = null,
+                var settingItemDescription: String? = null)
 
 data class Tour(var title: String? = null,
                 var photosArticlesList: List<PhotoArticle>? = null) : Serializable

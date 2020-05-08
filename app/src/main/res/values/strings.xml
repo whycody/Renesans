@@ -13,7 +13,7 @@
     <string name="my_location">Moja lokalizacja</string>
     <string name="turn_on_location">Włącz usługę lokalizacji</string>
     <string name="cant_get_location">Nie rozpoznano aktualnej lokalizacji</string>
-    <string name="search">Szukaj...</string>
+    <string name="search">Szukaj…</string>
     <string name="important_people">Ważni ludzie</string>
     <string name="important_arts">Wyróżnione dzieła</string>
     <string name="important_events">Ważne wydarzenia</string>
@@ -36,4 +36,12 @@
     <string name="renesans">Renesans</string>
     <string name="tour_view">Widok szlaku</string>
     <string name="tour_view_desc">Zmniejsz przezroczystość mapy i paska narzędzi w widoku interaktywnego szlaku, aby zwiększyć czytelność treści</string>
+    <string name="all_buildings_desc">Pokazuj wszystkie budowle</string>
+    <string name="all_buildings">Wszystkie</string>
+    <string name="all_to_choosed_era_desc">Pokazuj budowle, które już istniały lub zostały wybudowane w wybranej epoce</string>
+    <string name="all_to_choosed_era">Istniejące</string>
+    <string name="era_buildings">Wybudowane (niezalecane)</string>
+    <string name="era_buildings_desc">Pokazuj budowle wybudowane tylko w wybranej epoce</string>
+    <string name="warning">Uwaga!</string>
+    <string name="warning_desc">Lata budowy niektórych miejsc na mapie są przybliżone i czasami ich obecność na mapie nie świadczy o tym, że zostały wybudowane w wybranej epoce</string>
 </resources>

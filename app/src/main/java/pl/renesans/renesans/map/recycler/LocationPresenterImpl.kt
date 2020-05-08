@@ -32,9 +32,12 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
 
     override fun addMarkers() {
         val articleDao = ArticleDaoImpl()
-        val dontShowAllBuildings = sharedPrefs.getBoolean(SettingsPresenterImpl.MAP_MODE, false)
-        photoArticles = if(dontShowAllBuildings) articleDao.getPhotoArticlesListFromYear(1630)
-        else articleDao.getPhotoArticlesList()
+        val mapModeSetting = sharedPrefs.getInt(SettingsPresenterImpl.MAP_MODE, SettingsPresenterImpl.ALL_BUILDINGS)
+        photoArticles = when (mapModeSetting) {
+            SettingsPresenterImpl.ALL_BUILDINGS -> articleDao.getPhotoArticlesList()
+            SettingsPresenterImpl.ALL_TO_CHOOSED_ERA -> articleDao.getPhotoArticlesListBuiltToYear(1630)
+            else -> articleDao.getPhotoArticlesListBuiltInYears(1450, 1630)
+        }
         photoArticles.forEach{ photoArticle ->
             val cluster = ClusterMarker(photoArticle)
             mapView?.addClusterMarkerToMap(cluster)
