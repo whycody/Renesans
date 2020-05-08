@@ -448,6 +448,7 @@ class ArticleDaoImpl: ArticleDao {
                 source = Source(page = ZAMKIPOLSKIE_COM, url = "http://www.zamkipolskie.com/olszt/olszt.html"))))
         photoArticles.add(PhotoArticle
             (title = "Stary Ratusz",
+            shortTitle = "S. Ratusz",
             objectId = "I2",
             yearOfBuild = 1500,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Stary_Ratusz_w_Olsztynie"),
@@ -475,6 +476,7 @@ class ArticleDaoImpl: ArticleDao {
                 source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/560824,foto.html"))))
         photoArticles.add(PhotoArticle
             (title = "Urząd Pocztowy",
+            shortTitle = "U. Pocztowy",
             objectId = "I5",
             yearOfBuild = 1887,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Poczta_G%C5%82%C3%B3wna_w_Olsztynie"),
@@ -493,7 +495,7 @@ class ArticleDaoImpl: ArticleDao {
             photo = Photo(objectId = "I6_0", description = "Remiza Straży Pożarnej w Olsztynie, 1920",
                 source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/46573,obiekt.html?map_z=18&f=1405774-foto"))))
         photoArticles.add(PhotoArticle
-            (title = "Budynek Rejencji",
+            (title = "B. Rejencji",
             objectId = "I7",
             yearOfBuild = 1908,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Budynek_Rejencji_w_Olsztynie"),
@@ -505,6 +507,7 @@ class ArticleDaoImpl: ArticleDao {
         photoArticles.add(PhotoArticle
             (title = "Toruń",
             latLng = LatLng(53.008477, 18.606382),
+            zoom = 15.1f,
             objectType = CITY_TYPE))
         photoArticles.add(PhotoArticle
             (title = "Ratusz Staromiejski",
@@ -606,6 +609,71 @@ class ArticleDaoImpl: ArticleDao {
             paragraph = Paragraph(content = "Zamek Dybowski został wzniesiony na lewym brzegu Wisły przez Władysława Jagiełłę jako siedziba polskich starostów i strategiczny punkt militarny do kontroli ruchu na Wiśle i granicy polsko-krzyżackiej. Jego budowę rozpoczęto prawdopodobnie ok. 1423-1425 r., ale już w początkowym okresie był kilkakrotnie przebudowywany."),
             photo = Photo(objectId = "I17_0", description = "Ruiny zamku Dybów i panorama Torunia, 1927-1933",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Torun/b46845,Zamek_Dybow.html?f=1019098-foto"))))
+
+        photoArticles.add(PhotoArticle
+            (title = "Frombork",
+            latLng = LatLng(54.357647, 19.681490),
+            zoom = 16.5f,
+            objectType = CITY_TYPE))
+        photoArticles.add(PhotoArticle
+            (title = "Wzgórze Katedralne",
+            shortTitle = "Wzgórze K.",
+            objectId = "I18",
+            yearOfBuild = 1330,
+            source = Source(srcDescription = MAIN_TEXT, page = FROMBORK_ART_PL, url = "http://frombork.art.pl/pl/wzgorze-katedralne/"),
+            latLng = LatLng(54.356699, 19.681739),
+            paragraph = Paragraph(content = "Wzgórze Katedralne we Fromborku należy do zabytków najwyższej klasy. Wielokrotnie niszczone i przebudowywane zachowało podstawowe elementy średniowiecznego założenia architektonicznego. Wyjątkowe znaczenie tego miejsca podnoszą tradycje historyczne i postać Mikołaja Kopernika. Wiele zgromadzonych zabytków wspaniałej przeszłości przyciąga do Fromborka ludzi z całego świata."),
+            photo = Photo(objectId = "I18_0", description = "Bazylika archikatedralna na Wzgórzu Katedralnym we Fromborku, 1930 - 1935",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Frombork/b5298,Wzgorze_Katedralne.html?f=285086-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Bazylika Katedralna WNMP i św. Andrzeja",
+            shortTitle = "Bazylika K.",
+            objectId = "I19",
+            yearOfBuild = 1330,
+            source = Source(srcDescription = MAIN_TEXT, page = FROMBORK_ART_PL, url = "http://frombork.art.pl/pl/wzgorze-katedralne/"),
+            latLng = LatLng(54.356882, 19.682534),
+            paragraph = Paragraph(content = "Budynek jest najstarszy na Wzgórzu i został zbudowany w latach 1329-1388. Posiada kilka przybudówek, w tym dwie kaplice: św. Jerzego (tzw. Kaplica Polska) – powstała ok. 1500 r., Zbawiciela (zwana kaplicą Szembeka) – barokowa z 1735 r. Katedra warmińska jest budowlą gotycką, halową, trójnawową o długości około 97 m, szerokości od 12 m (prezbiterium) do 22 m (główny korpus) i wysokości od posadzki do zwornika sklepienia 16,5 m."),
+            photo = Photo(objectId = "I19_0", description = "Bazylika archikatedralna na Wzgórzu Katedralnym we Fromborku, 1920 - 1930",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Frombork/b4085,Bazylika_archikatedralna_Wniebowziecia_Najswietszej_Maryi_Panny_i_sw_Andrzeja.html?f=325848-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Dzwonnica",
+            objectId = "I20",
+            yearOfBuild = 1550,
+            source = Source(srcDescription = MAIN_TEXT, page = FROMBORK_ART_PL, url = "http://frombork.art.pl/pl/wzgorze-katedralne/"),
+            latLng = LatLng(54.356225, 19.681040),
+            paragraph = Paragraph(content = "Dzwonnica zwana Wieżą Radziejowskiego jest najwyższą budowlą Wzgórza Katedralnego o zabudowaniu gotycko-barokowym (XVI-XVII w.). Spłonęła w 1945 r. i została odbudowana w latach 1972-1973. W dzwonnicy zawieszone jest Wahadło Foucaulta – przyrząd do obserwacji ruchu wirowego Ziemi. Na wysokości 70 m n.p.m. z kolei znajduje się taras widokowy, z którego można podziwiać panoramę okolic Fromborka."),
+            photo = Photo(objectId = "I20_0", description = "Wieża Radziejowskiego na Wzgórzu Katedralnym we Fromborku, 1920 - 1930",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Frombork/b88076,Wieza_Radziejowskiego.html?f=479051-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Wieża Kopernika",
+            shortTitle = "Wieża K.",
+            objectId = "I21",
+            yearOfBuild = 1390,
+            source = Source(srcDescription = MAIN_TEXT, page = FROMBORK_ART_PL, url = "http://frombork.art.pl/pl/wzgorze-katedralne/"),
+            latLng = LatLng(54.356754, 19.680781),
+            paragraph = Paragraph(content = "Budowla jest najstarszym elementem fortyfikacji Wzgórza Katedralnego. Została zbudowana przed 1400 r., wyższe kondygnacje wielokrotnie były przebudowywane w XV – XVIII w. W 1945 roku została spalona, a potem rekonstruowana – prace zakończono w 1965 r. Wieża była własnością Mikołaja Kopernika w latach 1504-1543."),
+            photo = Photo(objectId = "I21_0", description = "Mury obronne i Wieża Kopernika na Wzgórzu Katedralnym we Fromborku, 1973 - 1975",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Frombork/b66744,Wieza_Kopernika_-_Muzeum_Mikolaja_Kopernika.html?f=360536-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Brama Południowa",
+            shortTitle = "Brama P.",
+            objectId = "I22",
+            yearOfBuild = 1350,
+            source = Source(srcDescription = MAIN_TEXT, page = POLSKIESZLAKI_PL, url = "https://www.polskieszlaki.pl/wzgorze-katedralne-we-fromborku.htm/"),
+            latLng = LatLng(54.356469, 19.682343),
+            paragraph = Paragraph(content = "Na teren Wzgórza Katedralnego wchodzi się i wychodzi poprzez Bramę Południową, pochodzącą z XIV wieku, a rozbudowaną w połowie XIX wieku. Dziś mieści kasę główną Muzeum oraz punkt sprzedaży wydawnictw muzealnych."),
+            photo = Photo(objectId = "I22_0", description = "Brama Południowa Wzgórza Katedralnego we Fromborku, 1852",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Frombork/b88074,Brama_Poludniowa.html?f=444524-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Wieża Wodna",
+            shortTitle = "Wieża W.",
+            objectId = "I23",
+            yearOfBuild = 1571,
+            source = Source(srcDescription = MAIN_TEXT, page = "wiezawodna.pl", url = "http://www.wiezawodna.pl/"),
+            latLng = LatLng(54.357738, 19.680539),
+            paragraph = Paragraph(content = "Wieża Wodna to charakterystyczny, integralny element tzw. Kanału Kopernika.W latach 1571-1572 budowlę wyposażono w specjalnie zaprojektowany, częściowo mosiężny mechanizm czerpakowy, dzięki czemu woda z kanału była podnoszona na znaczną wysokość (około 25 m), skąd dzięki różnicy ciśnień i wykorzystaniu zasady naczyń połączonych, była doprowadzana na fromborskie wzgórze i do kanonii zewnętrznych, leżących poza murami katedralnych umocnień."),
+            photo = Photo(objectId = "I23_0", description = "Wieża Wodna we Fromborku, 1959",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Wieza_wodna_Frombork?f=610855-foto"))))
         return photoArticles
     }
 
@@ -666,6 +734,8 @@ class ArticleDaoImpl: ArticleDao {
         const val FOTOPOLSKA_EU = "fotopolska.eu"
         const val TORUN_PL = "torun.pl"
         const val NOWOSCI_COM_PL = "nowosci.com.pl"
+        const val FROMBORK_ART_PL = "frombork.art.pl"
+        const val POLSKIESZLAKI_PL = "polskieszlaki.pl"
 
         const val PLACE_TYPE = 10
         const val CITY_TYPE = 11

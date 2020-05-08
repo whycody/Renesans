@@ -181,7 +181,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         if(clusterMarker!=null && clusterMarker.getClusterType() == ArticleDaoImpl.PLACE_TYPE)
             PhotoBottomSheetDialog(clusterMarker.photoArticle)
             .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
-        else if (clusterMarker!=null) moveToLocation(clusterMarker.position, 15f)
+        else if (clusterMarker!=null) moveToLocation(clusterMarker.position, clusterMarker.photoArticle.zoom)
     }
 
     override fun addClusterMarkerToMap(clusterMarker: ClusterMarker) {
