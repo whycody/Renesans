@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private var mapFragment = MapFragment()
     private val settingsFragment = SettingsFragment()
     private var refreshMapFragment = false
+    private var changedOptionOfMapLimit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +29,10 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     fun refreshMapFragment(){
         refreshMapFragment = true
+    }
+
+    fun changedOptionOfMapLimit(){
+        changedOptionOfMapLimit = true
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
@@ -60,9 +65,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         fragmentTransaction.setPrimaryNavigationFragment(fragmentTemp)
         fragmentTransaction.setReorderingAllowed(true)
         fragmentTransaction.commitNowAllowingStateLoss()
-        if(refreshMapFragment && tagFragmentName == "map" && !firstLoadOfFragment){
+        if(!firstLoadOfFragment && tagFragmentName == "map") {
+            if (refreshMapFragment) mapFragment.reloadMap()
+            if(changedOptionOfMapLimit) mapFragment.changedOptionOfMapLimit()
             refreshMapFragment = false
-            mapFragment.reloadMap()
+            changedOptionOfMapLimit = false
         }
     }
 }

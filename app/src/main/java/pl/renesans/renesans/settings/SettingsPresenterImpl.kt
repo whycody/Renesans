@@ -1,7 +1,9 @@
 package pl.renesans.renesans.settings
 
+import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Context.ACTIVITY_SERVICE
 import android.content.SharedPreferences
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -40,6 +42,9 @@ class SettingsPresenterImpl(val activity: MainActivity, val settingsView: Settin
                 SettingListItem(ERA_BUILDINGS, activity.getString(R.string.era_buildings),
                     getMapModeDescription(ERA_BUILDINGS))),
             defaultSettingsItemPos = sharedPrefs.getInt(MAP_MODE, 0)))
+        settingsList.add(Setting(MAP_FUNCTIONALITIES, activity.getString(R.string.map_functionalities),
+            activity.getString(R.string.map_functionalities_desc),
+            true, sharedPrefs.getBoolean(MAP_FUNCTIONALITIES, !freeRamMemoryIsEnough())))
         settingsList.add(Setting(MAP_ANIMATIONS, activity.getString(R.string.map_animations),
             activity.getString(R.string.map_animations_desc),
             true, sharedPrefs.getBoolean(MAP_ANIMATIONS, false)))
@@ -59,12 +64,20 @@ class SettingsPresenterImpl(val activity: MainActivity, val settingsView: Settin
         }
     }
 
+    private fun freeRamMemoryIsEnough(): Boolean {
+        val mi = ActivityManager.MemoryInfo()
+        val activityManager = activity.getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        activityManager.getMemoryInfo(mi)
+        return (mi.availMem / 1048576L) >= 400
+    }
+
     override fun itemClicked(pos: Int, checkBoxValue: Boolean) {
         if(settingsList[pos].booleanValue){
             editor.putBoolean(settingsList[pos].settingId!!, checkBoxValue)
             editor.apply()
         }else if(settingsList[pos].listOfOptions != null) showMapModeDialog(settingsList[pos], pos)
         if(settingsList[pos].settingId == MAP_MODE) settingsView.refreshMapFragment()
+        if(settingsList[pos].settingId == MAP_FUNCTIONALITIES) settingsView.changedOptionOfMapLimit()
     }
 
     private fun showMapModeDialog(setting: Setting, settingPos: Int){
@@ -146,6 +159,7 @@ class SettingsPresenterImpl(val activity: MainActivity, val settingsView: Settin
     companion object{
         const val ERA = "era"
         const val DOWNLOAD_PHOTOS = "download photos"
+        const val MAP_FUNCTIONALITIES = "map functionalities"
         const val MAP_MODE = "map mode"
         const val MAP_ANIMATIONS = "map animations"
         const val MAP_OPACITY = "map opacity"

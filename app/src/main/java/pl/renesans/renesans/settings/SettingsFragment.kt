@@ -31,6 +31,10 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
         (activity as MainActivity).refreshMapFragment()
     }
 
+    override fun changedOptionOfMapLimit() {
+        (activity as MainActivity).changedOptionOfMapLimit()
+    }
+
     override fun notifyItemChangedAtPosition(pos: Int) {
         adapter.notifyItemChanged(pos)
     }

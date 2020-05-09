@@ -1,6 +1,7 @@
 package pl.renesans.renesans.map.recycler
 
 import com.google.android.gms.maps.model.LatLng
+import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.map.ClusterMarker
 
 interface LocationPresenter {
@@ -10,6 +11,8 @@ interface LocationPresenter {
     fun refreshMarkersList(photoArticlesList: MutableList<ClusterMarker>)
 
     fun getMarkersList(): MutableList<ClusterMarker>
+
+    fun getPhotoArticles(): List<PhotoArticle>
 
     fun getCurrentLocation(): LatLng?
 

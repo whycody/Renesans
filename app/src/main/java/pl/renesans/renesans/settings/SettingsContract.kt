@@ -6,6 +6,8 @@ interface SettingsContract {
 
         fun refreshMapFragment()
 
+        fun changedOptionOfMapLimit()
+
         fun notifyItemChangedAtPosition(pos: Int)
     }
 

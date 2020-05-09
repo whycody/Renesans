@@ -52,6 +52,10 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
         return photoArticlesList
     }
 
+    override fun getPhotoArticles(): List<PhotoArticle> {
+        return photoArticles
+    }
+
     override fun getCurrentLocation(): LatLng? {
         return currentLocation
     }

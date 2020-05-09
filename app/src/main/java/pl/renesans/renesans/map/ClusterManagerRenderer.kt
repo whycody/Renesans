@@ -38,6 +38,7 @@ class ClusterManagerRenderer(val context: Context, val map: GoogleMap,
     }
 
     override fun onBeforeClusterItemRendered(item: ClusterMarker?, markerOptions: MarkerOptions?) {
+        markerOptions?.snippet(item?.snippet)
         iconGenerator.setContentView(textView)
         textView.text = item?.title
         if(item?.getClusterType() == ArticleDaoImpl.PLACE_TYPE)
@@ -49,7 +50,7 @@ class ClusterManagerRenderer(val context: Context, val map: GoogleMap,
 
     override fun onClusterItemRendered(clusterItem: ClusterMarker?, marker: Marker?) {
         super.onClusterItemRendered(clusterItem, marker)
-        mapView?.onCameraMove()
+        mapView?.refreshMap()
     }
 
     override fun shouldRenderAsCluster(cluster: Cluster<ClusterMarker>?): Boolean {

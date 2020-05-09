@@ -1,5 +1,6 @@
 package pl.renesans.renesans.map
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.location.Location
@@ -38,7 +39,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private var cameraAnimations = false
     private var presenter: LocationPresenterImpl? = null
     private var adapter: LocationAdapter? = null
+    private var limitOfMapFunctionality = true
     private lateinit var sharedPrefs: SharedPreferences
+    private var currentZoomIsMin = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -48,17 +51,34 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         presenter = LocationPresenterImpl(this, activity!!)
         adapter = LocationAdapter(presenter!!, activity!!)
         sharedPrefs = context!!.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
+        limitOfMapFunctionality = sharedPrefs
+            .getBoolean(SettingsPresenterImpl.MAP_FUNCTIONALITIES, freeRamMemoryIsEnough())
         view.locationRecycler.adapter = adapter
         view.locationRecycler.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.HORIZONTAL, false)
         view.locationRecycler.addItemDecoration(LocationRecyclerDecoration(activity!!))
         return view
     }
 
+    private fun freeRamMemoryIsEnough(): Boolean {
+        val mi = ActivityManager.MemoryInfo()
+        val activityManager =
+            activity?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        activityManager.getMemoryInfo(mi)
+        return (mi.availMem / 1048576L) >= 400
+    }
+
     override fun reloadMap() {
         googleMap?.clear()
         clusterManager?.clearItems()
-        markersList = mutableListOf()
+        markersList.clear()
         presenter?.addMarkers()
+    }
+
+    override fun changedOptionOfMapLimit() {
+        limitOfMapFunctionality = sharedPrefs
+            .getBoolean(SettingsPresenterImpl.MAP_FUNCTIONALITIES, freeRamMemoryIsEnough())
+        if(limitOfMapFunctionality) refreshLocationMarkersListWithCities()
+        else refreshLocationMarkersList()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -112,16 +132,25 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     }
 
     override fun onCameraMove() {
-        if(clusterManager!=null && clusterManager?.markerCollection!=null){
-            clusterManager!!.markerCollection.markers.forEach{ marker ->
-                val cluster = markersList.find { clusterMarker ->
-                    clusterMarker.position == marker.position }
-                if(cluster?.getClusterType() == ArticleDaoImpl.PLACE_TYPE)
+        if((currentZoomIsMin && googleMap?.cameraPosition!!.zoom >= limitOfZoom) ||
+            (!currentZoomIsMin && googleMap?.cameraPosition!!.zoom <= limitOfZoom))
+            refreshMap()
+        if(!limitOfMapFunctionality || presenter?.getMarkersList()?.size == 1)
+            refreshLocationMarkersList()
+        else if (limitOfMapFunctionality) refreshLocationMarkersListWithCities()
+    }
+
+    override fun refreshMap() {
+        if(clusterManager!=null && clusterManager?.markerCollection!=null) {
+            clusterManager!!.markerCollection.markers.forEach { marker ->
+                var objectType = ArticleDaoImpl.PLACE_TYPE
+                if (marker.snippet != null) objectType = marker.snippet.toInt()
+                if (objectType == ArticleDaoImpl.PLACE_TYPE)
                     marker.isVisible = googleMap?.cameraPosition!!.zoom > limitOfZoom
                 else marker.isVisible = googleMap?.cameraPosition!!.zoom <= limitOfZoom
             }
         }
-        refreshLocationMarkersList()
+        currentZoomIsMin = googleMap?.cameraPosition!!.zoom <= limitOfZoom
     }
 
     private fun refreshLocationMarkersList(){
@@ -130,11 +159,20 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         if(newList!=null) refreshRecyclerView(newList)
     }
 
+    private fun refreshLocationMarkersListWithCities(){
+        val listOfCities = mutableListOf<ClusterMarker>()
+        presenter?.getPhotoArticles()?.forEach { article ->
+            if(article.objectType == ArticleDaoImpl.CITY_TYPE)
+                listOfCities.add(ClusterMarker(article))
+        }
+        refreshRecyclerView(listOfCities)
+    }
+
     private fun getListOfVisibleMarkers(bounds: LatLngBounds): MutableList<ClusterMarker>?{
         val newList = mutableListOf(ClusterMarker(PhotoArticle()))
         for(marker in markersList){
             if(marker.getClusterType() == ArticleDaoImpl.PLACE_TYPE &&
-                bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom > limitOfZoom)
+                bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom >= limitOfZoom)
                 newList.add(marker)
             else if (marker.getClusterType() == ArticleDaoImpl.CITY_TYPE &&
                 bounds.contains(marker.position) && googleMap?.cameraPosition!!.zoom <= limitOfZoom)
