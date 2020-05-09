@@ -160,7 +160,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     }
 
     private fun refreshLocationMarkersListWithCities(){
-        val listOfCities = mutableListOf<ClusterMarker>()
+        val listOfCities = mutableListOf(ClusterMarker(PhotoArticle()))
         presenter?.getPhotoArticles()?.forEach { article ->
             if(article.objectType == ArticleDaoImpl.CITY_TYPE)
                 listOfCities.add(ClusterMarker(article))
