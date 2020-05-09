@@ -48,11 +48,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-        presenter = LocationPresenterImpl(this, activity!!)
-        adapter = LocationAdapter(presenter!!, activity!!)
         sharedPrefs = context!!.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
         limitOfMapFunctionality = sharedPrefs
-            .getBoolean(SettingsPresenterImpl.MAP_FUNCTIONALITIES, freeRamMemoryIsEnough())
+            .getBoolean(SettingsPresenterImpl.MAP_FUNCTIONALITIES, !freeRamMemoryIsEnough())
+        presenter = LocationPresenterImpl(this, activity!!)
+        adapter = LocationAdapter(presenter!!, activity!!)
         view.locationRecycler.adapter = adapter
         view.locationRecycler.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.HORIZONTAL, false)
         view.locationRecycler.addItemDecoration(LocationRecyclerDecoration(activity!!))

@@ -403,7 +403,9 @@ class ArticleDaoImpl: ArticleDao {
         val photoArticles = getPhotoArticlesList()
         val filteredPhotoArticles = mutableListOf<PhotoArticle>()
         for(article in photoArticles)
-            if (article.objectType == CITY_TYPE) filteredPhotoArticles.add(article)
+            if (article.objectType == CITY_TYPE &&
+                filteredPhotoArticles.any{ articleItem -> articleItem.cityKey == article.cityKey})
+                filteredPhotoArticles.add(article)
             else if (article.yearOfBuild != null && article.yearOfBuild!! <= year)
                 filteredPhotoArticles.add(article)
         return filteredPhotoArticles
@@ -413,7 +415,9 @@ class ArticleDaoImpl: ArticleDao {
         val photoArticles = getPhotoArticlesList()
         val filteredPhotoArticles = mutableListOf<PhotoArticle>()
         for(article in photoArticles)
-            if (article.objectType == CITY_TYPE) filteredPhotoArticles.add(article)
+            if (article.objectType == CITY_TYPE &&
+                filteredPhotoArticles.any{ articleItem -> articleItem.cityKey == article.cityKey})
+                filteredPhotoArticles.add(article)
             else if (article.yearOfBuild != null
                 && article.yearOfBuild!! >= fromYear && article.yearOfBuild!! <= toYear)
                 filteredPhotoArticles.add(article)
@@ -434,13 +438,10 @@ class ArticleDaoImpl: ArticleDao {
     override fun getPhotoArticlesList(): List<PhotoArticle> {
         val photoArticles = mutableListOf<PhotoArticle>()
         photoArticles.add(PhotoArticle
-            (title = "Olsztyn",
-            latLng = LatLng(53.776948, 20.480047),
-            objectType = CITY_TYPE))
-        photoArticles.add(PhotoArticle
             (title = "Wysoka Brama",
             shortTitle = "W. Brama",
             objectId = "I0",
+            cityKey = "OLS",
             yearOfBuild = 1400,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Brama_G%C3%B3rna_w_Olsztynie"),
             latLng = LatLng(53.777574, 20.477587),
@@ -451,6 +452,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Zamek Kapituły Warmińskiej",
             shortTitle = "Zamek K.W.",
             objectId = "I1",
+            cityKey = "OLS",
             yearOfBuild = 1353,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Zamek_Kapitu%C5%82y_Warmi%C5%84skiej_w_Olsztynie"),
             latLng = LatLng(53.777832, 20.474515),
@@ -461,6 +463,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Stary Ratusz",
             shortTitle = "S. Ratusz",
             objectId = "I2",
+            cityKey = "OLS",
             yearOfBuild = 1500,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Stary_Ratusz_w_Olsztynie"),
             latLng = LatLng(53.776378, 20.475753),
@@ -471,6 +474,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Teatr Stefana Jaracza",
             shortTitle = "Teatr S.J.",
             objectId = "I3",
+            cityKey = "OLS",
             yearOfBuild = 1925,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Teatr_im._Stefana_Jaracza_w_Olsztynie"),
             latLng = LatLng(53.780122, 20.479785),
@@ -480,6 +484,7 @@ class ArticleDaoImpl: ArticleDao {
         photoArticles.add(PhotoArticle
             (title = "Dąbrowszczaków",
             objectId = "I4",
+            cityKey = "OLS",
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/%C5%9Ar%C3%B3dmiejskie_ulice_i_place_w_Olsztynie"),
             latLng = LatLng(53.778578, 20.482421),
             paragraph = Paragraph(content = "Pierwotnie do roku 1904 nazwa ulicy brzmiała Wartenburger-Straße (ulica Wartemborska). W roku 1904 zmieniono jej nazwę na Kaiser-Straße (ulica Cesarska), na cześć cesarza Wilhelma I, którego pomnik wzniesiono przed gmachem Gimnazjum Męskiego. Po 1945 roku nosiła nazwę ulicy Stalina, lecz po jego śmierci w okresie 'odwilży' 1956 roku zmieniono nazwę na Dąbrowszczaków."),
@@ -489,6 +494,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Urząd Pocztowy",
             shortTitle = "U. Pocztowy",
             objectId = "I5",
+            cityKey = "OLS",
             yearOfBuild = 1887,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Poczta_G%C5%82%C3%B3wna_w_Olsztynie"),
             latLng = LatLng(53.776478, 20.479686),
@@ -499,6 +505,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Remiza Straży Pożarnej",
             shortTitle = "Remiza S.P.",
             objectId = "I6",
+            cityKey = "OLS",
             yearOfBuild = 1910,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Remiza_Stra%C5%BCy_Po%C5%BCarnej_w_Olsztynie"),
             latLng = LatLng(53.772541, 20.476943),
@@ -508,22 +515,24 @@ class ArticleDaoImpl: ArticleDao {
         photoArticles.add(PhotoArticle
             (title = "B. Rejencji",
             objectId = "I7",
+            cityKey = "OLS",
             yearOfBuild = 1908,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Budynek_Rejencji_w_Olsztynie"),
             latLng = LatLng(53.776454, 20.486388),
             paragraph = Paragraph(content = "Gmach wybudowano w latach 1908–1911 na potrzeby urzędu Rejencji Olsztyńskiej (Regierungsbezirk Allenstein) wydzielonej w południowej części Prus Wschodnich w roku 1905 (odpowiednik polskiego województwa). W gmachu urzędował prezydent Rejencji oraz inni jej urzędnicy, znajdowały się taż kasy ubezpieczeń społecznych oraz mieścił się Urząd Powiatów Prus Wschodnich."),
             photo = Photo(objectId = "I7_0", description = "Urząd Marszałkowski oraz Wojewódzki Sąd Administracyjny w Olsztynie, 1912",
                 source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/7842,obiekt.html?map_z=16&f=837097-foto"))))
-
         photoArticles.add(PhotoArticle
-            (title = "Toruń",
-            latLng = LatLng(53.008477, 18.606382),
-            zoom = 15.1f,
+            (title = "Olsztyn",
+            latLng = LatLng(53.776948, 20.480047),
+            cityKey = "OLS",
             objectType = CITY_TYPE))
+
         photoArticles.add(PhotoArticle
             (title = "Ratusz Staromiejski",
             shortTitle = "Ratusz",
             objectId = "I8",
+            cityKey = "TOR",
             yearOfBuild = 1390,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/ratusz-staromiejski"),
             latLng = LatLng(53.010652, 18.604079),
@@ -534,6 +543,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Pomnik Mikołaja Kopernika",
             shortTitle = "Pomnik M.K.",
             objectId = "I9",
+            cityKey = "TOR",
             yearOfBuild = 1853,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/pomnik-mikolaja-kopernika"),
             latLng = LatLng(53.010261, 18.604582),
@@ -544,6 +554,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Dom Mikołaja Kopernika",
             shortTitle = "Dom M.K.",
             objectId = "I10",
+            cityKey = "TOR",
             yearOfBuild = 1350,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/dom-mikolaja-kopernika"),
             latLng = LatLng(53.009309, 18.603962),
@@ -554,6 +565,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Krzywa Wieża",
             shortTitle = "K. Wieża",
             objectId = "I11",
+            cityKey = "TOR",
             yearOfBuild = 1350,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/krzywa-wieza"),
             latLng = LatLng(53.008410, 18.602081),
@@ -564,6 +576,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Katedra Świętych Janów",
             shortTitle = "Katedra Ś.J.",
             objectId = "I12",
+            cityKey = "TOR",
             yearOfBuild = 1240,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/koscioly-na-starowce/katedra-swietych-janow"),
             latLng = LatLng(53.009383, 18.606259),
@@ -574,6 +587,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Brama Mostowa",
             shortTitle = "Brama M.",
             objectId = "I13",
+            cityKey = "TOR",
             yearOfBuild = 1432,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zabytki/bramy-i-baszty/brama-mostowa"),
             latLng = LatLng(53.008622, 18.608895),
@@ -584,6 +598,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Brama Klasztorna",
             shortTitle = "Brama K.",
             objectId = "I14",
+            cityKey = "TOR",
             yearOfBuild = 1350,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/bramy-i-baszty/brama-klasztorna"),
             latLng = LatLng(53.008283, 18.603601),
@@ -594,6 +609,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Brama Żeglarska",
             shortTitle = "Brama Ż.",
             objectId = "I15",
+            cityKey = "TOR",
             yearOfBuild = 1250,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/bramy-i-baszty/brama-zeglarska"),
             latLng = LatLng(53.008260, 18.606192),
@@ -604,6 +620,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Ruiny Zamku Krzyżackiego",
             shortTitle = "Ruiny Z.K.",
             objectId = "I16",
+            cityKey = "TOR",
             yearOfBuild = 1250,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zabytki/zamki/ruiny-zamku-krzyzackiego"),
             latLng = LatLng(53.009367, 18.610718),
@@ -614,22 +631,25 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Zamek Dybowski",
             shortTitle = "Zamek D.",
             objectId = "I17",
+            cityKey = "TOR",
             yearOfBuild = 1423,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zabytki/zamki/zamek-dybowski"),
             latLng = LatLng(53.001166, 18.599937),
             paragraph = Paragraph(content = "Zamek Dybowski został wzniesiony na lewym brzegu Wisły przez Władysława Jagiełłę jako siedziba polskich starostów i strategiczny punkt militarny do kontroli ruchu na Wiśle i granicy polsko-krzyżackiej. Jego budowę rozpoczęto prawdopodobnie ok. 1423-1425 r., ale już w początkowym okresie był kilkakrotnie przebudowywany."),
             photo = Photo(objectId = "I17_0", description = "Ruiny zamku Dybów i panorama Torunia, 1927-1933",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Torun/b46845,Zamek_Dybow.html?f=1019098-foto"))))
-
         photoArticles.add(PhotoArticle
-            (title = "Frombork",
-            latLng = LatLng(54.357647, 19.681490),
-            zoom = 16.5f,
+            (title = "Toruń",
+            latLng = LatLng(53.008477, 18.606382),
+            zoom = 15.1f,
+            cityKey = "TOR",
             objectType = CITY_TYPE))
+
         photoArticles.add(PhotoArticle
             (title = "Wzgórze Katedralne",
             shortTitle = "Wzgórze K.",
             objectId = "I18",
+            cityKey = "FRO",
             yearOfBuild = 1330,
             source = Source(srcDescription = MAIN_TEXT, page = FROMBORK_ART_PL, url = "http://frombork.art.pl/pl/wzgorze-katedralne/"),
             latLng = LatLng(54.356699, 19.681739),
@@ -640,6 +660,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Bazylika Katedralna WNMP i św. Andrzeja",
             shortTitle = "Bazylika K.",
             objectId = "I19",
+            cityKey = "FRO",
             yearOfBuild = 1330,
             source = Source(srcDescription = MAIN_TEXT, page = FROMBORK_ART_PL, url = "http://frombork.art.pl/pl/wzgorze-katedralne/"),
             latLng = LatLng(54.356882, 19.682534),
@@ -649,6 +670,7 @@ class ArticleDaoImpl: ArticleDao {
         photoArticles.add(PhotoArticle
             (title = "Dzwonnica",
             objectId = "I20",
+            cityKey = "FRO",
             yearOfBuild = 1550,
             source = Source(srcDescription = MAIN_TEXT, page = FROMBORK_ART_PL, url = "http://frombork.art.pl/pl/wzgorze-katedralne/"),
             latLng = LatLng(54.356225, 19.681040),
@@ -659,6 +681,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Wieża Kopernika",
             shortTitle = "Wieża K.",
             objectId = "I21",
+            cityKey = "FRO",
             yearOfBuild = 1390,
             source = Source(srcDescription = MAIN_TEXT, page = FROMBORK_ART_PL, url = "http://frombork.art.pl/pl/wzgorze-katedralne/"),
             latLng = LatLng(54.356754, 19.680781),
@@ -669,6 +692,7 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Brama Południowa",
             shortTitle = "Brama P.",
             objectId = "I22",
+            cityKey = "FRO",
             yearOfBuild = 1350,
             source = Source(srcDescription = MAIN_TEXT, page = POLSKIESZLAKI_PL, url = "https://www.polskieszlaki.pl/wzgorze-katedralne-we-fromborku.htm/"),
             latLng = LatLng(54.356469, 19.682343),
@@ -679,12 +703,19 @@ class ArticleDaoImpl: ArticleDao {
             (title = "Wieża Wodna",
             shortTitle = "Wieża W.",
             objectId = "I23",
+            cityKey = "FRO",
             yearOfBuild = 1571,
             source = Source(srcDescription = MAIN_TEXT, page = "wiezawodna.pl", url = "http://www.wiezawodna.pl/"),
             latLng = LatLng(54.357738, 19.680539),
             paragraph = Paragraph(content = "Wieża Wodna to charakterystyczny, integralny element tzw. Kanału Kopernika.W latach 1571-1572 budowlę wyposażono w specjalnie zaprojektowany, częściowo mosiężny mechanizm czerpakowy, dzięki czemu woda z kanału była podnoszona na znaczną wysokość (około 25 m), skąd dzięki różnicy ciśnień i wykorzystaniu zasady naczyń połączonych, była doprowadzana na fromborskie wzgórze i do kanonii zewnętrznych, leżących poza murami katedralnych umocnień."),
             photo = Photo(objectId = "I23_0", description = "Wieża Wodna we Fromborku, 1959",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Wieza_wodna_Frombork?f=610855-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Frombork",
+            latLng = LatLng(54.357647, 19.681490),
+            zoom = 16.5f,
+            cityKey = "FRO",
+            objectType = CITY_TYPE))
         return photoArticles
     }
 
