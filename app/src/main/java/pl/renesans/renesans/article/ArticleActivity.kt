@@ -1,5 +1,6 @@
 package pl.renesans.renesans.article
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.net.Uri
@@ -14,6 +15,7 @@ import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
+import pl.renesans.renesans.photo.PhotoActivity
 
 class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
 
@@ -33,6 +35,7 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
         loadSizeOfImageView(articleDao.getObjectTypeFromObjectId(getArticleObject().objectId!!))
         presenter = ArticlePresenterImpl(applicationContext, this)
         presenter.loadContent()
+        showPhotoViewActivityOnImageViewClick()
     }
 
     private fun loadSizeOfImageView(objectType: Int){
@@ -43,6 +46,14 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
             DiscoverRecyclerFragment.OTHER_ERAS, DiscoverRecyclerFragment.PHOTOS,
             DiscoverRecyclerFragment.EVENTS -> articleImage.layoutParams.height =
                 (articleImageHeight * 0.8).toInt()
+        }
+    }
+
+    private fun showPhotoViewActivityOnImageViewClick(){
+        imagesList.forEachIndexed{ index, image ->
+            image.setOnClickListener{
+                startPhotoViewActivity(getArticleObject().listOfPhotos!![index].objectId!!)
+            }
         }
     }
 
@@ -74,6 +85,12 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
     override fun addViewToArticleLinear(view: View) {
         articleLinear.addView(view)
         if(view is ImageView) imagesList.add(view)
+    }
+
+    private fun startPhotoViewActivity(photoId: String){
+        val intent = Intent(this, PhotoActivity::class.java)
+        intent.putExtra(PhotoActivity.ARTICLE_ID, photoId)
+        startActivity(intent)
     }
 
     override fun addViewToHeaderLinear(view: View) {

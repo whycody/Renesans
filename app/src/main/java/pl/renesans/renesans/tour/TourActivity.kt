@@ -1,6 +1,7 @@
 package pl.renesans.renesans.tour
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
@@ -26,6 +27,7 @@ import pl.renesans.renesans.data.Tour
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.map.ClusterManagerRenderer
 import pl.renesans.renesans.map.ClusterMarker
+import pl.renesans.renesans.photo.PhotoActivity
 import pl.renesans.renesans.settings.SettingsPresenterImpl
 
 
@@ -62,6 +64,7 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         nextBtn.setOnClickListener{ showNextPage() }
         addDotsIndicator()
         presenter.onCreate()
+        onPageSelected(0)
     }
 
     private fun setupTheme(mapOpacity: Boolean){
@@ -146,6 +149,16 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         currentPage = position
         setBackBtnProperties(position)
         setNextBtnProperties(position)
+        articlePhoto.setOnClickListener{
+            val article = tour.photosArticlesList!![position]
+            if(article.photo != null) startPhotoViewActivity(article.objectId + "_0")
+        }
+    }
+
+    private fun startPhotoViewActivity(id: String){
+        val intent = Intent(applicationContext, PhotoActivity::class.java)
+        intent.putExtra(PhotoActivity.ARTICLE_ID, id)
+        startActivity(intent)
     }
 
     private fun checkUserHasEndedTour(position: Int){

@@ -18,13 +18,16 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
     private val externalStorage = android.os.Environment.getExternalStorageDirectory().path
     private val sharedPrefs = context.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
     private var downloadPhotos = true
+    private var permissionGranted = false
 
     override fun loadPhotoInBothQualities(pos: Int, id: String) {
-        loadPhoto(pos, id, false)
+        permissionGranted = (ContextCompat.checkSelfPermission(context,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        if(permissionGranted) loadPhoto(pos, id, false)
         loadPhoto(pos, id, true)
     }
 
-    override fun loadPhoto(pos: Int, id: String, highQuality: Boolean){
+    private fun loadPhoto(pos: Int, id: String, highQuality: Boolean){
         if(!highQuality) checkSavedPhoto(pos, id)
         else getHighQualityPhotoUriFromID(pos, id)
     }
@@ -39,8 +42,6 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
     }
 
     private fun getValueOfDownloadingPhotos(): Boolean {
-        val permissionGranted = (ContextCompat.checkSelfPermission(context,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
         return if(!permissionGranted) false
         else sharedPrefs.getBoolean(SettingsPresenterImpl.DOWNLOAD_PHOTOS, permissionGranted)
     }

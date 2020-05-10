@@ -22,6 +22,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.android.synthetic.main.activity_tour.view.*
+import kotlinx.android.synthetic.main.tour_slide_layout.view.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
@@ -29,6 +31,7 @@ import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
+import pl.renesans.renesans.photo.PhotoActivity
 import pl.renesans.renesans.sources.SourcesActivity
 
 class PhotoBottomSheetDialog(private val photoArticle: PhotoArticle): BottomSheetDialogFragment(),
@@ -42,10 +45,11 @@ class PhotoBottomSheetDialog(private val photoArticle: PhotoArticle): BottomShee
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_bottom_sheet_photo, container, false)
         setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
-        view!!.findViewById<TextView>(R.id.articleTitle).text = photoArticle.title
-        view.findViewById<TextView>(R.id.articleParagraph).text = photoArticle.paragraph?.content
-        view.findViewById<TextView>(R.id.photoDescription).text = photoArticle.photo?.description
-        view.findViewById<ImageView>(R.id.articlePhoto).setBackgroundColor(Color.LTGRAY)
+        view!!.articleTitle.text = photoArticle.title
+        view.articleParagraph.text = photoArticle.paragraph?.content
+        view.photoDescription.text = photoArticle.photo?.description
+        view.articlePhoto.setBackgroundColor(Color.LTGRAY)
+        view.articlePhoto.setOnClickListener{ startPhotoViewActivity(photoArticle.photo?.objectId!!) }
         val articleConverter = ArticleConverterImpl()
         articlePhoto = view.findViewById(R.id.articlePhoto)!!
         sourcesBtn = view.findViewById(R.id.sourcesBtn)!!
@@ -72,7 +76,13 @@ class PhotoBottomSheetDialog(private val photoArticle: PhotoArticle): BottomShee
         val intent = Intent(context, SourcesActivity::class.java)
         intent.putExtra(ArticleActivity.ARTICLE, article)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context?.startActivity(intent)
+        startActivity(intent)
+    }
+
+    private fun startPhotoViewActivity(id: String){
+        val intent = Intent(context, PhotoActivity::class.java)
+        intent.putExtra(PhotoActivity.ARTICLE_ID, id)
+        startActivity(intent)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
