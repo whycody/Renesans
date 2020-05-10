@@ -716,6 +716,112 @@ class ArticleDaoImpl: ArticleDao {
             zoom = 16.5f,
             cityKey = "FRO",
             objectType = CITY_TYPE))
+
+        photoArticles.add(PhotoArticle
+            (title = "Zamek Królewski",
+            shortTitle = "Zamek K.",
+            objectId = "I24",
+            cityKey = "KRA",
+            yearOfBuild = 1300,
+            source = Source(srcDescription = MAIN_TEXT, page = WAWEL_KRAKOW_PL, url = "https://wawel.krakow.pl/o-wawelu"),
+            latLng = LatLng(50.054054, 19.935396),
+            paragraph = Paragraph(content = "Wzgórze wawelskie jest dla Krakowa tym, czym Akropol dla starożytnych Aten lub Wzgórze Kapitolińskie dla Rzymu. Górujące nad zakolem Wisły skaliste wzniesienie od wczesnego średniowiecza było siedzibą świeckiej i duchownej władzy. Mieszko I (p. 960-992), pierwszy historyczny władca i twórca polskiej państwowości obrał Wawel na jedną ze swych siedzib."),
+            photo = Photo(objectId = "I24_0", description = "Zamek Królewski w Krakowie widziany od strony północnej, 1905",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krakow/b5416,Zamek_Krolewski.html?f=432323-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Smok Wawelski",
+            shortTitle = "Smok W.",
+            objectId = "I25",
+            cityKey = "KRA",
+            yearOfBuild = 1972,
+            source = Source(srcDescription = MAIN_TEXT, page = HISTORIAPOSZUKAJ_PL, url = "https://www.historiaposzukaj.pl/wiedza,obiekty,323,obiekt_smok_wawelski.html"),
+            latLng = LatLng(50.053016, 19.933584),
+            paragraph = Paragraph(content = "Słynny Smok Wawelski, znany ze średniowiecznych legend, to ekspresyjna rzeźba Chromego uznawana za symbol Krakowa. Dzięki instalacji gazowej z pyska bestii może wydobywać się ogień, co nie tylko odnosi się do smoczej natury, ale także do faktu, że smok zginąć miał z powodu połknięcia podsuniętej mu podstępem palącej siarki."),
+            photo = Photo(objectId = "I25_0", description = "Smok Wawelski w Krakowie, 1975",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krakow/b293141,Rzezba_Smok_Wawelski.html?f=424667-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Rynek Główny",
+            shortTitle = "Rynek G.",
+            objectId = "I26",
+            cityKey = "KRA",
+            yearOfBuild = 1257,
+            source = Source(srcDescription = MAIN_TEXT, page = ZABYTKIKRAKOWA_COM_PL, url = "https://www.zabytkikrakowa.com.pl/rynek-glowny/"),
+            latLng = LatLng(50.061155, 19.937720),
+            paragraph = Paragraph(content = "Krakowski Rynek Główny to największy średniowieczny rynek w Europie powstały na planie prawie idealnego kwadratu o boku 200 m. Wytyczony został w wyniku tzw. Wielkiej Lokacji miasta Krakowa na prawie magdeburskim w 1257 roku. Nadanie praw miejskich oznaczało także wytyczenie rynku głównego oraz bardzo regularnego systemu wychodzących z niego ulic."),
+            photo = Photo(objectId = "I26_0", description = "Widok na kościół Mariacki i Rynek Główny w Krakowie, 1870",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krakow/u29008,Rynek_Glowny.html?f=442543-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Kościół Mariacki",
+            shortTitle = "Kościół M.",
+            objectId = "I27",
+            cityKey = "KRA",
+            yearOfBuild = 1347,
+            source = Source(srcDescription = MAIN_TEXT, page = ZABYTKIKRAKOWA_COM_PL, url = "https://www.zabytkikrakowa.com.pl/kosciol-mariacki/"),
+            latLng = LatLng(50.061676, 19.939369),
+            paragraph = Paragraph(content = "O ile katedrę na Wawelu można nazwać najszacowniejszym i najważniejszym kościołem Polski, o tyle — paradoksalnie — to nie ona, a właśnie Bazylika Mariacka zawsze była najważniejszym kościołem Krakowa. Kościół jest monumentalną, gotycką budowlą (reprezentuje tzw. gotyk krakowski z systemem filarowo-szkarpowym), mieści się w niej wiele kaplic bocznych."),
+            photo = Photo(objectId = "I27_0", description = "Kościół Mariacki w Krakowie, 1908",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krakow/b2146,Kosciol_Wniebowziecia_Najswietszej_Marii_Panny_Mariacki.html?f=963728-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Teatr Słowackiego",
+            shortTitle = "Teatr S.",
+            objectId = "I28",
+            cityKey = "KRA",
+            yearOfBuild = 1893,
+            source = Source(srcDescription = MAIN_TEXT, page = ZABYTKIKRAKOWA_COM_PL, url = "https://www.zabytkikrakowa.com.pl/teatr-slowackiego/"),
+            latLng = LatLng(50.064055, 19.942803),
+            paragraph = Paragraph(content = "Teatr Słowackiego jest najsłynniejszym teatrem Krakowa, który imponuje swoją monumentalną zabudową. Zbudowano go w stylu eklektycznym, nawiązującym do rodzimej architektury (powtórzenie maszkaronów z Sukiennic) w latach 1891-1893, architektem był Jan Zawiejski. Należy jednak pamiętać, że decyzja o budowie tego nowego teatru miejskiego była niezwykle kontrowersyjna. Żeby zyskać miejsce pod budowę, zdecydowano się wyburzyć średniowieczne zabudowania związane ze szpitalem św. Ducha."),
+            photo = Photo(objectId = "I28_0", description = "Teatr im. Juliusza Słowackiego w Krakowie, 1895",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Teatr_im._Juliusza_Slowackiego_Krakow?f=669225-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Collegium Maius",
+            shortTitle = "Collegium M.",
+            objectId = "I29",
+            cityKey = "KRA",
+            yearOfBuild = 1364,
+            source = Source(srcDescription = MAIN_TEXT, page = ZABYTKIKRAKOWA_COM_PL, url = "https://www.zabytkikrakowa.com.pl/collegium-maius/"),
+            latLng = LatLng(50.061559, 19.933928),
+            paragraph = Paragraph(content = "Collegium Maius to jeden z najcenniejszych zabytków Krakowa, jak i całej Polski. Jest to najstarszy budynek najstarszego w Polsce uniwersytetu, który ufundował król Kazimierz Wielki w 1364 roku. Początkowo wykłady odbywały się nie przy ulicy Jagiellońskiej (gdzie znajduje się Collegium Maius), ale prawdopodobnie – na Zamku Wawelskim."),
+            photo = Photo(objectId = "I29_0", description = "Dziedziniec Biblioteki Jagiellońskiej w Krakowie, 1914",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krakow/b2142,Collegium_Maius.html?f=238463-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Sukiennice",
+            shortTitle = "Sukiennice",
+            objectId = "I30",
+            cityKey = "KRA",
+            yearOfBuild = 1257,
+            source = Source(srcDescription = MAIN_TEXT, page = ZABYTKIKRAKOWA_COM_PL, url = "https://www.zabytkikrakowa.com.pl/sukiennice/"),
+            latLng = LatLng(50.061921, 19.937503),
+            paragraph = Paragraph(content = "Sukiennice to centralny budynek krakowskiego Rynku Głównego i jedna z najbardziej rozpoznawalnych budowli Krakowa. Warto wiedzieć, że nazwa „Sukiennice” pochodzi od sukna, jednego z podstawowych towarów jakie można było tutaj zakupić. Początkowo Sukiennice były to po prostu dwa rzędy kramów handlowych oraz uliczka pomiędzy nimi, założone w XIII w. z polecenia księcia Bolesława Wstydliwego. Następnie, jeszcze w dobie gotyku, kramy przekształcono w jedną, okazałą budowlę."),
+            photo = Photo(objectId = "I30_0", description = "Krakowskie Sukiennice, 1890",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krakow/b2177,Sukiennice.html?f=362446-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Kościół św. Andrzeja",
+            shortTitle = "Kościół ŚA",
+            objectId = "I31",
+            cityKey = "KRA",
+            yearOfBuild = 1098,
+            source = Source(srcDescription = MAIN_TEXT, page = ZABYTKIKRAKOWA_COM_PL, url = "https://www.zabytkikrakowa.com.pl/kosciol-sw-andrzeja/"),
+            latLng = LatLng(50.056619, 19.938394),
+            paragraph = Paragraph(content = "Kościół św. Andrzeja jest jednym z najstarszych w Krakowie, olśniewa urodą rasowego romanizmu. Ta imponująca, dwuwieżowa budowla, służąca nie tylko celom religijnym, ale i obronnym (warto zwrócić uwagę na wąskie okienka będące w istocie otworami strzelniczymi) została ufundowana pod koniec XI w. przez wszechwładnego palatyna Władysława Hermana-Sieciecha."),
+            photo = Photo(objectId = "I31_0", description = "Kościół św. Andrzeja w Krakowie, 1947 - 1951",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Kosciol_sw._Andrzeja_Krakow?f=691150-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Kaplica Zygmuntowska",
+            shortTitle = "Kaplica Z.",
+            objectId = "I32",
+            cityKey = "KRA",
+            yearOfBuild = 1531,
+            source = Source(srcDescription = MAIN_TEXT, page = ISZTUKA_EDU_PL, url = "http://www.isztuka.edu.pl/i-sztuka/node/361"),
+            latLng = LatLng(50.054501, 19.935559),
+            paragraph = Paragraph(content = "Kaplica Zygmuntowska jest jednym z najważniejszych dzieł renesansowej sztuki powstałych na terenach poza Italią. Ta niezwykle cenna budowla została wzniesiona z inicjatywy króla Zygmunta Starego w latach 1519-1533, według projektu i pod kierunkiem włoskiego architekta i rzeźbiarza Bartłomieja Berrecciego."),
+            photo = Photo(objectId = "I32_0", description = "Kaplica Zygmunta (po prawej) na Wawelu, 1956",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Kaplica_Zygmuntowska_Bazylika_archikatedralna_Krakow?f=412850-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Kraków",
+            latLng = LatLng(50.058176, 19.938259),
+            cityKey = "KRA",
+            zoom = 15.5f,
+            objectType = CITY_TYPE))
         return photoArticles
     }
 
@@ -778,6 +884,10 @@ class ArticleDaoImpl: ArticleDao {
         const val NOWOSCI_COM_PL = "nowosci.com.pl"
         const val FROMBORK_ART_PL = "frombork.art.pl"
         const val POLSKIESZLAKI_PL = "polskieszlaki.pl"
+        const val WAWEL_KRAKOW_PL = "wawel.krakow.pl"
+        const val HISTORIAPOSZUKAJ_PL = "historiaposzukaj.pl"
+        const val ZABYTKIKRAKOWA_COM_PL = "zabytkikrakowa.com.pl"
+        const val ISZTUKA_EDU_PL = "isztuka.edu.pl"
 
         const val PLACE_TYPE = 10
         const val CITY_TYPE = 11

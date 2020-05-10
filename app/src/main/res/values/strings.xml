@@ -44,5 +44,5 @@
     <string name="warning">Uwaga!</string>
     <string name="warning_desc">Lata budowy niektórych miejsc na mapie są przybliżone i czasami ich obecność na mapie nie świadczy o tym, że zostały wybudowane w wybranej epoce.</string>
     <string name="map_functionalities">Funkcje mapy</string>
-    <string name="map_functionalities_desc">Ogranicz niektóre funkcje mapy aby stała się szybsza. Zalecane dla starszych i wolniejszych urządzeń.</string>
+    <string name="map_functionalities_desc">Zablokuj pasek narzędziowy na mapie aby stała się szybsza i łatwiej było przemieszczać się między miastami. Zalecane dla starszych i wolniejszych urządzeń.</string>
 </resources>

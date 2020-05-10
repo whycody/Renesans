@@ -34,7 +34,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private var clusterManager: ClusterManager<ClusterMarker>? = null
     private var clusterManagerRenderer: ClusterManagerRenderer? = null
     private var markersList = mutableListOf<ClusterMarker>()
-    private val zoomLevel = 7f
+    private val zoomLevel = 6.2f
     private val limitOfZoom = 11f
     private var cameraAnimations = false
     private var presenter: LocationPresenterImpl? = null
@@ -104,9 +104,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             if(location!=null) moveMapToLastLocation(location)
-            else moveMapToOlsztyn()
+            else moveMapToPoland()
             refreshLocationMarkersList()
-        }.addOnFailureListener{ moveMapToOlsztyn() }
+        }.addOnFailureListener{ moveMapToPoland() }
     }
 
     private fun prepareManagers(){
@@ -126,9 +126,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocationLatLng, zoomLevel))
     }
 
-    private fun moveMapToOlsztyn(){
-        val olsztyn = LatLng(53.775711, 20.477980)
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(olsztyn, zoomLevel))
+    private fun moveMapToPoland(){
+        val poland = LatLng(52.069322, 19.480311)
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(poland, zoomLevel))
     }
 
     override fun onCameraMove() {
