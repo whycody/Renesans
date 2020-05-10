@@ -93,7 +93,7 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
     }
 
     override fun loadBitmapToImage(bitmap: Bitmap, pos: Int) {
-        Glide.with(applicationContext).load(bitmap).into(getImageAtPos(pos))
+        if(!bitmap.isRecycled) Glide.with(applicationContext).load(bitmap).into(getImageAtPos(pos))
     }
 
     override fun loadUriToImage(uri: Uri, pos: Int) {

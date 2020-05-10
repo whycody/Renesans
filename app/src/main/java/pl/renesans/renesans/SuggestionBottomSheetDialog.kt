@@ -44,7 +44,7 @@ class SuggestionBottomSheetDialog(private val article: Article, private val numb
             view?.articleDescription?.text = "Sugerowanie zmian ・akapit ${numberOfParagraph + 1}"
         else view?.articleDescription?.text = "Sugerowanie zmian ・ nowy akapit"
         paragraph = Paragraph()
-        if(numberOfParagraph !=null) paragraph = article.listOfParagraphs!![numberOfParagraph]
+        if(numberOfParagraph != null) paragraph = article.listOfParagraphs!![numberOfParagraph]
         if(paragraph.subtitle != null) view?.titleOfParagraphView?.setText(paragraph.subtitle)
         if(paragraph.content != null) view?.contentOfParagraphView?.setText(paragraph.content)
         view.sendBtn.setOnClickListener{sendChangesToFirebase()}
@@ -82,7 +82,7 @@ class SuggestionBottomSheetDialog(private val article: Article, private val numb
 
     private fun loadMainPhoto(){
         val imageDao = ImageDaoImpl(context!!, this)
-        if(article.listOfPhotos!=null)
+        if(article.listOfPhotos!=null && article.listOfPhotos!![0].objectId!=null)
             imageDao.loadPhotoInBothQualities(id = article.listOfPhotos!![0].objectId!!)
         else imageDao.loadPhotoInBothQualities(0, article.objectId + "_0")
     }

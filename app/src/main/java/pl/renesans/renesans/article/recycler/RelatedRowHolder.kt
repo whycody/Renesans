@@ -27,7 +27,7 @@ class RelatedRowHolder(itemView: View, val context: Context, val presenter: Rela
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transform(CenterCrop(),
             RoundedCorners(context.resources.getDimension(R.dimen.relatedArticleViewRadius).toInt()))
-        Glide.with(context)
+        Glide.with(context.applicationContext)
             .load(uri)
             .apply(requestOptions)
             .placeholder(itemView.findViewById<ImageView>(R.id.articleImage).drawable)

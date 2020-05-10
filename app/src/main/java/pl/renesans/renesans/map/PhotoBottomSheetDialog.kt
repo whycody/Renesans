@@ -166,6 +166,6 @@ class PhotoBottomSheetDialog(private val photoArticle: PhotoArticle): BottomShee
     }
 
     override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
-        if(context!=null) Glide.with(context!!).load(photoBitmap).into(articlePhoto)
+        if(context!=null && !photoBitmap.isRecycled) Glide.with(context!!).load(photoBitmap).into(articlePhoto)
     }
 }

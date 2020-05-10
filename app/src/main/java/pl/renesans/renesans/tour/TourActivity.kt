@@ -143,6 +143,8 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
 
     override fun onPageSelected(position: Int) {
         checkUserHasEndedTour(position)
+        tour.photosArticlesList!![position].paragraph?.subtitle =
+            tour.photosArticlesList!![position].photo?.description
         presenter.onPageSelected(position)
         dots[currentPage].background = getDrawable(R.drawable.sh_circle_transp_gray)
         dots[position].background = getDrawable(R.drawable.sh_circle_gray)
@@ -214,7 +216,8 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     }
 
     override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
-        Glide.with(applicationContext).load(photoBitmap).placeholder(articlePhoto.drawable).into(articlePhoto)
+        if(!photoBitmap.isRecycled)
+            Glide.with(applicationContext).load(photoBitmap).placeholder(articlePhoto.drawable).into(articlePhoto)
     }
 
     override fun addClusterMarkerToMap(clusterMarker: ClusterMarker) {
