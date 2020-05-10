@@ -52,6 +52,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <View
+                android:id="@+id/invisibleView"
+                android:layout_width="1px"
+                android:layout_height="1px"
+                android:layout_marginStart="18dp"
+                android:background="@android:color/transparent"/>
+
             <TextView
                 android:id="@+id/articleParagraph"
                 android:layout_width="wrap_content"
