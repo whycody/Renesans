@@ -45,4 +45,10 @@
     <string name="warning_desc">Lata budowy niektórych miejsc na mapie są przybliżone i czasami ich obecność na mapie nie świadczy o tym, że zostały wybudowane w wybranej epoce.</string>
     <string name="map_functionalities">Funkcje mapy</string>
     <string name="map_functionalities_desc">Zablokuj pasek narzędziowy na mapie aby stała się szybsza i łatwiej było przemieszczać się między miastami. Zalecane dla starszych i wolniejszych urządzeń.</string>
+    <string name="send">Wyślij</string>
+    <string name="comment">Komentarz</string>
+    <string name="paragraph_content">Treść akapitu</string>
+    <string name="paragraph_title">Tytuł akapitu</string>
+    <string name="suggest_changes">Zasugeruj zmiany</string>
+    <string name="new_paragraph">Nowy akapit</string>
 </resources>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGray"
+    android:elevation="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/articlePhoto"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@tools:sample/backgrounds/scenic"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp">
+
+            <TextView
+                android:id="@+id/articleTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mikołaj Kopernik"
+                android:textSize="16sp"
+                android:textColor="@color/colorTitleGray"/>
+
+            <TextView
+                android:id="@+id/articleDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sugerowanie zmian - akapit 2"
+                android:textSize="13sp"
+                android:textColor="@color/colorParagraphGray"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/suggestionContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/titleOfParagraphView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/paragraph_title"
+                android:background="@null"
+                android:textAppearance="@style/ArticleContentTitleTextViewStyle"
+                android:maxLines="2"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="@dimen/dialogSheetPaddingStart"
+                android:layout_marginEnd="@dimen/dialogSheetPaddingStart"/>
+
+            <EditText
+                android:id="@+id/contentOfParagraphView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/paragraph_content"
+                android:background="@null"
+                android:textAppearance="@style/ArticleContentContentTextViewStyle"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/dialogSheetPaddingStart"
+                android:layout_marginEnd="@dimen/dialogSheetPaddingStart"/>
+
+            <EditText
+                android:id="@+id/commentView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/comment"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="@dimen/dialogSheetPaddingStart"
+                android:layout_marginEnd="@dimen/dialogSheetPaddingStart"/>
+
+            <Button
+                android:id="@+id/sendBtn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/sh_dialog_bottom_sources"
+                android:layout_marginTop="20dp"
+                android:text="@string/send"
+                android:layout_marginStart="@dimen/dialogSheetPaddingStart"
+                android:layout_marginEnd="@dimen/dialogSheetPaddingStart"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_marginBottom="30dp"
+                android:gravity="center"
+                android:enabled="false"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

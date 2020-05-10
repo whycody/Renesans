@@ -5,13 +5,17 @@ import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_article.*
 import pl.renesans.renesans.R
+import pl.renesans.renesans.SuggestionBottomSheetDialog
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
@@ -21,10 +25,12 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
 
     private val imagesList = mutableListOf<ImageView>()
     private lateinit var presenter: ArticleContract.ArticlePresenter
+    private lateinit var article: Article
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article)
+        article = getArticleObject()
         setSupportActionBar(articleToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -32,11 +38,27 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleView {
             android.R.color.white), PorterDuff.Mode.SRC_ATOP)
         imagesList.add(articleImage)
         val articleDao = ArticleDaoImpl()
-        loadSizeOfImageView(articleDao.getObjectTypeFromObjectId(getArticleObject().objectId!!))
-        presenter = ArticlePresenterImpl(applicationContext, this)
+        loadSizeOfImageView(articleDao.getObjectTypeFromObjectId(article.objectId!!))
+        presenter = ArticlePresenterImpl(this, this)
         presenter.loadContent()
         showPhotoViewActivityOnImageViewClick()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val popup = PopupMenu(this, articleToolbar)
+        popup.menuInflater.inflate(R.menu.article_popup_menu, menu)
+        val subMenu = menu!!.getItem(0).subMenu
+        subMenu.add(getString(R.string.new_paragraph))
+            .setOnMenuItemClickListener(getOnMenuItemClickListener())
+        return true
+    }
+
+   private fun getOnMenuItemClickListener(index: Int? = null): MenuItem.OnMenuItemClickListener {
+       return MenuItem.OnMenuItemClickListener {
+           SuggestionBottomSheetDialog(article, index).show(supportFragmentManager, "Suggest")
+           true
+       }
+   }
 
     private fun loadSizeOfImageView(objectType: Int){
         val articleImageHeight = articleImage.layoutParams.height

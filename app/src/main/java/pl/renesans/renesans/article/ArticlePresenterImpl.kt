@@ -1,25 +1,33 @@
 package pl.renesans.renesans.article
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pl.renesans.renesans.R
+import pl.renesans.renesans.SuggestionBottomSheetDialog
 import pl.renesans.renesans.article.recycler.RelatedAdapter
 import pl.renesans.renesans.article.recycler.RelatedContract
 import pl.renesans.renesans.article.recycler.RelatedPresenterImpl
 import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.Paragraph
+import pl.renesans.renesans.data.Photo
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
-import pl.renesans.renesans.data.Photo
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerDecoration
+import java.lang.StringBuilder
 
-class ArticlePresenterImpl(val context: Context, val articleView: ArticleContract.ArticleView):
+class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: ArticleContract.ArticleView):
     ArticleContract.ArticlePresenter, ImageDaoContract.ImageDaoInterractor {
 
     private lateinit var article: Article
@@ -33,10 +41,10 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
     override fun loadContent() {
         article = articleView.getArticleObject()
         listOfPhotos = article.listOfPhotos
-        imageDao = ImageDaoImpl(context, this)
-        articleMargin = context.resources.getDimension(R.dimen.articleMargin).toInt()
-        articleBigUpMargin = context.resources.getDimension(R.dimen.articleBigUpMargin).toInt()
-        articleSmallUpMargin = context.resources.getDimension(R.dimen.articleSmallUpMargin).toInt()
+        imageDao = ImageDaoImpl(activity, this)
+        articleMargin = activity.resources.getDimension(R.dimen.articleMargin).toInt()
+        articleBigUpMargin = activity.resources.getDimension(R.dimen.articleBigUpMargin).toInt()
+        articleSmallUpMargin = activity.resources.getDimension(R.dimen.articleSmallUpMargin).toInt()
         articleView.setTitle(article.title!!)
         loadMainPhoto()
         loadHeader()
@@ -55,7 +63,7 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
     }
 
     private fun addTitleToHeader(){
-        val textView = TextView(context)
+        val textView = TextView(activity)
         TextViewCompat.setTextAppearance(textView, R.style.ArticleHeaderTitleTextViewStyle)
         textView.text = article.title
         textView.alpha = .8f
@@ -64,7 +72,7 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
     }
 
     private fun addContentToHeader(){
-        val contentTextView = TextView(context)
+        val contentTextView = TextView(activity)
         TextViewCompat.setTextAppearance(contentTextView, R.style.ArticleHeaderContentTextViewStyle)
         createContentFromHeaderPairs(contentTextView)
         contentTextView.alpha = .8f
@@ -83,36 +91,89 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
 
     private fun loadParagraphs(){
         article.listOfParagraphs?.forEachIndexed { index, paragraph ->
-            loadImageAsParagraph(listOfPhotos?.find { it.numberOfParagraph == index-1 })
+            loadImage(index-1)
             val subtitleIsAvailable = paragraph.subtitle!=null
-            if(subtitleIsAvailable)
-                articleView.addViewToArticleLinear(getParagraphTitleTextView(paragraph.subtitle!!))
-            articleView.addViewToArticleLinear(getParagraphContentTextView(paragraph.content!!, subtitleIsAvailable))
+            val paragraphTextView = getParagraphContentTextView(paragraph.content!!)
+            val invisibleView = getInvisibleView(subtitleIsAvailable)
+            paragraphTextView
+                .setOnLongClickListener(getOnTextViewLongClick(paragraph, invisibleView, index))
+            if(subtitleIsAvailable) addSubtitleOfParagraph(paragraph, invisibleView, index)
+            articleView.addViewToArticleLinear(invisibleView)
+            articleView.addViewToArticleLinear(paragraphTextView)
         }
-        loadImageAsParagraph(listOfPhotos?.find { it.numberOfParagraph == article.listOfParagraphs?.size?.minus(1) })
+        loadImage(article.listOfParagraphs?.size?.minus(1))
+    }
+
+    private fun loadImage(index: Int?) =
+        loadImageAsParagraph(listOfPhotos?.find { it.numberOfParagraph == index })
+
+    private fun getParagraphContentTextView(content: String): TextView{
+        val textView = TextView(activity)
+        TextViewCompat.setTextAppearance(textView, R.style.ArticleContentContentTextViewStyle)
+        textView.text = content
+        textView.setLineSpacing(25f, 1f)
+        val linearParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT)
+        linearParams.setMargins(articleMargin, 0, articleMargin, 0)
+        textView.layoutParams = linearParams
+        return textView
+    }
+
+    private fun getInvisibleView(subtitleAvailable: Boolean): View{
+        val view = View(activity)
+        val linearParams = LinearLayout.LayoutParams(1, 1)
+        if(!subtitleAvailable) linearParams.setMargins(articleMargin, articleBigUpMargin, articleMargin, 0)
+        else linearParams.setMargins(articleMargin, articleSmallUpMargin, articleMargin, 0)
+        view.layoutParams = linearParams
+        view.setBackgroundColor(Color.TRANSPARENT)
+        return view
+    }
+
+    private fun addSubtitleOfParagraph(paragraph: Paragraph, invisibleView: View, index: Int){
+        val subtitleTextView = getParagraphTitleTextView(paragraph.subtitle!!)
+        subtitleTextView.setOnLongClickListener(getOnTextViewLongClick(paragraph, invisibleView, index))
+        articleView.addViewToArticleLinear(subtitleTextView)
     }
 
     private fun getParagraphTitleTextView(title: String): TextView{
-        val textView = TextView(context)
+        val textView = TextView(activity)
         TextViewCompat.setTextAppearance(textView, R.style.ArticleContentTitleTextViewStyle)
         textView.text = title
         textView.setPadding(articleMargin, articleBigUpMargin, articleMargin, 0)
         return textView
     }
 
-    private fun getParagraphContentTextView(content: String, subtitleAvailable: Boolean): TextView{
-        val textView = TextView(context)
-        TextViewCompat.setTextAppearance(textView, R.style.ArticleContentContentTextViewStyle)
-        textView.text = content
-        textView.setLineSpacing(25f, 1f)
-        if(!subtitleAvailable) textView.setPadding(articleMargin, articleBigUpMargin, articleMargin, 0)
-        else textView.setPadding(articleMargin, articleSmallUpMargin, articleMargin, 0)
-        return textView
+    private fun getOnTextViewLongClick(paragraph: Paragraph, view: View, index: Int): View.OnLongClickListener{
+        return View.OnLongClickListener {
+            val popup = PopupMenu(activity, view)
+            popup.menuInflater.inflate(R.menu.article_paragraph_popup_menu, popup.menu)
+            popup.menu.getItem(0).setOnMenuItemClickListener { copyParagraph(paragraph)
+                true
+            }
+            popup.menu.getItem(1).setOnMenuItemClickListener {
+                SuggestionBottomSheetDialog(article, index)
+                    .show(activity.supportFragmentManager, "Suggest")
+                true
+            }
+            popup.show()
+            true
+        }
+    }
+
+    private fun copyParagraph(paragraph: Paragraph){
+        val stringBuilder = StringBuilder()
+        if(paragraph.subtitle != null) stringBuilder.append("${paragraph.subtitle}. ")
+        stringBuilder.append(paragraph.content)
+        val clipboard: ClipboardManager? =
+            activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+        val clip = ClipData.newPlainText("Renesans", stringBuilder.toString())
+        clipboard?.primaryClip = clip
     }
 
     private fun loadImageAsParagraph(photo: Photo?){
         if(photo!=null){
-            val imageView = ImageView(context)
+            val imageView = ImageView(activity)
             imageView.adjustViewBounds = true
             imageView.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -126,7 +187,7 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
     }
 
     private fun loadDescriptionOfPhoto(photo: Photo){
-        val descriptionTextView = TextView(context)
+        val descriptionTextView = TextView(activity)
         TextViewCompat.setTextAppearance(descriptionTextView, R.style.ArticleHeaderContentTextViewStyle)
         descriptionTextView.text = photo.description!!
         descriptionTextView.setLineSpacing(10f, 1f)
@@ -135,19 +196,20 @@ class ArticlePresenterImpl(val context: Context, val articleView: ArticleContrac
     }
 
     private fun loadRelations(){
-        val relatedPresenter = RelatedPresenterImpl(context, article)
+        val relatedPresenter = RelatedPresenterImpl(activity, article)
         relatedPresenter.onCreate()
         if(relatedPresenter.getItemCount()!=0) loadRelationsView(relatedPresenter)
     }
     
     private fun loadRelationsView(relatedPresenter: RelatedContract.RelatedPresenter){
-        val recyclerView = RecyclerView(context)
-        val relatedAdapter = RelatedAdapter(context, relatedPresenter)
-        recyclerView.addItemDecoration(DiscoverRecyclerDecoration(context))
-        recyclerView.layoutManager = LinearLayoutManager(context.applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        val recyclerView = RecyclerView(activity)
+        val relatedAdapter = RelatedAdapter(activity, relatedPresenter)
+        recyclerView.addItemDecoration(DiscoverRecyclerDecoration(activity))
+        recyclerView.layoutManager = LinearLayoutManager(activity.applicationContext,
+            LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = relatedAdapter
         recyclerView.setPadding(0, articleSmallUpMargin, 0, 0)
-        articleView.addViewToArticleLinear(getParagraphTitleTextView(context.getString(R.string.relations)))
+        articleView.addViewToArticleLinear(getParagraphTitleTextView(activity.getString(R.string.relations)))
         articleView.addViewToArticleLinear(recyclerView)
     }
 

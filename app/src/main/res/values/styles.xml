@@ -5,6 +5,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="fontFamily">@font/open_sans_regular</item>
         <item name="actionBarSize">50dp</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
     <style name="SplashTheme" parent="AppTheme">

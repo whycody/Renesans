@@ -45,7 +45,7 @@ class PhotoBottomSheetDialog(private val photoArticle: PhotoArticle): BottomShee
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_bottom_sheet_photo, container, false)
         setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
-        view!!.articleTitle.text = photoArticle.title
+        view.articleTitle.text = photoArticle.title
         view.articleParagraph.text = photoArticle.paragraph?.content
         view.photoDescription.text = photoArticle.photo?.description
         view.articlePhoto.setBackgroundColor(Color.LTGRAY)
