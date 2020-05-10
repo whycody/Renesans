@@ -19,7 +19,7 @@
     <string name="important_events">Ważne wydarzenia</string>
     <string name="other_eras">Inne epoki</string>
     <string name="one_minute_more">Jeszcze tylko chwila..</string>
-    <string name="need_storage_permission">Potrzebujemy twojej zgody do pamięci urządzenia aby zapisywać zdjęcia w niskiej jakości do pamięci urządzenia. W ten sposób będziesz mógł korzystać z aplikacji offline. Obiecujemy, że nie zajmiemy dużo miejsca.</string>
+    <string name="need_storage_permission">Potrzebujemy twojej zgody do pamięci urządzenia aby zapisywać do niej zdjęcia w niskiej jakości. W ten sposób będziesz mógł korzystać z aplikacji offline. Obiecujemy, że nie zajmiemy dużo miejsca.</string>
     <string name="relations">Powiązania</string>
     <string name="main_content">Treść główna</string>
     <string name="world_art">Sztuka świata</string>

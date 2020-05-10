@@ -1,11 +1,14 @@
 package pl.renesans.renesans.settings
 
+import android.Manifest
 import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Context.ACTIVITY_SERVICE
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import pl.renesans.renesans.BuildConfig
 import pl.renesans.renesans.MainActivity
@@ -16,7 +19,8 @@ import pl.renesans.renesans.settings.dialog.SettingsDialogFragment
 import pl.renesans.renesans.settings.dialog.SettingsListContract
 
 
-class SettingsPresenterImpl(val activity: MainActivity, val settingsView: SettingsContract.SettingsView)
+class SettingsPresenterImpl(private val activity: MainActivity,
+                            private val settingsView: SettingsContract.SettingsView)
     : SettingsContract.SettingsPresenter {
 
     private val holders: MutableList<SettingsRowHolder> = mutableListOf()
@@ -25,6 +29,7 @@ class SettingsPresenterImpl(val activity: MainActivity, val settingsView: Settin
     private val editor = sharedPrefs.edit()
     private val settingsList = getSettings()
     private var currentMapMode = sharedPrefs.getInt(MAP_MODE, 0)
+    private var permissionGranted = false
 
     private fun getSettings(): List<Setting>{
         val settingsList = mutableListOf<Setting>()
@@ -32,7 +37,7 @@ class SettingsPresenterImpl(val activity: MainActivity, val settingsView: Settin
             activity.getString(R.string.renesans), false))
         settingsList.add(Setting(DOWNLOAD_PHOTOS, activity.getString(R.string.download_photos),
             activity.getString(R.string.download_photos_desc), true,
-            sharedPrefs.getBoolean(DOWNLOAD_PHOTOS, true)))
+            getValueOfDownloadingPhotos()))
         settingsList.add(Setting(MAP_MODE, activity.getString(R.string.map_mode),
             getMapModeDescription(), booleanValue = false, defaultValue = false,
             listOfOptions = listOf(SettingListItem(ALL_BUILDINGS,
@@ -56,6 +61,13 @@ class SettingsPresenterImpl(val activity: MainActivity, val settingsView: Settin
         return settingsList
     }
 
+    private fun getValueOfDownloadingPhotos(): Boolean {
+        permissionGranted = (ContextCompat.checkSelfPermission(activity,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        return if(!permissionGranted) false
+        else sharedPrefs.getBoolean(DOWNLOAD_PHOTOS, permissionGranted)
+    }
+
     private fun getMapModeDescription(index: Int = sharedPrefs.getInt(MAP_MODE, 0)): String{
         return when (index) {
             ALL_BUILDINGS -> activity.getString(R.string.all_buildings_desc)
@@ -72,12 +84,24 @@ class SettingsPresenterImpl(val activity: MainActivity, val settingsView: Settin
     }
 
     override fun itemClicked(pos: Int, checkBoxValue: Boolean) {
-        if(settingsList[pos].booleanValue){
+        if(settingsList[pos].booleanValue && settingsList[pos].settingId != DOWNLOAD_PHOTOS){
             editor.putBoolean(settingsList[pos].settingId!!, checkBoxValue)
             editor.apply()
         }else if(settingsList[pos].listOfOptions != null) showMapModeDialog(settingsList[pos], pos)
+        else if(settingsList[pos].settingId == DOWNLOAD_PHOTOS) checkPermissionGranted(pos, checkBoxValue)
         if(settingsList[pos].settingId == MAP_MODE) settingsView.refreshMapFragment()
         if(settingsList[pos].settingId == MAP_FUNCTIONALITIES) settingsView.changedOptionOfMapLimit()
+    }
+
+    private fun checkPermissionGranted(pos: Int, checkBoxValue: Boolean){
+        permissionGranted = (ContextCompat.checkSelfPermission(activity,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        if(!permissionGranted && checkBoxValue){
+            settingsList[pos].defaultValue = false
+            settingsView.notifyItemChangedAtPosition(pos)
+            ActivityCompat.requestPermissions(activity,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        }
     }
 
     private fun showMapModeDialog(setting: Setting, settingPos: Int){

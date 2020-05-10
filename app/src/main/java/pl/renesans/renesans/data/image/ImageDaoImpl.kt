@@ -1,7 +1,10 @@
 package pl.renesans.renesans.data.image
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import androidx.core.content.ContextCompat
 import com.google.firebase.storage.FirebaseStorage
 import pl.renesans.renesans.settings.SettingsPresenterImpl
 import java.io.File
@@ -30,9 +33,16 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
         val fileName = "${id}b.jpg"
         val fileExists = badQualityPhotoIsDownloaded(fileName)
         if(!fileExists){
-            downloadPhotos = sharedPrefs.getBoolean(SettingsPresenterImpl.DOWNLOAD_PHOTOS, true)
+            downloadPhotos = getValueOfDownloadingPhotos()
             if(downloadPhotos) downloadPhotoFromFirebase(id)
         }else loadBadQualityPhotoToHolder(pos, fileName)
+    }
+
+    private fun getValueOfDownloadingPhotos(): Boolean {
+        val permissionGranted = (ContextCompat.checkSelfPermission(context,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        return if(!permissionGranted) false
+        else sharedPrefs.getBoolean(SettingsPresenterImpl.DOWNLOAD_PHOTOS, permissionGranted)
     }
 
     private fun badQualityPhotoIsDownloaded(fileName: String): Boolean{
