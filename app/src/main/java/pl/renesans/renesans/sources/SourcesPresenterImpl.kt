@@ -26,13 +26,14 @@ class SourcesPresenterImpl(val context: Context, val view: SourcesContract.Sourc
         article.listOfParagraphs?.forEach{ paragraph ->
             if(paragraph.source!=null) sourcesList.add(paragraph.source!!)
         }
-        article.listOfPhotos?.forEach { photo -> addPhotoSourceToList(photo) }
+        article.listOfPhotos?.forEach { photo -> addPhotoSourceToList(photo, article) }
     }
 
-    private fun addPhotoSourceToList(photo: Photo){
+    private fun addPhotoSourceToList(photo: Photo, article: Article){
         if(photo.source!=null){
             photo.source!!.srcDescription = photo.description
-            photo.source!!.photoId = photo.objectId
+            if(photo.objectId == null) photo.source!!.photoId = article.objectId + "_0"
+            else photo.source!!.photoId = photo.objectId
             sourcesList.add(photo.source!!)
         }
     }

@@ -101,6 +101,9 @@ class SettingsPresenterImpl(private val activity: MainActivity,
             settingsView.notifyItemChangedAtPosition(pos)
             ActivityCompat.requestPermissions(activity,
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        }else{
+            editor.putBoolean(settingsList[pos].settingId!!, checkBoxValue)
+            editor.apply()
         }
     }
 

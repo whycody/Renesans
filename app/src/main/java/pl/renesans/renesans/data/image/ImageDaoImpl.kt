@@ -41,11 +41,6 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
         }else loadBadQualityPhotoToHolder(pos, fileName)
     }
 
-    private fun getValueOfDownloadingPhotos(): Boolean {
-        return if(!permissionGranted) false
-        else sharedPrefs.getBoolean(SettingsPresenterImpl.DOWNLOAD_PHOTOS, permissionGranted)
-    }
-
     private fun badQualityPhotoIsDownloaded(fileName: String): Boolean{
         val filePath = "$externalStorage/Renesans/$fileName"
         val file = File(filePath)
@@ -87,10 +82,16 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
     }
 
     private fun downloadPhotoAgain(fileName: String){
+        downloadPhotos = getValueOfDownloadingPhotos()
         if(downloadPhotos){
             val filePath = "$externalStorage/Renesans/$fileName"
             val file = File(filePath)
             if(file.delete()) downloadPhotoFromFirebase(fileName.substring(0, fileName.length - 5))
         }
+    }
+
+    private fun getValueOfDownloadingPhotos(): Boolean {
+        return if(!permissionGranted) false
+        else sharedPrefs.getBoolean(SettingsPresenterImpl.DOWNLOAD_PHOTOS, permissionGranted)
     }
 }

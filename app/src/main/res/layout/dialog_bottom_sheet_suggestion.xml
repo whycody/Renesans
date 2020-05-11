@@ -97,7 +97,7 @@
                 android:id="@+id/sendBtn"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/sh_dialog_bottom_sources"
+                android:background="@color/colorAccent"
                 android:layout_marginTop="20dp"
                 android:text="@string/send"
                 android:layout_marginStart="@dimen/dialogSheetPaddingStart"
