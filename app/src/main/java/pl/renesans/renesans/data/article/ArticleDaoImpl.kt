@@ -822,6 +822,99 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "KRA",
             zoom = 15.5f,
             objectType = CITY_TYPE))
+
+        photoArticles.add(PhotoArticle
+            (title = "Ratusz",
+            objectId = "I33",
+            cityKey = "POZ",
+            yearOfBuild = 1560,
+            source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/641"),
+            latLng = LatLng(52.408544, 16.934245),
+            paragraph = Paragraph(content = "Najważniejszym budynkiem na Starym Rynku jest Ratusz swoimi początkami sięgający drugiej połowy XIII wieku. Niegdyś decydowano tu o biegu miejskich spraw. Dziś budzi zainteresowanie jako jeden z najpiękniejszych zabytków architektury renesansowej w naszym kraju, nazywany przez niektórych „najładniejszym na północ od Alp”."),
+            photo = Photo(objectId = "I33_0", description = "Ratusz i fragment rynku w Poznaniu, 1895-1899",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Ratusz_Poznan?f=692523-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Ostrów Tumski",
+            shortTitle = "Ostrów T.",
+            objectId = "I34",
+            cityKey = "POZ",
+            yearOfBuild = 1790,
+            source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/62"),
+            latLng = LatLng(52.415603, 16.948654),
+            paragraph = Paragraph(content = "Na przełomie VIII i IX wieku na Ostrowie Tumskim powstał gród obronny, który w X wieku stał się obok Gniezna jednym z głównych ośrodków państwa Piastów. Właśnie tutaj odbył się chrzest Polski, a w 968 roku założono pierwsze na ziemiach polskich biskupstwo i zbudowano katedrę, w której pochowani są władcy Polski z dynastii Piastów."),
+            photo = Photo(objectId = "I34_0", description = "Tramwaj na Ostrowie Tumskim w Poznaniu, 1910",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Poznan/u55592,ul_Ostrow_Tumski.html?f=279989-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Zamek Cesarski",
+            shortTitle = "Zamek C.",
+            objectId = "I35",
+            cityKey = "POZ",
+            yearOfBuild = 1910,
+            source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/865"),
+            latLng = LatLng(52.407768, 16.919161),
+            paragraph = Paragraph(content = "Zamek Cesarski to ostatnia i najmłodsza rezydencja monarsza w Europie. Powstał dla niemieckiego cesarza Wilhelma II wg projektu Franza Schwechtena w latach 1905-1910. Wzniesiono go na wzór średniowiecznych zamków - jako symbol panowania niemieckiego w Wielkopolsce. Gdy po I wojnie światowej Polska odzyskała niepodległość, zamek stał się siedzibą Uniwersytetu Poznańskiego oraz rezydencją polskich prezydentów w czasie ich pobytu w Poznaniu."),
+            photo = Photo(objectId = "I35_0", description = "Zamek Cesarski w Poznaniu, 1910",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Zamek_Cesarski_Poznan?f=383248-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Kolegium Jezuickie",
+            shortTitle = "Kolegium J.",
+            objectId = "I36",
+            cityKey = "POZ",
+            yearOfBuild = 1573,
+            source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/68"),
+            latLng = LatLng(52.405906, 16.935065),
+            paragraph = Paragraph(content = "Kolegium jezuickie czyli dom zakonny, w którym część zakonników trudniła się kształceniem młodzieży, w Poznaniu zostało utworzone w 1573 roku. Trzypiętrowy gmach kolegium przy Placu Kolegiackim powstał w XVIII w. Budynek w kształcie podkowy z obszernym dziedzińcem i dwuskrzydłowym krużgankiem wywołuje imponujące wrażenie. Barokowe fasady są podzielone gzymsami i pilastrami (płaskimi pasami dzielącymi pionowo ścianę, ukształtowanymi na podobieństwo kolumn)."),
+            photo = Photo(objectId = "I36_0", description = "Dawne kolegium jezuickie i dzwonnica fary w Poznaniu, 1900 - 1910",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Poznan/b2653,Urzad_Miasta.html?f=295724-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Pałac Górków",
+            shortTitle = "Pałac G.",
+            objectId = "I37",
+            cityKey = "POZ",
+            yearOfBuild = 1549,
+            source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/945"),
+            latLng = LatLng(52.407448, 16.934655),
+            paragraph = Paragraph(content = "Pałac Górków jest jedną z najwspanialszych renesansowych rezydencji magnackich w Polsce. Górkowie to jeden z najpotężniejszych rodów możnowładczych Wielkopolski XV i XVI w. Z nich wywodzili się ówcześni starostowie, kasztelani, wojewodowie i biskupi. Obecnie jest siedzibą Muzeum Archeologicznego. Warto zwrócić szczególna uwagę na wykonany z piaskowca bogato zdobiony renesansowy portal bramy wjazdowej pałacu (od ul. Klasztornej)."),
+            photo = Photo(objectId = "I37_0", description = "Portal w Pałacu Górków w Poznaniu, 1920 - 1929",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Poznan/b2652,Palac_Gorkow_-_Muzeum_Archeologiczne.html?f=1594809-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Fort III",
+            shortTitle = "Fort III",
+            objectId = "I38",
+            cityKey = "POZ",
+            yearOfBuild = 1881,
+            source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/903"),
+            latLng = LatLng(52.399924, 16.997153),
+            paragraph = Paragraph(content = "Fort III zbudowany został w latach 1877 -1881 przez armię pruską. Jest jednym z 18 fortów artyleryjskich wchodzących w skład Twierdzy Poznań i zarazem jednym z 9 fortów typu głównego. Od nazwiska pruskiego generała otrzymał nazwę Graf Kirchbach. Od 2011 roku fort jest udostępniony do zwiedzania. Trasa zwiedzania prowadzi zarówno przez cześć podziemną, jak i naziemną fortu."),
+            photo = Photo(objectId = "I38_0", description = "Fort III Graf Kirchbach w Poznaniu, wjazd główny i blokhauz po prawej, 06.1974",
+                source = Source(page = CYRYL_POZNAN_PL, url = "https://cyryl.poznan.pl/kolekcja/722/fort-iii-graf-kirchbach-na-glowiencu-mkz"))))
+        photoArticles.add(PhotoArticle
+            (title = "Okrąglak",
+            objectId = "I39",
+            cityKey = "POZ",
+            yearOfBuild = 1954,
+            source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/951"),
+            latLng = LatLng(52.408414, 16.922241),
+            paragraph = Paragraph(content = "Symbol poznańskiego modernizmu. Budynek został zaprojektowany przez prof. Marka Leykama został wybudowany na miejscu przedwojennego Banku Cukrownictwa, u zbiegu ulic 27 Grudnia oraz Mielżyńskiego. Wyróżnia go jego charakterystyczny kształt walca. Uroczyste otwarcie Domu Towarowego 'Okrąglak' nastąpiło w dniu 29 stycznia 1954 roku."),
+            photo = Photo(objectId = "I39_0", description = "Panorama Poznania, w środku dom towarowy Okrąglak, 1960 - 1970",
+                source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Poznan/b2687,Okraglak_.html?f=284372-foto"))))
+        photoArticles.add(PhotoArticle
+            (title = "Zamek Królewski",
+            shortTitle = "Zamek K.",
+            objectId = "I40",
+            cityKey = "POZ",
+            yearOfBuild = 2013,
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Zamek_Kr%C3%B3lewski_w_Poznaniu"),
+            latLng = LatLng(52.409132, 16.931035),
+            paragraph = Paragraph(content = "Zamek Królewski w Poznaniu to rezydencja królewska w Poznaniu wzniesiona prawdopodobnie w XIII w. przez Przemysła II, a następnie wielokrotnie rozbudowywana. Zamek był świadkiem wielu wydarzeń historycznych, np. w 1493 r. złożył tu królowi Polski hołd lenny wielki mistrz krzyżacki Hans von Tieffen. Zamek został częściowo zniszczony w czasie wojny północnej i popadł w ruinę. Aktualnie stoi jego rekonstrukcja wykonana w latach 2010–2013 według projektu Witolda Milewskiego."),
+            photo = Photo(objectId = "I40_0", description = "Zamek Królewski w Poznaniu",
+                source = Source(page = POLSKIESZLAKI_PL, url = "https://www.polskieszlaki.pl/zamek-krolewski-w-poznaniu.htm"))))
+        photoArticles.add(PhotoArticle
+            (title = "Poznań",
+            latLng = LatLng(52.407448, 16.934655),
+            cityKey = "POZ",
+            zoom = 14f,
+            objectType = CITY_TYPE))
         return photoArticles
     }
 
@@ -888,6 +981,8 @@ class ArticleDaoImpl: ArticleDao {
         const val HISTORIAPOSZUKAJ_PL = "historiaposzukaj.pl"
         const val ZABYTKIKRAKOWA_COM_PL = "zabytkikrakowa.com.pl"
         const val ISZTUKA_EDU_PL = "isztuka.edu.pl"
+        const val POZNAN_TRAVEL = "poznan.travel"
+        const val CYRYL_POZNAN_PL = "cyryl.poznan.pl"
 
         const val PLACE_TYPE = 10
         const val CITY_TYPE = 11
