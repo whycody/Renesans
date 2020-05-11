@@ -63,3 +63,9 @@ data class SettingListItem(var settingsItemId: Int? = null,
 
 data class Tour(var title: String? = null,
                 var photosArticlesList: List<PhotoArticle>? = null) : Serializable
+
+data class Suggestion(var objectId: String? = null,
+                var numberOfParagraph: Int? = null,
+                var paragraphSubtitle: String? = null,
+                var paragraphContent: String? = null,
+                var comment: String? = null)

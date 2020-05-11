@@ -15,14 +15,8 @@ import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.TextView
+import android.view.*
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -41,6 +35,7 @@ import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
+import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.photo.PhotoActivity
@@ -48,7 +43,7 @@ import pl.renesans.renesans.sources.SourcesActivity
 import java.lang.StringBuilder
 
 class PhotoBottomSheetDialog(private val photoArticle: PhotoArticle): BottomSheetDialogFragment(),
-    ImageDaoContract.ImageDaoInterractor{
+    ImageDaoContract.ImageDaoInterractor, FirebaseContract.FirebaseInterractor {
 
     private lateinit var articlePhoto: ImageView
     private lateinit var article: Article
@@ -108,13 +103,31 @@ class PhotoBottomSheetDialog(private val photoArticle: PhotoArticle): BottomShee
                 true
             }
             popup.menu.getItem(1).setOnMenuItemClickListener {
-                SuggestionBottomSheetDialog(article, 0)
+                SuggestionBottomSheetDialog(article, 0, this)
                     .show(activity!!.supportFragmentManager, "Suggest")
                 true
             }
             popup.show()
             true
         }
+    }
+
+    override fun onSuccess() {
+        if (activity!=null) showToast(activity!!.getString(R.string.suggestions_sent))
+    }
+
+    override fun onFail() {
+        if (activity!=null) showToast(activity!!.getString(R.string.suggestions_fail))
+    }
+
+    private fun showToast(text: String){
+        val view = activity!!.layoutInflater.inflate(R.layout.toast_suggestion,
+            activity!!.findViewById(R.id.toastView))
+        view.findViewById<TextView>(R.id.toastText).text = text
+        val toast = Toast(activity!!.applicationContext)
+        toast.setGravity(Gravity.BOTTOM or Gravity.FILL_HORIZONTAL, 0, 0)
+        toast.view = view
+        toast.show()
     }
 
     private fun copyParagraph(paragraph: Paragraph){

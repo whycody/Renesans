@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
 import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.firebase.FirebaseContract
 
 interface ArticleContract {
 
@@ -25,5 +26,7 @@ interface ArticleContract {
     interface ArticlePresenter {
 
         fun loadContent()
+
+        fun getFirebaseInterractor(): FirebaseContract.FirebaseInterractor?
     }
 }

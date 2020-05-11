@@ -4,13 +4,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.PopupMenu
-import android.widget.ScrollView
-import android.widget.TextView
+import android.widget.*
 import androidx.viewpager.widget.PagerAdapter
 import kotlinx.android.synthetic.main.tour_slide_layout.view.*
 import pl.renesans.renesans.R
@@ -21,10 +19,12 @@ import pl.renesans.renesans.data.Paragraph
 import pl.renesans.renesans.data.Tour
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
+import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.sources.SourcesActivity
 import java.lang.StringBuilder
 
-class TourAdapter(private val activity: TourActivity, private val tour: Tour): PagerAdapter() {
+class TourAdapter(private val activity: TourActivity, private val tour: Tour): PagerAdapter(),
+    FirebaseContract.FirebaseInterractor {
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object` as ScrollView
@@ -71,7 +71,7 @@ class TourAdapter(private val activity: TourActivity, private val tour: Tour): P
             }
             popup.menu.getItem(1).setOnMenuItemClickListener {
                 val hereArticle = getArticleWithHereOnStart(article)
-                SuggestionBottomSheetDialog(hereArticle, 0)
+                SuggestionBottomSheetDialog(hereArticle, 0, this)
                     .show(activity.supportFragmentManager, "Suggest")
                 true
             }
@@ -105,6 +105,24 @@ class TourAdapter(private val activity: TourActivity, private val tour: Tour): P
         intent.putExtra(ArticleActivity.ARTICLE, article)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         activity.startActivity(intent)
+    }
+
+    override fun onSuccess() {
+        showToast(activity.getString(R.string.suggestions_sent))
+    }
+
+    override fun onFail() {
+        showToast(activity.getString(R.string.suggestions_fail))
+    }
+
+    private fun showToast(text: String){
+        val view = activity.layoutInflater.inflate(R.layout.toast_suggestion,
+            activity.findViewById(R.id.toastView))
+        view.findViewById<TextView>(R.id.toastText).text = text
+        val toast = Toast(activity.applicationContext)
+        toast.setGravity(Gravity.BOTTOM or Gravity.FILL_HORIZONTAL, 0, 0)
+        toast.view = view
+        toast.show()
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {

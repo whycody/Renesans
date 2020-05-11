@@ -6,11 +6,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
+import android.view.Gravity
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.PopupMenu
-import android.widget.TextView
+import android.widget.*
 import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,13 +20,15 @@ import pl.renesans.renesans.article.recycler.RelatedPresenterImpl
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.Paragraph
 import pl.renesans.renesans.data.Photo
+import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerDecoration
 import java.lang.StringBuilder
 
 class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: ArticleContract.ArticleView):
-    ArticleContract.ArticlePresenter, ImageDaoContract.ImageDaoInterractor {
+    ArticleContract.ArticlePresenter, ImageDaoContract.ImageDaoInterractor,
+    FirebaseContract.FirebaseInterractor {
 
     private lateinit var article: Article
     private var listOfPhotos: List<Photo>? = null
@@ -50,6 +50,10 @@ class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: Artic
         loadHeader()
         loadParagraphs()
         loadRelations()
+    }
+
+    override fun getFirebaseInterractor(): FirebaseContract.FirebaseInterractor? {
+        return this
     }
 
     private fun loadMainPhoto(){
@@ -152,7 +156,7 @@ class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: Artic
                 true
             }
             popup.menu.getItem(1).setOnMenuItemClickListener {
-                SuggestionBottomSheetDialog(article, index)
+                SuggestionBottomSheetDialog(article, index, this)
                     .show(activity.supportFragmentManager, "Suggest")
                 true
             }
@@ -219,5 +223,23 @@ class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: Artic
 
     override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
         articleView.loadBitmapToImage(photoBitmap, pos)
+    }
+
+    override fun onSuccess() {
+        showToast(activity.getString(R.string.suggestions_sent))
+    }
+
+    override fun onFail() {
+        showToast(activity.getString(R.string.suggestions_fail))
+    }
+
+    private fun showToast(text: String){
+        val view = activity.layoutInflater.inflate(R.layout.toast_suggestion,
+            activity.findViewById(R.id.toastView))
+        view.findViewById<TextView>(R.id.toastText).text = text
+        val toast = Toast(activity.applicationContext)
+        toast.setGravity(Gravity.BOTTOM or Gravity.FILL_HORIZONTAL, 0, 0)
+        toast.view = view
+        toast.show()
     }
 }

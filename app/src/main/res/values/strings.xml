@@ -51,4 +51,6 @@
     <string name="paragraph_title">Tytuł akapitu</string>
     <string name="suggest_changes">Zasugeruj zmiany</string>
     <string name="new_paragraph">Nowy akapit</string>
+    <string name="suggestions_sent">Sugestie zostały wysłane.</string>
+    <string name="suggestions_fail">Coś poszło nie tak.</string>
 </resources>

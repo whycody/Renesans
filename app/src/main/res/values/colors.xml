@@ -13,6 +13,7 @@
     <color name="colorBackgrGray">#F5F5F5</color>
     <color name="colorTransparentGray">#40000000</color>
     <color name="colorTransparentLightWhite">#34FFFFFF</color>
+    <color name="colorGrayToast">#D9000000</color>
     <color name="colorDarkWhite">#8C8581</color>
     <color name="colorDarkPrimary">#85431C</color>
     <color name="colorDarkPrimaryDark">#6E3717</color>

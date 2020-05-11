@@ -11,23 +11,28 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.DisplayMetrics
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
+import android.util.Log
+import android.view.*
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_suggestion.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_suggestion.view.*
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.Paragraph
+import pl.renesans.renesans.data.Suggestion
+import pl.renesans.renesans.data.firebase.FirebaseContract
+import pl.renesans.renesans.data.firebase.FirebaseDaoImpl
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
 
-class SuggestionBottomSheetDialog(private val article: Article, private val numberOfParagraph: Int? = null):
+class SuggestionBottomSheetDialog(private val article: Article,
+                                  private val numberOfParagraph: Int? = null,
+                                  private val firebaseInterractor:
+                                  FirebaseContract.FirebaseInterractor? = null):
     BottomSheetDialogFragment(), ImageDaoContract.ImageDaoInterractor, TextWatcher {
 
     private lateinit var articlePhoto: ImageView
@@ -47,7 +52,11 @@ class SuggestionBottomSheetDialog(private val article: Article, private val numb
         if(numberOfParagraph != null) paragraph = article.listOfParagraphs!![numberOfParagraph]
         if(paragraph.subtitle != null) view?.titleOfParagraphView?.setText(paragraph.subtitle)
         if(paragraph.content != null) view?.contentOfParagraphView?.setText(paragraph.content)
-        view.sendBtn.setOnClickListener{sendChangesToFirebase()}
+        view.sendBtn.setOnClickListener{sendChangesToFirebase(
+            Suggestion(article.objectId, numberOfParagraph,
+                view.titleOfParagraphView.text.toString(),
+                view.contentOfParagraphView.text.toString(),
+                commentView.text.toString()))}
         view.titleOfParagraphView.addTextChangedListener(this)
         view.contentOfParagraphView.addTextChangedListener(this)
         view.commentView.addTextChangedListener(this)
@@ -76,7 +85,9 @@ class SuggestionBottomSheetDialog(private val article: Article, private val numb
         window.setBackgroundDrawable(windowBackground)
     }
 
-    private fun sendChangesToFirebase(){
+    private fun sendChangesToFirebase(suggestion: Suggestion){
+        val firebaseDao = FirebaseDaoImpl(firebaseInterractor)
+        firebaseDao.putSuggestionToFirebase(suggestion)
         dismiss()
     }
 
