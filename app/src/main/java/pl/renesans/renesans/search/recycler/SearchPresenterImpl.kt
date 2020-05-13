@@ -3,6 +3,7 @@ package pl.renesans.renesans.search.recycler
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import pl.renesans.renesans.R
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.article.ArticleDao
 import pl.renesans.renesans.data.article.ArticleDaoImpl
@@ -51,7 +52,10 @@ class SearchPresenterImpl(private val context: Context,
         refreshHoldersList(holder, position)
         holder.setSearchTitle(articlesList[position].title!!)
         holder.setOnClickListener(position)
-        imageDao.loadPhotoInBothQualities(position, articlesList[position].objectId + "_0")
+        val bitmap = imageDao.getBitmap(articlesList[position].objectId + "_0")
+        if(bitmap!=null) holder.setSearchBitmapPhoto(bitmap)
+        else imageDao.loadPhoto(position, articlesList[position].objectId + "_0",
+            highQuality = false, bothQualities = false)
     }
 
     private fun refreshHoldersList(holder: SearchRowHolder, position: Int){
@@ -62,13 +66,14 @@ class SearchPresenterImpl(private val context: Context,
     private fun resetVariables(holder: SearchRowHolder){
         holder.setSearchTitle(" ")
         holder.setOnClickListener(0)
+        holder.setSearchDrawablePhoto(context.getDrawable(R.drawable.sh_search_recycler_row)!!)
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
-        holders[pos].setSearchUriPhoto(photoUri)
+        if(searchView.holderIsVisible(pos)) holders[pos].setSearchUriPhoto(photoUri)
     }
 
     override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
-        holders[pos].setSearchBitmapPhoto(photoBitmap)
+        if(searchView.holderIsVisible(pos)) holders[pos].setSearchBitmapPhoto(photoBitmap)
     }
 }

@@ -3,6 +3,7 @@ package pl.renesans.renesans.data.image
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.core.content.ContextCompat
 import com.google.firebase.storage.FirebaseStorage
@@ -10,7 +11,8 @@ import pl.renesans.renesans.settings.SettingsPresenterImpl
 import java.io.File
 import java.lang.Exception
 
-class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.ImageDaoInterractor):
+class ImageDaoImpl(private val context: Context, private val interractor:
+    ImageDaoContract.ImageDaoInterractor):
     ImageDaoContract.ImageDao {
 
     private val storage = FirebaseStorage.getInstance()
@@ -21,22 +23,28 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
     private var permissionGranted = false
 
     override fun loadPhotoInBothQualities(pos: Int, id: String) {
+        getPermission()
+        if(permissionGranted) loadPhoto(pos, id, highQuality = false, bothQualities = true)
+        loadPhoto(pos, id, highQuality = true, bothQualities = true)
+    }
+
+    override fun loadPhoto(pos: Int, id: String, highQuality: Boolean, bothQualities: Boolean){
+        getPermission()
+        if(highQuality) getPhotoUriFromID(pos, id, highQuality)
+        else if(permissionGranted) checkSavedPhoto(pos, id, bothQualities)
+    }
+
+    private fun getPermission(){
         permissionGranted = (ContextCompat.checkSelfPermission(context,
             Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-        if(permissionGranted) loadPhoto(pos, id, false)
-        loadPhoto(pos, id, true)
     }
 
-    private fun loadPhoto(pos: Int, id: String, highQuality: Boolean){
-        if(!highQuality) checkSavedPhoto(pos, id)
-        else getHighQualityPhotoUriFromID(pos, id)
-    }
-
-    private fun checkSavedPhoto(pos: Int, id: String){
+    private fun checkSavedPhoto(pos: Int, id: String, bothQualities: Boolean){
         val fileName = "${id}b.jpg"
         val fileExists = badQualityPhotoIsDownloaded(fileName)
         if(!fileExists){
             downloadPhotos = getValueOfDownloadingPhotos()
+            if(!bothQualities) getPhotoUriFromID(pos, id, false)
             if(downloadPhotos) downloadPhotoFromFirebase(id)
         }else loadBadQualityPhotoToHolder(pos, fileName)
     }
@@ -47,11 +55,16 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
         return file.exists()
     }
 
-    private fun getHighQualityPhotoUriFromID(pos: Int, id: String) {
-        var path: String = id + "h.jpg"
+    private fun getPhotoUriFromID(pos: Int, id: String, highQuality: Boolean) {
+        val path = getPhotoPath(id, highQuality)
         storageReference.child(path).downloadUrl.addOnSuccessListener { photo ->
             interractor.loadPhotoFromUri(photo, pos)
         }
+    }
+
+    private fun getPhotoPath(id: String, highQuality: Boolean): String{
+        return if (highQuality) id + "h.jpg"
+        else id + "b.jpg"
     }
 
     private fun downloadPhotoFromFirebase(id: String){
@@ -64,21 +77,23 @@ class ImageDaoImpl(val context: Context, val interractor: ImageDaoContract.Image
         photoReference.getFile(localFile)
     }
 
-    private fun createNoMediaFile(rootPath: File){
-        val noMediaFile = File(rootPath.path + "/.nomedia")
-        try {
-            noMediaFile.createNewFile()
-        }catch(e: Exception){}
+    private fun createNoMediaFile(rootPath: File) {
+        File(rootPath.path + "/.nomedia").createNewFile()
     }
 
     private fun loadBadQualityPhotoToHolder(pos: Int, fileName: String){
-        val filePath = "$externalStorage/Renesans/$fileName"
+        val myBitmap = getBitmap(fileName = fileName)
+        if(myBitmap!=null) interractor.loadPhotoFromBitmap(myBitmap, pos)
+        else downloadPhotoAgain(fileName)
+    }
+
+    override fun getBitmap(id: String?, fileName: String?): Bitmap? {
+        var nameOfFile = fileName
+        if(nameOfFile == null) nameOfFile = "${id}b.jpg"
+        val filePath = "$externalStorage/Renesans/$nameOfFile"
         val file = File(filePath)
-        if(file.exists()){
-            val myBitmap = BitmapFactory.decodeFile(file.absolutePath)
-            if(myBitmap!=null) interractor.loadPhotoFromBitmap(myBitmap, pos)
-            else downloadPhotoAgain(fileName)
-        }
+        return if(file.exists()) BitmapFactory.decodeFile(file.absolutePath)
+        else null
     }
 
     private fun downloadPhotoAgain(fileName: String){

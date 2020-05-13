@@ -20,6 +20,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
 
     private lateinit var presenter: SearchContract.SearchPresenter
     private lateinit var adapter: SearchRecyclerAdapter
+    private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +29,9 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         presenter = SearchPresenterImpl(applicationContext, this)
         presenter.onCreate()
         adapter = SearchRecyclerAdapter(applicationContext, presenter)
+        layoutManager = LinearLayoutManager(this)
         searchRecycler.adapter = adapter
-        searchRecycler.layoutManager = LinearLayoutManager(this)
+        searchRecycler.layoutManager = layoutManager
     }
 
     override fun onBackPressed() {
@@ -62,6 +64,12 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         val intent = Intent(this, ArticleActivity::class.java)
         intent.putExtra(ArticleActivity.ARTICLE, article)
         startActivity(intent)
+    }
+
+    override fun holderIsVisible(pos: Int): Boolean {
+        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+        val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+        return pos in firstVisibleItemPosition..lastVisibleItem
     }
 
     override fun onMenuItemActionExpand(item: MenuItem?): Boolean {

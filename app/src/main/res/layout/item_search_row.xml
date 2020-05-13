@@ -11,7 +11,8 @@
         android:paddingStart="20dp"
         android:paddingTop="7dp"
         android:paddingBottom="7dp"
-        android:paddingEnd="5dp"/>
+        android:paddingEnd="5dp"
+        android:src="@drawable/sh_search_recycler_row"/>
 
     <TextView
         android:id="@+id/searchTitle"

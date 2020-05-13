@@ -2,6 +2,7 @@ package pl.renesans.renesans.search.recycler
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
@@ -21,11 +22,13 @@ class SearchRowHolder(itemView: View, val context: Context, val presenter: Searc
     }
 
     override fun setSearchBitmapPhoto(bitmap: Bitmap) {
+        if(bitmap.isRecycled) return
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transform(CenterCrop(),
             RoundedCorners(context.resources.getDimension(R.dimen.searchArticleViewRadius).toInt()))
         Glide.with(context)
             .load(bitmap).apply(requestOptions)
+            .placeholder(itemView.findViewById<ImageView>(R.id.searchImage).drawable)
             .into(itemView.findViewById(R.id.searchImage))
     }
 
@@ -35,6 +38,17 @@ class SearchRowHolder(itemView: View, val context: Context, val presenter: Searc
             RoundedCorners(context.resources.getDimension(R.dimen.searchArticleViewRadius).toInt()))
         Glide.with(context.applicationContext)
             .load(uri)
+            .apply(requestOptions)
+            .placeholder(itemView.findViewById<ImageView>(R.id.searchImage).drawable)
+            .into(itemView.findViewById(R.id.searchImage))
+    }
+
+    override fun setSearchDrawablePhoto(drawable: Drawable) {
+        var requestOptions = RequestOptions()
+        requestOptions = requestOptions.transform(CenterCrop(),
+            RoundedCorners(context.resources.getDimension(R.dimen.searchArticleViewRadius).toInt()))
+        Glide.with(context.applicationContext)
+            .load(drawable)
             .apply(requestOptions)
             .placeholder(itemView.findViewById<ImageView>(R.id.searchImage).drawable)
             .into(itemView.findViewById(R.id.searchImage))

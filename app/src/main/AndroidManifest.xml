@@ -18,7 +18,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".photo.PhotoActivity"></activity>
-        <activity android:name=".tour.TourActivity" />
+        <activity android:name=".tour.TourActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".search.SearchActivity" />
         <activity android:name=".sources.SourcesActivity" />
         <activity android:name=".article.ArticleActivity" />
