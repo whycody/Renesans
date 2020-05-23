@@ -8,11 +8,9 @@ import pl.renesans.renesans.data.firebase.FirebaseContract
 
 interface ArticleContract {
 
-    interface ArticleView {
+    interface ArticleFragmentView {
 
         fun getArticleObject(): Article
-
-        fun setTitle(title: String)
 
         fun loadBitmapToImage(bitmap: Bitmap, pos: Int)
 
@@ -21,6 +19,13 @@ interface ArticleContract {
         fun addViewToArticleLinear(view: View)
 
         fun addViewToHeaderLinear(view: View)
+
+        fun getFirebaseInterractor(): FirebaseContract.FirebaseInterractor?
+    }
+
+    interface ArticleActivityView {
+
+        fun setTitle(title: String)
     }
 
     interface ArticlePresenter {

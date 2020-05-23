@@ -26,7 +26,9 @@ import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerDecoration
 import java.lang.StringBuilder
 
-class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: ArticleContract.ArticleView):
+class ArticlePresenterImpl(val activity: ArticleActivity,
+                           private val articleFragmentView: ArticleContract.ArticleFragmentView,
+                           private val articleActivityView: ArticleContract.ArticleActivityView? = null):
     ArticleContract.ArticlePresenter, ImageDaoContract.ImageDaoInterractor,
     FirebaseContract.FirebaseInterractor {
 
@@ -39,13 +41,13 @@ class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: Artic
     private var numberOfPhoto = 1
 
     override fun loadContent() {
-        article = articleView.getArticleObject()
+        article = articleFragmentView.getArticleObject()
         listOfPhotos = article.listOfPhotos
         imageDao = ImageDaoImpl(activity, this)
         articleMargin = activity.resources.getDimension(R.dimen.articleMargin).toInt()
         articleBigUpMargin = activity.resources.getDimension(R.dimen.articleBigUpMargin).toInt()
         articleSmallUpMargin = activity.resources.getDimension(R.dimen.articleSmallUpMargin).toInt()
-        articleView.setTitle(article.title!!)
+        articleActivityView?.setTitle(article.title!!)
         loadMainPhoto()
         loadHeader()
         loadParagraphs()
@@ -72,7 +74,7 @@ class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: Artic
         textView.text = article.title
         textView.alpha = .8f
         textView.setPadding(0, 0, 0, 10)
-        articleView.addViewToHeaderLinear(textView)
+        articleFragmentView.addViewToHeaderLinear(textView)
     }
 
     private fun addContentToHeader(){
@@ -81,7 +83,7 @@ class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: Artic
         createContentFromHeaderPairs(contentTextView)
         contentTextView.alpha = .8f
         contentTextView.setLineSpacing(10f, 1f)
-        articleView.addViewToHeaderLinear(contentTextView)
+        articleFragmentView.addViewToHeaderLinear(contentTextView)
     }
 
     private fun createContentFromHeaderPairs(textView: TextView){
@@ -102,8 +104,8 @@ class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: Artic
             paragraphTextView
                 .setOnLongClickListener(getOnTextViewLongClick(paragraph, invisibleView, index))
             if(subtitleIsAvailable) addSubtitleOfParagraph(paragraph, invisibleView, index)
-            articleView.addViewToArticleLinear(invisibleView)
-            articleView.addViewToArticleLinear(paragraphTextView)
+            articleFragmentView.addViewToArticleLinear(invisibleView)
+            articleFragmentView.addViewToArticleLinear(paragraphTextView)
         }
         loadImage(article.listOfParagraphs?.size?.minus(1))
     }
@@ -137,7 +139,7 @@ class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: Artic
     private fun addSubtitleOfParagraph(paragraph: Paragraph, invisibleView: View, index: Int){
         val subtitleTextView = getParagraphTitleTextView(paragraph.subtitle!!)
         subtitleTextView.setOnLongClickListener(getOnTextViewLongClick(paragraph, invisibleView, index))
-        articleView.addViewToArticleLinear(subtitleTextView)
+        articleFragmentView.addViewToArticleLinear(subtitleTextView)
     }
 
     private fun getParagraphTitleTextView(title: String): TextView{
@@ -183,7 +185,7 @@ class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: Artic
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT)
             imageView.setPadding(0, articleBigUpMargin, 0, 0)
-            articleView.addViewToArticleLinear(imageView)
+            articleFragmentView.addViewToArticleLinear(imageView)
             if(photo.description!=null) loadDescriptionOfPhoto(photo)
             imageDao.loadPhotoInBothQualities(numberOfPhoto, photo.objectId!!)
             numberOfPhoto++
@@ -196,7 +198,7 @@ class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: Artic
         descriptionTextView.text = photo.description!!
         descriptionTextView.setLineSpacing(10f, 1f)
         descriptionTextView.setPadding(articleMargin, articleSmallUpMargin, articleMargin, 0)
-        articleView.addViewToArticleLinear(descriptionTextView)
+        articleFragmentView.addViewToArticleLinear(descriptionTextView)
     }
 
     private fun loadRelations(){
@@ -213,16 +215,16 @@ class ArticlePresenterImpl(val activity: ArticleActivity, val articleView: Artic
             LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = relatedAdapter
         recyclerView.setPadding(0, articleSmallUpMargin, 0, 0)
-        articleView.addViewToArticleLinear(getParagraphTitleTextView(activity.getString(R.string.relations)))
-        articleView.addViewToArticleLinear(recyclerView)
+        articleFragmentView.addViewToArticleLinear(getParagraphTitleTextView(activity.getString(R.string.relations)))
+        articleFragmentView.addViewToArticleLinear(recyclerView)
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
-        articleView.loadUriToImage(photoUri, pos)
+        articleFragmentView.loadUriToImage(photoUri, pos)
     }
 
     override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
-        articleView.loadBitmapToImage(photoBitmap, pos)
+        articleFragmentView.loadBitmapToImage(photoBitmap, pos)
     }
 
     override fun onSuccess() {

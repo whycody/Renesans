@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorGray"
-    tools:context=".article.ArticleActivity"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -17,44 +15,15 @@
             android:id="@+id/articleToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@android:color/white"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:title=" "/>
+            app:title=" "
+            app:titleTextColor="@android:color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <FrameLayout
+        android:id="@+id/articleFrame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:id="@+id/articleLinear"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="40dp">
-
-            <ImageView
-                android:id="@+id/articleImage"
-                android:layout_width="match_parent"
-                android:layout_height="320dp"
-                android:transitionName="articleImage"
-                android:scaleType="centerCrop"/>
-
-            <LinearLayout
-                android:id="@+id/headerLinear"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:paddingLeft="@dimen/articleMargin"
-                android:paddingRight="@dimen/articleMargin"
-                android:background="@color/colorAccent"
-                android:orientation="vertical"/>
-
-            </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
