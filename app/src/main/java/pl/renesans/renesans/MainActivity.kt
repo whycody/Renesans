@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import pl.renesans.renesans.article.ArticleFragment
+import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.discover.DiscoverContentFragment
 import pl.renesans.renesans.map.MapFragment
 import pl.renesans.renesans.settings.SettingsFragment
@@ -33,6 +35,10 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("lastTab", currentItem)
+    }
+
+    fun showArticleInSecondPanel(article: Article){
+        discoverContentFragment.showArticleInSecondPanel(article)
     }
 
     fun refreshMapFragment(){

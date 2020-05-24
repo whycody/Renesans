@@ -2,6 +2,7 @@ package pl.renesans.renesans.discover.recycler
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.net.Uri
 import pl.renesans.renesans.article.ArticleActivity
@@ -12,7 +13,8 @@ import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
 
-class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
+class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context,
+                                    val view: DiscoverRecyclerView? = null):
     DiscoverRecyclerPresenter, ImageDaoContract.ImageDaoInterractor {
 
     private lateinit var articleDao: ArticleDao
@@ -20,6 +22,7 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
     private var imageDao: ImageDaoContract.ImageDao? = null
     private val holders: MutableList<DiscoverRowHolder> = mutableListOf()
     private val converter = ArticleConverterImpl()
+    private val orientation = context.resources.configuration.orientation
 
     override fun onCreate(articleId: Int) {
         articleDao = ArticleDaoImpl()
@@ -28,6 +31,11 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
     }
 
     override fun itemClicked(pos: Int) {
+        if(orientation != Configuration.ORIENTATION_LANDSCAPE) startArticleActivity(pos)
+        else view?.showArticleInSecondPanel(articleDao.getArticleFromId(articlesList[pos].objectId!!))
+    }
+
+    private fun startArticleActivity(pos: Int){
         val intent = Intent(context, ArticleActivity::class.java)
         intent.putExtra(ArticleActivity.ARTICLE, articleDao.getArticleFromId(articlesList[pos].objectId!!))
         context.startActivity(intent)

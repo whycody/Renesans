@@ -1,5 +1,6 @@
 package pl.renesans.renesans.article
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -10,8 +11,10 @@ import android.view.Gravity
 import android.view.View
 import android.widget.*
 import androidx.core.widget.TextViewCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
 import pl.renesans.renesans.SuggestionBottomSheetDialog
 import pl.renesans.renesans.article.recycler.RelatedAdapter
@@ -26,7 +29,7 @@ import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerDecoration
 import java.lang.StringBuilder
 
-class ArticlePresenterImpl(val activity: ArticleActivity,
+class ArticlePresenterImpl(val activity: FragmentActivity,
                            private val articleFragmentView: ArticleContract.ArticleFragmentView,
                            private val articleActivityView: ArticleContract.ArticleActivityView? = null):
     ArticleContract.ArticlePresenter, ImageDaoContract.ImageDaoInterractor,

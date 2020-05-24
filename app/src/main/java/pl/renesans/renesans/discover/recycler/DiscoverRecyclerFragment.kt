@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
+import pl.renesans.renesans.data.Article
 
-class DiscoverRecyclerFragment: Fragment() {
+class DiscoverRecyclerFragment: Fragment(), DiscoverRecyclerView {
 
     private lateinit var discoverRecycler: RecyclerView
     private lateinit var discoverTitle: TextView
@@ -23,7 +25,7 @@ class DiscoverRecyclerFragment: Fragment() {
         val view = inflater.inflate(R.layout.fragment_discover_recycler, container, false)
         discoverRecycler = view.findViewById(R.id.discoverRecycler)
         discoverTitle = view.findViewById(R.id.discoverTitle)
-        presenter = DiscoverRecyclerPresenterImpl(objectType, context!!)
+        presenter = DiscoverRecyclerPresenterImpl(objectType, context!!, this)
         presenter.onCreate(objectType)
         adapter = DiscoverRecyclerAdapter(context!!, presenter)
         discoverRecycler.adapter = adapter
@@ -31,6 +33,10 @@ class DiscoverRecyclerFragment: Fragment() {
         discoverRecycler.addItemDecoration(DiscoverRecyclerDecoration(context!!))
         setRecyclerTitle()
         return view
+    }
+
+    override fun showArticleInSecondPanel(article: Article) {
+        (activity as MainActivity).showArticleInSecondPanel(article)
     }
 
     fun setObjectType(objectType: Int){

@@ -34,7 +34,8 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
     }
 
     private fun setFragment(){
-        articleFragment = ArticleFragment(articleActivityView = this)
+        articleFragment = ArticleFragment()
+        articleFragment.setArticleActivityView(this)
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.articleFrame, articleFragment)
         transaction.commit()

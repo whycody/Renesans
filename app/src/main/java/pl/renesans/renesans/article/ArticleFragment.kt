@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_article.view.*
+import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.article.ArticleDaoImpl
@@ -19,15 +20,15 @@ import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 import pl.renesans.renesans.photo.PhotoActivity
 
-class ArticleFragment(var article: Article? = null,
-                      private val articleActivityView: ArticleContract.ArticleActivityView? = null)
-    : Fragment(), ArticleContract.ArticleFragmentView {
+class ArticleFragment : Fragment(), ArticleContract.ArticleFragmentView {
 
     private val imagesList = mutableListOf<ImageView>()
     private lateinit var presenter: ArticleContract.ArticlePresenter
     private lateinit var articleImage: ImageView
     private lateinit var articleLinear: LinearLayout
     private lateinit var headerLinear: LinearLayout
+    private var article: Article? = null
+    private var articleActivityView: ArticleContract.ArticleActivityView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -35,14 +36,23 @@ class ArticleFragment(var article: Article? = null,
         articleImage = view.articleImage
         articleLinear = view.articleLinear
         headerLinear = view.headerLinear
-        if(article == null) article = getArticleObject()
+        if(article == null)
+            article = activity?.intent?.getSerializableExtra(ArticleActivity.ARTICLE) as Article
         imagesList.add(articleImage)
         val articleDao = ArticleDaoImpl()
         loadSizeOfImageView(articleDao.getObjectTypeFromObjectId(article?.objectId!!))
-        presenter = ArticlePresenterImpl(activity!! as ArticleActivity, this, articleActivityView)
+        presenter = ArticlePresenterImpl(activity!!, this, articleActivityView)
         presenter.loadContent()
         showPhotoViewActivityOnImageViewClick()
         return view
+    }
+
+    fun setArticle(article: Article){
+        this.article = article
+    }
+
+    fun setArticleActivityView(articleActivityView: ArticleContract.ArticleActivityView){
+        this.articleActivityView = articleActivityView
     }
 
     private fun loadSizeOfImageView(objectType: Int){
@@ -71,7 +81,7 @@ class ArticleFragment(var article: Article? = null,
     }
 
     override fun getArticleObject(): Article {
-        return activity?.intent?.getSerializableExtra(ArticleActivity.ARTICLE) as Article
+        return article!!
     }
 
     override fun loadBitmapToImage(bitmap: Bitmap, pos: Int) {
