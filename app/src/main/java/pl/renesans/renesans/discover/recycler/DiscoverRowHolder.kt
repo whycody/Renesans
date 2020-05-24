@@ -21,14 +21,14 @@ class DiscoverRowHolder(itemView: View, val context: Context, val presenter: Dis
         requestOptions = requestOptions.transform(CenterCrop(),
             RoundedCorners(context.resources.getDimension(R.dimen.relatedArticleViewRadius).toInt()))
         if(!bitmap.isRecycled)
-            Glide.with(context).load(bitmap).apply(requestOptions).into(itemView.findViewById(R.id.articleImage))
+            Glide.with(context.applicationContext).load(bitmap).apply(requestOptions).into(itemView.findViewById(R.id.articleImage))
     }
 
     override fun setArticleUriPhoto(uri: Uri) {
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transform(CenterCrop(),
             RoundedCorners(context.resources.getDimension(R.dimen.relatedArticleViewRadius).toInt()))
-        Glide.with(context)
+        Glide.with(context.applicationContext)
             .load(uri)
             .apply(requestOptions)
             .placeholder(itemView.findViewById<ImageView>(R.id.articleImage).drawable)

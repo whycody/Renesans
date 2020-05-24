@@ -1,14 +1,18 @@
 package pl.renesans.renesans.discover
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import kotlinx.android.synthetic.main.fragment_discover.view.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 import pl.renesans.renesans.search.SearchActivity
@@ -25,17 +29,21 @@ class DiscoverFragment : Fragment() {
             startActivity(Intent(context!!.applicationContext, SearchActivity::class.java))
             activity?.overridePendingTransition(0, 0)
         }
-        addFragmentsToDiscoverLayout()
+        if(savedInstanceState == null) addFragmentsToDiscoverLayout()
         return view
     }
 
     private fun addFragmentsToDiscoverLayout(){
         val fragMan: FragmentManager? = fragmentManager
         val fragTransaction: FragmentTransaction = fragMan!!.beginTransaction()
-        val peopleFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.PEOPLE)
-        val artsFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.ARTS)
-        val eventsFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.EVENTS)
-        val otherErasFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.OTHER_ERAS)
+        val peopleFrag = DiscoverRecyclerFragment()
+        peopleFrag.setObjectType(DiscoverRecyclerFragment.PEOPLE)
+        val artsFrag = DiscoverRecyclerFragment()
+        artsFrag.setObjectType(DiscoverRecyclerFragment.ARTS)
+        val eventsFrag = DiscoverRecyclerFragment()
+        eventsFrag.setObjectType(DiscoverRecyclerFragment.EVENTS)
+        val otherErasFrag = DiscoverRecyclerFragment()
+        otherErasFrag.setObjectType(DiscoverRecyclerFragment.OTHER_ERAS)
         fragTransaction.add(discoverLayout.id, peopleFrag, "peopleFrag")
         fragTransaction.add(discoverLayout.id, artsFrag, "artsFrag")
         fragTransaction.add(discoverLayout.id, eventsFrag, "eventsFrag")

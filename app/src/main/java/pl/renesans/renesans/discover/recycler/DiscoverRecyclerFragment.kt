@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pl.renesans.renesans.R
 
-class DiscoverRecyclerFragment(val objectType: Int) : Fragment() {
+class DiscoverRecyclerFragment: Fragment() {
 
     private lateinit var discoverRecycler: RecyclerView
     private lateinit var discoverTitle: TextView
     private lateinit var presenter: DiscoverRecyclerPresenter
     private lateinit var adapter: DiscoverRecyclerAdapter
+    private var objectType = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -30,6 +31,10 @@ class DiscoverRecyclerFragment(val objectType: Int) : Fragment() {
         discoverRecycler.addItemDecoration(DiscoverRecyclerDecoration(context!!))
         setRecyclerTitle()
         return view
+    }
+
+    fun setObjectType(objectType: Int){
+        this.objectType = objectType
     }
 
     private fun setRecyclerTitle(){
