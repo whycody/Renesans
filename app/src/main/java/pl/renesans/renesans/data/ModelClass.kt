@@ -69,3 +69,9 @@ data class Suggestion(var objectId: String? = null,
                 var paragraphSubtitle: String? = null,
                 var paragraphContent: String? = null,
                 var comment: String? = null)
+
+data class LastCameraPosition(var lat: Double? = null,
+                              var lng: Double? = null,
+                              var cameraZoom: Float? = null,
+                              var tilt: Float? = null,
+                              var bearing: Float? = null): Serializable

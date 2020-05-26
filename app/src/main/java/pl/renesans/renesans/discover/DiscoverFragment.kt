@@ -25,17 +25,17 @@ class DiscoverFragment : Fragment() {
             startActivity(Intent(context!!.applicationContext, SearchActivity::class.java))
             activity?.overridePendingTransition(0, 0)
         }
-        addFragmentsToDiscoverLayout()
+        if(savedInstanceState == null) addFragmentsToDiscoverLayout()
         return view
     }
 
     private fun addFragmentsToDiscoverLayout(){
         val fragMan: FragmentManager? = fragmentManager
         val fragTransaction: FragmentTransaction = fragMan!!.beginTransaction()
-        val peopleFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.PEOPLE)
-        val artsFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.ARTS)
-        val eventsFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.EVENTS)
-        val otherErasFrag = DiscoverRecyclerFragment(DiscoverRecyclerFragment.OTHER_ERAS)
+        val peopleFrag = DiscoverRecyclerFragment().newInstance(DiscoverRecyclerFragment.PEOPLE)
+        val artsFrag = DiscoverRecyclerFragment().newInstance(DiscoverRecyclerFragment.ARTS)
+        val eventsFrag = DiscoverRecyclerFragment().newInstance(DiscoverRecyclerFragment.EVENTS)
+        val otherErasFrag = DiscoverRecyclerFragment().newInstance(DiscoverRecyclerFragment.OTHER_ERAS)
         fragTransaction.add(discoverLayout.id, peopleFrag, "peopleFrag")
         fragTransaction.add(discoverLayout.id, artsFrag, "artsFrag")
         fragTransaction.add(discoverLayout.id, eventsFrag, "eventsFrag")

@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.fragment_map.view.*
 import pl.renesans.renesans.R
+import pl.renesans.renesans.data.LastCameraPosition
 import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.map.recycler.LocationAdapter
@@ -42,12 +44,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private var limitOfMapFunctionality = true
     private lateinit var sharedPrefs: SharedPreferences
     private var currentZoomIsMin = false
+    private var cameraPos: CameraPosition? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        checkBundle(savedInstanceState)
         sharedPrefs = context!!.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
         limitOfMapFunctionality = sharedPrefs
             .getBoolean(SettingsPresenterImpl.MAP_FUNCTIONALITIES, !freeRamMemoryIsEnough())
@@ -57,6 +61,32 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         view.locationRecycler.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.HORIZONTAL, false)
         view.locationRecycler.addItemDecoration(LocationRecyclerDecoration(activity!!))
         return view
+    }
+
+    private fun checkBundle(savedInstanceState: Bundle?){
+        if(savedInstanceState?.getSerializable("lastPosition") != null){
+            val lastCameraPos =
+                savedInstanceState.getSerializable("lastPosition") as LastCameraPosition
+            cameraPos = CameraPosition(LatLng(lastCameraPos.lat!!, lastCameraPos.lng!!),
+                lastCameraPos.cameraZoom!!, lastCameraPos.tilt!!, lastCameraPos.bearing!!)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if(googleMap!=null){
+            val lastCameraPosition = getLastCameraPosition()
+            outState.putSerializable("lastPosition", lastCameraPosition)
+        }
+    }
+
+    private fun getLastCameraPosition(): LastCameraPosition{
+        return LastCameraPosition(
+            googleMap!!.cameraPosition.target.latitude,
+            googleMap!!.cameraPosition.target.longitude,
+            googleMap!!.cameraPosition.zoom,
+            googleMap!!.cameraPosition.tilt,
+            googleMap!!.cameraPosition.bearing)
     }
 
     private fun freeRamMemoryIsEnough(): Boolean {
@@ -104,9 +134,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             if(location!=null) moveMapToLastLocation(location)
-            else moveMapToPoland()
+            else moveMapToSavedLocation()
             refreshLocationMarkersList()
-        }.addOnFailureListener{ moveMapToPoland() }
+        }.addOnFailureListener{ moveMapToSavedLocation() }
     }
 
     private fun prepareManagers(){
@@ -124,6 +154,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         val longitude = location.longitude
         val lastLocationLatLng = LatLng(latitude, longitude)
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocationLatLng, zoomLevel))
+    }
+
+    private fun moveMapToSavedLocation(){
+        if(cameraPos!=null) googleMap?.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPos))
+        else moveMapToPoland()
     }
 
     private fun moveMapToPoland(){
