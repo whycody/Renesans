@@ -47,7 +47,9 @@ class ArticleFragment(var article: Article? = null,
 
     private fun loadSizeOfImageView(objectType: Int){
         val articleImageHeight = articleImage.layoutParams.height
-        when (objectType){
+        var checkingType = article?.typeOfScaling
+        if(checkingType == null) checkingType = objectType
+        when (checkingType){
             DiscoverRecyclerFragment.ARTS -> articleImage.layoutParams.height =
                 (articleImageHeight * 1.5).toInt()
             DiscoverRecyclerFragment.OTHER_ERAS, DiscoverRecyclerFragment.PHOTOS,

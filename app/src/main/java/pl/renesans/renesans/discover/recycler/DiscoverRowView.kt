@@ -9,6 +9,8 @@ interface DiscoverRowView {
 
     fun setArticleUriPhoto(uri: Uri)
 
+    fun setArticleDrawablePhoto()
+
     fun setArticlePhotoSize(objectType: Int)
 
     fun setArticleTitle(title: String)

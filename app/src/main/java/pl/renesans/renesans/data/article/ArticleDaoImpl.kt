@@ -82,6 +82,7 @@ class ArticleDaoImpl: ArticleDao {
             header = Header(content = listOf(Pair(PROFESSIONS,"badacz, astronom, lekarz"),
                     Pair(LIVE_YEARS, "1473 - 1543"),
                     Pair(NATIONALITY, "polska"))),
+            listOfRelatedArticlesIds = listOf("A9"),
             listOfPhotos = listOf(Photo(objectId = "P0_0", description = "Mikołaj Kopernik", source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
                 Photo(objectId = "P0_1", description = "Fragment \"O obrotach sfer niebieskich\", model heliocentryczny", numberOfParagraph = 1, source = Source(page = TVP_INFO, url = "https://www.tvp.info/12865831/przez-dwa-dni-mozna-ogladac-dzielo-kopernika"))),
             listOfParagraphs = listOf(Paragraph(subtitle = "Historia życia", content = "Mikołaj Kopernik urodził się 19 lutego 1473 w Toruniu, a zmarł przed 21 maja 1543 we Fromborku. Jest to polski astronom, który swoją sławę zawdzięcza przede wszystkim swojemu dziełu „O obrotach sfer niebieskich”, w którym szczegółowo przedstawił heliocentryczną wizję Wszechświata. Dzieło dokonało przełomu i wywołało jedną z najważniejszych rewolucji naukowych od czasów starożytnych, którą nazwano potem przewrotem kopernikańskim."),
@@ -112,7 +113,7 @@ class ArticleDaoImpl: ArticleDao {
             header = Header(content = listOf(Pair(PROFESSIONS, "malarz, architekt, rzeźbiarz, wynalazca"),
                 Pair(LIVE_YEARS, "1452 - 1519"),
                 Pair(NATIONALITY, "włoska"))),
-            listOfRelatedArticlesIds = listOf("A0", "A2", "P1", "P2"),
+            listOfRelatedArticlesIds = listOf("A0", "A2", "A7", "P1", "P2"),
             listOfPhotos = listOf(Photo(objectId = "P4_0", description = "Leonardo da Vinci",
                     source = Source(page = FOCUS_PL, url = "https://www.focus.pl/artykul/choroba-wyczytana-z-reki-leonarda")),
                 Photo(objectId = "P4_1", description = "Vinci, Włochy", numberOfParagraph = 0,
@@ -131,7 +132,7 @@ class ArticleDaoImpl: ArticleDao {
             header = Header(content = listOf(Pair(PROFESSIONS, "rzeźbiarz, malarz, poeta, architekt"),
                 Pair(LIVE_YEARS, "1475 - 1564"),
                 Pair(NATIONALITY, "włoska"))),
-            listOfRelatedArticlesIds = listOf("A1", "P4", "P2"),
+            listOfRelatedArticlesIds = listOf("A1", "A8", "P4", "P2"),
             listOfPhotos = listOf(Photo(objectId = "P1_0", description = "Michał Anioł",
                     source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Micha%C5%82_Anio%C5%82")),
                 Photo(objectId = "P1_1", description = "Caprese Michelangelo", numberOfParagraph = 0,
@@ -146,7 +147,7 @@ class ArticleDaoImpl: ArticleDao {
             header = Header(content = listOf(Pair(PROFESSIONS, "malarz, architekt"),
                 Pair(LIVE_YEARS, "1483 - 1520"),
                 Pair(NATIONALITY, "włoska"))),
-            listOfRelatedArticlesIds = listOf("P4", "P1"),
+            listOfRelatedArticlesIds = listOf("A5", "A6", "P4", "P1"),
             listOfPhotos = listOf(Photo(objectId = "P2_0", description = "Rafael Santi",
                     source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Rafael_Santi")),
                 Photo(objectId = "P2_1", description = "Urbino, Włochy", numberOfParagraph = 0,
@@ -160,6 +161,46 @@ class ArticleDaoImpl: ArticleDao {
                 Paragraph(subtitle = "Wizyta w Wenecji", content = "Aby przybliżyć sobie dzieła tworzone przez równolegle żyjących artystów - Leonarda da Vinci oraz Michała Anioła, Rafael wybrał się w podróż do Florencji. Cały czas pracował nad swoim unikatowym, tak rozpoznawalnym dzisiaj, stylem."),
                 Paragraph(content = "To właśnie jego zapał, konserwatywność, ale także to, że umiał wykroczyć poza oficjalne konwencje sprawiły, że jest uznawany za „księcia malarstwa”."))))
         articlesList.add(Article
+            (title = "Erazm z Rotterdamu",
+            objectId = "P5",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL),
+            header = Header(content = listOf(Pair(PROFESSIONS, "filolog, filozof, pedagog"))),
+            listOfPhotos = listOf(Photo(objectId = "P5_0", description = "Erazm z Rotterdamu",
+                source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Erazm_z_Rotterdamu"))),
+            listOfParagraphs = listOf()))
+        articlesList.add(Article
+            (title = "Galileusz",
+            objectId = "P6",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL),
+            header = Header(content = listOf(Pair(PROFESSIONS, "filozof, fizyk, astronom"))),
+            listOfPhotos = listOf(Photo(objectId = "P6_0", description = "Galileusz",
+                source = Source(page = DOX_PL, url = "http://2dox.pl/tag/galileo-galilei/"))),
+            listOfParagraphs = listOf()))
+        articlesList.add(Article
+            (title = "Marcin Luter",
+            objectId = "P7",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL),
+            header = Header(content = listOf(Pair(PROFESSIONS, "filozof, fizyk, astronom"))),
+            listOfPhotos = listOf(Photo(objectId = "P7_0", description = "Marcin Luter",
+                source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Marcin_Luter"))),
+            listOfParagraphs = listOf()))
+        articlesList.add(Article
+            (title = "William Shakespeare",
+            objectId = "P10",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL),
+            header = Header(content = listOf(Pair(PROFESSIONS, "poeta, dramaturg, aktor"))),
+            listOfPhotos = listOf(Photo(objectId = "P10_0", description = "William Shakespeare",
+                source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/William_Shakespeare"))),
+            listOfParagraphs = listOf()))
+        articlesList.add(Article
+            (title = "Jan Kochanowski",
+            objectId = "P8",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL),
+            header = Header(content = listOf(Pair(PROFESSIONS, "poeta, tłumacz"))),
+            listOfPhotos = listOf(Photo(objectId = "P8_0", description = "Jan Kochanowski",
+                source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Jan_Kochanowski"))),
+            listOfParagraphs = listOf()))
+        articlesList.add(Article
             (title = "Mikołaj Sęp Szarzyński",
             objectId = "P3",
             source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL, url = "https://culture.pl/pl/tworca/mikolaj-sep-szarzynski"),
@@ -167,7 +208,7 @@ class ArticleDaoImpl: ArticleDao {
                 Pair(LIVE_YEARS, "1550 - 1581"),
                 Pair(NATIONALITY, "polska"))),
             listOfPhotos = listOf(Photo(objectId = "P3_0", description = "Mikołaj Sęp Sarzyński",
-                    source = Source(page = CULTURE_PL, url = "https://culture.pl/pl/tworca/mikolaj-sep-szarzynski")),
+                source = Source(page = CULTURE_PL, url = "https://culture.pl/pl/tworca/mikolaj-sep-szarzynski")),
                 Photo(objectId = "P3_1", description = "Stare Miasto we Lwowie", numberOfParagraph = 1,
                     source = Source(page = PODROZE_ONET, url = "https://podroze.onet.pl/ciekawe/stare-miasto-we-lwowie-najwazniejsze-informacje/nj564rg")),
                 Photo(objectId = "P3_2", description = "Strona z pierwszego wydania Rytmów abo wierszy polskich z 1601", numberOfParagraph = 3,
@@ -178,6 +219,14 @@ class ArticleDaoImpl: ArticleDao {
                 Paragraph(subtitle = "Twórczość", content = "Jego twórczość należy do nurtu poezji metafizycznej. W swoich wierszach porusza tematy sensu życia i wiary. Zgłębia się w tajniki ludzkiej natury, wyraża obawy, wynikające ze świadomości przemijania i niedoskonałości."),
                 Paragraph(content = "Do dzisiejszych czasów przetrwało niewiele jego utworów. Zachowały się utwory ze zbioru \"Rytmy abo wiersze polskie\", który wydał, dwadzieścia lat po jego śmierci, jego brat.",
                     source = Source(srcDescription = MAIN_TEXT, photoId = "Z2_0", page = POLSKINA5_PL, url = "https://www.polskina5.pl/mikolaj_sep_szarzynski")))))
+        articlesList.add(Article
+            (title = "Wit Stwosz",
+            objectId = "P9",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL),
+            header = Header(content = listOf(Pair(PROFESSIONS, "rzeźbiarz, grafik, malarz"))),
+            listOfPhotos = listOf(Photo(objectId = "P9_0", description = "Wit Stwosz",
+                source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Wit_Stwosz"))),
+            listOfParagraphs = listOf()))
         return articlesList
     }
 
@@ -200,23 +249,9 @@ class ArticleDaoImpl: ArticleDao {
                 Paragraph(content = "Od czasu incydentu z kradzieżą Monsa Lisy, obraz jest jednym z najbardziej chronionych dzieł sztuki na świecie co przenosi się też na jego popularność. Zagadkowy uśmiech był przyczyną kolejnych domysłów. Vasari uważał, że podczas malowania modelka była zabawiana przez muzyków i klaunów."),
                 Paragraph(content = "Portret Mona Lisy pod względem malarskim to portret doskonały, który mógł wyjść tylko spod pędzla geniusza, jakim z pewnością był da Vinci."))))
         articlesList.add(Article
-            (title = "Dawid",
-            objectId = "A1",
-            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Dawid_(rze%C5%BAba)"),
-            listOfRelatedArticlesIds = listOf("P1"),
-            header = Header(content = listOf(Pair(CREATEOR, "Michał Anioł"),
-                Pair(CREATE_YEAR, "1501 - 1504"),
-                Pair(ART_PLACE, "Galleria dell'Accademia, Florencja"))),
-            listOfPhotos = listOf(Photo(objectId = "A1_0", description = "Dawid",
-                    source = Source(page = LATIMES_COM, url = "https://www.latimes.com/entertainment/arts/culture/la-et-cm-michelangelo-david-statue-florence-20140502-story.html")),
-                Photo(objectId = "A1_1", description = "Posąg Dawida w Galleria dell'Accademia", numberOfParagraph = 0,
-                    source = Source(page = FAKTY_INTERA_PL, url = "https://fakty.interia.pl/nauka/news-naukowcy-rzezba-dawida-dluta-michala-aniola-zagrozona,nId,1418818"))),
-            listOfParagraphs = listOf(Paragraph(content = "Rzeźba Michała Anioła przedstawia biblijnego Dawid bezpośrednio przed walką z Goliatem. Jest uznawana za jedno z najważniejszych dzieł renesansowej rzeźby. Artysta stworzył tą rzeźbę z dbałością o najmniejsze szczegóły, na Dawidze widać nawet naczynia krwionośne."),
-                Paragraph(subtitle = "Przebieg pracy", content = "To od katedry florenckiej wiosną 1501 Michał dostał zlecenie na wykonanie rzeźby, którą zaczął 13 września. Do swojego dzieła wykorzystał złom marmuru. Podobno kiedy zobaczył kamień, powiedział: „Widzę rzeźbę, teraz muszę tylko odrzucić to, co zbędne”."),
-                Paragraph(content = "Po ukończeniu, 8 września 1504 posąg stanął obok wejścia do Palazzo Vecchio we Florencji. Miał symbolizować wolność zdobytą przez mieszkańców miasta i ich gotowość do jej obrony. Dawid stał tam aż 369 lat, do 1873 roku. Obecnie stoi tam jego kopia."))))
-        articlesList.add(Article
             (title = "Ostatnia Wieczerza",
             objectId = "A2",
+            typeOfScaling = DiscoverRecyclerFragment.EVENTS,
             source = Source(srcDescription = MAIN_TEXT, page = NIEZLA_SZTUKA, url = "https://niezlasztuka.net/o-sztuce/ostatnia-wieczerza-leonarda-da-vinci/"),
             listOfRelatedArticlesIds = listOf("P4"),
             header = Header(content = listOf(Pair(CREATEOR, "Leonardo da Vinci"),
@@ -231,6 +266,40 @@ class ArticleDaoImpl: ArticleDao {
                 Paragraph(subtitle = "Technika Malarska", content = "Leonardo użył tutaj farb temperowych wymieszanych z olejnymi, które nakładał na zagruntowaną ścianę. To mu z kolei umożliwiło zadbać o każdy szczegół obrazu, bez koniecznego pośpiechu, który byłby konieczny przy zastosowaniu techniki fresku, w której specjalna farba odporna wymagała nakładania na mokry tynk."),
                 Paragraph(content = "Niestety nowatorskie pomysły Leonarda z techniką malarską i stosowanymi farbami sprawiły, że Ostatnia Wieczerza z czasem zaczęła blaknąć i łuszczyć się już kilka lat po jej wykonaniu."))))
         articlesList.add(Article
+            (title = "Dama z gronostajem",
+            objectId = "A7",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL),
+            header = Header(content = listOf(Pair(CREATEOR, "Leonardo da Vinci"))),
+            listOfRelatedArticlesIds = listOf("P4"),
+            listOfPhotos = listOf(Photo(objectId = "A7_0", description = "Dama z gronostajem",
+                source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Dama_z_gronostajem"))),
+            listOfParagraphs = listOf()))
+        articlesList.add(Article
+            (title = "Dawid",
+            objectId = "A1",
+            typeOfScaling = DiscoverRecyclerFragment.PEOPLE,
+            source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Dawid_(rze%C5%BAba)"),
+            listOfRelatedArticlesIds = listOf("P1"),
+            header = Header(content = listOf(Pair(CREATEOR, "Michał Anioł"),
+                Pair(CREATE_YEAR, "1501 - 1504"),
+                Pair(ART_PLACE, "Galleria dell'Accademia, Florencja"))),
+            listOfPhotos = listOf(Photo(objectId = "A1_0", description = "Dawid",
+                source = Source(page = LATIMES_COM, url = "https://www.latimes.com/entertainment/arts/culture/la-et-cm-michelangelo-david-statue-florence-20140502-story.html")),
+                Photo(objectId = "A1_1", description = "Posąg Dawida w Galleria dell'Accademia", numberOfParagraph = 0,
+                    source = Source(page = FAKTY_INTERA_PL, url = "https://fakty.interia.pl/nauka/news-naukowcy-rzezba-dawida-dluta-michala-aniola-zagrozona,nId,1418818"))),
+            listOfParagraphs = listOf(Paragraph(content = "Rzeźba Michała Anioła przedstawia biblijnego Dawid bezpośrednio przed walką z Goliatem. Jest uznawana za jedno z najważniejszych dzieł renesansowej rzeźby. Artysta stworzył tą rzeźbę z dbałością o najmniejsze szczegóły, na Dawidze widać nawet naczynia krwionośne."),
+                Paragraph(subtitle = "Przebieg pracy", content = "To od katedry florenckiej wiosną 1501 Michał dostał zlecenie na wykonanie rzeźby, którą zaczął 13 września. Do swojego dzieła wykorzystał złom marmuru. Podobno kiedy zobaczył kamień, powiedział: „Widzę rzeźbę, teraz muszę tylko odrzucić to, co zbędne”."),
+                Paragraph(content = "Po ukończeniu, 8 września 1504 posąg stanął obok wejścia do Palazzo Vecchio we Florencji. Miał symbolizować wolność zdobytą przez mieszkańców miasta i ich gotowość do jej obrony. Dawid stał tam aż 369 lat, do 1873 roku. Obecnie stoi tam jego kopia."))))
+        articlesList.add(Article
+            (title = "Stworzenie Adama",
+            objectId = "A8",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL),
+            listOfRelatedArticlesIds = listOf("P1"),
+            header = Header(content = listOf(Pair(CREATEOR, "Michał Anioł"))),
+            listOfPhotos = listOf(Photo(objectId = "A8_0", description = "Stworzenie Adama",
+                source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Stworzenie_Adama"))),
+            listOfParagraphs = listOf()))
+        articlesList.add(Article
             (title = "Narodziny Wenus",
             objectId = "A3",
             source = Source(srcDescription = MAIN_TEXT, page = NIEZLA_SZTUKA, url = "https://niezlasztuka.net/o-sztuce/sandro-botticelli-narodziny-wenus/"),
@@ -244,6 +313,42 @@ class ArticleDaoImpl: ArticleDao {
             listOfParagraphs = listOf(Paragraph(subtitle = "Symbol Renesansu", content = "Narodziny Wenus włoskiego malarza Sandro Botticeli jest przykładem odrodzenia antycznych motywów mitologicznych w malarstwie wczesnego renesansu floranckiego. To właśnie dzieła o takiej tematyce tworzył Botticelli, stworzył również m.in. Wenus i Marsa."),
                 Paragraph(content = "Nie została dokładnie ustalona data stworzenia dzieła, większość historyków sztuki wskazuje lata 1482 - 1485. Obraz został namalowany na tańszym materiale, płótnie, co może wskazywać na to, że miał być przeznaczony do rezydencji wiejskiej."),
                 Paragraph(subtitle = "Kontekst mitologiczny", content = "Według greckiego poety Hezjoda bogini miłości Wenus powstała z piany morskiej, kiedy Krotos obciął swojemu ojcu genitalia i wrzucił je do oceanu, aby ukarać go za okrucieństwo. Wenus wynurzyła się spomiędzy fal i skierowała w stronę brzegu jednej z greckich wysp – Cypru lub Cytery."))))
+        articlesList.add(Article
+            (title = "Przemienienie pańskie",
+            objectId = "A5",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL),
+            header = Header(content = listOf(Pair(CREATEOR, "Rafael Santi"))),
+            listOfRelatedArticlesIds = listOf("P2"),
+            listOfPhotos = listOf(Photo(objectId = "A5_0", description = "Szkoła Ateńska",
+                source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Przemienienie_Pa%C5%84skie_(obraz_Rafaela)"))),
+            listOfParagraphs = listOf()))
+        articlesList.add(Article
+            (title = "Dama z jednorożcem",
+            objectId = "A6",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL),
+            listOfRelatedArticlesIds = listOf("P2"),
+            header = Header(content = listOf(Pair(CREATEOR, "Rafael Santi"))),
+            listOfPhotos = listOf(Photo(objectId = "A6_0", description = "Dama z jednorożcem",
+                source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Dama_z_jednoro%C5%BCcem_(obraz_Rafaela)"))),
+            listOfParagraphs = listOf()))
+        articlesList.add(Article
+            (title = "O obrotach sfer niebieskich",
+            objectId = "A9",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL),
+            listOfRelatedArticlesIds = listOf("P0"),
+            header = Header(content = listOf(Pair(CREATEOR, "Mikołaj Kopernik"))),
+            listOfPhotos = listOf(Photo(objectId = "A9_0", description = "O obrotach sfer niebieskich",
+                source = Source(page = WYBORCZA_PL, url = "https://wyborcza.pl/1,157232,15042652,Niecodzienna_okazja_by_zobaczyc_slynne_dzielo_Kopernika.html?disableRedirects=true"))),
+            listOfParagraphs = listOf()))
+        articlesList.add(Article
+            (title = "Biblia Gutenberga",
+            objectId = "A10",
+            source = Source(srcDescription = MAIN_TEXT, page = CULTURE_PL),
+            listOfRelatedArticlesIds = listOf("E1"),
+            header = Header(content = listOf(Pair(CREATEOR, "Johannes Gutenberg"))),
+            listOfPhotos = listOf(Photo(objectId = "A10_0", description = "Biblia Gutenberga",
+                source = Source(page = EKAI_PL, url = "https://ekai.pl/biblia-z-czasow-gutenberga-na-aukcji-w-hamburgu/"))),
+            listOfParagraphs = listOf()))
         return articlesList
     }
 
@@ -267,6 +372,7 @@ class ArticleDaoImpl: ArticleDao {
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Johannes_Gutenberg"),
             header = Header(content = listOf(Pair(CREATEOR, "Johannes Gutenberg"),
                     Pair(TIME, "ok. 1445"))),
+            listOfRelatedArticlesIds = listOf("A10"),
             listOfPhotos = listOf(Photo(objectId = "E1_0", description = "Wynalazek druku",
                     source = Source(page = YOUTUBE_COM, url = "https://www.youtube.com/watch?v=CtDnTj8XGUM")),
                 Photo(objectId = "E1_1", description = "Kaszta zecerska pełna czcionek", numberOfParagraph = 1,
@@ -993,6 +1099,9 @@ class ArticleDaoImpl: ArticleDao {
         const val PL_TRIPADVISOR_COM = "pl.tripadvisor.com"
         const val ZABYTEK_PL = "zabytek.pl"
         const val PODROZEPOEUROPIE_PL = "podrozepoeuropie.pl"
+        const val DOX_PL = "2dox.pl"
+        const val WYBORCZA_PL = "wyborcza.pl"
+        const val EKAI_PL = "ekai.pl"
 
         const val PLACE_TYPE = 10
         const val CITY_TYPE = 11

@@ -23,6 +23,7 @@ data class Header(var title: String? = null,
 
 data class Article(var objectId: String? = null,
                    var objectType: Int? = null,
+                   var typeOfScaling: Int? = null,
                    var title: String? = null,
                    var header: Header? = null,
                    var source: Source? = null,

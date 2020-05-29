@@ -54,6 +54,7 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
     private fun resetVariables(holder: DiscoverRowHolder){
         holder.setArticleTitle(" ")
         holder.setOnRowClickListener(0)
+        holder.setArticleDrawablePhoto()
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {

@@ -35,13 +35,20 @@ class DiscoverRowHolder(itemView: View, val context: Context, val presenter: Dis
             .into(itemView.findViewById(R.id.articleImage))
     }
 
+    override fun setArticleDrawablePhoto() {
+        Glide.with(context)
+            .load(R.drawable.sh_discover_recycler_row)
+            .into(itemView.findViewById(R.id.articleImage))
+    }
+
     override fun setArticlePhotoSize(objectType: Int) {
         val articleImage = itemView.findViewById<ImageView>(R.id.articleImage)
-        val articleImageHeight = articleImage.layoutParams.height
-        val articleImageWidth = articleImage.layoutParams.width
-        if(objectType== DiscoverRecyclerFragment.ARTS){
+        val articleImageHeight = context.resources.getDimension(R.dimen.discoverImageHeight).toInt()
+        val articleImageWidth = context.resources.getDimension(R.dimen.discoverImageWidth).toInt()
+        if(objectType == DiscoverRecyclerFragment.ARTS){
             articleImage.layoutParams.height = (articleImageHeight * 1.5).toInt()
-        }else if(objectType== DiscoverRecyclerFragment.EVENTS||objectType== DiscoverRecyclerFragment.OTHER_ERAS){
+        }else if(objectType == DiscoverRecyclerFragment.EVENTS ||
+            objectType == DiscoverRecyclerFragment.OTHER_ERAS){
             articleImage.layoutParams.width = (articleImageWidth * 1.8).toInt()
             articleImage.layoutParams.height = (articleImageHeight * 1.2).toInt()
         }
