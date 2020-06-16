@@ -16,7 +16,8 @@ class ClusterMarker(val photoArticle: PhotoArticle): ClusterItem, ClusterView {
     }
 
     override fun getPosition(): LatLng {
-        return if(photoArticle.latLng != null) photoArticle.latLng!!
+        return if(photoArticle.position != null)
+            LatLng(photoArticle.position!!.lat!!, photoArticle.position!!.lng!!)
         else LatLng(1.0, 1.0)
     }
 

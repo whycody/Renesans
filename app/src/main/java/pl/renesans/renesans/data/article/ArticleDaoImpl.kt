@@ -1,7 +1,5 @@
 package pl.renesans.renesans.data.article
 
-import android.util.Log
-import com.google.android.gms.maps.model.LatLng
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
@@ -88,21 +86,21 @@ class ArticleDaoImpl: ArticleDao {
             listOfParagraphs = listOf(Paragraph(subtitle = "Historia życia", content = "Mikołaj Kopernik urodził się 19 lutego 1473 w Toruniu, a zmarł przed 21 maja 1543 we Fromborku. Jest to polski astronom, który swoją sławę zawdzięcza przede wszystkim swojemu dziełu „O obrotach sfer niebieskich”, w którym szczegółowo przedstawił heliocentryczną wizję Wszechświata. Dzieło dokonało przełomu i wywołało jedną z najważniejszych rewolucji naukowych od czasów starożytnych, którą nazwano potem przewrotem kopernikańskim."),
                 Paragraph(content = "Należy w tym miejscu wspomnieć, że koncepcja heliocentryzmu pojawiła się już w starożytnej Grecji, ale to właśnie dzieło Kopernika było przełomem w postrzeganiu naszej galaktyki."),
                 Paragraph(subtitle = "Inne profesje", content = "Astronomia to dziedzina z której Kopernik był znany najbardziej, ale nie jedyna. Był renesansowym polihistorem, czyli osobą posiadającą rozległą wiedzę z wielu, różnych dziedzin. Interesował się matematyką, prawem, ekonomią, strategią wojskową czy też astrologią.")),
-            tour = Tour("Mikołaj Kopernik", listOf(PhotoArticle(objectId = "T0_0", lat = 53.009311, lng = 18.603962, title = "Toruń, miejsce urodzenia", paragraph = Paragraph(content = "19 lutego 1473 najprawdopodobniej urodził się Mikołaj Kopernik, w rodzinie kupca Mikołaja i Barbary pochodzącej z rodziny Watzenrode."), photo = Photo(description = "Dom Mikołaja Kopernika", source = Source(page = NAUKAWPOLSCE_PAP_PL, url = "http://naukawpolsce.pap.pl/aktualnosci/news%2C29979%2Ctorun-wyremontowany-dom-mikolaja-kopernika-znow-bedzie-otwarty-dla")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_1", lat = 53.010546, lng = 18.605117, title = "Toruń, miejsce przeprowadzki (kamienica pierwsza od prawej)", paragraph = Paragraph(content = "W 1480 r. Kopernikowie przeprowadzili się z domu przy ulicy św. Anny, kamienica nazywana jest także Lazurową i stoi przy Rynku Staromiejskim 36."), photo = Photo(description = "Kamienica pod Lwem", source = Source(page = TURYSTYKA_TORUN_PL, url = "http://www.turystyka.torun.pl/art/693/kamienica-pod-lwem-glazurowa-rynek-staromiejski-36.html ")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_2", lat = 53.009381, lng = 18.606256, title = "Toruń", paragraph = Paragraph(content = "Najprawdopodobniej Mikołaj Kopernik ukończył pierwsze nauki - w szkole parafialnej przy kościele śś. Janów w Toruniu."), photo = Photo(description = "Bazylika katedralna", source = Source(page = TORUNTOUR_PL, url = "http://www.toruntour.pl/2031/katedra-swietojanska-torun")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_3", lat = 50.060948, lng = 19.934106, title = "Kraków, miejsce studiów", paragraph = Paragraph(content = "Dzięki protekcji Łukasza Watzenrodego w roku 1491 Andrzej i Mikołaj Kopernikowie rozpoczęli studia."), photo = Photo(description = "Uniwersytet Jagielloński", source = Source(page = WIADOMOSCI_ONET_PL, url = "https://wiadomosci.onet.pl/krakow/uniwersytet-jagiellonski-odwoluje-zaplanowane-wydarzenia-z-powodu-koronawirusa/8716vqe")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_4", lat = 44.496206, lng = 11.354158, title = "Bolonia, miejsce studiów", paragraph = Paragraph(content = "Dzięki staraniom wuja Łukasza w 1496 r. rozpoczął studia prawnicze, wpisując się w styczniu 1497 r. do albumu nacji niemieckiej bolońskiego Uniwersytetu Jurystów."), photo = Photo(description = "Uniwersytet Boloński", source = Source(page = ITINARI_COM, url = "https://www.itinari.com/pl/university-of-bologna-a-short-guide-to-the-student-life-o5qw")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+            tour = Tour("Mikołaj Kopernik", listOf(PhotoArticle(objectId = "T0_0", position = Position(53.009311, 18.603962), title = "Toruń, miejsce urodzenia", paragraph = Paragraph(content = "19 lutego 1473 najprawdopodobniej urodził się Mikołaj Kopernik, w rodzinie kupca Mikołaja i Barbary pochodzącej z rodziny Watzenrode."), photo = Photo(description = "Dom Mikołaja Kopernika", source = Source(page = NAUKAWPOLSCE_PAP_PL, url = "http://naukawpolsce.pap.pl/aktualnosci/news%2C29979%2Ctorun-wyremontowany-dom-mikolaja-kopernika-znow-bedzie-otwarty-dla")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_1", position = Position(53.010546, 18.605117), title = "Toruń, miejsce przeprowadzki (kamienica pierwsza od prawej)", paragraph = Paragraph(content = "W 1480 r. Kopernikowie przeprowadzili się z domu przy ulicy św. Anny, kamienica nazywana jest także Lazurową i stoi przy Rynku Staromiejskim 36."), photo = Photo(description = "Kamienica pod Lwem", source = Source(page = TURYSTYKA_TORUN_PL, url = "http://www.turystyka.torun.pl/art/693/kamienica-pod-lwem-glazurowa-rynek-staromiejski-36.html ")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_2", position = Position(53.009381, 18.606256), title = "Toruń", paragraph = Paragraph(content = "Najprawdopodobniej Mikołaj Kopernik ukończył pierwsze nauki - w szkole parafialnej przy kościele śś. Janów w Toruniu."), photo = Photo(description = "Bazylika katedralna", source = Source(page = TORUNTOUR_PL, url = "http://www.toruntour.pl/2031/katedra-swietojanska-torun")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_3", position = Position(50.060948, 19.934106), title = "Kraków, miejsce studiów", paragraph = Paragraph(content = "Dzięki protekcji Łukasza Watzenrodego w roku 1491 Andrzej i Mikołaj Kopernikowie rozpoczęli studia."), photo = Photo(description = "Uniwersytet Jagielloński", source = Source(page = WIADOMOSCI_ONET_PL, url = "https://wiadomosci.onet.pl/krakow/uniwersytet-jagiellonski-odwoluje-zaplanowane-wydarzenia-z-powodu-koronawirusa/8716vqe")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_4", position = Position(44.496206, 11.354158), title = "Bolonia, miejsce studiów", paragraph = Paragraph(content = "Dzięki staraniom wuja Łukasza w 1496 r. rozpoczął studia prawnicze, wpisując się w styczniu 1497 r. do albumu nacji niemieckiej bolońskiego Uniwersytetu Jurystów."), photo = Photo(description = "Uniwersytet Boloński", source = Source(page = ITINARI_COM, url = "https://www.itinari.com/pl/university-of-bologna-a-short-guide-to-the-student-life-o5qw")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
                 PhotoArticle(objectId = "T0_5", title = "Brak przydzielonego miejsca", paragraph = Paragraph(content = "20 października 1497 Kopernik pełnoprawnie objął kanonię warmińską, co zapewniło mu utrzymanie do końca życia."), photo = Photo(description = "Bazylika Metropolitalna", source = Source(srcDescription = DZIEJE_PL, url = "https://dzieje.pl/dziedzictwo-kulturowe/25-wrzesnia-przypada-675-rocznica-poswiecenia-bazyliki-we-fromborku")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_6", lat = 41.902703, lng = 12.496248, title = "Podróż do Rzymu", paragraph = Paragraph(content = "W 1500 r. Mikołaj odbył wraz z bratem Andrzejem Kopernikiem podróż, gdzie wygłosił kilka prywatnych wykładów. Tam, w nocy z 5 na 6 listopada 1500, obserwował zaćmienie Księżyca."), photo = Photo(description = "Rzym", source = Source(page = TURYSTYKA_WP_PL, url = "https://turystyka.wp.pl/rzym-6047492500870273c")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_7", lat = 45.406736, lng = 11.877444, title = "Padwa, miejsce studiów", paragraph = Paragraph(content = "Kopernik rozpoczął swoje kolejne studia, na kierunku medycyny. Najprawdopodobniej uzyskał stopień licencjata, który później pozwalał mu na prowadzenie praktyki lekarskiej."), photo = Photo(description = "Uniwersytet w Padwie", source = Source(page = PL_TRIPADVISOR_COM, url = "https://pl.tripadvisor.com/Attraction_Review-g187867-d246566-Reviews-University_of_Padova-Padua_Province_of_Padua_Veneto.html")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_8", lat = 54.125747, lng = 20.583082, title = "Lidzbark", paragraph = Paragraph(content = "W 1507 r., po kilku latach pobytu w Polsce z Łukaszem Watzenrode, astronom został na stałe skierowany, by wspierać swojego wuja."), photo = Photo(description = "Zamek biskupów warmińskich", source = Source(page = PODROZE_ONET, url = "https://podroze.onet.pl/polska/warminsko-mazurskie/lidzbark-warminski-zamek-biskupow-zwiedzanie-historia/l0d7366")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_9", lat = 50.054637, lng = 19.935467, title = "Kraków", paragraph = Paragraph(content = "Najprawdopodobniej był obecny 7 stycznia 1507, na koronacji Zygmunta I Starego, natomiast w 1509 r. uczestniczył w sejmie krakowskim. Kopernik był angażowany do niemal wszelkich spraw dyplomatycznych, sądowych i administracyjnych."), photo = Photo(description = "Katedra wawelska", source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Bazylika_archikatedralna_%C5%9Bw._Stanis%C5%82awa_i_%C5%9Bw._Wac%C5%82awa_w_Krakowie")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_10", lat = 54.356836, lng = 19.681768, title = "Frombork", paragraph = Paragraph(content = "W pierwszej połowie 1510 r. przeniósł się astronom opuszczając Lidzbark z powodu konfliktu między nim a wujem. Od 8 listopada 1510 do 8 listopada 1513 pełnił tam rolę kanclerza kapituły."), photo = Photo(description = "Zespół katedralny", source = Source(page = ZABYTEK_PL, url = "https://zabytek.pl/pl/obiekty/frombork-zespol-katedralny-60")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_11", lat = 53.777832, lng = 20.474515, title = "Olsztyn", paragraph = Paragraph(content = "Rezydował Mikołaj po tym jak został administratorem dóbr kapituły. Sprawował ten urząd do 1519 r. Rok później został mianowany administratorem dóbr Olsztyna."), photo = Photo(description = "Zamek Kapituły Warmińskiej", source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Zamek_Kapitu%C5%82y_Warmi%C5%84skiej_w_Olsztynie#/media/Plik:Zamek_w_Olsztynie.jpg")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_10",  lat = 54.356836, lng = 19.681768, title = "Frombork", paragraph = Paragraph(content = "Powrócił Kopernik, gdzie mógł spokojnie oddać się pracy naukowej. Nikt nie podzielał astronomicznych zainteresowań Mikołaja, był za to ceniony jako ekonomista i lekarz."), photo = Photo(description = "Zespół katedralny", source = Source(page = ZABYTEK_PL, url = "https://zabytek.pl/pl/obiekty/frombork-zespol-katedralny-60")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_13",  lat = 49.451838, lng = 11.076397, title = "Norymberga, miejsce druku dzieła", paragraph = Paragraph(content = "W połowie 1542 r. Kopernik wysłał dzieło De revolutionibus do druku."), photo = Photo(description = "Norymberga", source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Norymberga")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
-                PhotoArticle(objectId = "T0_14",  lat = 54.357551, lng = 19.682014, title = "Frombork, miejsce śmierci", paragraph = Paragraph(content = "Kopernik zmarł przed 21 maja 1543, niemal w tym samym czasie, kiedy w Norymerdze wydrukowano epokowe dzieło De revolutionibus orbium coelestium."), photo = Photo(description = "Frombork", source = Source(page = PODROZEPOEUROPIE_PL, url = "https://www.podrozepoeuropie.pl/frombork-zwiedzanie/")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_6", position = Position(41.902703, 12.496248), title = "Podróż do Rzymu", paragraph = Paragraph(content = "W 1500 r. Mikołaj odbył wraz z bratem Andrzejem Kopernikiem podróż, gdzie wygłosił kilka prywatnych wykładów. Tam, w nocy z 5 na 6 listopada 1500, obserwował zaćmienie Księżyca."), photo = Photo(description = "Rzym", source = Source(page = TURYSTYKA_WP_PL, url = "https://turystyka.wp.pl/rzym-6047492500870273c")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_7", position = Position(45.406736, 11.877444), title = "Padwa, miejsce studiów", paragraph = Paragraph(content = "Kopernik rozpoczął swoje kolejne studia, na kierunku medycyny. Najprawdopodobniej uzyskał stopień licencjata, który później pozwalał mu na prowadzenie praktyki lekarskiej."), photo = Photo(description = "Uniwersytet w Padwie", source = Source(page = PL_TRIPADVISOR_COM, url = "https://pl.tripadvisor.com/Attraction_Review-g187867-d246566-Reviews-University_of_Padova-Padua_Province_of_Padua_Veneto.html")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_8", position = Position(54.125747, 20.583082), title = "Lidzbark", paragraph = Paragraph(content = "W 1507 r., po kilku latach pobytu w Polsce z Łukaszem Watzenrode, astronom został na stałe skierowany, by wspierać swojego wuja."), photo = Photo(description = "Zamek biskupów warmińskich", source = Source(page = PODROZE_ONET, url = "https://podroze.onet.pl/polska/warminsko-mazurskie/lidzbark-warminski-zamek-biskupow-zwiedzanie-historia/l0d7366")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_9", position = Position(50.054637, 19.935467), title = "Kraków", paragraph = Paragraph(content = "Najprawdopodobniej był obecny 7 stycznia 1507, na koronacji Zygmunta I Starego, natomiast w 1509 r. uczestniczył w sejmie krakowskim. Kopernik był angażowany do niemal wszelkich spraw dyplomatycznych, sądowych i administracyjnych."), photo = Photo(description = "Katedra wawelska", source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Bazylika_archikatedralna_%C5%9Bw._Stanis%C5%82awa_i_%C5%9Bw._Wac%C5%82awa_w_Krakowie")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_10", position = Position(54.356836, 19.681768), title = "Frombork", paragraph = Paragraph(content = "W pierwszej połowie 1510 r. przeniósł się astronom opuszczając Lidzbark z powodu konfliktu między nim a wujem. Od 8 listopada 1510 do 8 listopada 1513 pełnił tam rolę kanclerza kapituły."), photo = Photo(description = "Zespół katedralny", source = Source(page = ZABYTEK_PL, url = "https://zabytek.pl/pl/obiekty/frombork-zespol-katedralny-60")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_11", position = Position(53.777832, 20.474515), title = "Olsztyn", paragraph = Paragraph(content = "Rezydował Mikołaj po tym jak został administratorem dóbr kapituły. Sprawował ten urząd do 1519 r. Rok później został mianowany administratorem dóbr Olsztyna."), photo = Photo(description = "Zamek Kapituły Warmińskiej", source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Zamek_Kapitu%C5%82y_Warmi%C5%84skiej_w_Olsztynie#/media/Plik:Zamek_w_Olsztynie.jpg")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_10",  position = Position(54.356836, 19.681768), title = "Frombork", paragraph = Paragraph(content = "Powrócił Kopernik, gdzie mógł spokojnie oddać się pracy naukowej. Nikt nie podzielał astronomicznych zainteresowań Mikołaja, był za to ceniony jako ekonomista i lekarz."), photo = Photo(description = "Zespół katedralny", source = Source(page = ZABYTEK_PL, url = "https://zabytek.pl/pl/obiekty/frombork-zespol-katedralny-60")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_13",  position = Position(49.451838, 11.076397), title = "Norymberga, miejsce druku dzieła", paragraph = Paragraph(content = "W połowie 1542 r. Kopernik wysłał dzieło De revolutionibus do druku."), photo = Photo(description = "Norymberga", source = Source(page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Norymberga")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
+                PhotoArticle(objectId = "T0_14",  position = Position(54.357551, 19.682014), title = "Frombork, miejsce śmierci", paragraph = Paragraph(content = "Kopernik zmarł przed 21 maja 1543, niemal w tym samym czasie, kiedy w Norymerdze wydrukowano epokowe dzieło De revolutionibus orbium coelestium."), photo = Photo(description = "Frombork", source = Source(page = PODROZEPOEUROPIE_PL, url = "https://www.podrozepoeuropie.pl/frombork-zwiedzanie/")), source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Miko%C5%82aj_Kopernik")),
                 PhotoArticle(objectId = "T0",  title = "Szlak Mikołaja Kopernika", paragraph = Paragraph(content = "Rozegrały się najważniejsze wydarzenia z życia Mikołaja Kopernika. Dziękujemy, że prześledziłeś te chwile z nami."), photo = Photo(description = "Europa")))
             )
         ))
@@ -550,7 +548,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "OLS",
             yearOfBuild = 1400,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Brama_G%C3%B3rna_w_Olsztynie"),
-            latLng = LatLng(53.777574, 20.477587),
+            position = Position(53.777574, 20.477587),
             paragraph = Paragraph(content = "Jest jedyną bramą pozostałą z trzech, które znajdowały się w murach obronnych otaczających miasto. Górna Brama powstała po wytyczeniu północnych granic miasta w drugim akcie lokacyjnym z 4 maja 1378. W roku 2012 prace archeologiczne odsłoniły pierwotne kamienne fundamenty bramy z XIV wieku, tuż na północ od jej obecnego położenia. Podczas wykopalisk odkryto ok. 40 monet z XIV i XV wieku oraz około 120 kul armatnich."),
             photo = Photo(objectId = "I0_0", description = "Brama Górna, Olsztyn",
                 source = Source(page = FOTOGRAFICZNIE16, url = "http://fotograficznie16.rssing.com/chan-38531473/all_p11.html"))))
@@ -561,7 +559,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "OLS",
             yearOfBuild = 1353,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Zamek_Kapitu%C5%82y_Warmi%C5%84skiej_w_Olsztynie"),
-            latLng = LatLng(53.777832, 20.474515),
+            position = Position(53.777832, 20.474515),
             paragraph = Paragraph(content = "Zamek Kapituły Warmińskiej został wybudowany w połowie XIV wieku w stylu gotyckim przez kapitułę warmińską, która była jego właścicielem do roku 1772. Budowla pełniła funkcje obronne oraz była siedzibą min. administratora dóbr kapituły. Najsławniejszym mieszkańcem zamku był Mikołaj Kopernik, który pełnił obowiązki administratora w latach 1516–1521. Na jednej ze ścian zachowała się po nim oryginalna tablica astronomiczna."),
             photo = Photo(objectId = "I1_0", description = "Zamek w Olsztynie, około 1900 rok",
                 source = Source(page = ZAMKIPOLSKIE_COM, url = "http://www.zamkipolskie.com/olszt/olszt.html"))))
@@ -572,7 +570,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "OLS",
             yearOfBuild = 1500,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Stary_Ratusz_w_Olsztynie"),
-            latLng = LatLng(53.776378, 20.475753),
+            position = Position(53.776378, 20.475753),
             paragraph = Paragraph(content = "Początkowo budynek – jego południowe skrzydło – zbudowany był w stylu późnego gotyku jako budowla o planie prostokąta, piętrowa. Do dziś zachowały się gotyckie ściany północna, wschodnia i południowa, a po stronie południowej również gotycka elewacja. W 1620 roku uległ spaleniu, podobnie jak większa część miasta. Cztery lata później został odbudowany. Jego oblicze zmieniło się wówczas całkowicie. Władze miasta zajmowały wówczas całe piętro budynku, podczas gdy parter przeznaczony był dla celów handlowych."),
             photo = Photo(objectId = "I2_0", description = "Rynek i stary ratusz w Olsztynie, około 1910-1914 rok",
                 source = Source(page = POLSKA_ORG_PL, url = "https://polska-org.pl/7802416,foto.html"))))
@@ -583,7 +581,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "OLS",
             yearOfBuild = 1925,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Teatr_im._Stefana_Jaracza_w_Olsztynie"),
-            latLng = LatLng(53.780122, 20.479785),
+            position = Position(53.780122, 20.479785),
             paragraph = Paragraph(content = "Teatr został założony w 1925 jako niem. Treudank-Theater w podzięce dla ówczesnych mieszkańców za wygrany plebiscyt. Teatr funkcjonował pod tą nazwą do 1945, wystawiane wówczas sztuki grano wyłącznie w języku niemieckim. Architektem teatru był August Feddersen. Po II wojnie światowej 18 listopada 1945 roku działalność Teatru jako polskiej sceny zainaugurowano premierą spektaklu „Moralność pani Dulskiej” Gabrieli Zapolskiej, w reżyserii Artura Młodnickiego."),
             photo = Photo(objectId = "I3_0", description = "Teatr im. Stefana Jaracza w Olsztynie, około 1930-1935 rok",
                 source = Source(page = POLSKA_ORG_PL, url = "https://polska-org.pl/7900593,foto.html"))))
@@ -592,7 +590,7 @@ class ArticleDaoImpl: ArticleDao {
             objectId = "I4",
             cityKey = "OLS",
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/%C5%9Ar%C3%B3dmiejskie_ulice_i_place_w_Olsztynie"),
-            latLng = LatLng(53.778578, 20.482421),
+            position = Position(53.778578, 20.482421),
             paragraph = Paragraph(content = "Pierwotnie do roku 1904 nazwa ulicy brzmiała Wartenburger-Straße (ulica Wartemborska). W roku 1904 zmieniono jej nazwę na Kaiser-Straße (ulica Cesarska), na cześć cesarza Wilhelma I, którego pomnik wzniesiono przed gmachem Gimnazjum Męskiego. Po 1945 roku nosiła nazwę ulicy Stalina, lecz po jego śmierci w okresie 'odwilży' 1956 roku zmieniono nazwę na Dąbrowszczaków."),
             photo = Photo(objectId = "I4_0", description = "Tramwaje w Olsztynie, ulica Dąbrowszczaków (dawniej Kaiserstrasse), 1910",
                 source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/560824,foto.html"))))
@@ -603,7 +601,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "OLS",
             yearOfBuild = 1887,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Poczta_G%C5%82%C3%B3wna_w_Olsztynie"),
-            latLng = LatLng(53.776478, 20.479686),
+            position = Position(53.776478, 20.479686),
             paragraph = Paragraph(content = "Budynek został zbudowany w 1887 na parceli wykupionej od gminy katolickiej, w stylu neogotyckim, z bogatą dekoracją zewnętrzną z glazurowanej cegły. Na dachu obiektu znajdowały się wieżyczki odciągowe, od których od 1892 rozchodziły się napowietrzne linie telefoniczne. W 1907 budynek został rozbudowany o dodatkowe skrzydło, przeznaczone wyłącznie do obsługi paczek nadsyłanych do żołnierzy służących w garnizonie w Olsztynie."),
             photo = Photo(objectId = "I5_0", description = "Urząd Pocztowy w Olsztynie, 1915",
                 source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/612/612079/803/Olsztyn_Urzad_Pocztowy_Olsztyn_1.jpg?m=1433563294"))))
@@ -614,7 +612,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "OLS",
             yearOfBuild = 1910,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Remiza_Stra%C5%BCy_Po%C5%BCarnej_w_Olsztynie"),
-            latLng = LatLng(53.772541, 20.476943),
+            position = Position(53.772541, 20.476943),
             paragraph = Paragraph(content = "Remiza Straży Pożarnej w Olsztynie została wybudowana na początku XX wieku w pobliżu Placu Roosevelta. Jej powstanie datuje się na lata 1908-1909. W 1990 roku przeszedł generalny remont. Jest to piętrowy budynek z użytkowym poddaszem o cechach stylu renesansowego z elementami baroku."),
             photo = Photo(objectId = "I6_0", description = "Remiza Straży Pożarnej w Olsztynie, 1920",
                 source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/46573,obiekt.html?map_z=18&f=1405774-foto"))))
@@ -624,13 +622,13 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "OLS",
             yearOfBuild = 1908,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Budynek_Rejencji_w_Olsztynie"),
-            latLng = LatLng(53.776454, 20.486388),
+            position = Position(53.776454, 20.486388),
             paragraph = Paragraph(content = "Gmach wybudowano w latach 1908–1911 na potrzeby urzędu Rejencji Olsztyńskiej (Regierungsbezirk Allenstein) wydzielonej w południowej części Prus Wschodnich w roku 1905 (odpowiednik polskiego województwa). W gmachu urzędował prezydent Rejencji oraz inni jej urzędnicy, znajdowały się taż kasy ubezpieczeń społecznych oraz mieścił się Urząd Powiatów Prus Wschodnich."),
             photo = Photo(objectId = "I7_0", description = "Urząd Marszałkowski oraz Wojewódzki Sąd Administracyjny w Olsztynie, 1912",
                 source = Source(page = OLSZTYN_FOTOPOLSKA_EU, url = "https://olsztyn.fotopolska.eu/7842,obiekt.html?map_z=16&f=837097-foto"))))
         photoArticles.add(PhotoArticle
             (title = "Olsztyn",
-            latLng = LatLng(53.776948, 20.480047),
+            position = Position(53.776948, 20.480047),
             cityKey = "OLS",
             objectType = CITY_TYPE))
 
@@ -641,7 +639,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "TOR",
             yearOfBuild = 1390,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/ratusz-staromiejski"),
-            latLng = LatLng(53.010652, 18.604079),
+            position = Position(53.010652, 18.604079),
             paragraph = Paragraph(content = "Ratusz wzniesiono w stylu gotyckim w końcu XIV w. włączając w jego mury zbudowaną ponad wiek wcześniej wieżę, którą dodatkowo podwyższono i ozdobiono blaszanym hełmem. W ten sposób powstał jednopiętrowy budynek z obszernym dziedzińcem, naśladujący najlepsze wzorce architektury flandryjskiej. Jego wnętrze codziennie zapełniało się tłumem kramarzy, kupców, rajców i rzezimieszków. W wieży krył się skarbiec, miejskie archiwum i więzienie, zaś w obszernych piwnicach szynkowano piwo i wino."),
             photo = Photo(objectId = "I8_0", description = "Ratusz Staromiejski w Toruniu, 1912",
                 source = Source(page = NOWOSCI_COM_PL, url = "https://nowosci.com.pl/ratusz-staromiejski-na-zdjeciach-z-archiwum-galeria/ga/11712120/zd/22354776"))))
@@ -652,7 +650,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "TOR",
             yearOfBuild = 1853,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/pomnik-mikolaja-kopernika"),
-            latLng = LatLng(53.010261, 18.604582),
+            position = Position(53.010261, 18.604582),
             paragraph = Paragraph(content = "Odlany w pracowni znanego berlińskiego rzeźbiarza Fryderyka Tiecka, został ustawiony w obecnym miejscu w 1853 roku. Spiżowy pomnik przedstawia astronoma jako postać ubraną w profesorską togę i trzymającą w lewej ręce narzędzie astronomiczne zwane sferą armilarną (astrolabium sferyczne). Inaczej niż na większości innych pomników i portretów, młodzieńcza twarz Kopernika ozdobiona jest delikatnym, widocznym z bliska wąsem."),
             photo = Photo(objectId = "I9_0", description = "Pomnik Mikołaja Kopernika w Toruniu",
                 source = Source(page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/pomnik-mikolaja-kopernika"))))
@@ -663,7 +661,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "TOR",
             yearOfBuild = 1350,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/dom-mikolaja-kopernika"),
-            latLng = LatLng(53.009309, 18.603962),
+            position = Position(53.009309, 18.603962),
             paragraph = Paragraph(content = "Dom Mikołaja Kopernika to średniowieczna kamienica, która w drugiej połowie XV wieku należała do rodziny Koperników. Wielu historyków wskazuje ją jako miejsce, gdzie w 1473 roku przyszedł na świat wielki astronom. Budowla swój obecny wygląd otrzymał w XV wieku. Fasada kamienicy ozdobiona jest ostrołukowym portalem, ceglanymi fryzami i pionowymi wnękami, w których namalowano charakterystyczne dla średniowiecznego Torunia dwubarwne wzory."),
             photo = Photo(objectId = "I10_0", description = "Dom Mikołaja Kopernika w Toruniu",
                 source = Source(page = YOUTUBE_COM, url = "https://www.youtube.com/watch?v=j1HWY4XKJUY"))))
@@ -674,7 +672,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "TOR",
             yearOfBuild = 1350,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/krzywa-wieza"),
-            latLng = LatLng(53.008410, 18.602081),
+            position = Position(53.008410, 18.602081),
             paragraph = Paragraph(content = "Krzywa Wieża została wzniesiona w XIV wieku jako jedna z kilkudziesięciu podobnych baszt w murach obronnych dawnego Torunia. Jej pochylenie było prawdopodobnie wynikiem osunięcia się piaszczystego podłoża. W przeszłości nie brakowało jednak i takich, którzy widzieli w skrzywieniu wieży karę boską za rzekomo bluźniercze odkrycie Kopernika. Wiadomość o tym dotarła nawet do Rzymu i była poważnym argumentem za wpisaniem książki toruńskiego astronoma do indeksu ksiąg zakazanych."),
             photo = Photo(objectId = "I11_0", description = "Krzywa Wieża w Toruniu, 1910",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krzywa_Wieza_Torun?f=671539-foto"))))
@@ -685,7 +683,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "TOR",
             yearOfBuild = 1240,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/koscioly-na-starowce/katedra-swietych-janow"),
-            latLng = LatLng(53.009383, 18.606259),
+            position = Position(53.009383, 18.606259),
             paragraph = Paragraph(content = "Gotycka katedra pod wezwaniem św. Jana Chrzciciela i św. Jana Ewangelisty swoją formę uzyskała w wyniku wieloetapowej budowy, którą po blisko 200 latach przerwano na przełomie XV i XVI w. Już w średniowieczu był to najważniejszy z toruńskich kościołów, pełniący funkcję staromiejskiej fary, w której skupiało się religijne życie mieszkańców miasta."),
             photo = Photo(objectId = "I12_0", description = "Katedra Świętych Janów w Toruniu, 1905 - 1915",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/21417,foto.html?o=b4642"))))
@@ -696,7 +694,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "TOR",
             yearOfBuild = 1432,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zabytki/bramy-i-baszty/brama-mostowa"),
-            latLng = LatLng(53.008622, 18.608895),
+            position = Position(53.008622, 18.608895),
             paragraph = Paragraph(content = "Brama Mostowa była najbardziej nowoczesną ze wszystkich średniowiecznych bram strzegących miasta od strony portu. Jej zaokrąglone boki zmniejszały skutki artyleryjskiego ataku, zaś specjalnie przygotowane otwory strzelnicze umożliwiały użycie dział do bronienia dostępu do miasta. Brama była jednocześnie najniżej położonym punktem murów obronnych Torunia, stąd też to właśnie na niej oznaczano poziom wody w Wiśle w czasie najwyższych powodzi."),
             photo = Photo(objectId = "I13_0", description = "Brama Mostowa w Toruniu, 1915",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Torun/b69874,Mury_miejskie.html?f=344927-foto"))))
@@ -707,7 +705,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "TOR",
             yearOfBuild = 1350,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/bramy-i-baszty/brama-klasztorna"),
-            latLng = LatLng(53.008283, 18.603601),
+            position = Position(53.008283, 18.603601),
             paragraph = Paragraph(content = "Mimo drobnych przebudowań, brama zachowała do dzisiaj oryginalną formę gotyckiej wieży bramnej z trzema ostrołukowymi wnękami. Zewnętrzna skrywała drewnianą bronę, spuszczaną w razie oblężenia. Za środkową znajduje się pusta przestrzeń, przez którą usadowieni na szczycie bramy obrońcy zrzucali ciężkie przedmioty lub wylewali gorące płyny. Najczęściej była to wrząca, długo trzymająca ciepło i niemiłosiernie parząca kasza, od której przydatny w walce otwór nazwano kaszownikiem."),
             photo = Photo(objectId = "I14_0", description = "Brama Klasztorna w Toruniu, 1910 - 1915",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/1000653,foto.html?o=b4493"))))
@@ -718,7 +716,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "TOR",
             yearOfBuild = 1250,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zwiedzanie-miasta/zabytki/bramy-i-baszty/brama-zeglarska"),
-            latLng = LatLng(53.008260, 18.606192),
+            position = Position(53.008260, 18.606192),
             paragraph = Paragraph(content = "Brama Żeglarska zbudowana została w średniowieczu, jednak jej obecny kształt jest rezultatem gruntownej dziewiętnastowiecznej przebudowy. Otwierając się z jednej strony na port, zaś z drugiej na ulicę prowadzącą do farnego kościoła św. Janów i staromiejskiego rynku, brama ta była najważniejszym wejściem do miasta. To właśnie tutaj, przy dźwięku wielkiego dzwonu Tuba Dei, uroczyście witano przybywających do Torunia polskich królów."),
             photo = Photo(objectId = "I15_0", description = "Brama Żeglarska w Toruniu, 1950",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Brama_Zeglarska_Torun?f=1127184-foto"))))
@@ -729,7 +727,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "TOR",
             yearOfBuild = 1250,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zabytki/zamki/ruiny-zamku-krzyzackiego"),
-            latLng = LatLng(53.009367, 18.610718),
+            position = Position(53.009367, 18.610718),
             paragraph = Paragraph(content = "Zamek, początkowo drewniany, później wznoszony z kamienia i cegły, był rozbudowywany aż do połowy XV wieku. Wraz z przedzamczem i znajdującymi się na nim budynkami gospodarczymi zajmował przestrzeń między Starym i Nowym Miastem Toruniem. Toruński zamek miał duże znaczenie strategiczne i związane z tym silne fortyfikacje. Za wysokim murem głównego zamku znajdował się kilkupiętrowy budynek z kaplicą, refektarzem i dormitorium, w którym mieszkali krzyżaccy rycerze."),
             photo = Photo(objectId = "I16_0", description = "Rekonstrukcja wyglądu zamku krzyżackiego w Toruniu przed zburzeniem w 1454 roku, 1450",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Torun/b4790,Zamek_Krzyzacki.html?f=288318-foto"))))
@@ -740,13 +738,13 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "TOR",
             yearOfBuild = 1423,
             source = Source(srcDescription = MAIN_TEXT, page = TORUN_PL, url = "https://www.torun.pl/pl/turystyka/zabytki/zamki/zamek-dybowski"),
-            latLng = LatLng(53.001166, 18.599937),
+            position = Position(53.001166, 18.599937),
             paragraph = Paragraph(content = "Zamek Dybowski został wzniesiony na lewym brzegu Wisły przez Władysława Jagiełłę jako siedziba polskich starostów i strategiczny punkt militarny do kontroli ruchu na Wiśle i granicy polsko-krzyżackiej. Jego budowę rozpoczęto prawdopodobnie ok. 1423-1425 r., ale już w początkowym okresie był kilkakrotnie przebudowywany."),
             photo = Photo(objectId = "I17_0", description = "Ruiny zamku Dybów i panorama Torunia, 1927-1933",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Torun/b46845,Zamek_Dybow.html?f=1019098-foto"))))
         photoArticles.add(PhotoArticle
             (title = "Toruń",
-            latLng = LatLng(53.008477, 18.606382),
+            position = Position(53.008477, 18.606382),
             zoom = 15.1f,
             cityKey = "TOR",
             objectType = CITY_TYPE))
@@ -758,7 +756,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "FRO",
             yearOfBuild = 1330,
             source = Source(srcDescription = MAIN_TEXT, page = FROMBORK_ART_PL, url = "http://frombork.art.pl/pl/wzgorze-katedralne/"),
-            latLng = LatLng(54.356699, 19.681739),
+            position = Position(54.356699, 19.681739),
             paragraph = Paragraph(content = "Wzgórze Katedralne we Fromborku należy do zabytków najwyższej klasy. Wielokrotnie niszczone i przebudowywane zachowało podstawowe elementy średniowiecznego założenia architektonicznego. Wyjątkowe znaczenie tego miejsca podnoszą tradycje historyczne i postać Mikołaja Kopernika. Wiele zgromadzonych zabytków wspaniałej przeszłości przyciąga do Fromborka ludzi z całego świata."),
             photo = Photo(objectId = "I18_0", description = "Bazylika archikatedralna na Wzgórzu Katedralnym we Fromborku, 1930 - 1935",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Frombork/b5298,Wzgorze_Katedralne.html?f=285086-foto"))))
@@ -769,7 +767,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "FRO",
             yearOfBuild = 1330,
             source = Source(srcDescription = MAIN_TEXT, page = FROMBORK_ART_PL, url = "http://frombork.art.pl/pl/wzgorze-katedralne/"),
-            latLng = LatLng(54.356882, 19.682534),
+            position = Position(54.356882, 19.682534),
             paragraph = Paragraph(content = "Budynek jest najstarszy na Wzgórzu i został zbudowany w latach 1329-1388. Posiada kilka przybudówek, w tym dwie kaplice: św. Jerzego (tzw. Kaplica Polska) – powstała ok. 1500 r., Zbawiciela (zwana kaplicą Szembeka) – barokowa z 1735 r. Katedra warmińska jest budowlą gotycką, halową, trójnawową o długości około 97 m, szerokości od 12 m (prezbiterium) do 22 m (główny korpus) i wysokości od posadzki do zwornika sklepienia 16,5 m."),
             photo = Photo(objectId = "I19_0", description = "Bazylika archikatedralna na Wzgórzu Katedralnym we Fromborku, 1920 - 1930",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Frombork/b4085,Bazylika_archikatedralna_Wniebowziecia_Najswietszej_Maryi_Panny_i_sw_Andrzeja.html?f=325848-foto"))))
@@ -779,7 +777,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "FRO",
             yearOfBuild = 1550,
             source = Source(srcDescription = MAIN_TEXT, page = FROMBORK_ART_PL, url = "http://frombork.art.pl/pl/wzgorze-katedralne/"),
-            latLng = LatLng(54.356225, 19.681040),
+            position = Position(54.356225, 19.681040),
             paragraph = Paragraph(content = "Dzwonnica zwana Wieżą Radziejowskiego jest najwyższą budowlą Wzgórza Katedralnego o zabudowaniu gotycko-barokowym (XVI-XVII w.). Spłonęła w 1945 r. i została odbudowana w latach 1972-1973. W dzwonnicy zawieszone jest Wahadło Foucaulta – przyrząd do obserwacji ruchu wirowego Ziemi. Na wysokości 70 m n.p.m. z kolei znajduje się taras widokowy, z którego można podziwiać panoramę okolic Fromborka."),
             photo = Photo(objectId = "I20_0", description = "Wieża Radziejowskiego na Wzgórzu Katedralnym we Fromborku, 1920 - 1930",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Frombork/b88076,Wieza_Radziejowskiego.html?f=479051-foto"))))
@@ -790,7 +788,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "FRO",
             yearOfBuild = 1390,
             source = Source(srcDescription = MAIN_TEXT, page = FROMBORK_ART_PL, url = "http://frombork.art.pl/pl/wzgorze-katedralne/"),
-            latLng = LatLng(54.356754, 19.680781),
+            position = Position(54.356754, 19.680781),
             paragraph = Paragraph(content = "Budowla jest najstarszym elementem fortyfikacji Wzgórza Katedralnego. Została zbudowana przed 1400 r., wyższe kondygnacje wielokrotnie były przebudowywane w XV – XVIII w. W 1945 roku została spalona, a potem rekonstruowana – prace zakończono w 1965 r. Wieża była własnością Mikołaja Kopernika w latach 1504-1543."),
             photo = Photo(objectId = "I21_0", description = "Mury obronne i Wieża Kopernika na Wzgórzu Katedralnym we Fromborku, 1973 - 1975",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Frombork/b66744,Wieza_Kopernika_-_Muzeum_Mikolaja_Kopernika.html?f=360536-foto"))))
@@ -801,7 +799,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "FRO",
             yearOfBuild = 1350,
             source = Source(srcDescription = MAIN_TEXT, page = POLSKIESZLAKI_PL, url = "https://www.polskieszlaki.pl/wzgorze-katedralne-we-fromborku.htm/"),
-            latLng = LatLng(54.356469, 19.682343),
+            position = Position(54.356469, 19.682343),
             paragraph = Paragraph(content = "Na teren Wzgórza Katedralnego wchodzi się i wychodzi poprzez Bramę Południową, pochodzącą z XIV wieku, a rozbudowaną w połowie XIX wieku. Dziś mieści kasę główną Muzeum oraz punkt sprzedaży wydawnictw muzealnych."),
             photo = Photo(objectId = "I22_0", description = "Brama Południowa Wzgórza Katedralnego we Fromborku, 1852",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Frombork/b88074,Brama_Poludniowa.html?f=444524-foto"))))
@@ -812,13 +810,13 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "FRO",
             yearOfBuild = 1571,
             source = Source(srcDescription = MAIN_TEXT, page = "wiezawodna.pl", url = "http://www.wiezawodna.pl/"),
-            latLng = LatLng(54.357738, 19.680539),
+            position = Position(54.357738, 19.680539),
             paragraph = Paragraph(content = "Wieża Wodna to charakterystyczny, integralny element tzw. Kanału Kopernika.W latach 1571-1572 budowlę wyposażono w specjalnie zaprojektowany, częściowo mosiężny mechanizm czerpakowy, dzięki czemu woda z kanału była podnoszona na znaczną wysokość (około 25 m), skąd dzięki różnicy ciśnień i wykorzystaniu zasady naczyń połączonych, była doprowadzana na fromborskie wzgórze i do kanonii zewnętrznych, leżących poza murami katedralnych umocnień."),
             photo = Photo(objectId = "I23_0", description = "Wieża Wodna we Fromborku, 1959",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Wieza_wodna_Frombork?f=610855-foto"))))
         photoArticles.add(PhotoArticle
             (title = "Frombork",
-            latLng = LatLng(54.357647, 19.681490),
+            position = Position(54.357647, 19.681490),
             zoom = 16.5f,
             cityKey = "FRO",
             objectType = CITY_TYPE))
@@ -830,7 +828,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "KRA",
             yearOfBuild = 1300,
             source = Source(srcDescription = MAIN_TEXT, page = WAWEL_KRAKOW_PL, url = "https://wawel.krakow.pl/o-wawelu"),
-            latLng = LatLng(50.054054, 19.935396),
+            position = Position(50.054054, 19.935396),
             paragraph = Paragraph(content = "Wzgórze wawelskie jest dla Krakowa tym, czym Akropol dla starożytnych Aten lub Wzgórze Kapitolińskie dla Rzymu. Górujące nad zakolem Wisły skaliste wzniesienie od wczesnego średniowiecza było siedzibą świeckiej i duchownej władzy. Mieszko I (p. 960-992), pierwszy historyczny władca i twórca polskiej państwowości obrał Wawel na jedną ze swych siedzib."),
             photo = Photo(objectId = "I24_0", description = "Zamek Królewski w Krakowie widziany od strony północnej, 1905",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krakow/b5416,Zamek_Krolewski.html?f=432323-foto"))))
@@ -841,7 +839,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "KRA",
             yearOfBuild = 1972,
             source = Source(srcDescription = MAIN_TEXT, page = HISTORIAPOSZUKAJ_PL, url = "https://www.historiaposzukaj.pl/wiedza,obiekty,323,obiekt_smok_wawelski.html"),
-            latLng = LatLng(50.053016, 19.933584),
+            position = Position(50.053016, 19.933584),
             paragraph = Paragraph(content = "Słynny Smok Wawelski, znany ze średniowiecznych legend, to ekspresyjna rzeźba Chromego uznawana za symbol Krakowa. Dzięki instalacji gazowej z pyska bestii może wydobywać się ogień, co nie tylko odnosi się do smoczej natury, ale także do faktu, że smok zginąć miał z powodu połknięcia podsuniętej mu podstępem palącej siarki."),
             photo = Photo(objectId = "I25_0", description = "Smok Wawelski w Krakowie, 1975",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krakow/b293141,Rzezba_Smok_Wawelski.html?f=424667-foto"))))
@@ -852,7 +850,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "KRA",
             yearOfBuild = 1257,
             source = Source(srcDescription = MAIN_TEXT, page = ZABYTKIKRAKOWA_COM_PL, url = "https://www.zabytkikrakowa.com.pl/rynek-glowny/"),
-            latLng = LatLng(50.061155, 19.937720),
+            position = Position(50.061155, 19.937720),
             paragraph = Paragraph(content = "Krakowski Rynek Główny to największy średniowieczny rynek w Europie powstały na planie prawie idealnego kwadratu o boku 200 m. Wytyczony został w wyniku tzw. Wielkiej Lokacji miasta Krakowa na prawie magdeburskim w 1257 roku. Nadanie praw miejskich oznaczało także wytyczenie rynku głównego oraz bardzo regularnego systemu wychodzących z niego ulic."),
             photo = Photo(objectId = "I26_0", description = "Widok na kościół Mariacki i Rynek Główny w Krakowie, 1870",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krakow/u29008,Rynek_Glowny.html?f=442543-foto"))))
@@ -863,7 +861,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "KRA",
             yearOfBuild = 1347,
             source = Source(srcDescription = MAIN_TEXT, page = ZABYTKIKRAKOWA_COM_PL, url = "https://www.zabytkikrakowa.com.pl/kosciol-mariacki/"),
-            latLng = LatLng(50.061676, 19.939369),
+            position = Position(50.061676, 19.939369),
             paragraph = Paragraph(content = "O ile katedrę na Wawelu można nazwać najszacowniejszym i najważniejszym kościołem Polski, o tyle — paradoksalnie — to nie ona, a właśnie Bazylika Mariacka zawsze była najważniejszym kościołem Krakowa. Kościół jest monumentalną, gotycką budowlą (reprezentuje tzw. gotyk krakowski z systemem filarowo-szkarpowym), mieści się w niej wiele kaplic bocznych."),
             photo = Photo(objectId = "I27_0", description = "Kościół Mariacki w Krakowie, 1908",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krakow/b2146,Kosciol_Wniebowziecia_Najswietszej_Marii_Panny_Mariacki.html?f=963728-foto"))))
@@ -874,7 +872,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "KRA",
             yearOfBuild = 1893,
             source = Source(srcDescription = MAIN_TEXT, page = ZABYTKIKRAKOWA_COM_PL, url = "https://www.zabytkikrakowa.com.pl/teatr-slowackiego/"),
-            latLng = LatLng(50.064055, 19.942803),
+            position = Position(50.064055, 19.942803),
             paragraph = Paragraph(content = "Teatr Słowackiego jest najsłynniejszym teatrem Krakowa, który imponuje swoją monumentalną zabudową. Zbudowano go w stylu eklektycznym, nawiązującym do rodzimej architektury (powtórzenie maszkaronów z Sukiennic) w latach 1891-1893, architektem był Jan Zawiejski. Należy jednak pamiętać, że decyzja o budowie tego nowego teatru miejskiego była niezwykle kontrowersyjna. Żeby zyskać miejsce pod budowę, zdecydowano się wyburzyć średniowieczne zabudowania związane ze szpitalem św. Ducha."),
             photo = Photo(objectId = "I28_0", description = "Teatr im. Juliusza Słowackiego w Krakowie, 1895",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Teatr_im._Juliusza_Slowackiego_Krakow?f=669225-foto"))))
@@ -885,7 +883,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "KRA",
             yearOfBuild = 1364,
             source = Source(srcDescription = MAIN_TEXT, page = ZABYTKIKRAKOWA_COM_PL, url = "https://www.zabytkikrakowa.com.pl/collegium-maius/"),
-            latLng = LatLng(50.061559, 19.933928),
+            position = Position(50.061559, 19.933928),
             paragraph = Paragraph(content = "Collegium Maius to jeden z najcenniejszych zabytków Krakowa, jak i całej Polski. Jest to najstarszy budynek najstarszego w Polsce uniwersytetu, który ufundował król Kazimierz Wielki w 1364 roku. Początkowo wykłady odbywały się nie przy ulicy Jagiellońskiej (gdzie znajduje się Collegium Maius), ale prawdopodobnie – na Zamku Wawelskim."),
             photo = Photo(objectId = "I29_0", description = "Dziedziniec Biblioteki Jagiellońskiej w Krakowie, 1914",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krakow/b2142,Collegium_Maius.html?f=238463-foto"))))
@@ -896,7 +894,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "KRA",
             yearOfBuild = 1257,
             source = Source(srcDescription = MAIN_TEXT, page = ZABYTKIKRAKOWA_COM_PL, url = "https://www.zabytkikrakowa.com.pl/sukiennice/"),
-            latLng = LatLng(50.061921, 19.937503),
+            position = Position(50.061921, 19.937503),
             paragraph = Paragraph(content = "Sukiennice to centralny budynek krakowskiego Rynku Głównego i jedna z najbardziej rozpoznawalnych budowli Krakowa. Warto wiedzieć, że nazwa „Sukiennice” pochodzi od sukna, jednego z podstawowych towarów jakie można było tutaj zakupić. Początkowo Sukiennice były to po prostu dwa rzędy kramów handlowych oraz uliczka pomiędzy nimi, założone w XIII w. z polecenia księcia Bolesława Wstydliwego. Następnie, jeszcze w dobie gotyku, kramy przekształcono w jedną, okazałą budowlę."),
             photo = Photo(objectId = "I30_0", description = "Krakowskie Sukiennice, 1890",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Krakow/b2177,Sukiennice.html?f=362446-foto"))))
@@ -907,7 +905,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "KRA",
             yearOfBuild = 1098,
             source = Source(srcDescription = MAIN_TEXT, page = ZABYTKIKRAKOWA_COM_PL, url = "https://www.zabytkikrakowa.com.pl/kosciol-sw-andrzeja/"),
-            latLng = LatLng(50.056619, 19.938394),
+            position = Position(50.056619, 19.938394),
             paragraph = Paragraph(content = "Kościół św. Andrzeja jest jednym z najstarszych w Krakowie, olśniewa urodą rasowego romanizmu. Ta imponująca, dwuwieżowa budowla, służąca nie tylko celom religijnym, ale i obronnym (warto zwrócić uwagę na wąskie okienka będące w istocie otworami strzelniczymi) została ufundowana pod koniec XI w. przez wszechwładnego palatyna Władysława Hermana-Sieciecha."),
             photo = Photo(objectId = "I31_0", description = "Kościół św. Andrzeja w Krakowie, 1947 - 1951",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Kosciol_sw._Andrzeja_Krakow?f=691150-foto"))))
@@ -918,13 +916,13 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "KRA",
             yearOfBuild = 1531,
             source = Source(srcDescription = MAIN_TEXT, page = ISZTUKA_EDU_PL, url = "http://www.isztuka.edu.pl/i-sztuka/node/361"),
-            latLng = LatLng(50.054501, 19.935559),
+            position = Position(50.054501, 19.935559),
             paragraph = Paragraph(content = "Kaplica Zygmuntowska jest jednym z najważniejszych dzieł renesansowej sztuki powstałych na terenach poza Italią. Ta niezwykle cenna budowla została wzniesiona z inicjatywy króla Zygmunta Starego w latach 1519-1533, według projektu i pod kierunkiem włoskiego architekta i rzeźbiarza Bartłomieja Berrecciego."),
             photo = Photo(objectId = "I32_0", description = "Kaplica Zygmunta (po prawej) na Wawelu, 1956",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Kaplica_Zygmuntowska_Bazylika_archikatedralna_Krakow?f=412850-foto"))))
         photoArticles.add(PhotoArticle
             (title = "Kraków",
-            latLng = LatLng(50.058176, 19.938259),
+            position = Position(50.058176, 19.938259),
             cityKey = "KRA",
             zoom = 15.5f,
             objectType = CITY_TYPE))
@@ -935,7 +933,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "POZ",
             yearOfBuild = 1560,
             source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/641"),
-            latLng = LatLng(52.408544, 16.934245),
+            position = Position(52.408544, 16.934245),
             paragraph = Paragraph(content = "Najważniejszym budynkiem na Starym Rynku jest Ratusz swoimi początkami sięgający drugiej połowy XIII wieku. Niegdyś decydowano tu o biegu miejskich spraw. Dziś budzi zainteresowanie jako jeden z najpiękniejszych zabytków architektury renesansowej w naszym kraju, nazywany przez niektórych „najładniejszym na północ od Alp”."),
             photo = Photo(objectId = "I33_0", description = "Ratusz i fragment rynku w Poznaniu, 1895-1899",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Ratusz_Poznan?f=692523-foto"))))
@@ -946,7 +944,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "POZ",
             yearOfBuild = 1790,
             source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/62"),
-            latLng = LatLng(52.415603, 16.948654),
+            position = Position(52.415603, 16.948654),
             paragraph = Paragraph(content = "Na przełomie VIII i IX wieku na Ostrowie Tumskim powstał gród obronny, który w X wieku stał się obok Gniezna jednym z głównych ośrodków państwa Piastów. Właśnie tutaj odbył się chrzest Polski, a w 968 roku założono pierwsze na ziemiach polskich biskupstwo i zbudowano katedrę, w której pochowani są władcy Polski z dynastii Piastów."),
             photo = Photo(objectId = "I34_0", description = "Tramwaj na Ostrowie Tumskim w Poznaniu, 1910",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Poznan/u55592,ul_Ostrow_Tumski.html?f=279989-foto"))))
@@ -957,7 +955,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "POZ",
             yearOfBuild = 1910,
             source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/865"),
-            latLng = LatLng(52.407768, 16.919161),
+            position = Position(52.407768, 16.919161),
             paragraph = Paragraph(content = "Zamek Cesarski to ostatnia i najmłodsza rezydencja monarsza w Europie. Powstał dla niemieckiego cesarza Wilhelma II wg projektu Franza Schwechtena w latach 1905-1910. Wzniesiono go na wzór średniowiecznych zamków - jako symbol panowania niemieckiego w Wielkopolsce. Gdy po I wojnie światowej Polska odzyskała niepodległość, zamek stał się siedzibą Uniwersytetu Poznańskiego oraz rezydencją polskich prezydentów w czasie ich pobytu w Poznaniu."),
             photo = Photo(objectId = "I35_0", description = "Zamek Cesarski w Poznaniu, 1910",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Zamek_Cesarski_Poznan?f=383248-foto"))))
@@ -968,7 +966,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "POZ",
             yearOfBuild = 1573,
             source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/68"),
-            latLng = LatLng(52.405906, 16.935065),
+            position = Position(52.405906, 16.935065),
             paragraph = Paragraph(content = "Kolegium jezuickie czyli dom zakonny, w którym część zakonników trudniła się kształceniem młodzieży, w Poznaniu zostało utworzone w 1573 roku. Trzypiętrowy gmach kolegium przy Placu Kolegiackim powstał w XVIII w. Budynek w kształcie podkowy z obszernym dziedzińcem i dwuskrzydłowym krużgankiem wywołuje imponujące wrażenie. Barokowe fasady są podzielone gzymsami i pilastrami (płaskimi pasami dzielącymi pionowo ścianę, ukształtowanymi na podobieństwo kolumn)."),
             photo = Photo(objectId = "I36_0", description = "Dawne kolegium jezuickie i dzwonnica fary w Poznaniu, 1900 - 1910",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Poznan/b2653,Urzad_Miasta.html?f=295724-foto"))))
@@ -979,7 +977,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "POZ",
             yearOfBuild = 1549,
             source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/945"),
-            latLng = LatLng(52.407448, 16.934655),
+            position = Position(52.407448, 16.934655),
             paragraph = Paragraph(content = "Pałac Górków jest jedną z najwspanialszych renesansowych rezydencji magnackich w Polsce. Górkowie to jeden z najpotężniejszych rodów możnowładczych Wielkopolski XV i XVI w. Z nich wywodzili się ówcześni starostowie, kasztelani, wojewodowie i biskupi. Obecnie jest siedzibą Muzeum Archeologicznego. Warto zwrócić szczególna uwagę na wykonany z piaskowca bogato zdobiony renesansowy portal bramy wjazdowej pałacu (od ul. Klasztornej)."),
             photo = Photo(objectId = "I37_0", description = "Portal w Pałacu Górków w Poznaniu, 1920 - 1929",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Poznan/b2652,Palac_Gorkow_-_Muzeum_Archeologiczne.html?f=1594809-foto"))))
@@ -990,7 +988,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "POZ",
             yearOfBuild = 1881,
             source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/903"),
-            latLng = LatLng(52.399924, 16.997153),
+            position = Position(52.399924, 16.997153),
             paragraph = Paragraph(content = "Fort III zbudowany został w latach 1877 -1881 przez armię pruską. Jest jednym z 18 fortów artyleryjskich wchodzących w skład Twierdzy Poznań i zarazem jednym z 9 fortów typu głównego. Od nazwiska pruskiego generała otrzymał nazwę Graf Kirchbach. Od 2011 roku fort jest udostępniony do zwiedzania. Trasa zwiedzania prowadzi zarówno przez cześć podziemną, jak i naziemną fortu."),
             photo = Photo(objectId = "I38_0", description = "Fort III Graf Kirchbach w Poznaniu, wjazd główny i blokhauz po prawej, 06.1974",
                 source = Source(page = CYRYL_POZNAN_PL, url = "https://cyryl.poznan.pl/kolekcja/722/fort-iii-graf-kirchbach-na-glowiencu-mkz"))))
@@ -1000,7 +998,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "POZ",
             yearOfBuild = 1954,
             source = Source(srcDescription = MAIN_TEXT, page = POZNAN_TRAVEL, url = "http://poznan.travel/pl/poi/show/id/951"),
-            latLng = LatLng(52.408414, 16.922241),
+            position = Position(52.408414, 16.922241),
             paragraph = Paragraph(content = "Symbol poznańskiego modernizmu. Budynek został zaprojektowany przez prof. Marka Leykama został wybudowany na miejscu przedwojennego Banku Cukrownictwa, u zbiegu ulic 27 Grudnia oraz Mielżyńskiego. Wyróżnia go jego charakterystyczny kształt walca. Uroczyste otwarcie Domu Towarowego 'Okrąglak' nastąpiło w dniu 29 stycznia 1954 roku."),
             photo = Photo(objectId = "I39_0", description = "Panorama Poznania, w środku dom towarowy Okrąglak, 1960 - 1970",
                 source = Source(page = FOTOPOLSKA_EU, url = "https://fotopolska.eu/Poznan/b2687,Okraglak_.html?f=284372-foto"))))
@@ -1011,13 +1009,13 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "POZ",
             yearOfBuild = 2013,
             source = Source(srcDescription = MAIN_TEXT, page = WIKIPEDIA_PL, url = "https://pl.wikipedia.org/wiki/Zamek_Kr%C3%B3lewski_w_Poznaniu"),
-            latLng = LatLng(52.409132, 16.931035),
+            position = Position(52.409132, 16.931035),
             paragraph = Paragraph(content = "Zamek Królewski w Poznaniu to rezydencja królewska w Poznaniu wzniesiona prawdopodobnie w XIII w. przez Przemysła II, a następnie wielokrotnie rozbudowywana. Zamek był świadkiem wielu wydarzeń historycznych, np. w 1493 r. złożył tu królowi Polski hołd lenny wielki mistrz krzyżacki Hans von Tieffen. Zamek został częściowo zniszczony w czasie wojny północnej i popadł w ruinę. Aktualnie stoi jego rekonstrukcja wykonana w latach 2010–2013 według projektu Witolda Milewskiego."),
             photo = Photo(objectId = "I40_0", description = "Zamek Królewski w Poznaniu",
                 source = Source(page = POLSKIESZLAKI_PL, url = "https://www.polskieszlaki.pl/zamek-krolewski-w-poznaniu.htm"))))
         photoArticles.add(PhotoArticle
             (title = "Poznań",
-            latLng = LatLng(52.407448, 16.934655),
+            position = Position(52.407448, 16.934655),
             cityKey = "POZ",
             zoom = 14f,
             objectType = CITY_TYPE))

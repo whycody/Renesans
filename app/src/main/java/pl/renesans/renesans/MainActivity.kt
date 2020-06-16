@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         fragmentTransaction.setReorderingAllowed(true)
         fragmentTransaction.commitNowAllowingStateLoss()
         if(!firstLoadOfFragment && tagFragmentName == "map") {
-            if (refreshMapFragment) mapFragment.reloadMap()
+            if(refreshMapFragment) mapFragment.reloadMap()
             if(changedOptionOfMapLimit) mapFragment.changedOptionOfMapLimit()
             refreshMapFragment = false
             changedOptionOfMapLimit = false

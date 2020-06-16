@@ -1,90 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorGray"
     android:elevation="10dp"
-    android:orientation="vertical">
+    android:background="@color/colorGray">
 
-    <ImageView
-        android:id="@+id/articlePhoto"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:scaleType="centerCrop"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:background="@color/colorAccent"/>
-
-    <TextView
-        android:id="@+id/photoDescription"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Example photo description"
-        android:paddingStart="@dimen/dialogSheetPaddingStart"
-        android:paddingEnd="@dimen/dialogSheetPaddingStart"
-        android:paddingTop="10dp"
-        android:textSize="12sp"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/articleTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Example title"
-        android:textStyle="bold"
-        android:textColor="@color/colorTitleGray"
-        android:paddingStart="@dimen/dialogSheetPaddingStart"
-        android:paddingEnd="@dimen/dialogSheetPaddingStart"
-        android:paddingTop="2dp"
-        android:paddingBottom="15dp"
-        android:textSize="20sp"/>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
+        <ImageView
+            android:id="@+id/articlePhoto"
             android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/colorAccent"/>
+
+        <TextView
+            android:id="@+id/photoDescription"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="Example photo description"
+            android:paddingStart="@dimen/dialogSheetPaddingStart"
+            android:paddingEnd="@dimen/dialogSheetPaddingStart"
+            android:paddingTop="10dp"
+            android:textSize="12sp"/>
 
-            <View
-                android:id="@+id/invisibleView"
-                android:layout_width="1px"
-                android:layout_height="1px"
-                android:layout_marginStart="18dp"
-                android:background="@android:color/transparent"/>
+        <TextView
+            android:id="@+id/articleTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Example title"
+            android:textStyle="bold"
+            android:textColor="@color/colorTitleGray"
+            android:paddingStart="@dimen/dialogSheetPaddingStart"
+            android:paddingEnd="@dimen/dialogSheetPaddingStart"
+            android:paddingTop="2dp"
+            android:paddingBottom="15dp"
+            android:textSize="20sp"/>
 
-            <TextView
-                android:id="@+id/articleParagraph"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Example paragraph"
-                android:lineSpacingExtra="3dp"
-                android:paddingStart="@dimen/dialogSheetPaddingStart"
-                android:paddingEnd="@dimen/dialogSheetPaddingStart"
-                android:textSize="14sp"
-                android:textColor="@color/colorParagraphGray"/>
+        <View
+            android:id="@+id/invisibleView"
+            android:layout_width="1px"
+            android:layout_height="1px"
+            android:layout_marginStart="18dp"
+            android:background="@android:color/transparent"/>
 
-            <Button
-                android:id="@+id/sourcesBtn"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/sh_dialog_bottom_sources"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="15dp"
-                android:text="@string/sources"
-                android:paddingStart="@dimen/dialogSheetPaddingStart"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_marginBottom="30dp"
-                android:gravity="center_vertical"/>
+        <TextView
+            android:id="@+id/articleParagraph"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Example paragraph"
+            android:lineSpacingExtra="3dp"
+            android:paddingStart="@dimen/dialogSheetPaddingStart"
+            android:paddingEnd="@dimen/dialogSheetPaddingStart"
+            android:textSize="14sp"
+            android:textColor="@color/colorParagraphGray"/>
 
-        </LinearLayout>
+        <Button
+            android:id="@+id/sourcesBtn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/sh_dialog_bottom_sources"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:text="@string/sources"
+            android:paddingStart="@dimen/dialogSheetPaddingStart"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_marginBottom="30dp"
+            android:gravity="center_vertical"/>
 
-    </ScrollView>
+    </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

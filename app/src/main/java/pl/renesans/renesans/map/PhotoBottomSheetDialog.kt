@@ -14,18 +14,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.activity_tour.view.*
 import kotlinx.android.synthetic.main.activity_tour.view.articlePhoto
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_photo.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_photo.view.*
-import kotlinx.android.synthetic.main.tour_slide_layout.view.*
 import kotlinx.android.synthetic.main.tour_slide_layout.view.articleParagraph
 import kotlinx.android.synthetic.main.tour_slide_layout.view.articleTitle
 import kotlinx.android.synthetic.main.tour_slide_layout.view.photoDescription
@@ -42,7 +37,7 @@ import pl.renesans.renesans.photo.PhotoActivity
 import pl.renesans.renesans.sources.SourcesActivity
 import java.lang.StringBuilder
 
-class PhotoBottomSheetDialog(private val photoArticle: PhotoArticle): BottomSheetDialogFragment(),
+class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
     ImageDaoContract.ImageDaoInterractor, FirebaseContract.FirebaseInterractor {
 
     private lateinit var articlePhoto: ImageView
@@ -51,10 +46,12 @@ class PhotoBottomSheetDialog(private val photoArticle: PhotoArticle): BottomShee
     private lateinit var articleTitle: TextView
     private lateinit var articleParagraph: TextView
     private lateinit var invisibleView: View
+    private lateinit var photoArticle: PhotoArticle
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_bottom_sheet_photo, container, false)
+        if(arguments!=null) photoArticle = arguments!!.getSerializable("photoArticle") as PhotoArticle
         setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
         view.articleTitle.text = photoArticle.title
         view.articleParagraph.text = photoArticle.paragraph?.content
@@ -73,6 +70,14 @@ class PhotoBottomSheetDialog(private val photoArticle: PhotoArticle): BottomShee
         setupSourcesBtn()
         loadMainPhoto()
         return view
+    }
+
+    fun newInstance(photoArticle: PhotoArticle): PhotoBottomSheetDialog {
+        val args = Bundle()
+        args.putSerializable("photoArticle", photoArticle)
+        val photoSheet = PhotoBottomSheetDialog()
+        photoSheet.arguments = args
+        return photoSheet
     }
 
     private fun loadMainPhoto(){

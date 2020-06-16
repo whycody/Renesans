@@ -42,7 +42,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private var presenter: LocationPresenterImpl? = null
     private var adapter: LocationAdapter? = null
     private var limitOfMapFunctionality = true
-    private lateinit var sharedPrefs: SharedPreferences
+    private var sharedPrefs: SharedPreferences? = null
     private var currentZoomIsMin = false
     private var cameraPos: CameraPosition? = null
 
@@ -52,8 +52,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         checkBundle(savedInstanceState)
-        sharedPrefs = context!!.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
-        limitOfMapFunctionality = sharedPrefs
+        sharedPrefs = context?.applicationContext?.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
+        limitOfMapFunctionality = sharedPrefs!!
             .getBoolean(SettingsPresenterImpl.MAP_FUNCTIONALITIES, !freeRamMemoryIsEnough())
         presenter = LocationPresenterImpl(this, activity!!)
         adapter = LocationAdapter(presenter!!, activity!!)
@@ -105,7 +105,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     }
 
     override fun changedOptionOfMapLimit() {
-        limitOfMapFunctionality = sharedPrefs
+        limitOfMapFunctionality = sharedPrefs!!
             .getBoolean(SettingsPresenterImpl.MAP_FUNCTIONALITIES, freeRamMemoryIsEnough())
         if(limitOfMapFunctionality) refreshLocationMarkersListWithCities()
         else refreshLocationMarkersList()
@@ -234,7 +234,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private var lastClusterMarker: ClusterMarker? = null
 
     override fun onClusterItemClick(p0: ClusterMarker?): Boolean {
-        cameraAnimations = sharedPrefs.getBoolean(SettingsPresenterImpl.MAP_ANIMATIONS, false)
+        cameraAnimations = sharedPrefs!!.getBoolean(SettingsPresenterImpl.MAP_ANIMATIONS, false)
         if(cameraAnimations)
             googleMap?.animateCamera(CameraUpdateFactory.newLatLng(p0?.position), 400, this)
         else openMarkerBottomSheet(p0)
@@ -252,7 +252,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
 
     private fun openMarkerBottomSheet(clusterMarker: ClusterMarker?) {
         if(clusterMarker!=null && clusterMarker.getClusterType() == ArticleDaoImpl.PLACE_TYPE)
-            PhotoBottomSheetDialog(clusterMarker.photoArticle)
+            PhotoBottomSheetDialog().newInstance(clusterMarker.photoArticle)
             .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
         else if (clusterMarker!=null) moveToLocation(clusterMarker.position, clusterMarker.photoArticle.zoom)
     }

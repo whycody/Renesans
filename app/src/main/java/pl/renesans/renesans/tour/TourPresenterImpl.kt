@@ -20,23 +20,22 @@ class TourPresenterImpl(val context: Context, val view: TourContract.TourView): 
     override fun onCreate() {
         imageDao = ImageDaoImpl(context, this)
         tour = view.getTourObject()
-        imageDao.loadPhotoInBothQualities(currentPage, tour.photosArticlesList!![0].objectId+"_0")
     }
 
     override fun onPageSelected(position: Int) {
         currentPage = position
         imageDao.loadPhotoInBothQualities(position, tour.photosArticlesList!![position].objectId+"_0")
-        if(tour.photosArticlesList!![position].lat != null &&  tour.photosArticlesList!![position].lng != null)
-            view.animateCamera(LatLng(tour.photosArticlesList!![position].lat!!, tour.photosArticlesList!![position].lng!!))
+        val photoArticle = tour.photosArticlesList!![position]
+        if(photoArticle.position!=null)
+            view.animateCamera(LatLng(photoArticle.position!!.lat!!, photoArticle.position!!.lng!!))
     }
 
     override fun addMarkers() {
         tour.photosArticlesList?.forEach { photoArticle ->
-            if(photoArticle.lat != null && photoArticle.lng != null) {
-                photoArticle.latLng = LatLng(photoArticle.lat!!, photoArticle.lng!!)
+            if(photoArticle.position != null) {
                 val newPhotoArticle = PhotoArticle(
                     title = photoArticle.photo!!.description,
-                    latLng = photoArticle.latLng
+                    position = photoArticle.position
                 )
                 val cluster = ClusterMarker(newPhotoArticle)
                 view.addClusterMarkerToMap(cluster)
@@ -45,7 +44,7 @@ class TourPresenterImpl(val context: Context, val view: TourContract.TourView): 
     }
 
     override fun mapReady() {
-        view.animateCamera(LatLng(tour.photosArticlesList!![0].lat!!, tour.photosArticlesList!![0].lng!!))
+        onPageSelected(currentPage)
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
