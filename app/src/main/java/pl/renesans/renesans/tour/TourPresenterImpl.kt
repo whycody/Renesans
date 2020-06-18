@@ -24,10 +24,20 @@ class TourPresenterImpl(val context: Context, val view: TourContract.TourView): 
 
     override fun onPageSelected(position: Int) {
         currentPage = position
-        imageDao.loadPhotoInBothQualities(position, tour.photosArticlesList!![position].objectId+"_0")
+        imageDao.loadPhotoInBothQualities(position, getPhotoId(position))
         val photoArticle = tour.photosArticlesList!![position]
         if(photoArticle.position!=null)
             view.animateCamera(LatLng(photoArticle.position!!.lat!!, photoArticle.position!!.lng!!))
+    }
+
+    override fun getPhotoId(position: Int): String{
+        return when {
+            tour.photosArticlesList!![position].photo?.objectId != null ->
+                tour.photosArticlesList!![position].photo?.objectId!!
+            tour.photosArticlesList!![position].objectId != null ->
+                tour.photosArticlesList!![position].objectId+"_0"
+            else -> "Z3_0"
+        }
     }
 
     override fun addMarkers() {

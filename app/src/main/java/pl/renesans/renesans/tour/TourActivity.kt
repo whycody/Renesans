@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -29,7 +28,6 @@ import pl.renesans.renesans.map.ClusterManagerRenderer
 import pl.renesans.renesans.map.ClusterMarker
 import pl.renesans.renesans.photo.PhotoActivity
 import pl.renesans.renesans.settings.SettingsPresenterImpl
-
 
 class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     ImageDaoContract.ImageDaoInterractor, TourContract.TourView, OnMapReadyCallback {
@@ -153,7 +151,7 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         setNextBtnProperties(position)
         articlePhoto.setOnClickListener{
             val article = tour.photosArticlesList!![position]
-            if(article.photo != null) startPhotoViewActivity(article.objectId + "_0")
+            if(article.photo != null) startPhotoViewActivity(presenter.getPhotoId(position))
         }
     }
 
@@ -204,6 +202,7 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     }
 
     private fun animateWholeTourCamera(){
+        if(markers.isEmpty()) return
         val builder = LatLngBounds.Builder()
         for (marker in markers) builder.include(marker.position)
         val bounds = builder.build()
