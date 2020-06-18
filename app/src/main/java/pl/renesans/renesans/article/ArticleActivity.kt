@@ -51,7 +51,7 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
 
    private fun getOnMenuItemClickListener(index: Int? = null): MenuItem.OnMenuItemClickListener {
        return MenuItem.OnMenuItemClickListener {
-           SuggestionBottomSheetDialog(article, index, articleFragment.getFirebaseInterractor())
+           SuggestionBottomSheetDialog().newInstance(article, index, articleFragment.getFirebaseInterractor())
                .show(supportFragmentManager, "Suggest")
            true
        }

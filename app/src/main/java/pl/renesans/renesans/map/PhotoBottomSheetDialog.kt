@@ -19,6 +19,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.activity_tour.view.articlePhoto
 import kotlinx.android.synthetic.main.tour_slide_layout.view.articleParagraph
@@ -72,6 +73,12 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
         return view
     }
 
+    override fun onStart() {
+        super.onStart()
+        val bottomSheetBehavior = BottomSheetBehavior.from(view?.parent as View)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
     fun newInstance(photoArticle: PhotoArticle): PhotoBottomSheetDialog {
         val args = Bundle()
         args.putSerializable("photoArticle", photoArticle)
@@ -108,7 +115,7 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
                 true
             }
             popup.menu.getItem(1).setOnMenuItemClickListener {
-                SuggestionBottomSheetDialog(article, 0, this)
+                SuggestionBottomSheetDialog().newInstance(article, 0, this)
                     .show(activity!!.supportFragmentManager, "Suggest")
                 true
             }

@@ -158,7 +158,7 @@ class ArticlePresenterImpl(val activity: ArticleActivity,
                 true
             }
             popup.menu.getItem(1).setOnMenuItemClickListener {
-                SuggestionBottomSheetDialog(article, index, this)
+                SuggestionBottomSheetDialog().newInstance(article, index, this)
                     .show(activity.supportFragmentManager, "Suggest")
                 true
             }
