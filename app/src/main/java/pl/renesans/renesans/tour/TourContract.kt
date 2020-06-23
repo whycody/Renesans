@@ -27,7 +27,7 @@ interface TourContract {
 
         fun onCreate()
 
-        fun getPhotoId(position: Int): String
+        fun getPhotoId(position: Int): String?
 
         fun onPageSelected(position: Int)
 

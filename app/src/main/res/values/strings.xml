@@ -34,7 +34,7 @@
     <string name="era">Epoka</string>
     <string name="renesans">Renesans</string>
     <string name="tour_view">Widok szlaku</string>
-    <string name="tour_view_desc">Zmniejsz przezroczystość mapy i paska narzędzi w widoku interaktywnego szlaku, aby zwiększyć czytelność treści.</string>
+    <string name="tour_view_desc">Zmniejsz przezroczystość mapy w widoku interaktywnego szlaku, aby zwiększyć czytelność treści.</string>
     <string name="all_buildings_desc">Pokazuj wszystkie budowle.</string>
     <string name="all_buildings">Wszystkie</string>
     <string name="all_to_choosed_era_desc">Pokazuj budowle, które już istniały lub zostały wybudowane w wybranej epoce.</string>

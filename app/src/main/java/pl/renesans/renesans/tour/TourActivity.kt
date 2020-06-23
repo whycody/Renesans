@@ -3,6 +3,7 @@ package pl.renesans.renesans.tour
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -12,10 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -35,6 +33,7 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     private lateinit var tour: Tour
     private lateinit var presenter: TourContract.TourPresenter
     private lateinit var sharedPrefs: SharedPreferences
+    private lateinit var tourAdapter: TourAdapter
     private var dots = mutableListOf<View>()
     private var markers = mutableListOf<ClusterMarker>()
     private var currentPage = 0
@@ -42,20 +41,20 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     private var googleMap: GoogleMap? = null
     private var clusterManager: ClusterManager<ClusterMarker>? = null
     private var clusterManagerRenderer: ClusterManagerRenderer? = null
+    private var landscapeRotation = false
+    private var portraitRotation = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        sharedPrefs = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
-        val mapOpacity = sharedPrefs.getBoolean(SettingsPresenterImpl.MAP_OPACITY, true)
-        if(mapOpacity) setTheme(R.style.TourTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tour)
         setSupportActionBar(tourToolbar)
         setupMap()
-        setupTheme(mapOpacity)
+        setupTheme()
+        getDeviceRotation()
         tour = getTourObject()
-        tourToolbar.title = "${tour.title}・Interaktywny szlak"
         presenter = TourPresenterImpl(applicationContext, this)
-        val tourAdapter = TourAdapter(this, tour)
+        tourAdapter = TourAdapter(this, tour)
+        tourToolbar.title = "${tour.title}・Interaktywny szlak"
         tourPager.adapter = tourAdapter
         tourPager.addOnPageChangeListener(this)
         backBtn.setOnClickListener{ showPreviousPage() }
@@ -65,15 +64,20 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         onPageSelected(0)
     }
 
-    private fun setupTheme(mapOpacity: Boolean){
-        if(mapOpacity)
-            tourToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.colorDarkWhite))
-        else shadowView.visibility = View.INVISIBLE
-    }
-
     private fun setupMap(){
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+    }
+
+    private fun setupTheme(){
+        sharedPrefs = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
+        val mapOpacity = sharedPrefs.getBoolean(SettingsPresenterImpl.MAP_OPACITY, true)
+        if(!mapOpacity) shadowView.visibility = View.INVISIBLE
+    }
+
+    private fun getDeviceRotation(){
+        landscapeRotation = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        portraitRotation = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -140,19 +144,20 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     }
 
     override fun onPageSelected(position: Int) {
-        checkUserHasEndedTour(position)
+        checkTourLayout()
         tour.photosArticlesList!![position].paragraph?.subtitle =
             tour.photosArticlesList!![position].photo?.description
-        presenter.onPageSelected(position)
         dots[currentPage].background = getDrawable(R.drawable.sh_circle_transp_gray)
         dots[position].background = getDrawable(R.drawable.sh_circle_gray)
         currentPage = position
         setBackBtnProperties(position)
         setNextBtnProperties(position)
+        checkUserHasEndedTour(position)
         articlePhoto.setOnClickListener{
-            val article = tour.photosArticlesList!![position]
-            if(article.photo != null) startPhotoViewActivity(presenter.getPhotoId(position))
+            val photoId = presenter.getPhotoId(position)
+            if(photoId != null) startPhotoViewActivity(photoId)
         }
+        presenter.onPageSelected(position)
     }
 
     private fun startPhotoViewActivity(id: String){
@@ -162,19 +167,17 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     }
 
     private fun checkUserHasEndedTour(position: Int){
-        if(position == dots.size - 1 && currentPage != dots.size - 1) showAllTour()
+        if(position == dots.size - 1) showAllTour()
     }
 
     private fun setBackBtnProperties(position: Int){
         if(position==0) backBtn.visibility = View.INVISIBLE
         else backBtn.visibility = View.VISIBLE
-        checkTourLayout()
     }
 
     private fun checkTourLayout(){
-        val photoIsVisible = articlePhoto.visibility == View.VISIBLE
-        if(currentPage != dots.size -1 && !photoIsVisible){
-            val params = mapConstraint.layoutParams as LinearLayout.LayoutParams
+        val params = mapConstraint.layoutParams as LinearLayout.LayoutParams
+        if(articlePhoto.visibility == View.GONE){
             params.weight = 1f
             articlePhoto.visibility = View.VISIBLE
         }
@@ -184,9 +187,6 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         if(position==dots.size-1){
             nextBtn.text = getString(R.string.end)
             nextBtn.setOnClickListener{ finish() }
-        }else if(position==dots.size-2){
-            nextBtn.text = getString(R.string.next)
-            nextBtn.setOnClickListener{ showAllTour() }
         }else{
             nextBtn.text = getString(R.string.next)
             nextBtn.setOnClickListener{ showNextPage() }
@@ -194,9 +194,8 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     }
 
     private fun showAllTour(){
-        showNextPage()
         val params = mapConstraint.layoutParams as LinearLayout.LayoutParams
-        params.weight = 2f
+        if(portraitRotation) params.weight = 2f
         articlePhoto.visibility = View.GONE
         animateWholeTourCamera()
     }
@@ -206,7 +205,9 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         val builder = LatLngBounds.Builder()
         for (marker in markers) builder.include(marker.position)
         val bounds = builder.build()
-        val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 0)
+        val cameraUpdate =
+            if(landscapeRotation) CameraUpdateFactory.newLatLngBounds(bounds, 120)
+            else CameraUpdateFactory.newLatLngBounds(bounds, 0)
         googleMap?.animateCamera(cameraUpdate)
     }
 
@@ -219,9 +220,9 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
             Glide.with(applicationContext).load(photoBitmap).placeholder(articlePhoto.drawable).into(articlePhoto)
     }
 
-    override fun addClusterMarkerToMap(clusterMarker: ClusterMarker) {
-        markers.add(clusterMarker)
-        clusterManager?.addItem(clusterMarker)
+    override fun addClusterMarkerToMap(cluster: ClusterMarker) {
+        markers.add(cluster)
+        clusterManager?.addItem(cluster)
         clusterManager?.cluster()
     }
 
