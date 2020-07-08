@@ -88,9 +88,9 @@ class ArticlePresenterImpl(val activity: ArticleActivity,
 
     private fun createContentFromHeaderPairs(textView: TextView){
         var content = ""
-        article.header!!.content!!.forEachIndexed { index, pair ->
+        article.header!!.content!!.keys.forEachIndexed { index, key ->
             if(index!=0) content += "\n"
-            content += pair.first + ": " + pair.second
+            content += key + ": " + article.header!!.content!![key]
         }
         textView.text = content
     }

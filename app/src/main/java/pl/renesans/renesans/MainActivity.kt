@@ -6,13 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
+import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.discover.DiscoverFragment
 import pl.renesans.renesans.map.MapFragment
 import pl.renesans.renesans.settings.SettingsFragment
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private val firestore = FirebaseFirestore.getInstance()
     private var discoverFragment = DiscoverFragment()
     private var mapFragment = MapFragment()
     private val settingsFragment = SettingsFragment()
@@ -28,6 +31,13 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         if(savedInstanceState?.getInt("lastTab") != null)
             onNavigationItemSelected(mainNav.menu.getItem(savedInstanceState.getInt("lastTab")))
         else changeFragment(discoverFragment, "discover")
+    }
+
+    private fun saveAllArticles(){
+        val articleDao = ArticleDaoImpl()
+        for(article in articleDao.getAllArticles())
+            firestore.collection("articles").document(article.objectId!![0].toString())
+                .collection(article.objectId!!).document(article.objectId!!).set(article)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

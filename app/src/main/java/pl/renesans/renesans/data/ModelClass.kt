@@ -1,6 +1,5 @@
 package pl.renesans.renesans.data
 
-import com.google.android.gms.maps.model.LatLng
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import java.io.Serializable
 
@@ -18,8 +17,7 @@ data class Paragraph(var subtitle: String? = null,
                 var content: String? = null,
                 var source: Source? = null): Serializable
 
-data class Header(var title: String? = null,
-                var content: List<Pair<String, String>>? = null): Serializable
+data class Header(var content: HashMap<String, String>? = null): Serializable
 
 data class Article(var objectId: String? = null,
                    var objectType: Int? = null,

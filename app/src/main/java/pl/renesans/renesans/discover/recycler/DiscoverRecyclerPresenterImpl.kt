@@ -29,7 +29,8 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
 
     override fun itemClicked(pos: Int) {
         val intent = Intent(context, ArticleActivity::class.java)
-        intent.putExtra(ArticleActivity.ARTICLE, articleDao.getArticleFromId(articlesList[pos].objectId!!))
+        intent.putExtra(ArticleActivity.ARTICLE,
+            articleDao.getArticleFromId(articlesList[pos].objectId!!))
         context.startActivity(intent)
     }
 
