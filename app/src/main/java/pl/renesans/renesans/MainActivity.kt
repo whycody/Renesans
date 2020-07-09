@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         val articleDao = ArticleDaoImpl()
         for(article in articleDao.getAllArticles())
             firestore.collection("articles").document(article.objectId!![0].toString())
-                .collection(article.objectId!!).document(article.objectId!!).set(article)
+                .collection(article.objectId!![0].toString()).document(article.objectId!!).set(article)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

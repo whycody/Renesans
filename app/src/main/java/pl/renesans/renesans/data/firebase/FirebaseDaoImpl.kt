@@ -7,10 +7,10 @@ class FirebaseDaoImpl(private val interractor: FirebaseContract.FirebaseInterrac
     FirebaseContract.FirebaseDao {
 
     private val firestore = FirebaseFirestore.getInstance()
-    private val ref = firestore.collection("suggestions")
+    private val suggestRef = firestore.collection("suggestions")
 
     override fun putSuggestionToFirebase(suggestion: Suggestion) {
-        ref.document().set(suggestion).addOnCompleteListener{task ->
+        suggestRef.document().set(suggestion).addOnCompleteListener{ task ->
             if(task.isSuccessful) interractor?.onSuccess()
             else interractor?.onFail()
         }.addOnFailureListener{ interractor?.onFail() }
