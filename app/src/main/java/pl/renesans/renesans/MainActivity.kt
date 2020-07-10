@@ -9,6 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.renesans.renesans.data.article.ArticleDaoImpl
+import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.discover.DiscoverFragment
 import pl.renesans.renesans.map.MapFragment
 import pl.renesans.renesans.settings.SettingsFragment
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         if(savedInstanceState?.getInt("lastTab") != null)
             onNavigationItemSelected(mainNav.menu.getItem(savedInstanceState.getInt("lastTab")))
         else changeFragment(discoverFragment, "discover")
+        val realmDaoImpl = RealmDaoImpl(applicationContext)
+        realmDaoImpl.refreshRealmDatabase()
+        realmDaoImpl.checkRealm()
     }
 
     private fun saveAllArticles(){

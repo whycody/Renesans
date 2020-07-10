@@ -1,7 +1,5 @@
 package pl.renesans.renesans.data
 
-import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import java.io.Serializable
 
@@ -26,12 +24,6 @@ data class ArticlesList(var id: String? = null,
                         var name: String? = null,
                         var index: Int? = null,
                         var objectId: Int? = null): Serializable
-
-open class ArticlesListRealm(var id: String? = null,
-                             var type: String? = null,
-                             var name: String? = null,
-                             var index: Int? = null,
-                             @PrimaryKey var realmId: Int? = null): RealmObject()
 
 data class Article(var objectId: String? = null,
                    var objectType: Int? = null,
