@@ -53,4 +53,11 @@
     <string name="new_paragraph">Nowy akapit</string>
     <string name="suggestions_sent">Sugestie zostały wysłane.</string>
     <string name="suggestions_fail">Coś poszło nie tak.</string>
+    <string name="retry">Spróbuj ponownie</string>
+    <string name="curiosity">Czy wiesz, że kiedy Krzysztof Kolumb dotarł do amerykańskiego kontynentu tak naprawdę myślał, że dotarł do Indii?</string>
+    <string name="downloading">Pobieranie danych</string>
+    <string name="something_went_wrong">Coś poszło nie tak</string>
+    <string name="try_again">Czy spróbować ponownie?</string>
+    <string name="try_again_later">Spróbuj ponownie później</string>
+    <string name="retry_with_connection">Spróbuj ponownie gdy odzyskasz połączenie z Internetem</string>
 </resources>

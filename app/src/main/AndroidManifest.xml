@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".photo.PhotoActivity"></activity>
+        <activity android:name=".download.DownloadActivity"></activity>
+        <activity android:name=".photo.PhotoActivity" />
         <activity android:name=".tour.TourActivity" />
         <activity android:name=".search.SearchActivity" />
         <activity android:name=".sources.SourcesActivity" />
@@ -45,8 +46,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

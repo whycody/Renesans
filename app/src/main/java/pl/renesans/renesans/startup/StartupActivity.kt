@@ -16,6 +16,8 @@ import kotlinx.android.synthetic.main.activity_startup.*
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
 import pl.renesans.renesans.SplashActivity
+import pl.renesans.renesans.data.realm.RealmDaoImpl
+import pl.renesans.renesans.download.DownloadActivity
 import pl.renesans.renesans.permission.PermissionActivity
 
 class StartupActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
@@ -109,7 +111,11 @@ class StartupActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         finish()
         editor?.putBoolean(SplashActivity.firstLogin, false)
         editor?.apply()
-        if(permissionGranted) startActivity(Intent(this, MainActivity::class.java))
-        else startActivity(Intent(this, PermissionActivity::class.java))
+        val realmDao = RealmDaoImpl(applicationContext)
+        realmDao.onCreate()
+        if(!permissionGranted) startActivity(Intent(this, PermissionActivity::class.java))
+        else if(realmDao.realmDatabaseIsEmpty())
+            startActivity(Intent(this, DownloadActivity::class.java))
+        else startActivity(Intent(this, MainActivity::class.java))
     }
 }

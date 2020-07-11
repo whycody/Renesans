@@ -8,6 +8,9 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import pl.renesans.renesans.data.realm.RealmContract
+import pl.renesans.renesans.data.realm.RealmDaoImpl
+import pl.renesans.renesans.download.DownloadActivity
 import pl.renesans.renesans.permission.PermissionActivity
 import pl.renesans.renesans.startup.StartupActivity
 
@@ -16,6 +19,7 @@ class SplashActivity : AppCompatActivity() {
     private var permissionGranted = false
     private lateinit var sharedPrefs: SharedPreferences
     private var skipPermission = false
+    private lateinit var realmDao: RealmContract.RealmDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +27,8 @@ class SplashActivity : AppCompatActivity() {
         skipPermission = sharedPrefs.getBoolean(PermissionActivity.SKIP_PERMISSION, false)
         permissionGranted = (ContextCompat.checkSelfPermission(this,
             Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        realmDao = RealmDaoImpl(applicationContext)
+        realmDao.onCreate()
         checkFirstLogin()
     }
 
@@ -32,7 +38,10 @@ class SplashActivity : AppCompatActivity() {
             startActivity(Intent(this, StartupActivity::class.java))
         else if(!permissionGranted && !skipPermission)
             startActivity(Intent(this, PermissionActivity::class.java))
-        else startActivity(Intent(this, MainActivity::class.java))
+        else if(realmDao.realmDatabaseIsEmpty())
+            startActivity(Intent(this, DownloadActivity::class.java))
+        else
+            startActivity(Intent(this, MainActivity::class.java))
     }
 
     companion object{
