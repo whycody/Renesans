@@ -13,9 +13,14 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         realm = Realm.getDefaultInstance()
     }
 
-    override fun getArticlesListFromRealm(articlesListRealm: ArticlesListRealm): ArticlesList {
-        TODO("Not yet implemented")
-    }
+    override fun getArticlesListFromRealm(articlesListRealm: ArticlesListRealm): ArticlesList =
+        ArticlesList(
+            articlesListRealm.id,
+            articlesListRealm.type,
+            articlesListRealm.name,
+            articlesListRealm.index
+        )
+
 
     override fun getArticlesListToRealm(articlesList: ArticlesList): ArticlesListRealm {
         val articlesListRealm = realm.createObject(ArticlesListRealm::class.java)
@@ -31,8 +36,41 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         articlesListRealm.type = articlesList?.type
     }
 
-    override fun getArticleFromRealm(articleRealm: ArticleRealm): Article {
-        TODO("Not yet implemented")
+    override fun getArticleFromRealm(articleRealm: ArticleRealm?): Article {
+        val article = Article(
+            articleRealm?.objectId,
+            articleRealm?.objectType,
+            articleRealm?.typeOfScaling,
+            articleRealm?.title,
+            getHeaderFromRealm(articleRealm?.headerRealm),
+            getSourceFromRealm(articleRealm?.sourceRealm))
+        addAllRelatedArticlesIdsToArticle(article, articleRealm)
+        addAllParagraphsToArticle(article, articleRealm)
+        addAllPhotosToArticle(article, articleRealm)
+        article.tour = getTourFromRealm(articleRealm?.tourRealm)
+        return article
+    }
+
+    private fun addAllRelatedArticlesIdsToArticle(article: Article, articleRealm: ArticleRealm?){
+        if(articleRealm?.listOfRelatedArticlesIds == null) return
+        article.listOfRelatedArticlesIds = articleRealm.listOfRelatedArticlesIds!!
+            .subList(0, articleRealm.listOfRelatedArticlesIds!!.size)
+    }
+
+    private fun addAllParagraphsToArticle(article: Article, articleRealm: ArticleRealm?){
+        val paragraphsList = mutableListOf<Paragraph>()
+        articleRealm?.listOfParagraphs!!.forEach{
+            paragraphsList.add(getParagraphFromRealm(it))
+        }
+        article.listOfParagraphs = paragraphsList.toList()
+    }
+
+    private fun addAllPhotosToArticle(article: Article, articleRealm: ArticleRealm?){
+        val photosList = mutableListOf<Photo>()
+        articleRealm?.listOfPhotos!!.forEach{
+            photosList.add(getPhotoFromRealm(it))
+        }
+        article.listOfPhotos = photosList.toList()
     }
 
     override fun getArticleToRealm(article: Article): ArticleRealm {
@@ -147,13 +185,47 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         return positionRealm
     }
 
-    private fun getPhotoFromRealm(photoRealm: PhotoRealm) =
-        Photo(photoRealm.objectId, photoRealm.numberOfParagraph, photoRealm.description,
-            getSourceFromRealm(photoRealm.sourceRealm))
+    private fun getTourFromRealm(tourRealm: TourRealm?): Tour?{
+        if(tourRealm == null) return null
+        val tour = Tour(tourRealm.title)
+        val photosArticlesList = mutableListOf<PhotoArticle>()
+        tourRealm.photosArticlesList!!.forEach{
+            photosArticlesList.add(getPhotoArticleFromRealm(it))
+        }
+        tour.photosArticlesList = photosArticlesList.toList()
+        return tour
+    }
 
-    private fun getParagraphFromRealm(paragraphRealm: ParagraphRealm) =
-        Paragraph(paragraphRealm.subtitle, paragraphRealm.content,
-            getSourceFromRealm(paragraphRealm.sourceRealm))
+    override fun getPhotoArticleFromRealm(photoArticleRealm: PhotoArticleRealm?): PhotoArticle =
+        PhotoArticle(
+            photoArticleRealm?.objectId,
+            photoArticleRealm?.objectType!!,
+            photoArticleRealm.yearOfBuild,
+            photoArticleRealm.cityKey,
+            photoArticleRealm.title,
+            photoArticleRealm.shortTitle,
+            photoArticleRealm.zoom!!,
+            getPositionFromRealm(photoArticleRealm.positionRealm),
+            getHeaderFromRealm(photoArticleRealm.headerRealm),
+            getParagraphFromRealm(photoArticleRealm.paragraphRealm),
+            getPhotoFromRealm(photoArticleRealm.photoRealm),
+            getSourceFromRealm(photoArticleRealm.sourceRealm))
+
+    private fun getHeaderFromRealm(headerRealm: HeaderRealm?): Header?{
+        if(headerRealm == null) return null
+        val header = Header()
+        for(line in headerRealm.content!!)
+            header.content!![line.firstValue!!] = line.secondValue!!
+        return header
+    }
+
+    private fun getPhotoFromRealm(photoRealm: PhotoRealm?) =
+        Photo(photoRealm?.objectId, photoRealm?.numberOfParagraph, photoRealm?.description,
+            getSourceFromRealm(photoRealm?.sourceRealm))
+
+    private fun getParagraphFromRealm(paragraphRealm: ParagraphRealm?) =
+        Paragraph(paragraphRealm?.subtitle, paragraphRealm?.content,
+            getSourceFromRealm(paragraphRealm?.sourceRealm))
 
     private fun getSourceFromRealm(sourceRealm: SourceRealm?) =
         Source(sourceRealm?.srcDescription, sourceRealm?.photoId, sourceRealm?.url, sourceRealm?.page)

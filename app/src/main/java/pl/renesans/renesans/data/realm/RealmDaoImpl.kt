@@ -11,7 +11,6 @@ import io.realm.RealmResults
 import pl.renesans.renesans.data.*
 import java.lang.Exception
 
-
 class RealmDaoImpl(private val context: Context,
     private val realmInterractor: RealmContract.RealmInterractor? = null): RealmContract.RealmDao {
 
@@ -83,8 +82,8 @@ class RealmDaoImpl(private val context: Context,
         if(downloadedArticlesLists == allArticlesLists) {
             Log.d("MOJTAG", "Everything has been downloaded")
             realmInterractor?.downloadSuccessful()
-            checkRealm()
             downloadedArticlesLists = 0
+            checkRealmLists()
         }
     }
 
@@ -137,6 +136,21 @@ class RealmDaoImpl(private val context: Context,
             Log.d("MOJTAG", "Article: $article")
         for(photoArticle in allPhotoArticles)
             Log.d("MOJTAG", "PhotoArticle: $photoArticle")
+    }
+
+    override fun checkRealmLists(){
+        val allArticlesLists: RealmResults<ArticlesListRealm> = realm
+            .where<ArticlesListRealm>(ArticlesListRealm::class.java).findAll().sort("index")
+        allArticlesLists.forEach{
+            Log.d("MOJTAG", "List: ${it.name}")
+            val allArticles: RealmResults<ArticleRealm> =
+                realm.where<ArticleRealm>(ArticleRealm::class.java)
+                    .contains("objectId", it.id)
+                    .findAll()
+                    .sort("objectId")
+            allArticles.forEach{ Log.d("MOJTAG", "Article: $it") }
+            Log.d("MOJTAG", " ")
+        }
     }
 
     override fun realmDatabaseIsEmpty(): Boolean {

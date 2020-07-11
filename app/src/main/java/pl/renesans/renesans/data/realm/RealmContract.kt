@@ -10,6 +10,8 @@ interface RealmContract {
 
         fun checkRealm()
 
+        fun checkRealmLists()
+
         fun realmDatabaseIsEmpty(): Boolean
     }
 
