@@ -8,8 +8,7 @@ import pl.renesans.renesans.data.article.ArticleDaoImpl
 open class ArticlesListRealm(var id: String? = null,
                              var type: String? = null,
                              var name: String? = null,
-                             var index: Int? = null,
-                             @PrimaryKey var realmId: Int? = null): RealmObject()
+                             var index: Int? = null): RealmObject()
 
 open class ArticleRealm(var objectId: String? = null,
                         var sourceRealm: SourceRealm? = null,
@@ -20,8 +19,7 @@ open class ArticleRealm(var objectId: String? = null,
                         var tourRealm: TourRealm? = null,
                         var listOfRelatedArticlesIds: RealmList<String>? = null,
                         var listOfParagraphs: RealmList<ParagraphRealm>? = null,
-                        var listOfPhotos: RealmList<PhotoRealm>? = null,
-                        @PrimaryKey var realmId: Int? = null): RealmObject()
+                        var listOfPhotos: RealmList<PhotoRealm>? = null): RealmObject()
 
 open class PhotoArticleRealm(var objectId: String? = null,
                         var objectType: Int? = ArticleDaoImpl.PLACE_TYPE,
