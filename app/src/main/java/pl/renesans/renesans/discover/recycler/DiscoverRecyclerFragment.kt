@@ -17,15 +17,19 @@ class DiscoverRecyclerFragment: Fragment() {
     private lateinit var presenter: DiscoverRecyclerPresenter
     private lateinit var adapter: DiscoverRecyclerAdapter
     private var objectType = 0
+    private var articlesListId = "P"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_discover_recycler, container, false)
-        if(arguments!=null) objectType = arguments!!.getInt("objectType")
+        if(arguments!=null) {
+            objectType = arguments!!.getInt("objectType")
+            articlesListId = arguments!!.getString("articlesListId")
+        }
         discoverRecycler = view.findViewById(R.id.discoverRecycler)
         discoverTitle = view.findViewById(R.id.discoverTitle)
         presenter = DiscoverRecyclerPresenterImpl(objectType, context!!)
-        presenter.onCreate(objectType)
+        presenter.onCreate(articlesListId)
         adapter = DiscoverRecyclerAdapter(context!!, presenter)
         discoverRecycler.adapter = adapter
         discoverRecycler.layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.HORIZONTAL, false)
@@ -34,9 +38,10 @@ class DiscoverRecyclerFragment: Fragment() {
         return view
     }
 
-    fun newInstance(objectType: Int): DiscoverRecyclerFragment {
+    fun newInstance(objectType: Int, articlesListId: String): DiscoverRecyclerFragment {
         val args = Bundle()
         args.putInt("objectType", objectType)
+        args.putString("articlesListId", articlesListId)
         val discoverFragment = DiscoverRecyclerFragment()
         discoverFragment.arguments = args
         return discoverFragment

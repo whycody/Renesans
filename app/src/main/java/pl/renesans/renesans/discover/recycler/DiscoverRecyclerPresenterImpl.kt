@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.article.ArticleDao
@@ -21,8 +22,9 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
     private val holders: MutableList<DiscoverRowHolder> = mutableListOf()
     private val converter = ArticleConverterImpl()
 
-    override fun onCreate(articleId: Int) {
-        articleDao = ArticleDaoImpl()
+    override fun onCreate(articleId: String) {
+        articleDao = ArticleDaoImpl(context)
+        articleDao.onCreate()
         articlesList = converter.convertArticlesToArticleItemsList(articleDao.getArticlesList(articleId))
         imageDao = ImageDaoImpl(context, this)
     }

@@ -6,9 +6,9 @@ interface RealmMapper {
 
     fun onCreate()
 
-    fun getArticlesListFromRealm(articlesListRealm: ArticlesListRealm): ArticlesList
+    fun getArticlesListFromRealm(articlesListRealm: ArticlesListRealm?): ArticlesList
 
-    fun getArticlesListToRealm(articlesList: ArticlesList): ArticlesListRealm
+    fun getArticlesListToRealm(articlesList: ArticlesList?): ArticlesListRealm
 
     fun setPropertiesOfArticlesListRealm(articlesList: ArticlesList?, articlesListRealm: ArticlesListRealm)
 

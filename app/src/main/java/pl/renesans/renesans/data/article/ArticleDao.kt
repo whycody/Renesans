@@ -5,6 +5,8 @@ import pl.renesans.renesans.data.PhotoArticle
 
 interface ArticleDao {
 
+    fun onCreate()
+
     fun getRelatedArticlesList(article: Article): List<Article>
 
     fun articleHasSources(article: Article): Boolean
@@ -17,7 +19,7 @@ interface ArticleDao {
 
     fun getObjectTypeFromObjectId(objectID: String): Int
 
-    fun getArticlesList(articleId: Int): List<Article>
+    fun getArticlesList(articleId: String): List<Article>
 
     fun getImportantPeoples(): List<Article>
 

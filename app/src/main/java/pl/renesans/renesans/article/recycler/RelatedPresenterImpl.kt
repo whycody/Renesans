@@ -21,7 +21,8 @@ class RelatedPresenterImpl(val context: Context, val article: Article):
     private val holders: MutableList<RelatedRowHolder> = mutableListOf()
 
     override fun onCreate() {
-        val articleDao = ArticleDaoImpl()
+        val articleDao = ArticleDaoImpl(context)
+        articleDao.onCreate()
         relatedArticlesList = articleDao.getRelatedArticlesList(article)
         imageDao = ImageDaoImpl(context, this)
     }

@@ -157,6 +157,56 @@ class RealmDaoImpl(private val context: Context,
         return realm.where(ArticleRealm::class.java).findFirst() == null
     }
 
+    override fun getArticlesLists(): List<ArticlesList> {
+        val allArticlesLists: RealmResults<ArticlesListRealm> = realm
+            .where<ArticlesListRealm>(ArticlesListRealm::class.java).findAll().sort("index")
+        val articlesLists = mutableListOf<ArticlesList>()
+        allArticlesLists.forEach{ articlesLists.add(realmMapper.getArticlesListFromRealm(it)) }
+        return articlesLists.toList()
+    }
+
+    override fun getArticlesFromListWithId(id: String): List<Article> {
+        val allArticles: RealmResults<ArticleRealm> =
+            realm.where<ArticleRealm>(ArticleRealm::class.java)
+                .contains("objectId", id)
+                .findAll()
+                .sort("objectId")
+        val allArticlesFromList = mutableListOf<Article>()
+        allArticles.forEach{ allArticlesFromList.add(realmMapper.getArticleFromRealm(it)) }
+        return allArticlesFromList.toList()
+    }
+
+    override fun getPhotoArticles(fromYear: Int?, toYear: Int?): List<PhotoArticle> {
+        val photoArticlesList =
+            realm.where<ArticlesListRealm>(ArticlesListRealm::class.java)
+                .equalTo("type", PHOTO_ARTICLE)
+                .findFirst()
+        val allPhotoArticles: RealmResults<PhotoArticleRealm> =
+            realm.where<PhotoArticleRealm>(PhotoArticleRealm::class.java)
+                .contains("objectId", photoArticlesList?.id)
+                .findAll()
+                .sort("objectId")
+        val allPhotoArticlesFromList = mutableListOf<PhotoArticle>()
+        allPhotoArticles.forEach {
+            allPhotoArticlesFromList.add(realmMapper.getPhotoArticleFromRealm(it))
+        }
+        return allPhotoArticlesFromList.toList()
+    }
+
+    override fun getArticlesListWithId(id: String): ArticlesList {
+        return realmMapper.getArticlesListFromRealm(realm
+            .where<ArticlesListRealm>(ArticlesListRealm::class.java)
+            .contains("id", id)
+            .findFirst())
+    }
+
+    override fun getArticleWithId(id: String): Article {
+        return realmMapper.getArticleFromRealm(realm
+            .where<ArticleRealm>(ArticleRealm::class.java)
+            .contains("objectId", id)
+            .findFirst())
+    }
+
     companion object{
         const val ARTICLE = "ARTICLE"
         const val PHOTO_ARTICLE = "PHOTO_ARTICLE"

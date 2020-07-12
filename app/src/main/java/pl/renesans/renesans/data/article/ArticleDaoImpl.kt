@@ -1,10 +1,21 @@
 package pl.renesans.renesans.data.article
 
+import android.content.Context
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
+import pl.renesans.renesans.data.realm.RealmContract
+import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 
-class ArticleDaoImpl: ArticleDao {
+class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
+
+    private var realmDao: RealmContract.RealmDao? = null
+
+    override fun onCreate(){
+        if(context == null) return
+        realmDao = RealmDaoImpl(context)
+        realmDao?.onCreate()
+    }
 
     override fun getRelatedArticlesList(article: Article): List<Article> {
         val relatedArticles = mutableListOf<Article>()
@@ -46,8 +57,7 @@ class ArticleDaoImpl: ArticleDao {
     }
 
     override fun getArticleFromId(objectId: String): Article {
-        val articlesList = getArticlesList(getObjectTypeFromObjectId(objectId))
-        return articlesList.find { it.objectId == objectId } ?: Article()
+        return realmDao!!.getArticleWithId(objectId)
     }
 
     override fun getObjectTypeFromObjectId(objectID: String): Int{
@@ -61,14 +71,8 @@ class ArticleDaoImpl: ArticleDao {
         }
     }
 
-    override fun getArticlesList(articleId: Int): List<Article> {
-        return when(articleId){
-            DiscoverRecyclerFragment.PEOPLE -> getImportantPeoples()
-            DiscoverRecyclerFragment.ARTS -> getImportantArts()
-            DiscoverRecyclerFragment.EVENTS -> getImportantEvents()
-            DiscoverRecyclerFragment.PHOTOS -> getArticlesOfPhotoArticlesList()
-            else -> getOtherEras()
-        }
+    override fun getArticlesList(articleId: String): List<Article> {
+        return realmDao!!.getArticlesFromListWithId(articleId)
     }
 
     override fun getImportantPeoples(): List<Article> {
@@ -498,7 +502,7 @@ class ArticleDaoImpl: ArticleDao {
     }
 
     override fun getPhotoArticlesListBuiltToYear(year: Int): List<PhotoArticle> {
-        val photoArticles = getPhotoArticlesList()
+        val photoArticles = realmDao!!.getPhotoArticles()
         val filteredPhotoArticles = mutableListOf<PhotoArticle>()
         for(article in photoArticles)
             if (article.objectType == CITY_TYPE &&
@@ -510,7 +514,7 @@ class ArticleDaoImpl: ArticleDao {
     }
 
     override fun getPhotoArticlesListBuiltInYears(fromYear: Int, toYear: Int): List<PhotoArticle> {
-        val photoArticles = getPhotoArticlesList()
+        val photoArticles = realmDao!!.getPhotoArticles()
         val filteredPhotoArticles = mutableListOf<PhotoArticle>()
         for(article in photoArticles)
             if (article.objectType == CITY_TYPE &&
@@ -1018,7 +1022,7 @@ class ArticleDaoImpl: ArticleDao {
             cityKey = "POZ",
             zoom = 14f,
             objectType = CITY_TYPE))
-        return photoArticles
+        return realmDao!!.getPhotoArticles()
     }
 
     companion object{

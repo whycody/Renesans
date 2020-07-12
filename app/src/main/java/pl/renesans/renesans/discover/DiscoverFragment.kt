@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import pl.renesans.renesans.R
+import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 import pl.renesans.renesans.search.SearchActivity
 
@@ -32,14 +33,13 @@ class DiscoverFragment : Fragment() {
     private fun addFragmentsToDiscoverLayout(){
         val fragMan: FragmentManager? = fragmentManager
         val fragTransaction: FragmentTransaction = fragMan!!.beginTransaction()
-        val peopleFrag = DiscoverRecyclerFragment().newInstance(DiscoverRecyclerFragment.PEOPLE)
-        val artsFrag = DiscoverRecyclerFragment().newInstance(DiscoverRecyclerFragment.ARTS)
-        val eventsFrag = DiscoverRecyclerFragment().newInstance(DiscoverRecyclerFragment.EVENTS)
-        val otherErasFrag = DiscoverRecyclerFragment().newInstance(DiscoverRecyclerFragment.OTHER_ERAS)
-        fragTransaction.add(discoverLayout.id, peopleFrag, "peopleFrag")
-        fragTransaction.add(discoverLayout.id, artsFrag, "artsFrag")
-        fragTransaction.add(discoverLayout.id, eventsFrag, "eventsFrag")
-        fragTransaction.add(discoverLayout.id, otherErasFrag, "otherErasFrag")
+        val realmDao = RealmDaoImpl(activity!!.applicationContext)
+        realmDao.onCreate()
+        realmDao.getArticlesLists().forEach{
+            val frag = DiscoverRecyclerFragment().newInstance(it.objectType!!, it.id!!)
+            if(it.type == RealmDaoImpl.ARTICLE)
+                fragTransaction.add(discoverLayout.id, frag, "${it.id}Frag")
+        }
         fragTransaction.commit()
     }
 }

@@ -22,7 +22,8 @@ data class Header(var content: HashMap<String, String>? = null): Serializable
 data class ArticlesList(var id: String? = null,
                         var type: String? = null,
                         var name: String? = null,
-                        var index: Int? = null): Serializable
+                        var index: Int? = null,
+                        var objectType: Int? = null): Serializable
 
 data class Article(var objectId: String? = null,
                    var objectType: Int? = null,

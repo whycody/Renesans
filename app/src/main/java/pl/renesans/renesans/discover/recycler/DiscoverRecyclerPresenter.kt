@@ -2,7 +2,7 @@ package pl.renesans.renesans.discover.recycler
 
 interface DiscoverRecyclerPresenter {
 
-    fun onCreate(articleId: Int)
+    fun onCreate(articleId: String)
 
     fun itemClicked(pos: Int)
 

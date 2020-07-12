@@ -8,7 +8,8 @@ import pl.renesans.renesans.data.article.ArticleDaoImpl
 open class ArticlesListRealm(var id: String? = null,
                              var type: String? = null,
                              var name: String? = null,
-                             var index: Int? = null): RealmObject()
+                             var index: Int? = null,
+                             var objectType: Int? = null): RealmObject()
 
 open class ArticleRealm(var objectId: String? = null,
                         var sourceRealm: SourceRealm? = null,

@@ -31,7 +31,8 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
     private lateinit var photoArticles: List<PhotoArticle>
 
     override fun addMarkers() {
-        val articleDao = ArticleDaoImpl()
+        val articleDao = ArticleDaoImpl(activity.applicationContext)
+        articleDao.onCreate()
         val mapModeSetting = sharedPrefs.getInt(SettingsPresenterImpl.MAP_MODE, SettingsPresenterImpl.ALL_BUILDINGS)
         photoArticles = when (mapModeSetting) {
             SettingsPresenterImpl.ALL_BUILDINGS -> articleDao.getPhotoArticlesList()

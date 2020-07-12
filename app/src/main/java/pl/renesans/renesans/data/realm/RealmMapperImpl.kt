@@ -13,16 +13,15 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         realm = Realm.getDefaultInstance()
     }
 
-    override fun getArticlesListFromRealm(articlesListRealm: ArticlesListRealm): ArticlesList =
+    override fun getArticlesListFromRealm(articlesListRealm: ArticlesListRealm?): ArticlesList =
         ArticlesList(
-            articlesListRealm.id,
-            articlesListRealm.type,
-            articlesListRealm.name,
-            articlesListRealm.index
-        )
+            articlesListRealm?.id,
+            articlesListRealm?.type,
+            articlesListRealm?.name,
+            articlesListRealm?.index,
+            articlesListRealm?.objectType)
 
-
-    override fun getArticlesListToRealm(articlesList: ArticlesList): ArticlesListRealm {
+    override fun getArticlesListToRealm(articlesList: ArticlesList?): ArticlesListRealm {
         val articlesListRealm = realm.createObject(ArticlesListRealm::class.java)
         setPropertiesOfArticlesListRealm(articlesList, articlesListRealm)
         return articlesListRealm
@@ -34,6 +33,7 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         articlesListRealm.index = articlesList?.index
         articlesListRealm.name = articlesList?.name
         articlesListRealm.type = articlesList?.type
+        articlesListRealm.objectType = articlesList?.objectType
     }
 
     override fun getArticleFromRealm(articleRealm: ArticleRealm?): Article {
@@ -53,8 +53,11 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
 
     private fun addAllRelatedArticlesIdsToArticle(article: Article, articleRealm: ArticleRealm?){
         if(articleRealm?.listOfRelatedArticlesIds == null) return
-        article.listOfRelatedArticlesIds = articleRealm.listOfRelatedArticlesIds!!
-            .subList(0, articleRealm.listOfRelatedArticlesIds!!.size)
+        val relatedArticlesIdsList = mutableListOf<String>()
+        articleRealm.listOfRelatedArticlesIds!!.forEach{
+            relatedArticlesIdsList.add(it)
+        }
+        article.listOfRelatedArticlesIds = relatedArticlesIdsList
     }
 
     private fun addAllParagraphsToArticle(article: Article, articleRealm: ArticleRealm?){
@@ -178,10 +181,11 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         return sourceRealm
     }
 
-    private fun getPositionToRealm(position: Position?): PositionRealm{
+    private fun getPositionToRealm(position: Position?): PositionRealm?{
+        if(position == null) return null
         val positionRealm = realm.createObject(PositionRealm::class.java)
-        positionRealm.lat = position?.lat
-        positionRealm.lng = position?.lng
+        positionRealm.lat = position.lat
+        positionRealm.lng = position.lng
         return positionRealm
     }
 
@@ -213,7 +217,7 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
 
     private fun getHeaderFromRealm(headerRealm: HeaderRealm?): Header?{
         if(headerRealm == null) return null
-        val header = Header()
+        val header = Header(hashMapOf())
         for(line in headerRealm.content!!)
             header.content!![line.firstValue!!] = line.secondValue!!
         return header
@@ -227,9 +231,13 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         Paragraph(paragraphRealm?.subtitle, paragraphRealm?.content,
             getSourceFromRealm(paragraphRealm?.sourceRealm))
 
-    private fun getSourceFromRealm(sourceRealm: SourceRealm?) =
-        Source(sourceRealm?.srcDescription, sourceRealm?.photoId, sourceRealm?.url, sourceRealm?.page)
+    private fun getSourceFromRealm(sourceRealm: SourceRealm?): Source?{
+        return if(sourceRealm?.url == null) null
+        else Source(sourceRealm.srcDescription, sourceRealm.photoId, sourceRealm.url, sourceRealm.page)
+    }
 
-    private fun getPositionFromRealm(positionRealm: PositionRealm?) =
-        Position(positionRealm?.lat, positionRealm?.lng)
+    private fun getPositionFromRealm(positionRealm: PositionRealm?): Position? {
+        return if(positionRealm?.lat == null) null
+        else Position(positionRealm.lat, positionRealm.lng)
+    }
 }
