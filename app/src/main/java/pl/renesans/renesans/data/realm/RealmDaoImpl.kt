@@ -204,7 +204,7 @@ class RealmDaoImpl(private val context: Context,
         realm.where<ArticleRealm>(ArticleRealm::class.java)
             .contains("objectId", id)
             .findAll()
-            .sort("objectId")
+            .sort("index")
 
     override fun getPhotoArticles(withCities: Boolean): List<PhotoArticle> {
         val photoArticlesList = getPhotosArticlesListRealm()

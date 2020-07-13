@@ -43,6 +43,7 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
             articleRealm?.objectType,
             articleRealm?.typeOfScaling,
             articleRealm?.title,
+            articleRealm?.index,
             getHeaderFromRealm(articleRealm?.headerRealm),
             getSourceFromRealm(articleRealm?.sourceRealm))
         addAllRelatedArticlesIdsToArticle(article, articleRealm)
@@ -87,6 +88,7 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         articleRealm.title = article?.title
         articleRealm.headerRealm = getHeaderToRealm(article?.header)
         articleRealm.typeOfScaling = article?.typeOfScaling
+        articleRealm.index = article?.index
         articleRealm.tourRealm = getTourToRealm(article?.tour)
         addAllRelatedArticlesIdsToArticleRealm(article, articleRealm)
         addAllParagraphsToArticleRealm(article, articleRealm)
