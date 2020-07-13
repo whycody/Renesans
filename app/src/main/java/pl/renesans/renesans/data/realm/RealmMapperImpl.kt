@@ -1,6 +1,7 @@
 package pl.renesans.renesans.data.realm
 
 import android.content.Context
+import android.util.Log
 import io.realm.Realm
 import pl.renesans.renesans.data.*
 
@@ -36,7 +37,7 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         articlesListRealm.objectType = articlesList?.objectType
     }
 
-    override fun getArticleFromRealm(articleRealm: ArticleRealm?): Article {
+    override fun getArticleFromRealm(articleRealm: ArticleRealm?): Article? {
         val article = Article(
             articleRealm?.objectId,
             articleRealm?.objectType,
@@ -51,28 +52,25 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         return article
     }
 
+    override fun getArticleItemFromRealm(articleRealm: ArticleRealm?): ArticleItem
+            = ArticleItem(articleRealm?.objectId, articleRealm?.title)
+
     private fun addAllRelatedArticlesIdsToArticle(article: Article, articleRealm: ArticleRealm?){
         if(articleRealm?.listOfRelatedArticlesIds == null) return
         val relatedArticlesIdsList = mutableListOf<String>()
-        articleRealm.listOfRelatedArticlesIds!!.forEach{
-            relatedArticlesIdsList.add(it)
-        }
+        articleRealm.listOfRelatedArticlesIds?.forEach{ relatedArticlesIdsList.add(it) }
         article.listOfRelatedArticlesIds = relatedArticlesIdsList
     }
 
     private fun addAllParagraphsToArticle(article: Article, articleRealm: ArticleRealm?){
         val paragraphsList = mutableListOf<Paragraph>()
-        articleRealm?.listOfParagraphs!!.forEach{
-            paragraphsList.add(getParagraphFromRealm(it))
-        }
+        articleRealm?.listOfParagraphs?.forEach{ paragraphsList.add(getParagraphFromRealm(it)) }
         article.listOfParagraphs = paragraphsList.toList()
     }
 
     private fun addAllPhotosToArticle(article: Article, articleRealm: ArticleRealm?){
         val photosList = mutableListOf<Photo>()
-        articleRealm?.listOfPhotos!!.forEach{
-            photosList.add(getPhotoFromRealm(it))
-        }
+        articleRealm?.listOfPhotos?.forEach{ photosList.add(getPhotoFromRealm(it)) }
         article.listOfPhotos = photosList.toList()
     }
 
@@ -155,29 +153,32 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         return headerRealm
     }
 
-    private fun getPhotoToRealm(photo: Photo?): PhotoRealm{
+    private fun getPhotoToRealm(photo: Photo?): PhotoRealm?{
+        if(photo == null) return null
         val photoRealm = realm.createObject(PhotoRealm::class.java)
-        photoRealm.description = photo?.description
-        photoRealm.numberOfParagraph = photo?.numberOfParagraph
-        photoRealm.objectId = photo?.objectId
-        photoRealm.sourceRealm = getSourceToRealm(photo?.source)
+        photoRealm.description = photo.description
+        photoRealm.numberOfParagraph = photo.numberOfParagraph
+        photoRealm.objectId = photo.objectId
+        photoRealm.sourceRealm = getSourceToRealm(photo.source)
         return photoRealm
     }
 
-    private fun getParagraphToRealm(paragraph: Paragraph?): ParagraphRealm{
+    private fun getParagraphToRealm(paragraph: Paragraph?): ParagraphRealm?{
+        if(paragraph == null) return null
         val paragraphRealm = realm.createObject(ParagraphRealm::class.java)
-        paragraphRealm.content = paragraph?.content
-        paragraphRealm.subtitle = paragraph?.subtitle
-        paragraphRealm.sourceRealm = getSourceToRealm(paragraph?.source)
+        paragraphRealm.content = paragraph.content
+        paragraphRealm.subtitle = paragraph.subtitle
+        paragraphRealm.sourceRealm = getSourceToRealm(paragraph.source)
         return paragraphRealm
     }
 
-    private fun getSourceToRealm(source: Source?): SourceRealm{
+    private fun getSourceToRealm(source: Source?): SourceRealm?{
+        if(source == null) return null
         val sourceRealm = realm.createObject(SourceRealm::class.java)
-        sourceRealm.page = source?.page
-        sourceRealm.photoId = source?.photoId
-        sourceRealm.srcDescription = source?.srcDescription
-        sourceRealm.url = source?.url
+        sourceRealm.page = source.page
+        sourceRealm.photoId = source.photoId
+        sourceRealm.srcDescription = source.srcDescription
+        sourceRealm.url = source.url
         return sourceRealm
     }
 

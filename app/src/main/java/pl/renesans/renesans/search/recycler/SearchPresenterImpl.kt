@@ -22,7 +22,8 @@ class SearchPresenterImpl(private val context: Context,
     private val converter = ArticleConverterImpl()
 
     override fun onCreate() {
-        articleDao = ArticleDaoImpl()
+        articleDao = ArticleDaoImpl(context)
+        articleDao.onCreate()
         articlesList = converter.convertArticlesToArticleItemsList(articleDao.getAllArticles())
         imageDao = ImageDaoImpl(context, this)
     }

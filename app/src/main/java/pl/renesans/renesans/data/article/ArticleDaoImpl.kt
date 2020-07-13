@@ -46,15 +46,7 @@ class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
         return allFilteredArticles
     }
 
-    override fun getAllArticles(): List<Article> {
-        val allArticles = mutableListOf<Article>()
-        allArticles.addAll(getImportantPeoples())
-        allArticles.addAll(getImportantArts())
-        allArticles.addAll(getImportantEvents())
-        allArticles.addAll(getOtherEras())
-        allArticles.addAll(getArticlesOfPhotoArticlesList())
-        return allArticles
-    }
+    override fun getAllArticles(): List<Article> = realmDao!!.getAllArticles()
 
     override fun getArticleFromId(objectId: String): Article {
         return realmDao!!.getArticleWithId(objectId)
@@ -71,9 +63,11 @@ class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
         }
     }
 
-    override fun getArticlesList(articleId: String): List<Article> {
-        return realmDao!!.getArticlesFromListWithId(articleId)
-    }
+    override fun getArticlesList(articleId: String): List<Article>
+            = realmDao!!.getArticlesFromListWithId(articleId)
+
+    override fun getArticlesItemsList(articleId: String): List<ArticleItem>
+            = realmDao!!.getArticlesItemsFromListWithId(articleId)
 
     override fun getImportantPeoples(): List<Article> {
         val articlesList = mutableListOf<Article>()

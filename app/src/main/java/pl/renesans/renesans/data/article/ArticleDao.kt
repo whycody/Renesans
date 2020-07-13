@@ -1,6 +1,7 @@
 package pl.renesans.renesans.data.article
 
 import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.ArticleItem
 import pl.renesans.renesans.data.PhotoArticle
 
 interface ArticleDao {
@@ -20,6 +21,8 @@ interface ArticleDao {
     fun getObjectTypeFromObjectId(objectID: String): Int
 
     fun getArticlesList(articleId: String): List<Article>
+
+    fun getArticlesItemsList(articleId: String): List<ArticleItem>
 
     fun getImportantPeoples(): List<Article>
 
