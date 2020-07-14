@@ -34,7 +34,7 @@ class DiscoverRecyclerFragment: Fragment() {
         discoverRecycler.adapter = adapter
         discoverRecycler.layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.HORIZONTAL, false)
         discoverRecycler.addItemDecoration(DiscoverRecyclerDecoration(context!!))
-        setRecyclerTitle()
+        discoverTitle.text = presenter.getArticlesListTitle()
         return view
     }
 
@@ -45,15 +45,6 @@ class DiscoverRecyclerFragment: Fragment() {
         val discoverFragment = DiscoverRecyclerFragment()
         discoverFragment.arguments = args
         return discoverFragment
-    }
-
-    private fun setRecyclerTitle(){
-        when (objectType){
-            PEOPLE -> discoverTitle.text = getString(R.string.important_people)
-            ARTS -> discoverTitle.text = getString(R.string.important_arts)
-            EVENTS -> discoverTitle.text = getString(R.string.important_events)
-            OTHER_ERAS -> discoverTitle.text = getString(R.string.other_eras)
-        }
     }
 
     companion object{

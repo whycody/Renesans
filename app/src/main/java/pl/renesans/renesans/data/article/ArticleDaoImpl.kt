@@ -46,11 +46,11 @@ class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
         return allFilteredArticles
     }
 
+    override fun getArticlesListTitle(id: String) = realmDao!!.getArticlesListWithId(id).name!!
+
     override fun getAllArticles(): List<Article> = realmDao!!.getAllArticles()
 
-    override fun getArticleFromId(objectId: String): Article {
-        return realmDao!!.getArticleWithId(objectId)
-    }
+    override fun getArticleFromId(objectId: String) = realmDao!!.getArticleWithId(objectId)
 
     override fun getObjectTypeFromObjectId(objectID: String): Int{
         return when(objectID.first()){

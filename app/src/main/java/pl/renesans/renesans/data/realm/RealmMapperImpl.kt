@@ -1,7 +1,6 @@
 package pl.renesans.renesans.data.realm
 
 import android.content.Context
-import android.util.Log
 import io.realm.Realm
 import pl.renesans.renesans.data.*
 
@@ -57,7 +56,7 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
             = ArticleItem(articleRealm?.objectId, articleRealm?.title)
 
     private fun addAllRelatedArticlesIdsToArticle(article: Article, articleRealm: ArticleRealm?){
-        if(articleRealm?.listOfRelatedArticlesIds == null) return
+        if(articleRealm?.listOfRelatedArticlesIds == null || articleRealm.listOfRelatedArticlesIds?.size == 0) return
         val relatedArticlesIdsList = mutableListOf<String>()
         articleRealm.listOfRelatedArticlesIds?.forEach{ relatedArticlesIdsList.add(it) }
         article.listOfRelatedArticlesIds = relatedArticlesIdsList
@@ -65,13 +64,13 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
 
     private fun addAllParagraphsToArticle(article: Article, articleRealm: ArticleRealm?){
         val paragraphsList = mutableListOf<Paragraph>()
-        articleRealm?.listOfParagraphs?.forEach{ paragraphsList.add(getParagraphFromRealm(it)) }
+        articleRealm?.listOfParagraphs?.forEach{ paragraphsList.add(getParagraphFromRealm(it)!!) }
         article.listOfParagraphs = paragraphsList.toList()
     }
 
     private fun addAllPhotosToArticle(article: Article, articleRealm: ArticleRealm?){
         val photosList = mutableListOf<Photo>()
-        articleRealm?.listOfPhotos?.forEach{ photosList.add(getPhotoFromRealm(it)) }
+        articleRealm?.listOfPhotos?.forEach{ photosList.add(getPhotoFromRealm(it)!!) }
         article.listOfPhotos = photosList.toList()
     }
 
@@ -226,16 +225,20 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         return header
     }
 
-    private fun getPhotoFromRealm(photoRealm: PhotoRealm?) =
-        Photo(photoRealm?.objectId, photoRealm?.numberOfParagraph, photoRealm?.description,
-            getSourceFromRealm(photoRealm?.sourceRealm))
+    private fun getPhotoFromRealm(photoRealm: PhotoRealm?): Photo?{
+        return if(photoRealm?.objectId == null && photoRealm?.description == null) null
+        else Photo(photoRealm.objectId, photoRealm.numberOfParagraph, photoRealm.description,
+            getSourceFromRealm(photoRealm.sourceRealm))
+    }
 
-    private fun getParagraphFromRealm(paragraphRealm: ParagraphRealm?) =
-        Paragraph(paragraphRealm?.subtitle, paragraphRealm?.content,
-            getSourceFromRealm(paragraphRealm?.sourceRealm))
+    private fun getParagraphFromRealm(paragraphRealm: ParagraphRealm?): Paragraph?{
+        return if(paragraphRealm?.subtitle == null && paragraphRealm?.content == null) null
+        else Paragraph(paragraphRealm.subtitle, paragraphRealm.content,
+            getSourceFromRealm(paragraphRealm.sourceRealm))
+    }
 
     private fun getSourceFromRealm(sourceRealm: SourceRealm?): Source?{
-        return if(sourceRealm?.url == null) null
+        return if(sourceRealm?.srcDescription == null && sourceRealm?.url == null) null
         else Source(sourceRealm.srcDescription, sourceRealm.photoId, sourceRealm.url, sourceRealm.page)
     }
 

@@ -48,12 +48,27 @@ class RealmDaoImpl(private val context: Context,
         articlesRef.get().addOnSuccessListener { task ->
             for(document in task.documents){
                 val articlesList = document.toObject(ArticlesList::class.java)
-                if(!articleListExists(articlesList)) insertArticlesList(articlesList)
+                checkArticlesList(articlesList)
                 allArticlesLists = task.documents.size
                 downloadArticlesFromList(document, articlesList)
             }
         }.addOnFailureListener{ realmInterractor?.downloadFailure() }
     }
+
+    private fun checkArticlesList(articlesList: ArticlesList?){
+        if(!articleListExists(articlesList)) insertArticlesList(articlesList)
+        else if(!articlesListIsEqualWithDb(articlesList)) updateArticlesList(articlesList)
+    }
+
+    private fun updateArticlesList(articlesList: ArticlesList?){
+        realm.executeTransaction{ getRealmArticlesListWithId(articlesList?.id)?.deleteFromRealm() }
+        insertArticlesList(articlesList)
+    }
+
+    private fun getRealmArticlesListWithId(id: String?): ArticlesListRealm? =
+        realm.where<ArticlesListRealm>(ArticlesListRealm::class.java)
+            .contains("id", id)
+            .findFirst()
 
     private fun downloadArticlesFromList(document: DocumentSnapshot, articlesList: ArticlesList?) {
         articlesRef.document(document.id).collection(document.id).get()
@@ -74,12 +89,34 @@ class RealmDaoImpl(private val context: Context,
     private fun checkArticle(articleDoc: DocumentSnapshot){
         val article = articleDoc.toObject(Article::class.java)
         if(!articleExists(article)) insertArticle(article)
+        else if(!articleIsEqualWithDb(article)) updateArticle(article)
     }
+
+    private fun updateArticle(article: Article?){
+        realm.executeTransaction{ getRealmArticleWithId(article?.objectId)?.deleteFromRealm() }
+        insertArticle(article)
+    }
+
+    private fun getRealmArticleWithId(id: String?): ArticleRealm? =
+        realm.where<ArticleRealm>(ArticleRealm::class.java)
+            .contains("objectId", id)
+            .findFirst()
 
     private fun checkPhotoArticle(articleDoc: DocumentSnapshot){
         val photoArticle = articleDoc.toObject(PhotoArticle::class.java)
         if(!photoArticleExists(photoArticle)) insertPhotoArticle(photoArticle)
+        if(!photoArticleIsEqualWithDb(photoArticle)) updatePhotoArticle(photoArticle)
     }
+
+    private fun updatePhotoArticle(photoArticle: PhotoArticle?){
+        realm.executeTransaction{ getRealmPhotoArticleWithId(photoArticle?.objectId)?.deleteFromRealm() }
+        insertPhotoArticle(photoArticle)
+    }
+
+    private fun getRealmPhotoArticleWithId(id: String?): PhotoArticleRealm? =
+        realm.where<PhotoArticleRealm>(PhotoArticleRealm::class.java)
+            .contains("objectId", id)
+            .findFirst()
 
     private fun checkAllArticlesHasBeenDownloaded(){
         if(downloadedArticlesLists == allArticlesLists) {
@@ -94,13 +131,22 @@ class RealmDaoImpl(private val context: Context,
             = realm.where(ArticlesListRealm::class.java)
             .equalTo("id", articlesList?.id).findFirst() != null
 
+    private fun articlesListIsEqualWithDb(articlesList: ArticlesList?): Boolean
+            = articlesList == getArticlesListWithId(articlesList?.id!!)
+
     private fun articleExists(article: Article?): Boolean
             = realm.where(ArticleRealm::class.java)
             .equalTo("objectId", article?.objectId).findFirst() != null
 
+    private fun articleIsEqualWithDb(article: Article?): Boolean
+        = article == getArticleWithId(article?.objectId!!)
+
     private fun photoArticleExists(photoArticle: PhotoArticle?): Boolean
             = realm.where(PhotoArticleRealm::class.java)
         .equalTo("objectId", photoArticle?.objectId).findFirst() != null
+
+    private fun photoArticleIsEqualWithDb(photoArticle: PhotoArticle?): Boolean
+            = photoArticle == getPhotoArticleWithId(photoArticle?.objectId!!)
 
     private fun insertArticlesList(articlesList: ArticlesList?){
         realm.beginTransaction()
@@ -241,16 +287,15 @@ class RealmDaoImpl(private val context: Context,
             .contains("objectId", id)
             .findFirst()
         return if(articleRealm != null) realmMapper.getArticleFromRealm(articleRealm)!!
-        else getPhotoArticleWithId(id)
+        else articleConverter.convertPhotoArticleToArticle(getPhotoArticleWithId(id))
     }
 
-    private fun getPhotoArticleWithId(id: String): Article {
+    private fun getPhotoArticleWithId(id: String): PhotoArticle {
         realm = Realm.getDefaultInstance()
-        val photoArticle = realmMapper.getPhotoArticleFromRealm(realm
-            .where<PhotoArticleRealm>(PhotoArticleRealm::class.java)
+        return realmMapper.getPhotoArticleFromRealm(realm
+            .where(PhotoArticleRealm::class.java)
             .contains("objectId", id)
             .findFirst())
-        return articleConverter.convertPhotoArticleToArticle(photoArticle)
     }
 
     companion object{

@@ -14,6 +14,8 @@ interface ArticleDao {
 
     fun getAllArticlesWithTextInTitle(text: String): List<Article>
 
+    fun getArticlesListTitle(id: String): String
+
     fun getAllArticles(): List<Article>
 
     fun getArticleFromId(objectId: String): Article

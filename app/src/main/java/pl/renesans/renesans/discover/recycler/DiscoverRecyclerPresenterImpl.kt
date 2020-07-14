@@ -18,13 +18,17 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
     private var articlesList = listOf<ArticleItem>()
     private var imageDao: ImageDaoContract.ImageDao? = null
     private val holders: MutableList<DiscoverRowHolder> = mutableListOf()
+    private lateinit var articleId: String
 
     override fun onCreate(articleId: String) {
         articleDao = ArticleDaoImpl(context)
         articleDao.onCreate()
+        this.articleId = articleId
         articlesList = articleDao.getArticlesItemsList(articleId)
         imageDao = ImageDaoImpl(context, this)
     }
+
+    override fun getArticlesListTitle() = articleDao.getArticlesListTitle(articleId)
 
     override fun itemClicked(pos: Int) {
         val intent = Intent(context, ArticleActivity::class.java)

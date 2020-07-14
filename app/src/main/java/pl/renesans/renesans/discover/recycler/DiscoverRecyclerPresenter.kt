@@ -4,6 +4,8 @@ interface DiscoverRecyclerPresenter {
 
     fun onCreate(articleId: String)
 
+    fun getArticlesListTitle(): String
+
     fun itemClicked(pos: Int)
 
     fun getItemCount(): Int

@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         else changeFragment(discoverFragment, "discover")
         val realmDao = RealmDaoImpl(applicationContext)
         realmDao.onCreate()
+        realmDao.refreshRealmDatabase()
     }
 
     private fun saveAllArticles(){
