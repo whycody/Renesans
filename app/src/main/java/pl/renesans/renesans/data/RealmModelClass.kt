@@ -4,6 +4,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import pl.renesans.renesans.data.article.ArticleDaoImpl
+import java.io.Serializable
 
 open class ArticlesListRealm(var id: String? = null,
                              var type: String? = null,
@@ -60,3 +61,5 @@ open class SourceRealm(var srcDescription: String? = null,
 open class ParagraphRealm(var subtitle: String? = null,
                      var content: String? = null,
                      var sourceRealm: SourceRealm? = null): RealmObject()
+
+open class DatabaseVersionRealm(var version: Int? = null): RealmObject()

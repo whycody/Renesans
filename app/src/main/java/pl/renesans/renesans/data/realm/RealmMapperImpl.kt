@@ -2,6 +2,7 @@ package pl.renesans.renesans.data.realm
 
 import android.content.Context
 import io.realm.Realm
+import io.realm.RealmObject
 import pl.renesans.renesans.data.*
 
 class RealmMapperImpl(private val context: Context): RealmMapper {
@@ -11,6 +12,15 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
     override fun onCreate() {
         Realm.init(context)
         realm = Realm.getDefaultInstance()
+    }
+
+    override fun getDatabaseVersionFromRealm(databaseVersionRealm: DatabaseVersionRealm)
+            = DatabaseVersion(databaseVersionRealm.version)
+
+    override fun getDatabaseVersionToRealm(databaseVersion: DatabaseVersion): DatabaseVersionRealm {
+        val databaseVersionRealm = realm.createObject(DatabaseVersionRealm::class.java)
+        databaseVersionRealm.version = databaseVersion.version
+        return databaseVersionRealm
     }
 
     override fun getArticlesListFromRealm(articlesListRealm: ArticlesListRealm?): ArticlesList =

@@ -60,4 +60,5 @@
     <string name="try_again">Czy spróbować ponownie?</string>
     <string name="try_again_later">Spróbuj ponownie później</string>
     <string name="retry_with_connection">Spróbuj ponownie gdy odzyskasz połączenie z Internetem</string>
+    <string name="updated_database_successfully">Poprawnie zaktualizowano bazę danych</string>
 </resources>

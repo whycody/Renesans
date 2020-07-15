@@ -32,9 +32,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         if(savedInstanceState?.getInt("lastTab") != null)
             onNavigationItemSelected(mainNav.menu.getItem(savedInstanceState.getInt("lastTab")))
         else changeFragment(discoverFragment, "discover")
-        val realmDao = RealmDaoImpl(applicationContext)
-        realmDao.onCreate()
-        realmDao.refreshRealmDatabase()
     }
 
     private fun saveAllArticles(){

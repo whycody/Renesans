@@ -11,7 +11,7 @@ interface RealmContract {
 
         fun onCreate()
 
-        fun refreshRealmDatabase()
+        fun refreshRealmDatabase(firstDownload: Boolean = false)
 
         fun checkRealm()
 
@@ -39,6 +39,8 @@ interface RealmContract {
         fun downloadSuccessful()
 
         fun downloadFailure(connectionProblem: Boolean = false)
+
+        fun startedLoading()
     }
 
 }

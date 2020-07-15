@@ -44,6 +44,10 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
         showAlertDialog(connectionProblem)
     }
 
+    override fun startedLoading() {
+
+    }
+
     private fun showAlertDialog(connectionProblem: Boolean){
         timesOfAlertDialogShow++
         if(timesOfAlertDialogShow <= 2 && !connectionProblem) showWarningDialog()
@@ -93,7 +97,7 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
     }
 
     private fun downloadDb(){
-        realmDao.refreshRealmDatabase()
+        realmDao.refreshRealmDatabase(true)
         retryBtn.isEnabled = false
         downloadProgressBar.visibility = View.VISIBLE
     }

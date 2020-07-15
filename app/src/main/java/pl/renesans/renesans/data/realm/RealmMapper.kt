@@ -6,6 +6,10 @@ interface RealmMapper {
 
     fun onCreate()
 
+    fun getDatabaseVersionFromRealm(databaseVersionRealm: DatabaseVersionRealm): DatabaseVersion
+
+    fun getDatabaseVersionToRealm(databaseVersion: DatabaseVersion): DatabaseVersionRealm
+
     fun getArticlesListFromRealm(articlesListRealm: ArticlesListRealm?): ArticlesList
 
     fun getArticlesListToRealm(articlesList: ArticlesList?): ArticlesListRealm

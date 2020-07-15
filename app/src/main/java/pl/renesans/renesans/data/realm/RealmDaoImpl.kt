@@ -30,9 +30,10 @@ class RealmDaoImpl(private val context: Context,
         realmMapper.onCreate()
     }
 
-    override fun refreshRealmDatabase(){
-        if(isConnectionAvailable()) downloadArticlesListsWithArticles()
-        else realmInterractor?.downloadFailure(true)
+    override fun refreshRealmDatabase(firstDownload: Boolean){
+        if(!isConnectionAvailable()) realmInterractor?.downloadFailure(true)
+        else if(firstDownload) downloadArticlesListsWithArticles(firstDownload)
+        else checkDbVersion(true)
     }
 
     private fun isConnectionAvailable(): Boolean {
@@ -44,7 +45,9 @@ class RealmDaoImpl(private val context: Context,
         } catch (_: Exception) { false }
     }
 
-    private fun downloadArticlesListsWithArticles(){
+    private fun downloadArticlesListsWithArticles(firstDownload: Boolean){
+        realmInterractor?.startedLoading()
+        if(firstDownload) checkDbVersion(false)
         articlesRef.get().addOnSuccessListener { task ->
             for(document in task.documents){
                 val articlesList = document.toObject(ArticlesList::class.java)
@@ -54,6 +57,34 @@ class RealmDaoImpl(private val context: Context,
             }
         }.addOnFailureListener{ realmInterractor?.downloadFailure() }
     }
+
+    private fun checkDbVersion(refreshDatabase: Boolean){
+        firestore.collection("version").document("current-db")
+            .get().addOnSuccessListener {
+                val dbVersion = it.toObject(DatabaseVersion::class.java)
+                val currentDbVersion = getRealmDatabaseVersion()
+                if(dbVersion?.version != currentDbVersion?.version) {
+                    updateDatabaseVersion(dbVersion)
+                    if(refreshDatabase) downloadArticlesListsWithArticles(false)
+                }
+            }.addOnFailureListener{ if(refreshDatabase) realmInterractor?.downloadFailure() }
+    }
+
+    private fun updateDatabaseVersion(databaseVersion: DatabaseVersion?){
+        realm.executeTransaction{ getRealmDatabaseVersion()?.deleteFromRealm() }
+        insertDatabaseVersion(databaseVersion)
+    }
+
+    private fun insertDatabaseVersion(databaseVersion: DatabaseVersion?){
+        realm.beginTransaction()
+        val realmDatabaseVersion = realm.createObject(DatabaseVersionRealm::class.java)
+        realmDatabaseVersion.version = databaseVersion?.version
+        realm.commitTransaction()
+    }
+
+    private fun getRealmDatabaseVersion(): DatabaseVersionRealm? =
+        realm.where<DatabaseVersionRealm>(DatabaseVersionRealm::class.java)
+            .findFirst()
 
     private fun checkArticlesList(articlesList: ArticlesList?){
         if(!articleListExists(articlesList)) insertArticlesList(articlesList)
@@ -123,7 +154,6 @@ class RealmDaoImpl(private val context: Context,
             Log.d("MOJTAG", "Everything has been downloaded")
             realmInterractor?.downloadSuccessful()
             downloadedArticlesLists = 0
-            checkRealmLists()
         }
     }
 

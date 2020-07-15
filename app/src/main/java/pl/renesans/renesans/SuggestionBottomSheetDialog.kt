@@ -32,7 +32,7 @@ import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
 
 
-class SuggestionBottomSheetDialog():
+class SuggestionBottomSheetDialog:
     BottomSheetDialogFragment(), ImageDaoContract.ImageDaoInterractor, TextWatcher {
 
     private lateinit var articlePhoto: ImageView
