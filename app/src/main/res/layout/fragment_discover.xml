@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/refreshLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,79 +8,85 @@
     android:layout_height="match_parent"
     tools:context=".discover.DiscoverFragment">
 
-    <LinearLayout
-        android:id="@+id/discoverLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="40dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/discoverLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/colorAccent"
-            android:paddingStart="@dimen/discoverMargin"
-            android:paddingEnd="@dimen/discoverMargin"
-            android:paddingTop="30dp"
-            android:paddingBottom="45dp">
+            android:paddingBottom="40dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/world_art"
-                android:textColor="@color/colorTitleGray"
-                android:textStyle="bold"
-                android:textSize="32sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/know_about_culture"
-                android:lineSpacingExtra="4dp"
-                android:textColor="@color/colorParagraphGray"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="20dp"
-                android:textSize="16sp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:orientation="vertical"
+                android:background="@color/colorAccent"
+                android:paddingStart="@dimen/discoverMargin"
+                android:paddingEnd="@dimen/discoverMargin"
+                android:paddingTop="30dp"
+                android:paddingBottom="45dp">
 
-                <EditText
-                    android:id="@+id/searchEditText"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/world_art"
+                    android:textColor="@color/colorTitleGray"
+                    android:textStyle="bold"
+                    android:textSize="32sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/know_about_culture"
+                    android:lineSpacingExtra="4dp"
+                    android:textColor="@color/colorParagraphGray"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="16sp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/sh_dialog_bottom_sheet_photo"
-                    android:drawableStart="@drawable/ic_search_black_24dp"
-                    android:drawablePadding="10dp"
-                    android:hint="@string/search"
-                    android:maxLines="1"
-                    android:paddingTop="13dp"
-                    android:paddingBottom="13dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:focusable="false"
-                    android:enabled="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginTop="20dp">
 
-                <View
-                    android:id="@+id/clickableSearchView"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <EditText
+                        android:id="@+id/searchEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/sh_dialog_bottom_sheet_photo"
+                        android:drawableStart="@drawable/ic_search_black_24dp"
+                        android:drawablePadding="10dp"
+                        android:hint="@string/search"
+                        android:maxLines="1"
+                        android:paddingTop="13dp"
+                        android:paddingBottom="13dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:focusable="false"
+                        android:enabled="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <View
+                        android:id="@+id/clickableSearchView"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

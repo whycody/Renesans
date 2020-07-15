@@ -12,11 +12,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import kotlinx.android.synthetic.main.fragment_discover.*
+import kotlinx.android.synthetic.main.fragment_discover.view.*
+import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.realm.RealmContract
 import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 import pl.renesans.renesans.search.SearchActivity
+import java.lang.Exception
 
 class DiscoverFragment : Fragment(), RealmContract.RealmInterractor {
 
@@ -35,6 +39,7 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor {
         }
         if(savedInstanceState == null) addFragmentsToDiscoverLayout()
         realmDao.refreshRealmDatabase()
+        view.refreshLayout.setOnRefreshListener { realmDao.refreshRealmDatabase() }
         return view
     }
 
@@ -50,15 +55,30 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor {
     }
 
     override fun downloadSuccessful() {
+        val fragMan: FragmentManager? = fragmentManager
+        val fragTransaction: FragmentTransaction = fragMan!!.beginTransaction()
+        for(fragment in fragMan.fragments)
+            if(fragment is DiscoverRecyclerFragment) fragTransaction.remove(fragment)
+        fragTransaction.commit()
+        (activity as MainActivity).refreshMapFragment()
+        addFragmentsToDiscoverLayout()
         showToast(getString(R.string.updated_database_successfully))
+        refreshLayout.isRefreshing = false
     }
 
     override fun downloadFailure(connectionProblem: Boolean) {
         showToast(activity!!.getString(R.string.suggestions_fail))
+        refreshLayout.isRefreshing = false
     }
 
     override fun startedLoading() {
+        refreshLayout.isRefreshing = true
+    }
 
+    override fun databaseIsUpToDate() {
+        if(refreshLayout.isRefreshing)
+            showToast(getString(R.string.database_up_to_date))
+        refreshLayout.isRefreshing = false
     }
 
     private fun showToast(text: String){

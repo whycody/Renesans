@@ -41,6 +41,8 @@ interface RealmContract {
         fun downloadFailure(connectionProblem: Boolean = false)
 
         fun startedLoading()
+
+        fun databaseIsUpToDate()
     }
 
 }

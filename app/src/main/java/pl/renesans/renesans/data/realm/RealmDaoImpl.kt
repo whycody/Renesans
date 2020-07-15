@@ -66,7 +66,7 @@ class RealmDaoImpl(private val context: Context,
                 if(dbVersion?.version != currentDbVersion?.version) {
                     updateDatabaseVersion(dbVersion)
                     if(refreshDatabase) downloadArticlesListsWithArticles(false)
-                }
+                }else realmInterractor?.databaseIsUpToDate()
             }.addOnFailureListener{ if(refreshDatabase) realmInterractor?.downloadFailure() }
     }
 

@@ -48,6 +48,10 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
 
     }
 
+    override fun databaseIsUpToDate() {
+
+    }
+
     private fun showAlertDialog(connectionProblem: Boolean){
         timesOfAlertDialogShow++
         if(timesOfAlertDialogShow <= 2 && !connectionProblem) showWarningDialog()

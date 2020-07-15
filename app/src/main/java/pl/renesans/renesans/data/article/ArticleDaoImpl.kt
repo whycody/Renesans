@@ -7,14 +7,13 @@ import pl.renesans.renesans.data.realm.RealmContract
 import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 
-class ArticleDaoImpl(private val context: Context? = null,
-                     private val realmInterractor: RealmContract.RealmInterractor? = null): ArticleDao {
+class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
 
     private var realmDao: RealmContract.RealmDao? = null
 
     override fun onCreate(){
         if(context == null) return
-        realmDao = RealmDaoImpl(context, realmInterractor)
+        realmDao = RealmDaoImpl(context)
         realmDao?.onCreate()
     }
 
