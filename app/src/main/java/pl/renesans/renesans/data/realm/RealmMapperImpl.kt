@@ -11,7 +11,7 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
 
     override fun onCreate() {
         Realm.init(context)
-        realm = Realm.getDefaultInstance()
+        realm = Realm.getInstance(RealmUtility.getDefaultConfig())
     }
 
     override fun getDatabaseVersionFromRealm(databaseVersionRealm: DatabaseVersionRealm)

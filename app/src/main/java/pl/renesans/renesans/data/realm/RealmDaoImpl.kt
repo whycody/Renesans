@@ -26,7 +26,7 @@ class RealmDaoImpl(private val context: Context,
 
     override fun onCreate() {
         Realm.init(context)
-        realm = Realm.getDefaultInstance()
+        realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         realmMapper.onCreate()
     }
 
@@ -232,7 +232,7 @@ class RealmDaoImpl(private val context: Context,
         realm.where(ArticleRealm::class.java).findFirst() == null
 
     override fun getAllArticles(): List<Article> {
-        realm = Realm.getDefaultInstance()
+        realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         val allArticlesFromList = mutableListOf<Article>()
         addAllArticlesToList(allArticlesFromList)
         addAllPhotoArticlesToList(allArticlesFromList)
@@ -311,7 +311,7 @@ class RealmDaoImpl(private val context: Context,
     }
 
     override fun getArticleWithId(id: String): Article {
-        realm = Realm.getDefaultInstance()
+        realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         val articleRealm = realm
             .where<ArticleRealm>(ArticleRealm::class.java)
             .contains("objectId", id)
@@ -321,7 +321,7 @@ class RealmDaoImpl(private val context: Context,
     }
 
     private fun getPhotoArticleWithId(id: String): PhotoArticle {
-        realm = Realm.getDefaultInstance()
+        realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         return realmMapper.getPhotoArticleFromRealm(realm
             .where(PhotoArticleRealm::class.java)
             .contains("objectId", id)

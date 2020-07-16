@@ -63,6 +63,9 @@
         app:layout_constraintBottom_toTopOf="@+id/retryBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/colorTransparentPrimary"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

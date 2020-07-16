@@ -20,7 +20,6 @@ import pl.renesans.renesans.data.realm.RealmContract
 import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 import pl.renesans.renesans.search.SearchActivity
-import java.lang.Exception
 
 class DiscoverFragment : Fragment(), RealmContract.RealmInterractor {
 
