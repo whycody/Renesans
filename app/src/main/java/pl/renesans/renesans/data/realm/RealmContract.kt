@@ -19,6 +19,8 @@ interface RealmContract {
 
         fun realmDatabaseIsEmpty(): Boolean
 
+        fun getCityWithCityKey(cityKey: String): String
+
         fun getAllArticles(): List<Article>
 
         fun getArticlesLists(): List<ArticlesList>

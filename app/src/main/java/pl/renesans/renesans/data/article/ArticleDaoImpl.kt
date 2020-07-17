@@ -1035,6 +1035,7 @@ class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
         const val TIME_FRAME_ITALY = "Ramy czasowe we Włoszech"
         const val PLACE = "Miejsce"
         const val DATE = "Data"
+        const val CITY = "Miasto"
 
         const val WIKIPEDIA_PL = "pl.wikipedia.org"
         const val TVP_INFO = "tvp.info"

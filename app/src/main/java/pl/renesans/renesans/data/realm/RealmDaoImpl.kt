@@ -231,6 +231,12 @@ class RealmDaoImpl(private val context: Context,
     override fun realmDatabaseIsEmpty(): Boolean =
         realm.where(ArticleRealm::class.java).findFirst() == null
 
+    override fun getCityWithCityKey(cityKey: String) =
+        realm.where(PhotoArticleRealm::class.java)
+            .equalTo("cityKey", cityKey)
+            .equalTo("objectType", ArticleDaoImpl.CITY_TYPE)
+            .findFirst()?.title!!
+
     override fun getAllArticles(): List<Article> {
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         val allArticlesFromList = mutableListOf<Article>()
@@ -322,10 +328,14 @@ class RealmDaoImpl(private val context: Context,
 
     private fun getPhotoArticleWithId(id: String): PhotoArticle {
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
-        return realmMapper.getPhotoArticleFromRealm(realm
+        val articlePhoto = realmMapper.getPhotoArticleFromRealm(realm
             .where(PhotoArticleRealm::class.java)
             .contains("objectId", id)
             .findFirst())
+        if(articlePhoto.cityKey != null)
+            articlePhoto.header = Header(content = hashMapOf(Pair(ArticleDaoImpl.CITY,
+                getCityWithCityKey(articlePhoto.cityKey!!))))
+        return articlePhoto
     }
 
     companion object{
