@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.storage.FirebaseStorage
 import pl.renesans.renesans.settings.SettingsPresenterImpl
 import java.io.File
-import java.lang.Exception
 
 class ImageDaoImpl(private val context: Context, private val interractor:
     ImageDaoContract.ImageDaoInterractor):

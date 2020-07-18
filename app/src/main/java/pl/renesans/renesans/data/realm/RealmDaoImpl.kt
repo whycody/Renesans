@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import io.realm.Realm
+import io.realm.RealmList
 import io.realm.RealmResults
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.article.ArticleDaoImpl
@@ -235,7 +236,7 @@ class RealmDaoImpl(private val context: Context,
         realm.where(PhotoArticleRealm::class.java)
             .equalTo("cityKey", cityKey)
             .equalTo("objectType", ArticleDaoImpl.CITY_TYPE)
-            .findFirst()?.title!!
+            .findFirst()?.title
 
     override fun getAllArticles(): List<Article> {
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
@@ -280,6 +281,53 @@ class RealmDaoImpl(private val context: Context,
         val allArticlesFromList = mutableListOf<ArticleItem>()
         allArticles.forEach{ allArticlesFromList.add(realmMapper.getArticleItemFromRealm(it)) }
         return allArticlesFromList.toList()
+    }
+
+    override fun getArticlesItemsFromSearchHistory(): List<ArticleItem> {
+        val articlesItemsList = mutableListOf<ArticleItem>()
+        getSearchHistoryRealmList()?.forEach {
+            articlesItemsList.add(realmMapper.getArticleItem(getArticleWithId(it)))
+        }
+        return articlesItemsList
+    }
+
+    private fun getSearchHistoryRealmList(): RealmList<String>? =
+        getSearchHistoryRealm()?.listOfIdsOfLastSearchedItems
+
+    override fun addItemToSearchHistoryRealm(id: String) {
+        val searchHistoryRealm = getSearchHistoryRealm()
+        if(searchHistoryRealm == null) insertSearchHistoryToRealm(id)
+        else addIdToSearchHistoryRealm(id)
+    }
+
+    private fun insertSearchHistoryToRealm(id: String){
+        realm.beginTransaction()
+        val searchHistoryRealm =
+            realm.createObject(SearchHistoryRealm::class.java)
+        searchHistoryRealm.listOfIdsOfLastSearchedItems?.add(id)
+        realm.commitTransaction()
+    }
+
+    private fun addIdToSearchHistoryRealm(id: String){
+        realm.beginTransaction()
+        val searchHistoryRealm = getSearchHistoryRealm()
+        if(searchHistoryRealm?.listOfIdsOfLastSearchedItems!!.contains(id))
+            searchHistoryRealm.listOfIdsOfLastSearchedItems!!.move(
+                searchHistoryRealm.listOfIdsOfLastSearchedItems!!.indexOf(id), 0)
+        else searchHistoryRealm.listOfIdsOfLastSearchedItems?.add(0, id)
+        checkSizeOfSavedHistory(searchHistoryRealm)
+        realm.commitTransaction()
+    }
+
+    private fun checkSizeOfSavedHistory(searchHistoryRealm: SearchHistoryRealm){
+        if(searchHistoryRealm.listOfIdsOfLastSearchedItems?.size!! > 10)
+            searchHistoryRealm.listOfIdsOfLastSearchedItems!!.removeAt(
+                searchHistoryRealm.listOfIdsOfLastSearchedItems?.size!! - 1)
+    }
+
+    private fun getSearchHistoryRealm(): SearchHistoryRealm?{
+        realm = Realm.getInstance(RealmUtility.getDefaultConfig())
+        return realm.where(SearchHistoryRealm::class.java).findFirst()
     }
 
     private fun getRealmArticlesFromListWithId(id: String?): RealmResults<ArticleRealm> =
@@ -332,10 +380,16 @@ class RealmDaoImpl(private val context: Context,
             .where(PhotoArticleRealm::class.java)
             .contains("objectId", id)
             .findFirst())
-        if(articlePhoto.cityKey != null)
-            articlePhoto.header = Header(content = hashMapOf(Pair(ArticleDaoImpl.CITY,
-                getCityWithCityKey(articlePhoto.cityKey!!))))
+        if(articlePhoto.cityKey != null){
+            val city = getCity(articlePhoto.cityKey!!)
+            if(city!=null) articlePhoto.header = Header(
+                content = hashMapOf(Pair(ArticleDaoImpl.CITY, city)))
+        }
         return articlePhoto
+    }
+
+    private fun getCity(cityKey: String): String?{
+        return getCityWithCityKey(cityKey)
     }
 
     companion object{

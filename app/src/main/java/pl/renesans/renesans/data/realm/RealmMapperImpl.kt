@@ -2,7 +2,6 @@ package pl.renesans.renesans.data.realm
 
 import android.content.Context
 import io.realm.Realm
-import io.realm.RealmObject
 import pl.renesans.renesans.data.*
 
 class RealmMapperImpl(private val context: Context): RealmMapper {
@@ -62,8 +61,11 @@ class RealmMapperImpl(private val context: Context): RealmMapper {
         return article
     }
 
-    override fun getArticleItemFromRealm(articleRealm: ArticleRealm?): ArticleItem
+    override fun getArticleItemFromRealm(articleRealm: ArticleRealm?)
             = ArticleItem(articleRealm?.objectId, articleRealm?.title)
+
+    override fun getArticleItem(article: Article?)
+            = ArticleItem(article?.objectId, article?.title)
 
     private fun addAllRelatedArticlesIdsToArticle(article: Article, articleRealm: ArticleRealm?){
         if(articleRealm?.listOfRelatedArticlesIds == null || articleRealm.listOfRelatedArticlesIds?.size == 0) return

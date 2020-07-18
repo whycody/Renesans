@@ -38,7 +38,7 @@ class SearchRecyclerAdapter(val context: Context, val presenter: SearchContract.
                 for (item in presenter.getAllArticles())
                     if (item.title!!.toLowerCase().contains(pattern))
                         filteredList.add(item)
-            } else filteredList.addAll(presenter.getAllArticles())
+            } else filteredList.addAll(presenter.getSearchedArticles())
             val results = FilterResults()
             results.values = filteredList
             return results

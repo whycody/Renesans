@@ -32,7 +32,7 @@ class StartupActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
         changeStatusBarColor()
-        prefs = getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
+        prefs = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
         editor = prefs!!.edit()
         val startupAdapter = StartupAdapter(this)
         permissionGranted = (ContextCompat.checkSelfPermission(this,

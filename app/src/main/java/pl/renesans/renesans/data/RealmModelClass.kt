@@ -63,3 +63,5 @@ open class ParagraphRealm(var subtitle: String? = null,
                      var sourceRealm: SourceRealm? = null): RealmObject()
 
 open class DatabaseVersionRealm(var version: Int? = null): RealmObject()
+
+open class SearchHistoryRealm(var listOfIdsOfLastSearchedItems: RealmList<String>? = null): RealmObject()

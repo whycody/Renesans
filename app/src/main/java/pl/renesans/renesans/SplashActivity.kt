@@ -33,8 +33,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun checkFirstLogin(){
-        val prefs = getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
-        if(prefs.getBoolean(firstLogin, true))
+        if(sharedPrefs.getBoolean(firstLogin, true))
             startActivity(Intent(this, StartupActivity::class.java))
         else if(!permissionGranted && !skipPermission)
             startActivity(Intent(this, PermissionActivity::class.java))

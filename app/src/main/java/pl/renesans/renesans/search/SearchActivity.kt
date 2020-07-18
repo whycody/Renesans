@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.fragment_discover.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.Article
@@ -21,6 +22,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
     private lateinit var presenter: SearchContract.SearchPresenter
     private lateinit var adapter: SearchRecyclerAdapter
     private lateinit var layoutManager: LinearLayoutManager
+    private var lastFilter: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,11 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(0, 0)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.filter.filter(lastFilter)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -57,6 +64,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
 
     override fun onQueryTextChange(p0: String?): Boolean {
         adapter.filter.filter(p0)
+        lastFilter = p0
         return false
     }
 

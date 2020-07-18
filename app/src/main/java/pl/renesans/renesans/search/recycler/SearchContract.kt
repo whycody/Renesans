@@ -32,6 +32,8 @@ interface SearchContract {
 
         fun onCreate()
 
+        fun getSearchedArticles(): List<ArticleItem>
+
         fun getAllArticles(): List<ArticleItem>
 
         fun getCurrentArticlesList(): List<ArticleItem>

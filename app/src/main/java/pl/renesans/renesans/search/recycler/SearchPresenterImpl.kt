@@ -3,6 +3,7 @@ package pl.renesans.renesans.search.recycler
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.article.ArticleDao
@@ -10,6 +11,8 @@ import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
+import pl.renesans.renesans.data.realm.RealmContract
+import pl.renesans.renesans.data.realm.RealmDaoImpl
 
 class SearchPresenterImpl(private val context: Context,
                           private val searchView: SearchContract.SearchView):
@@ -17,19 +20,23 @@ class SearchPresenterImpl(private val context: Context,
 
     private lateinit var articlesList: List<ArticleItem>
     private lateinit var imageDao: ImageDaoContract.ImageDao
-    private lateinit var articleDao: ArticleDao
+    private lateinit var realmDao: RealmContract.RealmDao
     private val holders: MutableList<SearchRowHolder> = mutableListOf()
     private val converter = ArticleConverterImpl()
 
     override fun onCreate() {
-        articleDao = ArticleDaoImpl(context)
-        articleDao.onCreate()
-        articlesList = converter.convertArticlesToArticleItemsList(articleDao.getAllArticles())
+        realmDao = RealmDaoImpl(context)
+        realmDao.onCreate()
+        articlesList = getSearchedArticles()
         imageDao = ImageDaoImpl(context, this)
     }
 
+    override fun getSearchedArticles(): List<ArticleItem> {
+        return realmDao.getArticlesItemsFromSearchHistory()
+    }
+
     override fun getAllArticles(): List<ArticleItem> {
-        return converter.convertArticlesToArticleItemsList(articleDao.getAllArticles())
+        return converter.convertArticlesToArticleItemsList(realmDao.getAllArticles())
     }
 
     override fun getCurrentArticlesList(): List<ArticleItem> {
@@ -41,7 +48,8 @@ class SearchPresenterImpl(private val context: Context,
     }
 
     override fun itemClicked(pos: Int) {
-        searchView.startArticleActivity(articleDao.getArticleFromId(articlesList[pos].objectId!!))
+        realmDao.addItemToSearchHistoryRealm(articlesList[pos].objectId!!)
+        searchView.startArticleActivity(realmDao.getArticleWithId(articlesList[pos].objectId!!))
     }
 
     override fun getItemCount(): Int {

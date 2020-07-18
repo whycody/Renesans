@@ -20,6 +20,8 @@ interface RealmMapper {
 
     fun getArticleItemFromRealm(articleRealm: ArticleRealm?): ArticleItem
 
+    fun getArticleItem(article: Article?): ArticleItem
+
     fun getArticleToRealm(article: Article): ArticleRealm
 
     fun setPropertiesOfArticleRealm(article: Article?, articleRealm: ArticleRealm)
