@@ -1,6 +1,5 @@
 package pl.renesans.renesans.data.realm
 
-import io.realm.RealmList
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.ArticleItem
 import pl.renesans.renesans.data.ArticlesList
@@ -50,6 +49,8 @@ interface RealmContract {
         fun downloadFailure(connectionProblem: Boolean = false)
 
         fun startedLoading()
+
+        fun downloadedProgress(percentages: Int)
 
         fun databaseIsUpToDate()
     }

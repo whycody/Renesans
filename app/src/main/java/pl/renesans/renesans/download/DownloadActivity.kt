@@ -2,6 +2,7 @@ package pl.renesans.renesans.download
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -26,6 +27,8 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
         realmDao.onCreate()
         retryBtn.setOnClickListener{ downloadDb() }
         downloadDb()
+        downloadProgressBar.progressDrawable.setColorFilter(ContextCompat
+            .getColor(applicationContext, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
     }
 
     private fun changeStatusBarColor(){
@@ -46,6 +49,10 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
 
     override fun startedLoading() {
 
+    }
+
+    override fun downloadedProgress(percentages: Int) {
+        downloadProgressBar.progress = percentages
     }
 
     override fun databaseIsUpToDate() {
@@ -101,6 +108,7 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
     }
 
     private fun downloadDb(){
+        downloadProgressBar.progress = 0
         realmDao.refreshRealmDatabase(true)
         retryBtn.isEnabled = false
         downloadProgressBar.visibility = View.VISIBLE

@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".download.DownloadActivity"></activity>
+        <activity android:name=".download.DownloadActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".photo.PhotoActivity" />
         <activity android:name=".tour.TourActivity" />
         <activity android:name=".search.SearchActivity" />

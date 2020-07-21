@@ -50,6 +50,7 @@ class RealmDaoImpl(private val context: Context,
         realmInterractor?.startedLoading()
         if(firstDownload) checkDbVersion(false)
         articlesRef.get().addOnSuccessListener { task ->
+            realmInterractor?.downloadedProgress(10)
             for(document in task.documents){
                 val articlesList = document.toObject(ArticlesList::class.java)
                 checkArticlesList(articlesList)
@@ -106,6 +107,7 @@ class RealmDaoImpl(private val context: Context,
         articlesRef.document(document.id).collection(document.id).get()
             .addOnSuccessListener { articleTask ->
                 downloadedArticlesLists++
+                realmInterractor?.downloadedProgress(((downloadedArticlesLists.toDouble()/allArticlesLists.toDouble())*100).toInt())
                 checkArticlesDocuments(articleTask, articlesList)
                 checkAllArticlesHasBeenDownloaded()
             }

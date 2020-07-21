@@ -74,6 +74,10 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor {
         refreshLayout.isRefreshing = true
     }
 
+    override fun downloadedProgress(percentages: Int) {
+        TODO("Not yet implemented")
+    }
+
     override fun databaseIsUpToDate() {
         if(refreshLayout.isRefreshing)
             showToast(getString(R.string.database_up_to_date))
