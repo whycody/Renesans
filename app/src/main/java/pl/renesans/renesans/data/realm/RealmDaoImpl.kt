@@ -286,7 +286,9 @@ class RealmDaoImpl(private val context: Context,
     override fun getArticlesItemsFromSearchHistory(): List<ArticleItem> {
         val articlesItemsList = mutableListOf<ArticleItem>()
         getSearchHistoryRealmList()?.forEach {
-            articlesItemsList.add(realmMapper.getArticleItem(getArticleWithId(it)))
+            val articleItem = realmMapper.getArticleItem(getArticleWithId(it))
+            articleItem.searchHistoryItem = true
+            articlesItemsList.add(articleItem)
         }
         return articlesItemsList
     }
@@ -298,6 +300,15 @@ class RealmDaoImpl(private val context: Context,
         val searchHistoryRealm = getSearchHistoryRealm()
         if(searchHistoryRealm == null) insertSearchHistoryToRealm(id)
         else addIdToSearchHistoryRealm(id)
+    }
+
+    override fun deleteItemFromSearchHistoryRealm(id: String) {
+        realm = Realm.getInstance(RealmUtility.getDefaultConfig())
+        realm.beginTransaction()
+        val searchHistoryRealm = getSearchHistoryRealm()
+        val indexOfItem =  searchHistoryRealm?.listOfIdsOfLastSearchedItems!!.indexOf(id)
+        searchHistoryRealm.listOfIdsOfLastSearchedItems?.removeAt(indexOfItem)
+        realm.commitTransaction()
     }
 
     private fun insertSearchHistoryToRealm(id: String){

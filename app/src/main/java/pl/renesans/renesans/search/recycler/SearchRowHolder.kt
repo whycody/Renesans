@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -56,5 +57,15 @@ class SearchRowHolder(itemView: View, val context: Context, val presenter: Searc
 
     override fun setOnClickListener(pos: Int) {
         itemView.setOnClickListener{ presenter.itemClicked(pos) }
+    }
+
+    override fun setOnDeleteViewClickListener(pos: Int) {
+        itemView.findViewById<ImageButton>(R.id.deleteView).setOnClickListener{
+            presenter.deleteItemClicked(pos)
+        }
+    }
+
+    override fun setVisibilityOfDeleteBtn(visibility: Int) {
+        itemView.findViewById<ImageButton>(R.id.deleteView).visibility = visibility
     }
 }

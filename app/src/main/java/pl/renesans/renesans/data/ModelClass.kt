@@ -51,7 +51,8 @@ data class PhotoArticle(var objectId: String? = null,
                         var source: Source? = null): Serializable
 
 data class ArticleItem(var objectId: String? = null,
-                var title: String? = null)
+                var title: String? = null,
+                var searchHistoryItem: Boolean = false)
 
 data class Setting(var settingId: String? = null,
                    var settingTitle: String? = null,

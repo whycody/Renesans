@@ -13,6 +13,8 @@ interface SearchContract {
         fun startArticleActivity(article: Article)
 
         fun holderIsVisible(pos: Int): Boolean
+
+        fun viewDeletedAtPos(pos: Int)
     }
 
     interface SearchRowView {
@@ -26,6 +28,10 @@ interface SearchContract {
         fun setSearchDrawablePhoto(drawable: Drawable)
 
         fun setOnClickListener(pos: Int)
+
+        fun setOnDeleteViewClickListener(pos: Int)
+
+        fun setVisibilityOfDeleteBtn(visibility: Int)
     }
 
     interface SearchPresenter {
@@ -41,6 +47,8 @@ interface SearchContract {
         fun setCurrentArticlesList(articlesList: List<ArticleItem>)
 
         fun itemClicked(pos: Int)
+
+        fun deleteItemClicked(pos: Int)
 
         fun getItemCount(): Int
 

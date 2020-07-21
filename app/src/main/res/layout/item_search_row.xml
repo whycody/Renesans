@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -24,5 +25,18 @@
         android:paddingStart="5dp"
         android:gravity="center_vertical"
         android:text="Przykładowy tytuł"/>
+
+    <ImageButton
+        android:id="@+id/deleteView"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:alpha="0.7"
+        android:layout_gravity="center"
+        android:paddingEnd="20dp"
+        android:paddingStart="10dp"
+        android:tint="@color/colorImageGray"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_cancel_24"/>
 
 </LinearLayout>

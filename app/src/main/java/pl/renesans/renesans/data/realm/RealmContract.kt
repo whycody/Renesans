@@ -39,6 +39,8 @@ interface RealmContract {
         fun getArticlesItemsFromSearchHistory(): List<ArticleItem>
 
         fun addItemToSearchHistoryRealm(id: String)
+
+        fun deleteItemFromSearchHistoryRealm(id: String)
     }
 
     interface RealmInterractor {

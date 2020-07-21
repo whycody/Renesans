@@ -3,11 +3,9 @@ package pl.renesans.renesans.search.recycler
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
+import android.view.View
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.*
-import pl.renesans.renesans.data.article.ArticleDao
-import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
@@ -52,6 +50,12 @@ class SearchPresenterImpl(private val context: Context,
         searchView.startArticleActivity(realmDao.getArticleWithId(articlesList[pos].objectId!!))
     }
 
+    override fun deleteItemClicked(pos: Int) {
+        realmDao.deleteItemFromSearchHistoryRealm(articlesList[pos].objectId!!)
+        articlesList = getSearchedArticles()
+        searchView.viewDeletedAtPos(pos)
+    }
+
     override fun getItemCount(): Int {
         return articlesList.size
     }
@@ -61,6 +65,8 @@ class SearchPresenterImpl(private val context: Context,
         refreshHoldersList(holder, position)
         holder.setSearchTitle(articlesList[position].title!!)
         holder.setOnClickListener(position)
+        holder.setOnDeleteViewClickListener(position)
+        if(articlesList[position].searchHistoryItem) holder.setVisibilityOfDeleteBtn(View.VISIBLE)
         val bitmap = imageDao.getBitmap(articlesList[position].objectId + "_0")
         if(bitmap!=null) holder.setSearchBitmapPhoto(bitmap)
         else imageDao.loadPhoto(position, articlesList[position].objectId + "_0",
@@ -75,6 +81,8 @@ class SearchPresenterImpl(private val context: Context,
     private fun resetVariables(holder: SearchRowHolder){
         holder.setSearchTitle(" ")
         holder.setOnClickListener(0)
+        holder.setOnDeleteViewClickListener(0)
+        holder.setVisibilityOfDeleteBtn(View.GONE)
         holder.setSearchDrawablePhoto(context.getDrawable(R.drawable.sh_search_recycler_row)!!)
     }
 

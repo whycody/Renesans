@@ -8,7 +8,6 @@ import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.android.synthetic.main.fragment_discover.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.Article
@@ -78,6 +77,11 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
         val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
         return pos in firstVisibleItemPosition..lastVisibleItem
+    }
+
+    override fun viewDeletedAtPos(pos: Int) {
+        adapter.notifyItemRemoved(pos)
+        adapter.notifyItemRangeChanged(pos, adapter.itemCount)
     }
 
     override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
