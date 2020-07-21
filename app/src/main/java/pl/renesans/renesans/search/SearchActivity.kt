@@ -22,17 +22,30 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
     private lateinit var adapter: SearchRecyclerAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private var lastFilter: String? = null
+    private var searchView: SearchView? = null
+    private var lastSearchText: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         setSupportActionBar(searchToolbar)
+        checkBundle(savedInstanceState)
         presenter = SearchPresenterImpl(applicationContext, this)
         presenter.onCreate()
         adapter = SearchRecyclerAdapter(applicationContext, presenter)
         layoutManager = LinearLayoutManager(this)
         searchRecycler.adapter = adapter
         searchRecycler.layoutManager = layoutManager
+    }
+
+    private fun checkBundle(savedInstanceState: Bundle?){
+        if(savedInstanceState?.getString("searchText") != null)
+            lastSearchText = savedInstanceState.getString("searchText")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("searchText", searchView?.query.toString())
     }
 
     override fun onBackPressed() {
@@ -48,12 +61,13 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
         val menuItem = menu?.findItem(R.id.searchIcon)
-        val searchView = menuItem?.actionView as SearchView
-        searchView.maxWidth = Integer.MAX_VALUE
-        searchView.queryHint = menuItem.title
-        searchView.setOnQueryTextListener(this)
+        searchView = menuItem?.actionView as SearchView
+        searchView?.maxWidth = Integer.MAX_VALUE
+        searchView?.queryHint = menuItem.title
+        searchView?.setOnQueryTextListener(this)
         menuItem.setOnActionExpandListener(this)
         menuItem.expandActionView()
+        searchView?.setQuery(lastSearchText, false)
         return true
     }
 
