@@ -31,7 +31,6 @@ import pl.renesans.renesans.data.firebase.FirebaseDaoImpl
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
 
-
 class SuggestionBottomSheetDialog:
     BottomSheetDialogFragment(), ImageDaoContract.ImageDaoInterractor, TextWatcher {
 

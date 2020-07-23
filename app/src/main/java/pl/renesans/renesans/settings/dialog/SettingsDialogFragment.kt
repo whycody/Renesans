@@ -22,7 +22,7 @@ class SettingsDialogFragment(val view: SettingsListContract.SettingsListView): D
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(activity!!.applicationContext)
         builder.setView(recyclerView)
-        builder.setNegativeButton("Anuluj", null)
+        builder.setNegativeButton(getString(R.string.cancel), null)
         return builder.create()
     }
 

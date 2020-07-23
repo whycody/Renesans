@@ -34,22 +34,6 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
             .getColor(applicationContext, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
     }
 
-    private fun initializeTimer(){
-        countDownTimer = object : CountDownTimer(15000, 500) {
-            override fun onTick(l: Long) {
-                if(stopTimer){
-                    countDownTimer?.cancel()
-                    stopTimer = false
-                }
-            }
-
-            override fun onFinish() {
-                waitView.visibility = View.VISIBLE
-            }
-        }
-        countDownTimer?.start()
-    }
-
     private fun changeStatusBarColor(){
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -135,5 +119,21 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
         retryBtn.isEnabled = false
         downloadProgressBar.visibility = View.VISIBLE
         initializeTimer()
+    }
+
+    private fun initializeTimer(){
+        countDownTimer = object : CountDownTimer(15000, 500) {
+            override fun onTick(l: Long) {
+                if(stopTimer){
+                    countDownTimer?.cancel()
+                    stopTimer = false
+                }
+            }
+
+            override fun onFinish() {
+                waitView.visibility = View.VISIBLE
+            }
+        }
+        countDownTimer?.start()
     }
 }

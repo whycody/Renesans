@@ -2,8 +2,10 @@ package pl.renesans.renesans.article
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
+import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,7 @@ import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 import pl.renesans.renesans.photo.PhotoActivity
+
 
 class ArticleFragment(var article: Article? = null,
                       private val articleActivityView: ArticleContract.ArticleActivityView? = null)
@@ -46,6 +49,7 @@ class ArticleFragment(var article: Article? = null,
     }
 
     private fun loadSizeOfImageView(objectType: Int){
+        setHeightOfArticleImage()
         val articleImageHeight = articleImage.layoutParams.height
         var checkingType = article?.typeOfScaling
         if(checkingType == null) checkingType = objectType
@@ -56,6 +60,14 @@ class ArticleFragment(var article: Article? = null,
             DiscoverRecyclerFragment.EVENTS -> articleImage.layoutParams.height =
                 (articleImageHeight * 0.8).toInt()
         }
+    }
+
+    private fun setHeightOfArticleImage(){
+        val display: Display = activity?.windowManager!!.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val width: Int = size.x
+        articleImage.layoutParams.height = (width * 0.8).toInt()
     }
 
     private fun showPhotoViewActivityOnImageViewClick(){

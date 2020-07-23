@@ -18,7 +18,6 @@ import pl.renesans.renesans.data.SettingListItem
 import pl.renesans.renesans.settings.dialog.SettingsDialogFragment
 import pl.renesans.renesans.settings.dialog.SettingsListContract
 
-
 class SettingsPresenterImpl(private val activity: MainActivity,
                             private val settingsView: SettingsContract.SettingsView)
     : SettingsContract.SettingsPresenter {

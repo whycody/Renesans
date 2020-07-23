@@ -2,7 +2,6 @@
 <resources>
     <color name="colorPrimary">#F27A33</color>
     <color name="colorPrimaryDark">#C76429</color>
-    <color name="colorPrimaryVeryDark">#9F4F20</color>
     <color name="colorAccent">#FFEBE0</color>
     <color name="colorDarkGray">#010101</color>
     <color name="colorTitleGray">#CD000000</color>
@@ -10,12 +9,7 @@
     <color name="colorImageGray">#9A9A9A</color>
     <color name="colorGray">#F8F8F8</color>
     <color name="colorLightGray">#FDFDFD</color>
-    <color name="colorBackgrGray">#F5F5F5</color>
     <color name="colorTransparentGray">#40000000</color>
-    <color name="colorTransparentLightWhite">#34FFFFFF</color>
     <color name="colorGrayToast">#E6000000</color>
-    <color name="colorDarkWhite">#8C8581</color>
-    <color name="colorDarkPrimary">#85431C</color>
-    <color name="colorDarkPrimaryDark">#6E3717</color>
     <color name="colorTransparentPrimary">#9AC76429</color>
 </resources>

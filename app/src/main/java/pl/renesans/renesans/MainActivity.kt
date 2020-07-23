@@ -9,7 +9,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.renesans.renesans.data.article.ArticleDaoImpl
-import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.discover.DiscoverFragment
 import pl.renesans.renesans.map.MapFragment
 import pl.renesans.renesans.settings.SettingsFragment

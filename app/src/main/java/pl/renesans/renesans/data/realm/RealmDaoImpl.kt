@@ -10,6 +10,7 @@ import com.google.firebase.firestore.QuerySnapshot
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmResults
+import pl.renesans.renesans.R
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
@@ -404,7 +405,7 @@ class RealmDaoImpl(private val context: Context,
         if(articlePhoto.cityKey != null){
             val city = getCity(articlePhoto.cityKey!!)
             if(city!=null) articlePhoto.header = Header(
-                content = hashMapOf(Pair(ArticleDaoImpl.CITY, city)))
+                content = hashMapOf(Pair(context.resources.getString(R.string.city), city)))
         }
         return articlePhoto
     }

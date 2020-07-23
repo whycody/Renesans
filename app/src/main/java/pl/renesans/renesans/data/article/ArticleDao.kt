@@ -26,14 +26,6 @@ interface ArticleDao {
 
     fun getArticlesItemsList(articleId: String): List<ArticleItem>
 
-    fun getImportantPeoples(): List<Article>
-
-    fun getImportantArts(): List<Article>
-
-    fun getImportantEvents(): List<Article>
-
-    fun getOtherEras(): List<Article>
-
     fun getPhotoArticlesListBuiltToYear(year: Int): List<PhotoArticle>
 
     fun getPhotoArticlesListBuiltInYears(fromYear: Int, toYear: Int): List<PhotoArticle>
