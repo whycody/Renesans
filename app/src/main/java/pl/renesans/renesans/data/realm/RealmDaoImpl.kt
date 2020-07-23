@@ -1,6 +1,7 @@
 package pl.renesans.renesans.data.realm
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
@@ -24,11 +25,15 @@ class RealmDaoImpl(private val context: Context,
     private var allArticlesLists = 0
     private var downloadedArticlesLists = 0
     private val articleConverter = ArticleConverterImpl()
+    private lateinit var sharedPrefs: SharedPreferences
+    private lateinit var prefsEditor: SharedPreferences.Editor
 
     override fun onCreate() {
         Realm.init(context)
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         realmMapper.onCreate()
+        sharedPrefs = context.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
+        prefsEditor = sharedPrefs.edit()
     }
 
     override fun refreshRealmDatabase(firstDownload: Boolean){
@@ -155,6 +160,8 @@ class RealmDaoImpl(private val context: Context,
     private fun checkAllArticlesHasBeenDownloaded(){
         if(downloadedArticlesLists == allArticlesLists) {
             Log.d("MOJTAG", "Everything has been downloaded")
+            prefsEditor.putBoolean(ALL_DOWNLOADED, true)
+            prefsEditor.commit()
             realmInterractor?.downloadSuccessful()
             downloadedArticlesLists = 0
         }
@@ -232,7 +239,8 @@ class RealmDaoImpl(private val context: Context,
     }
 
     override fun realmDatabaseIsEmpty(): Boolean =
-        realm.where(ArticleRealm::class.java).findFirst() == null
+        (realm.where(ArticleRealm::class.java).findFirst() == null) ||
+                !sharedPrefs.getBoolean(ALL_DOWNLOADED, false)
 
     override fun getCityWithCityKey(cityKey: String) =
         realm.where(PhotoArticleRealm::class.java)
@@ -408,5 +416,6 @@ class RealmDaoImpl(private val context: Context,
     companion object{
         const val ARTICLE = "ARTICLE"
         const val PHOTO_ARTICLE = "PHOTO_ARTICLE"
+        const val ALL_DOWNLOADED = "ALL_DOWNLOADED"
     }
 }
