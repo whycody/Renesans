@@ -13,18 +13,20 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import pl.renesans.renesans.R
 
-class DiscoverRowHolder(itemView: View, val context: Context, val presenter: DiscoverRecyclerPresenter) :
+class DiscoverRowHolder(itemView: View, val context: Context?, val presenter: DiscoverRecyclerPresenter) :
     RecyclerView.ViewHolder(itemView), DiscoverRowView {
 
     override fun setArticleBitmapPhoto(bitmap: Bitmap) {
+        if(context == null) return
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transform(CenterCrop(),
             RoundedCorners(context.resources.getDimension(R.dimen.relatedArticleViewRadius).toInt()))
-        if(!bitmap.isRecycled)
+        if(!bitmap.isRecycled && context!=null)
             Glide.with(context).load(bitmap).apply(requestOptions).into(itemView.findViewById(R.id.articleImage))
     }
 
     override fun setArticleUriPhoto(uri: Uri) {
+        if(context == null) return
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transform(CenterCrop(),
             RoundedCorners(context.resources.getDimension(R.dimen.relatedArticleViewRadius).toInt()))
@@ -36,14 +38,14 @@ class DiscoverRowHolder(itemView: View, val context: Context, val presenter: Dis
     }
 
     override fun setArticleDrawablePhoto() {
-        Glide.with(context)
+        if(context != null) Glide.with(context)
             .load(R.drawable.sh_discover_recycler_row)
             .into(itemView.findViewById(R.id.articleImage))
     }
 
     override fun setArticlePhotoSize(objectType: Int) {
         val articleImage = itemView.findViewById<ImageView>(R.id.articleImage)
-        val articleImageHeight = context.resources.getDimension(R.dimen.discoverImageHeight).toInt()
+        val articleImageHeight = context?.resources?.getDimension(R.dimen.discoverImageHeight)!!.toInt()
         val articleImageWidth = context.resources.getDimension(R.dimen.discoverImageWidth).toInt()
         if(objectType == DiscoverRecyclerFragment.ARTS){
             articleImage.layoutParams.height = (articleImageHeight * 1.5).toInt()

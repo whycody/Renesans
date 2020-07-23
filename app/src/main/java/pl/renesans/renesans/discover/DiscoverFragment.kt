@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.android.synthetic.main.fragment_discover.view.*
 import pl.renesans.renesans.MainActivity
@@ -25,14 +26,16 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor {
 
     private lateinit var discoverLayout: LinearLayout
     private lateinit var realmDao: RealmContract.RealmDao
+    private lateinit var refreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_discover, container, false)
-        discoverLayout = view.findViewById(R.id.discoverLayout)
+        refreshLayout = view.refreshLayout
+        discoverLayout = view.discoverLayout
         realmDao = RealmDaoImpl(activity!!.applicationContext, this)
         realmDao.onCreate()
-        view.findViewById<View>(R.id.clickableSearchView).setOnClickListener{
+        view.clickableSearchView.setOnClickListener{
             startActivity(Intent(context!!.applicationContext, SearchActivity::class.java))
             activity?.overridePendingTransition(0, 0)
         }
@@ -66,7 +69,9 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor {
     }
 
     override fun downloadFailure(connectionProblem: Boolean) {
-        showToast(activity!!.getString(R.string.suggestions_fail))
+        if(!refreshLayout.isRefreshing) return
+        if(!connectionProblem) showToast(activity!!.getString(R.string.suggestions_fail))
+        else showToast(getString(R.string.you_are_offline))
         refreshLayout.isRefreshing = false
     }
 
