@@ -27,7 +27,6 @@ import kotlinx.android.synthetic.main.tour_slide_layout.view.articleTitle
 import kotlinx.android.synthetic.main.tour_slide_layout.view.photoDescription
 import pl.renesans.renesans.R
 import pl.renesans.renesans.SuggestionBottomSheetDialog
-import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
@@ -35,7 +34,7 @@ import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.photo.PhotoActivity
-import pl.renesans.renesans.sources.SourcesActivity
+import pl.renesans.renesans.sources.SourcesBottomSheetDialog
 import java.lang.StringBuilder
 
 class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
@@ -152,12 +151,8 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
         clipboard?.primaryClip = clip
     }
 
-    private fun startSourceActivity(){
-        val intent = Intent(context, SourcesActivity::class.java)
-        intent.putExtra(ArticleActivity.ARTICLE, article)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-    }
+    private fun startSourceActivity() =
+        SourcesBottomSheetDialog().newInstance(article).show(activity!!.supportFragmentManager, "Sources")
 
     private fun startPhotoViewActivity(id: String){
         val intent = Intent(context, PhotoActivity::class.java)

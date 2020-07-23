@@ -34,7 +34,7 @@ class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
     }
 
     override fun articleHasSources(article: Article): Boolean {
-        if (article.source != null) return true
+        if (article.source?.url != null) return true
         if (article.listOfPhotos != null)
             article.listOfPhotos!!.forEach { photo -> if (photo.source != null) return true }
         return false

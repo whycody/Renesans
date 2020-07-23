@@ -3,7 +3,6 @@ package pl.renesans.renesans.tour
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +12,13 @@ import androidx.viewpager.widget.PagerAdapter
 import kotlinx.android.synthetic.main.tour_slide_layout.view.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.SuggestionBottomSheetDialog
-import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.Paragraph
 import pl.renesans.renesans.data.Tour
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.firebase.FirebaseContract
-import pl.renesans.renesans.sources.SourcesActivity
+import pl.renesans.renesans.sources.SourcesBottomSheetDialog
 import java.lang.StringBuilder
 
 class TourAdapter(private val activity: TourActivity, private val tour: Tour): PagerAdapter(),
@@ -101,10 +99,11 @@ class TourAdapter(private val activity: TourActivity, private val tour: Tour): P
     }
 
     private fun startSourceActivity(article: Article){
-        val intent = Intent(activity, SourcesActivity::class.java)
-        intent.putExtra(ArticleActivity.ARTICLE, article)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        activity.startActivity(intent)
+        val articleWithTitle = article.copy()
+        if(article.listOfPhotos != null && article.listOfPhotos!![0].description != null)
+            articleWithTitle.title = article.listOfPhotos!![0].description
+        SourcesBottomSheetDialog().newInstance(articleWithTitle)
+            .show(activity.supportFragmentManager, "Sources")
     }
 
     override fun onSuccess() {

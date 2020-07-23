@@ -4,16 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.fragment.app.FragmentManager
 import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
-import pl.renesans.renesans.sources.SourcesActivity
+import pl.renesans.renesans.sources.SourcesBottomSheetDialog
 import pl.renesans.renesans.tour.TourActivity
 
-class RelatedPresenterImpl(val context: Context, val article: Article):
+class RelatedPresenterImpl(val context: Context, val fragmentManager: FragmentManager, val article: Article):
     RelatedContract.RelatedPresenter, ImageDaoContract.ImageDaoInterractor {
 
     private lateinit var relatedArticlesList: List<Article>
@@ -34,12 +35,9 @@ class RelatedPresenterImpl(val context: Context, val article: Article):
             intent.putExtra(ArticleActivity.ARTICLE, relatedArticlesList[pos])
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
-        }else if(relatedArticlesList[pos].objectType==DiscoverRecyclerFragment.SOURCES){
-            val intent = Intent(context, SourcesActivity::class.java)
-            intent.putExtra(ArticleActivity.ARTICLE, article)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-        }else{
+        }else if(relatedArticlesList[pos].objectType==DiscoverRecyclerFragment.SOURCES)
+            SourcesBottomSheetDialog().newInstance(article).show(fragmentManager, "Sources")
+        else{
             val intent = Intent(context, TourActivity::class.java)
             intent.putExtra(TourActivity.TOUR, article.tour)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

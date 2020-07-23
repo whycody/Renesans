@@ -202,7 +202,7 @@ class ArticlePresenterImpl(val activity: ArticleActivity,
     }
 
     private fun loadRelations(){
-        val relatedPresenter = RelatedPresenterImpl(activity, article)
+        val relatedPresenter = RelatedPresenterImpl(activity, activity.supportFragmentManager, article)
         relatedPresenter.onCreate()
         if(relatedPresenter.getItemCount()!=0) loadRelationsView(relatedPresenter)
     }

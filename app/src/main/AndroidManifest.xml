@@ -22,7 +22,6 @@
         <activity android:name=".photo.PhotoActivity" />
         <activity android:name=".tour.TourActivity" />
         <activity android:name=".search.SearchActivity" />
-        <activity android:name=".sources.SourcesActivity" />
         <activity android:name=".article.ArticleActivity" />
         <activity
             android:name=".permission.PermissionActivity"
