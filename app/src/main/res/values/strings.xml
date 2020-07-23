@@ -62,4 +62,5 @@
     <string name="retry_with_connection">Spróbuj ponownie gdy odzyskasz połączenie z Internetem</string>
     <string name="updated_database_successfully">Poprawnie zaktualizowano bazę danych</string>
     <string name="database_up_to_date">Baza danych jest aktualna</string>
+    <string name="wait_minute">To może chwilę potrwać.\n Prosimy o cierpliwość.</string>
 </resources>

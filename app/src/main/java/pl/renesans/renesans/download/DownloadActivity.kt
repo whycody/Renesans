@@ -3,10 +3,11 @@ package pl.renesans.renesans.download
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.PorterDuff
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_download.*
 import pl.renesans.renesans.MainActivity
@@ -18,6 +19,8 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
 
     private lateinit var realmDao: RealmContract.RealmDao
     private var timesOfAlertDialogShow = 0
+    private var countDownTimer: CountDownTimer? = null
+    private var stopTimer = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +34,22 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
             .getColor(applicationContext, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
     }
 
+    private fun initializeTimer(){
+        countDownTimer = object : CountDownTimer(15000, 500) {
+            override fun onTick(l: Long) {
+                if(stopTimer){
+                    countDownTimer?.cancel()
+                    stopTimer = false
+                }
+            }
+
+            override fun onFinish() {
+                waitView.visibility = View.VISIBLE
+            }
+        }
+        countDownTimer?.start()
+    }
+
     private fun changeStatusBarColor(){
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -39,11 +58,14 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
 
     override fun downloadSuccessful() {
         startActivity(Intent(applicationContext, MainActivity::class.java))
+        stopTimer = true
         finish()
     }
 
     override fun downloadFailure(connectionProblem: Boolean) {
         downloadProgressBar.visibility = View.INVISIBLE
+        waitView.visibility = View.GONE
+        stopTimer = true
         showAlertDialog(connectionProblem)
     }
 
@@ -112,5 +134,6 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
         realmDao.refreshRealmDatabase(true)
         retryBtn.isEnabled = false
         downloadProgressBar.visibility = View.VISIBLE
+        initializeTimer()
     }
 }

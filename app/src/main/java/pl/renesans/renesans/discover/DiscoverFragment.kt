@@ -75,7 +75,7 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor {
     }
 
     override fun downloadedProgress(percentages: Int) {
-        TODO("Not yet implemented")
+
     }
 
     override fun databaseIsUpToDate() {
