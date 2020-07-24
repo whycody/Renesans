@@ -87,10 +87,9 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
     }
 
     private fun loadMainPhoto(){
-        val imageDao =
-            ImageDaoImpl(context!!, this)
-        if(photoArticle.photo!=null) imageDao.loadPhotoInBothQualities(id = photoArticle.photo!!.objectId!!)
-        else imageDao.loadPhotoInBothQualities(0, photoArticle.objectId + "_0")
+        val imageDao = ImageDaoImpl(context!!, this)
+        if(photoArticle.photo!=null) imageDao.loadPhoto(id = photoArticle.photo!!.objectId!!)
+        else imageDao.loadPhoto(id = photoArticle.objectId + "_0")
     }
 
     private fun setupSourcesBtn(){

@@ -54,7 +54,7 @@ class RelatedPresenterImpl(val context: Context, val fragmentManager: FragmentMa
         refreshHoldersList(holder, position)
         holder.setArticleTitle(relatedArticlesList[position].title!!)
         holder.setOnRowClickListener(position)
-        imageDao?.loadPhotoInBothQualities(position, "${relatedArticlesList[position].objectId}_0")
+        imageDao?.loadPhoto(position, "${relatedArticlesList[position].objectId}_0")
     }
 
     private fun refreshHoldersList(holder: RelatedRowHolder, position: Int){

@@ -67,4 +67,11 @@
     <string name="cancel">Anuluj</string>
     <string name="city">Miasto</string>
     <string name="you_are_offline">Brak połączenia z Internetem.</string>
+    <string name="permission_needed">Potrzebujemy twojej zgody do pamięci urządzenia żebyśmy mogli pobierać zdjęcia do twojego urządzenia.</string>
+    <string name="not_download_desc">Nie pobieraj zdjęć.</string>
+    <string name="download_bad_quality_desc">Pobieraj zdjęcia słabej jakości.</string>
+    <string name="download_high_quality_desc">Pobieraj zdjęcia wysokiej jakości.</string>
+    <string name="not_download">Nie pobieraj</string>
+    <string name="download_bad_quality">Pobieraj w słabej jakości</string>
+    <string name="download_high_quality">Pobieraj w wysokiej jakości</string>
 </resources>

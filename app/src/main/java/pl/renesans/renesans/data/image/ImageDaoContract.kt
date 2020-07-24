@@ -7,11 +7,9 @@ interface ImageDaoContract {
 
     interface ImageDao {
 
-        fun loadPhotoInBothQualities(pos: Int = 0, id: String)
+        fun loadPhoto(pos: Int = 0, id: String, bothQualities: Boolean = true)
 
-        fun loadPhoto(pos: Int = 0, id: String, highQuality: Boolean = false, bothQualities: Boolean = true)
-
-        fun getBitmap(id: String? = null, fileName: String? = null): Bitmap?
+        fun getBitmap(fileName: String): Bitmap?
     }
 
     interface ImageDaoInterractor {

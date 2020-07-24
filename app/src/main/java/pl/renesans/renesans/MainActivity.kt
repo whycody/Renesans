@@ -1,5 +1,6 @@
 package pl.renesans.renesans
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.discover.DiscoverFragment
 import pl.renesans.renesans.map.MapFragment
 import pl.renesans.renesans.settings.SettingsFragment
+import pl.renesans.renesans.settings.SettingsPresenterImpl
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private var mapFragment = MapFragment()
     private val settingsFragment = SettingsFragment()
     private var refreshMapFragment = false
+    private var refreshDiscoverFragment = false
     private var changedOptionOfMapLimit = false
     private var currentItem = 0
 
@@ -31,6 +34,13 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         if(savedInstanceState?.getInt("lastTab") != null)
             onNavigationItemSelected(mainNav.menu.getItem(savedInstanceState.getInt("lastTab")))
         else changeFragment(discoverFragment, "discover")
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
+                                            grantResults: IntArray) {
+        if(requestCode == SettingsPresenterImpl.WRITE_EXTERNAL_STORAGE &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            settingsFragment.writeExternalStoragePermissionGranted()
     }
 
     private fun saveAllArticles(){
@@ -45,12 +55,16 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         outState.putInt("lastTab", currentItem)
     }
 
-    fun refreshMapFragment(){
+    fun refreshMapFragment() {
         refreshMapFragment = true
     }
 
-    fun changedOptionOfMapLimit(){
+    fun changedOptionOfMapLimit() {
         changedOptionOfMapLimit = true
+    }
+
+    fun refreshDiscoverFragment() {
+        refreshDiscoverFragment = true
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
@@ -91,6 +105,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             if(changedOptionOfMapLimit) mapFragment.changedOptionOfMapLimit()
             refreshMapFragment = false
             changedOptionOfMapLimit = false
+        }else if(!firstLoadOfFragment && tagFragmentName == "discover"){
+            if(refreshDiscoverFragment){
+                discoverFragment.refreshFragment()
+                refreshDiscoverFragment = false
+            }
         }
     }
 }

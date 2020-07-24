@@ -67,10 +67,7 @@ class SearchPresenterImpl(private val context: Context,
         holder.setOnClickListener(position)
         holder.setOnDeleteViewClickListener(position)
         if(articlesList[position].searchHistoryItem) holder.setVisibilityOfDeleteBtn(View.VISIBLE)
-        val bitmap = imageDao.getBitmap(articlesList[position].objectId + "_0")
-        if(bitmap!=null) holder.setSearchBitmapPhoto(bitmap)
-        else imageDao.loadPhoto(position, articlesList[position].objectId + "_0",
-            highQuality = false, bothQualities = false)
+        imageDao.loadPhoto(position, articlesList[position].objectId + "_0", false)
     }
 
     private fun refreshHoldersList(holder: SearchRowHolder, position: Int){
@@ -87,10 +84,10 @@ class SearchPresenterImpl(private val context: Context,
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
-        if(searchView.holderIsVisible(pos)) holders[pos].setSearchUriPhoto(photoUri)
+        holders[pos].setSearchUriPhoto(photoUri)
     }
 
     override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
-        if(searchView.holderIsVisible(pos)) holders[pos].setSearchBitmapPhoto(photoBitmap)
+        holders[pos].setSearchBitmapPhoto(photoBitmap)
     }
 }

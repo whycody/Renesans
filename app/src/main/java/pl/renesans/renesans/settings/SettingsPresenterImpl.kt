@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Context.ACTIVITY_SERVICE
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,22 +29,37 @@ class SettingsPresenterImpl(private val activity: MainActivity,
     private val editor = sharedPrefs.edit()
     private val settingsList = getSettings()
     private var currentMapMode = sharedPrefs.getInt(MAP_MODE, 0)
-    private var permissionGranted = false
+    private var selectedDownloadPhotosSetting = sharedPrefs.getInt(DOWNLOAD_PHOTOS, 0)
+    private var downloadPhotosSettingIndex = 0
 
     private fun getSettings(): List<Setting>{
         val settingsList = mutableListOf<Setting>()
         settingsList.add(Setting(ERA, activity.getString(R.string.era),
             activity.getString(R.string.renesans), false))
         settingsList.add(Setting(DOWNLOAD_PHOTOS, activity.getString(R.string.download_photos),
-            activity.getString(R.string.download_photos_desc), true,
-            getValueOfDownloadingPhotos()))
+            getDownloadPhotosDescription(getDownloadPhotosMode()),
+            booleanValue = false, defaultValue = false,
+            listOfOptions = listOf(SettingListItem(NOT_DOWNLOAD,
+                activity.getString(R.string.not_download),
+                getDownloadPhotosDescription(NOT_DOWNLOAD)),
+            SettingListItem(DOWNLOAD_BAD_QUALITY,
+                activity.getString(R.string.download_bad_quality),
+                getDownloadPhotosDescription(DOWNLOAD_BAD_QUALITY)),
+            SettingListItem(DOWNLOAD_HIGH_QUALITY,
+                activity.getString(R.string.download_high_quality),
+                getDownloadPhotosDescription(DOWNLOAD_HIGH_QUALITY))),
+            defaultSettingsItemPos = getDownloadPhotosMode()))
         settingsList.add(Setting(MAP_MODE, activity.getString(R.string.map_mode),
             getMapModeDescription(), booleanValue = false, defaultValue = false,
-            listOfOptions = listOf(SettingListItem(ALL_BUILDINGS,
-                activity.getString(R.string.all_buildings), getMapModeDescription(ALL_BUILDINGS)),
-                SettingListItem(ALL_TO_CHOOSED_ERA, activity.getString(R.string.all_to_choosed_era),
+            listOfOptions = listOf(
+                SettingListItem(ALL_BUILDINGS,
+                    activity.getString(R.string.all_buildings),
+                    getMapModeDescription(ALL_BUILDINGS)),
+                SettingListItem(ALL_TO_CHOOSED_ERA,
+                    activity.getString(R.string.all_to_choosed_era),
                     getMapModeDescription(ALL_TO_CHOOSED_ERA)),
-                SettingListItem(ERA_BUILDINGS, activity.getString(R.string.era_buildings),
+                SettingListItem(ERA_BUILDINGS,
+                    activity.getString(R.string.era_buildings),
                     getMapModeDescription(ERA_BUILDINGS))),
             defaultSettingsItemPos = sharedPrefs.getInt(MAP_MODE, 0)))
         settingsList.add(Setting(MAP_FUNCTIONALITIES, activity.getString(R.string.map_functionalities),
@@ -60,11 +76,9 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         return settingsList
     }
 
-    private fun getValueOfDownloadingPhotos(): Boolean {
-        permissionGranted = (ContextCompat.checkSelfPermission(activity,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-        return if(!permissionGranted) false
-        else sharedPrefs.getBoolean(DOWNLOAD_PHOTOS, permissionGranted)
+    private fun getDownloadPhotosMode(): Int {
+        return if(!downloadPhotosPermisionIsGranted()) NOT_DOWNLOAD
+        else sharedPrefs.getInt(DOWNLOAD_PHOTOS, DOWNLOAD_BAD_QUALITY)
     }
 
     private fun getMapModeDescription(index: Int = sharedPrefs.getInt(MAP_MODE, 0)): String{
@@ -72,6 +86,14 @@ class SettingsPresenterImpl(private val activity: MainActivity,
             ALL_BUILDINGS -> activity.getString(R.string.all_buildings_desc)
             ALL_TO_CHOOSED_ERA -> activity.getString(R.string.all_to_choosed_era_desc)
             else -> activity.getString(R.string.era_buildings_desc)
+        }
+    }
+
+    private fun getDownloadPhotosDescription(index: Int): String{
+        return when (index) {
+            NOT_DOWNLOAD -> activity.getString(R.string.not_download_desc)
+            DOWNLOAD_BAD_QUALITY -> activity.getString(R.string.download_bad_quality_desc)
+            else -> activity.getString(R.string.download_high_quality_desc)
         }
     }
 
@@ -86,25 +108,36 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         if(settingsList[pos].booleanValue && settingsList[pos].settingId != DOWNLOAD_PHOTOS){
             editor.putBoolean(settingsList[pos].settingId!!, checkBoxValue)
             editor.apply()
-        }else if(settingsList[pos].listOfOptions != null) showMapModeDialog(settingsList[pos], pos)
-        else if(settingsList[pos].settingId == DOWNLOAD_PHOTOS) checkPermissionGranted(pos, checkBoxValue)
+        }else if(settingsList[pos].settingId == MAP_MODE) showMapModeDialog(settingsList[pos], pos)
+        else if(settingsList[pos].settingId == DOWNLOAD_PHOTOS) showDownloadPhotosDialog(settingsList[pos], pos)
         if(settingsList[pos].settingId == MAP_MODE) settingsView.refreshMapFragment()
         if(settingsList[pos].settingId == MAP_FUNCTIONALITIES) settingsView.changedOptionOfMapLimit()
     }
 
-    private fun checkPermissionGranted(pos: Int, checkBoxValue: Boolean){
-        permissionGranted = (ContextCompat.checkSelfPermission(activity,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-        if(!permissionGranted && checkBoxValue){
-            settingsList[pos].defaultValue = false
-            settingsView.notifyItemChangedAtPosition(pos)
-            ActivityCompat.requestPermissions(activity,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-        }else{
-            editor.putBoolean(settingsList[pos].settingId!!, checkBoxValue)
-            editor.apply()
-        }
+    private fun showDownloadPhotosDialog(setting: Setting, settingPos: Int){
+        downloadPhotosSettingIndex = settingPos
+        val dialog = SettingsDialogFragment(object : SettingsListContract.SettingsListView{
+            override fun getSettingItemsList(): List<SettingListItem> {
+                return setting.listOfOptions!!
+            }
+
+            override fun getDefaultSettingsItemPos(): Int {
+                return setting.defaultSettingsItemPos
+            }
+
+            override fun radioBtnChoosed(selectedSettingPos: Int) {
+                selectedDownloadPhotosSetting = selectedSettingPos
+                if((selectedSettingPos == DOWNLOAD_BAD_QUALITY || selectedSettingPos == DOWNLOAD_HIGH_QUALITY)
+                    && !downloadPhotosPermisionIsGranted())
+                    showDownloadPhotosPermissionDialog()
+                else refreshDownloadPhotosSetting(selectedSettingPos, settingPos)
+            }
+        })
+        dialog.show(activity.supportFragmentManager, "DownloadPhotos")
     }
+
+    private fun downloadPhotosPermisionIsGranted() = (ContextCompat.checkSelfPermission(activity,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 
     private fun showMapModeDialog(setting: Setting, settingPos: Int){
         currentMapMode = setting.defaultSettingsItemPos
@@ -117,15 +150,28 @@ class SettingsPresenterImpl(private val activity: MainActivity,
                 return setting.defaultSettingsItemPos
             }
 
-            override fun radioBtnChoosed(mapModePos: Int) {
-                refreshMapModeSetting(mapModePos, settingPos)
-                if(mapModePos == ERA_BUILDINGS) showWarningDialog(settingPos)
+            override fun radioBtnChoosed(selectedSettingPos: Int) {
+                refreshMapModeSetting(selectedSettingPos, settingPos)
+                if(selectedSettingPos == ERA_BUILDINGS) showMapModeWarningDialog(settingPos)
             }
         })
         dialog.show(activity.supportFragmentManager, "MapMode")
     }
 
-    private fun showWarningDialog(settingsPos: Int){
+    private fun showDownloadPhotosPermissionDialog(){
+        val dialog = AlertDialog.Builder(activity)
+            .setTitle(activity.getString(R.string.warning))
+            .setMessage(activity.getString(R.string.permission_needed))
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                ActivityCompat.requestPermissions(activity,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_EXTERNAL_STORAGE) }
+            .setNegativeButton(android.R.string.cancel, null)
+            .create()
+        setColorsOfButtonsOfDialog(dialog)
+        dialog.show()
+    }
+
+    private fun showMapModeWarningDialog(settingsPos: Int){
         val dialog = AlertDialog.Builder(activity)
             .setTitle(activity.getString(R.string.warning))
             .setMessage(activity.getString(R.string.warning_desc))
@@ -133,15 +179,24 @@ class SettingsPresenterImpl(private val activity: MainActivity,
             .setNegativeButton(android.R.string.cancel) { _, _ ->
                 refreshMapModeSetting(currentMapMode, settingsPos)
             }.create()
-
-        dialog.setOnShowListener{
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(activity, R.color.colorPrimaryDark))
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(activity, R.color.colorPrimaryDark))
-        }
-
+        setColorsOfButtonsOfDialog(dialog)
         dialog.show()
+    }
+
+    private fun setColorsOfButtonsOfDialog(dialog: AlertDialog){
+        dialog.setOnShowListener{
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.GRAY)
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.GRAY)
+        }
+    }
+
+    private fun refreshDownloadPhotosSetting(downloadPhotosMode: Int, settingsPos: Int){
+        val setting = settingsList[settingsPos]
+        editor.putInt(DOWNLOAD_PHOTOS, downloadPhotosMode)
+        editor.apply()
+        setting.settingDescription = getDownloadPhotosDescription(downloadPhotosMode)
+        setting.defaultSettingsItemPos = downloadPhotosMode
+        settingsView.notifyItemChangedAtPosition(settingsPos)
     }
 
     private fun refreshMapModeSetting(mapModePos: Int, settingsPos: Int){
@@ -153,9 +208,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         settingsView.notifyItemChangedAtPosition(settingsPos)
     }
 
-    override fun getItemCount(): Int {
-        return settingsList.size
-    }
+    override fun getItemCount() = settingsList.size
 
     override fun onBindViewHolder(holder: SettingsRowHolder, position: Int) {
         resetVariables(holder)
@@ -170,6 +223,9 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         if(position == settingsList.size-1) holder.setUnderlineVisibility(View.INVISIBLE)
         else holder.setUnderlineVisibility(View.VISIBLE)
     }
+
+    override fun writeExternalStoragePermissionGranted() =
+        refreshDownloadPhotosSetting(selectedDownloadPhotosSetting, downloadPhotosSettingIndex)
 
     private fun refreshHoldersList(holder: SettingsRowHolder, position: Int){
         if(holders.size-1<position || holders.isEmpty()) holders.add(position, holder)
@@ -191,8 +247,14 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         const val MAP_OPACITY = "map opacity"
         const val APP_VERSION = "app version"
 
+        const val NOT_DOWNLOAD = 0
+        const val DOWNLOAD_BAD_QUALITY = 1
+        const val DOWNLOAD_HIGH_QUALITY = 2
+
         const val ALL_BUILDINGS = 0
         const val ALL_TO_CHOOSED_ERA = 1
         const val ERA_BUILDINGS = 2
+
+        const val WRITE_EXTERNAL_STORAGE = 0
     }
 }

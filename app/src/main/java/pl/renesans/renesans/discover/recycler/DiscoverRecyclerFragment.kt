@@ -1,6 +1,7 @@
 package pl.renesans.renesans.discover.recycler
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,11 @@ class DiscoverRecyclerFragment: Fragment() {
         val discoverFragment = DiscoverRecyclerFragment()
         discoverFragment.arguments = args
         return discoverFragment
+    }
+
+    fun notifyDataSetChanged(){
+        adapter.notifyDataSetChanged()
+        Log.d("MOJTAG", "Notified")
     }
 
     companion object{

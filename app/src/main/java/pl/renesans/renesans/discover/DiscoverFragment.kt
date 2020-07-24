@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.android.synthetic.main.fragment_discover.view.*
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
@@ -66,6 +65,13 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor {
         addFragmentsToDiscoverLayout()
         showToast(getString(R.string.updated_database_successfully))
         refreshLayout.isRefreshing = false
+    }
+
+    fun refreshFragment(){
+        val fragMan: FragmentManager? = fragmentManager
+        for(fragment in fragMan!!.fragments)
+            if(fragment is DiscoverRecyclerFragment)
+                fragment.notifyDataSetChanged()
     }
 
     override fun downloadFailure(connectionProblem: Boolean) {

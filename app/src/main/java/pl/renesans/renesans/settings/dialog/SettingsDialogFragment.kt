@@ -2,8 +2,8 @@ package pl.renesans.renesans.settings.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.graphics.Color
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,8 +28,7 @@ class SettingsDialogFragment(val view: SettingsListContract.SettingsListView): D
 
     override fun onStart() {
         super.onStart()
-        (dialog as AlertDialog?)?.getButton(AlertDialog.BUTTON_NEGATIVE)
-            ?.setTextColor(ContextCompat.getColor(activity!!, R.color.colorPrimaryDark))
+        (dialog as AlertDialog?)?.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(Color.GRAY)
     }
 
     override fun getSettingItemsList(): List<SettingListItem> {
@@ -40,8 +39,8 @@ class SettingsDialogFragment(val view: SettingsListContract.SettingsListView): D
         return view.getDefaultSettingsItemPos()
     }
 
-    override fun radioBtnChoosed(mapModePos: Int) {
+    override fun radioBtnChoosed(selectedSettingPos: Int) {
         dialog?.dismiss()
-        view.radioBtnChoosed(mapModePos)
+        view.radioBtnChoosed(selectedSettingPos)
     }
 }

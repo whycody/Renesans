@@ -10,7 +10,7 @@ interface SettingsListContract {
 
         fun getDefaultSettingsItemPos(): Int
 
-        fun radioBtnChoosed(mapModePos: Int)
+        fun radioBtnChoosed(selectedSettingPos: Int)
     }
 
     interface SettingsListRowView {

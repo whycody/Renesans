@@ -59,8 +59,8 @@ class ArticlePresenterImpl(val activity: ArticleActivity,
     }
 
     private fun loadMainPhoto(){
-        if(listOfPhotos!=null) imageDao.loadPhotoInBothQualities(0, listOfPhotos!![0].objectId!!)
-        else imageDao.loadPhotoInBothQualities(0, article.objectId + "_0")
+        if(listOfPhotos!=null) imageDao.loadPhoto(0, listOfPhotos!![0].objectId!!)
+        else imageDao.loadPhoto(0, article.objectId + "_0")
     }
 
     private fun loadHeader(){
@@ -187,7 +187,7 @@ class ArticlePresenterImpl(val activity: ArticleActivity,
             imageView.setPadding(0, articleBigUpMargin, 0, 0)
             articleFragmentView.addViewToArticleLinear(imageView)
             if(photo.description!=null) loadDescriptionOfPhoto(photo)
-            imageDao.loadPhotoInBothQualities(numberOfPhoto, photo.objectId!!)
+            imageDao.loadPhoto(numberOfPhoto, photo.objectId!!)
             numberOfPhoto++
         }
     }

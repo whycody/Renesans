@@ -125,8 +125,8 @@ class SuggestionBottomSheetDialog:
     private fun loadMainPhoto(){
         val imageDao = ImageDaoImpl(context!!, this)
         if(article.listOfPhotos!=null && article.listOfPhotos!![0].objectId!=null)
-            imageDao.loadPhotoInBothQualities(id = article.listOfPhotos!![0].objectId!!)
-        else imageDao.loadPhotoInBothQualities(0, article.objectId + "_0")
+            imageDao.loadPhoto(id = article.listOfPhotos!![0].objectId!!)
+        else imageDao.loadPhoto(0, article.objectId + "_0")
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {

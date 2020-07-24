@@ -53,7 +53,7 @@ class SourcesPresenterImpl(val context: Context, val view: SourcesContract.Sourc
         holder.setDescription(sourcesList[position].page!!)
         holder.setTitle(sourcesList[position].srcDescription!!)
         holder.setOnClickListener(position)
-        imageDao.loadPhotoInBothQualities(position, sourcesList[position].photoId!!)
+        imageDao.loadPhoto(position, sourcesList[position].photoId!!)
     }
 
     private fun refreshHoldersList(holder: SourcesRowHolder, position: Int){

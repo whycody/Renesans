@@ -21,7 +21,7 @@ class PhotoActivity : AppCompatActivity(), ImageDaoContract.ImageDaoInterractor 
         setContentView(R.layout.activity_photo)
         changeStatusBarColor()
         val imageDao = ImageDaoImpl(this, this)
-        imageDao.loadPhotoInBothQualities(id = getPhotoId())
+        imageDao.loadPhoto(id = getPhotoId())
     }
 
     private fun changeStatusBarColor(){

@@ -18,37 +18,46 @@ class ImageDaoImpl(private val context: Context, private val interractor:
     private val storageReference = storage.reference
     private val externalStorage = android.os.Environment.getExternalStorageDirectory().path
     private val sharedPrefs = context.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
-    private var downloadPhotos = true
     private var permissionGranted = false
+    private var downloadPhotosMode = 0
 
-    override fun loadPhotoInBothQualities(pos: Int, id: String) {
+    override fun loadPhoto(pos: Int, id: String, bothQualities: Boolean){
         getPermission()
-        if(permissionGranted) loadPhoto(pos, id, highQuality = false, bothQualities = true)
-        loadPhoto(pos, id, highQuality = true, bothQualities = true)
+        getDownloadPhotosMode()
+        checkHighQualityPhoto(pos, id, bothQualities)
     }
 
-    override fun loadPhoto(pos: Int, id: String, highQuality: Boolean, bothQualities: Boolean){
-        getPermission()
-        if(highQuality) getPhotoUriFromID(pos, id, highQuality)
-        else if(permissionGranted) checkSavedPhoto(pos, id, bothQualities)
-    }
-
-    private fun getPermission(){
-        permissionGranted = (ContextCompat.checkSelfPermission(context,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-    }
-
-    private fun checkSavedPhoto(pos: Int, id: String, bothQualities: Boolean){
-        val fileName = "${id}b.jpg"
-        val fileExists = badQualityPhotoIsDownloaded(fileName)
+    private fun checkHighQualityPhoto(pos: Int, id: String, bothQualities: Boolean){
+        val fileName = getPhotoPath(id, true)
+        val fileExists = photoIsDownloaded(fileName)
         if(!fileExists){
-            downloadPhotos = getValueOfDownloadingPhotos()
-            if(!bothQualities) getPhotoUriFromID(pos, id, false)
-            if(downloadPhotos) downloadPhotoFromFirebase(id)
-        }else loadBadQualityPhotoToHolder(pos, fileName)
+            checkBadQualityPhoto(pos, id, bothQualities)
+            checkDownloadHighQualityPhotosSetting(id)
+            if(bothQualities) getPhotoUriFromID(pos, id, bothQualities)
+        }else loadBitmapPhotoToHolder(pos, fileName)
     }
 
-    private fun badQualityPhotoIsDownloaded(fileName: String): Boolean{
+    private fun checkDownloadHighQualityPhotosSetting(id: String){
+        if(!permissionGranted) return
+        if(downloadPhotosMode == SettingsPresenterImpl.DOWNLOAD_HIGH_QUALITY)
+            downloadPhotoFromFirebase(id, true)
+    }
+
+    private fun checkBadQualityPhoto(pos: Int, id: String, bothQualities: Boolean){
+        val fileName = getPhotoPath(id, false)
+        val fileExists = photoIsDownloaded(fileName)
+        if(fileExists) loadBitmapPhotoToHolder(pos, fileName)
+        else if(!bothQualities) getPhotoUriFromID(pos, id, bothQualities)
+        if(!fileExists) checkDownloadBadQualityPhotosSetting(id)
+    }
+
+    private fun checkDownloadBadQualityPhotosSetting(id: String){
+        if(!permissionGranted || photoIsDownloaded(getPhotoPath(id, true))) return
+        if(downloadPhotosMode == SettingsPresenterImpl.DOWNLOAD_BAD_QUALITY)
+            downloadPhotoFromFirebase(id, false)
+    }
+
+    private fun photoIsDownloaded(fileName: String): Boolean{
         val filePath = "$externalStorage/Renesans/$fileName"
         val file = File(filePath)
         return file.exists()
@@ -61,13 +70,13 @@ class ImageDaoImpl(private val context: Context, private val interractor:
         }
     }
 
-    private fun getPhotoPath(id: String, highQuality: Boolean): String{
-        return if (highQuality) id + "h.jpg"
-        else id + "b.jpg"
+    private fun downloadPhotoFromFirebase(id: String, highQuality: Boolean){
+        val fileName = getPhotoPath(id, highQuality)
+        downloadPhotoFromFirebaseByFilename(fileName)
+        if(highQuality) deletePhotoFromDevice(getPhotoPath(id, false))
     }
 
-    private fun downloadPhotoFromFirebase(id: String){
-        val fileName = "${id}b.jpg"
+    private fun downloadPhotoFromFirebaseByFilename(fileName: String){
         val photoReference = storageReference.child(fileName)
         val rootPath = File(externalStorage, "Renesans")
         if(!rootPath.exists()) rootPath.mkdirs()
@@ -76,36 +85,45 @@ class ImageDaoImpl(private val context: Context, private val interractor:
         photoReference.getFile(localFile)
     }
 
-    private fun createNoMediaFile(rootPath: File) {
+    private fun createNoMediaFile(rootPath: File) =
         File(rootPath.path + "/.nomedia").createNewFile()
-    }
 
-    private fun loadBadQualityPhotoToHolder(pos: Int, fileName: String){
-        val myBitmap = getBitmap(fileName = fileName)
+    private fun loadBitmapPhotoToHolder(pos: Int, fileName: String){
+        val myBitmap = getBitmap(fileName)
         if(myBitmap!=null) interractor.loadPhotoFromBitmap(myBitmap, pos)
         else downloadPhotoAgain(fileName)
     }
 
-    override fun getBitmap(id: String?, fileName: String?): Bitmap? {
-        var nameOfFile = fileName
-        if(nameOfFile == null) nameOfFile = "${id}b.jpg"
-        val filePath = "$externalStorage/Renesans/$nameOfFile"
+    override fun getBitmap(fileName: String): Bitmap? {
+        val filePath = "$externalStorage/Renesans/$fileName"
         val file = File(filePath)
         return if(file.exists()) BitmapFactory.decodeFile(file.absolutePath)
         else null
     }
 
-    private fun downloadPhotoAgain(fileName: String){
-        downloadPhotos = getValueOfDownloadingPhotos()
-        if(downloadPhotos){
-            val filePath = "$externalStorage/Renesans/$fileName"
-            val file = File(filePath)
-            if(file.delete()) downloadPhotoFromFirebase(fileName.substring(0, fileName.length - 5))
-        }
+    private fun getPhotoPath(id: String, highQuality: Boolean) =
+        if (highQuality) id + "h.jpg"
+        else id + "b.jpg"
+
+    private fun downloadPhotoAgain(fileName: String) {
+        if(downloadPhotosMode != SettingsPresenterImpl.NOT_DOWNLOAD)
+            if(deletePhotoFromDevice(fileName)) downloadPhotoFromFirebaseByFilename(fileName)
     }
 
-    private fun getValueOfDownloadingPhotos(): Boolean {
-        return if(!permissionGranted) false
-        else sharedPrefs.getBoolean(SettingsPresenterImpl.DOWNLOAD_PHOTOS, permissionGranted)
+    private fun deletePhotoFromDevice(fileName: String): Boolean{
+        val filePath = "$externalStorage/Renesans/$fileName"
+        val file = File(filePath)
+        return file.delete()
+    }
+
+    private fun getPermission(){
+        permissionGranted = (ContextCompat.checkSelfPermission(context,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+    }
+
+    private fun getDownloadPhotosMode() {
+        downloadPhotosMode = if(!permissionGranted) SettingsPresenterImpl.NOT_DOWNLOAD
+        else sharedPrefs.getInt(SettingsPresenterImpl.DOWNLOAD_PHOTOS,
+            SettingsPresenterImpl.DOWNLOAD_BAD_QUALITY)
     }
 }

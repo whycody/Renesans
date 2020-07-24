@@ -13,13 +13,14 @@ import pl.renesans.renesans.R
 
 class SettingsFragment : Fragment(), SettingsContract.SettingsView {
 
-    private lateinit var adapter: SettingsAdapter
+    private var presenter: SettingsContract.SettingsPresenter? = null
+    private var adapter: SettingsAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
-        val presenter = SettingsPresenterImpl(activity as MainActivity, this)
-        adapter = SettingsAdapter(context!!.applicationContext, presenter)
+        presenter = SettingsPresenterImpl(activity as MainActivity, this)
+        adapter = SettingsAdapter(context!!.applicationContext, presenter!!)
         val recyclerView = view.findViewById<RecyclerView>(R.id.settingsRecycler)
         recyclerView.layoutManager = LinearLayoutManager(context!!.applicationContext)
         recyclerView.adapter = adapter
@@ -35,7 +36,12 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
     }
 
     override fun notifyItemChangedAtPosition(pos: Int) {
-        adapter.notifyItemChanged(pos)
+        adapter?.notifyItemChanged(pos)
+    }
+
+    override fun writeExternalStoragePermissionGranted() {
+        presenter?.writeExternalStoragePermissionGranted()
+        (activity as MainActivity).refreshDiscoverFragment()
     }
 
 }

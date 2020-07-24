@@ -78,7 +78,7 @@ class SourcesBottomSheetDialog: BottomSheetDialogFragment(), SourcesContract.Sou
 
     private fun loadMainPhoto(){
         val imageDao = ImageDaoImpl(context!!, this)
-        imageDao.loadPhotoInBothQualities(id = "Z0_0")
+        imageDao.loadPhoto(id = "Z0_0")
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

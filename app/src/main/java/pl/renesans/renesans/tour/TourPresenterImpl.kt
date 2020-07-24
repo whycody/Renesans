@@ -25,7 +25,7 @@ class TourPresenterImpl(val context: Context, val view: TourContract.TourView): 
     override fun onPageSelected(position: Int) {
         currentPage = position
         val photoId = getPhotoId(position)
-        if (photoId != null) imageDao.loadPhotoInBothQualities(position, photoId)
+        if (photoId != null) imageDao.loadPhoto(position, photoId)
         val photoArticle = tour.photosArticlesList!![position]
         if(photoArticle.position!=null)
             view.animateCamera(LatLng(photoArticle.position!!.lat!!, photoArticle.position!!.lng!!))

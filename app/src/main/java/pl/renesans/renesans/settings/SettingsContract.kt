@@ -9,6 +9,8 @@ interface SettingsContract {
         fun changedOptionOfMapLimit()
 
         fun notifyItemChangedAtPosition(pos: Int)
+
+        fun writeExternalStoragePermissionGranted()
     }
 
     interface SettingsRowView {
@@ -33,5 +35,7 @@ interface SettingsContract {
         fun getItemCount(): Int
 
         fun onBindViewHolder(holder: SettingsRowHolder, position: Int)
+
+        fun writeExternalStoragePermissionGranted()
     }
 }
