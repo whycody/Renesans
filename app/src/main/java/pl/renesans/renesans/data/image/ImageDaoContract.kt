@@ -18,4 +18,13 @@ interface ImageDaoContract {
 
         fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int)
     }
+
+    interface ImageDaoDownloadInterractor {
+
+        fun downloadFailed()
+
+        fun donwloadSuccess()
+
+        fun photoExists()
+    }
 }

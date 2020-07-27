@@ -21,7 +21,7 @@ class DiscoverRowHolder(itemView: View, val context: Context?, val presenter: Di
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transform(CenterCrop(),
             RoundedCorners(context.resources.getDimension(R.dimen.relatedArticleViewRadius).toInt()))
-        if(!bitmap.isRecycled && context!=null)
+        if(!bitmap.isRecycled)
             Glide.with(context).load(bitmap).apply(requestOptions).into(itemView.findViewById(R.id.articleImage))
     }
 

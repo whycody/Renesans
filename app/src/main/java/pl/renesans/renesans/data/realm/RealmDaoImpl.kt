@@ -1,9 +1,12 @@
 package pl.renesans.renesans.data.realm
 
+import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -14,28 +17,39 @@ import pl.renesans.renesans.R
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
+import pl.renesans.renesans.data.image.ImageDaoContract
+import pl.renesans.renesans.data.image.ImageDaoImpl
 import java.lang.Exception
 
 class RealmDaoImpl(private val context: Context,
-    private val realmInterractor: RealmContract.RealmInterractor? = null): RealmContract.RealmDao {
+    private val realmInterractor: RealmContract.RealmInterractor? = null): RealmContract.RealmDao,
+    ImageDaoContract.ImageDaoDownloadInterractor {
 
     private val firestore = FirebaseFirestore.getInstance()
     private val articlesRef = firestore.collection("articles")
     private val realmMapper = RealmMapperImpl(context)
+    private val imageDao = ImageDaoImpl(context, downloadInterractor = this)
     private lateinit var realm: Realm
     private var allArticlesLists = 0
     private var downloadedArticlesLists = 0
+    private var allArticles = 0
+    private var downloadedArticlesPhotos = 0
     private val articleConverter = ArticleConverterImpl()
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var prefsEditor: SharedPreferences.Editor
+    private var canDownloadPhotos = false
 
     override fun onCreate() {
         Realm.init(context)
+        canDownloadPhotos = permissionIsGranted()
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         realmMapper.onCreate()
         sharedPrefs = context.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
         prefsEditor = sharedPrefs.edit()
     }
+
+    private fun permissionIsGranted() = (ContextCompat.checkSelfPermission(context,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 
     override fun refreshRealmDatabase(firstDownload: Boolean){
         if(!isConnectionAvailable()) realmInterractor?.downloadFailure(true)
@@ -113,7 +127,7 @@ class RealmDaoImpl(private val context: Context,
         articlesRef.document(document.id).collection(document.id).get()
             .addOnSuccessListener { articleTask ->
                 downloadedArticlesLists++
-                realmInterractor?.downloadedProgress(((downloadedArticlesLists.toDouble()/allArticlesLists.toDouble())*100).toInt())
+                realmInterractor?.downloadedProgress(getPercentageOfDownload())
                 checkArticlesDocuments(articleTask, articlesList)
                 checkAllArticlesHasBeenDownloaded()
             }
@@ -160,12 +174,21 @@ class RealmDaoImpl(private val context: Context,
 
     private fun checkAllArticlesHasBeenDownloaded(){
         if(downloadedArticlesLists == allArticlesLists) {
-            Log.d("MOJTAG", "Everything has been downloaded")
+            Log.d("MOJTAG", "Realm database is complete")
             prefsEditor.putBoolean(ALL_DOWNLOADED, true)
             prefsEditor.commit()
-            realmInterractor?.downloadSuccessful()
-            downloadedArticlesLists = 0
+            if(canDownloadPhotos) downloadAllPhotos()
+            else realmInterractor?.downloadSuccessful()
         }
+    }
+
+    private fun downloadAllPhotos(){
+        for(article in getAllArticles())
+            if(article.objectId != null) {
+                allArticles ++
+                val id = article.objectId!! + "_0"
+                imageDao.loadPhoto(id = id, bothQualities = false)
+            }
     }
 
     private fun articleListExists(articlesList: ArticlesList?): Boolean
@@ -410,8 +433,28 @@ class RealmDaoImpl(private val context: Context,
         return articlePhoto
     }
 
-    private fun getCity(cityKey: String): String?{
-        return getCityWithCityKey(cityKey)
+    private fun getCity(cityKey: String) = getCityWithCityKey(cityKey)
+
+    override fun downloadFailed() = refreshProgress()
+
+    override fun donwloadSuccess() = refreshProgress()
+
+    override fun photoExists() = refreshProgress()
+
+
+    private fun refreshProgress(){
+        downloadedArticlesPhotos++
+        realmInterractor?.downloadedProgress(getPercentageOfDownload())
+        checkAllDownloaded()
+    }
+
+    private fun getPercentageOfDownload(): Int =
+        if(canDownloadPhotos) ((downloadedArticlesLists.toDouble()/allArticlesLists.toDouble())*50).toInt() +
+                ((downloadedArticlesPhotos.toDouble()/allArticles.toDouble())*50).toInt()
+        else ((downloadedArticlesLists.toDouble()/allArticlesLists.toDouble())*100).toInt()
+
+    private fun checkAllDownloaded() {
+        if(allArticles == downloadedArticlesPhotos) realmInterractor?.downloadSuccessful()
     }
 
     companion object{

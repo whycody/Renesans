@@ -10,13 +10,14 @@ import com.google.firebase.storage.FirebaseStorage
 import pl.renesans.renesans.settings.SettingsPresenterImpl
 import java.io.File
 
-class ImageDaoImpl(private val context: Context, private val interractor:
-    ImageDaoContract.ImageDaoInterractor):
-    ImageDaoContract.ImageDao {
+class ImageDaoImpl(private val context: Context,
+                   private val interractor: ImageDaoContract.ImageDaoInterractor? = null,
+                   private val downloadInterractor:
+                   ImageDaoContract.ImageDaoDownloadInterractor? = null): ImageDaoContract.ImageDao {
 
     private val storage = FirebaseStorage.getInstance()
     private val storageReference = storage.reference
-    private val externalStorage = android.os.Environment.getExternalStorageDirectory().path
+    private val externalStorage = context.filesDir.path
     private val sharedPrefs = context.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
     private var permissionGranted = false
     private var downloadPhotosMode = 0
@@ -58,44 +59,43 @@ class ImageDaoImpl(private val context: Context, private val interractor:
     }
 
     private fun photoIsDownloaded(fileName: String): Boolean{
-        val filePath = "$externalStorage/Renesans/$fileName"
-        val file = File(filePath)
+        val file = File(getFilePath(fileName))
         return file.exists()
     }
 
     private fun getPhotoUriFromID(pos: Int, id: String, highQuality: Boolean) {
         val path = getPhotoPath(id, highQuality)
         storageReference.child(path).downloadUrl.addOnSuccessListener { photo ->
-            interractor.loadPhotoFromUri(photo, pos)
+            interractor?.loadPhotoFromUri(photo, pos)
         }
     }
 
     private fun downloadPhotoFromFirebase(id: String, highQuality: Boolean){
         val fileName = getPhotoPath(id, highQuality)
-        downloadPhotoFromFirebaseByFilename(fileName)
-        if(highQuality) deletePhotoFromDevice(getPhotoPath(id, false))
+        downloadPhotoFromFirebaseByFilename(fileName, highQuality, id)
     }
 
-    private fun downloadPhotoFromFirebaseByFilename(fileName: String){
+    private fun downloadPhotoFromFirebaseByFilename(fileName: String, highQuality: Boolean = false, id: String? = null){
         val photoReference = storageReference.child(fileName)
-        val rootPath = File(externalStorage, "Renesans")
+        val rootPath = File(externalStorage, "photos")
         if(!rootPath.exists()) rootPath.mkdirs()
-        createNoMediaFile(rootPath)
         val localFile = File(rootPath, fileName)
         photoReference.getFile(localFile)
+            .addOnSuccessListener {
+                downloadInterractor?.donwloadSuccess()
+                if(highQuality) deletePhotoFromDevice(getPhotoPath(id!!, false))
+            }.addOnFailureListener { downloadInterractor?.downloadFailed() }
     }
 
-    private fun createNoMediaFile(rootPath: File) =
-        File(rootPath.path + "/.nomedia").createNewFile()
-
     private fun loadBitmapPhotoToHolder(pos: Int, fileName: String){
+        downloadInterractor?.photoExists()
         val myBitmap = getBitmap(fileName)
-        if(myBitmap!=null) interractor.loadPhotoFromBitmap(myBitmap, pos)
+        if(myBitmap!=null) interractor?.loadPhotoFromBitmap(myBitmap, pos)
         else downloadPhotoAgain(fileName)
     }
 
     override fun getBitmap(fileName: String): Bitmap? {
-        val filePath = "$externalStorage/Renesans/$fileName"
+        val filePath = "$externalStorage/photos/$fileName"
         val file = File(filePath)
         return if(file.exists()) BitmapFactory.decodeFile(file.absolutePath)
         else null
@@ -110,11 +110,9 @@ class ImageDaoImpl(private val context: Context, private val interractor:
             if(deletePhotoFromDevice(fileName)) downloadPhotoFromFirebaseByFilename(fileName)
     }
 
-    private fun deletePhotoFromDevice(fileName: String): Boolean{
-        val filePath = "$externalStorage/Renesans/$fileName"
-        val file = File(filePath)
-        return file.delete()
-    }
+    private fun deletePhotoFromDevice(fileName: String) = File(getFilePath(fileName)).delete()
+
+    private fun getFilePath(fileName: String) = "$externalStorage/photos/$fileName"
 
     private fun getPermission(){
         permissionGranted = (ContextCompat.checkSelfPermission(context,
