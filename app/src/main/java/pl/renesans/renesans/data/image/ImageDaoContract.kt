@@ -8,8 +8,6 @@ interface ImageDaoContract {
     interface ImageDao {
 
         fun loadPhoto(pos: Int = 0, id: String, bothQualities: Boolean = true)
-
-        fun getBitmap(fileName: String): Bitmap?
     }
 
     interface ImageDaoInterractor {

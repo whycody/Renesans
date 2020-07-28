@@ -35,7 +35,7 @@ class ImageDaoImpl(private val context: Context,
             checkBadQualityPhoto(pos, id, bothQualities)
             checkDownloadHighQualityPhotosSetting(id)
             if(bothQualities) getPhotoUriFromID(pos, id, bothQualities)
-        }else loadBitmapPhotoToHolder(pos, fileName)
+        }else loadBitmapPhotoToHolder(pos, fileName, bothQualities)
     }
 
     private fun checkDownloadHighQualityPhotosSetting(id: String){
@@ -47,7 +47,7 @@ class ImageDaoImpl(private val context: Context,
     private fun checkBadQualityPhoto(pos: Int, id: String, bothQualities: Boolean){
         val fileName = getPhotoPath(id, false)
         val fileExists = photoIsDownloaded(fileName)
-        if(fileExists) loadBitmapPhotoToHolder(pos, fileName)
+        if(fileExists) loadBitmapPhotoToHolder(pos, fileName, bothQualities)
         else if(!bothQualities) getPhotoUriFromID(pos, id, bothQualities)
         if(!fileExists) checkDownloadBadQualityPhotosSetting(id)
     }
@@ -87,18 +87,42 @@ class ImageDaoImpl(private val context: Context,
             }.addOnFailureListener { downloadInterractor?.downloadFailed() }
     }
 
-    private fun loadBitmapPhotoToHolder(pos: Int, fileName: String){
+    private fun loadBitmapPhotoToHolder(pos: Int, fileName: String, highQuality: Boolean = true) {
         downloadInterractor?.photoExists()
-        val myBitmap = getBitmap(fileName)
+        val myBitmap = getBitmap(fileName, highQuality)
         if(myBitmap!=null) interractor?.loadPhotoFromBitmap(myBitmap, pos)
         else downloadPhotoAgain(fileName)
     }
 
-    override fun getBitmap(fileName: String): Bitmap? {
+    private fun getBitmap(fileName: String, highQuality: Boolean): Bitmap? {
         val filePath = "$externalStorage/photos/$fileName"
         val file = File(filePath)
-        return if(file.exists()) BitmapFactory.decodeFile(file.absolutePath)
-        else null
+        return if(!file.exists()) null
+        else if (!highQuality) decodeSampledBitmapFromResource(file.path, 64, 64)
+        else decodeSampledBitmapFromResource(file.path, 500, 500)
+    }
+
+    private fun decodeSampledBitmapFromResource(path: String, reqWidth: Int, reqHeight: Int): Bitmap {
+        return BitmapFactory.Options().run {
+            inJustDecodeBounds = true
+            BitmapFactory.decodeFile(path, this)
+            inSampleSize = calculateInSampleSize(this, reqWidth, reqHeight)
+            inJustDecodeBounds = false
+            BitmapFactory.decodeFile(path, this)
+        }
+    }
+
+    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        val height = options.outHeight
+        val width = options.outWidth
+        var inSampleSize = 1
+        if (height > reqHeight || width > reqWidth) {
+            val halfHeight: Int = height / 2
+            val halfWidth: Int = width / 2
+            while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth)
+                inSampleSize *= 2
+        }
+        return inSampleSize
     }
 
     private fun getPhotoPath(id: String, highQuality: Boolean) =
