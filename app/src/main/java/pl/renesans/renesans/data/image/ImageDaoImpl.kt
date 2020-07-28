@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.storage.FirebaseStorage
 import pl.renesans.renesans.settings.SettingsPresenterImpl
 import java.io.File
+import java.lang.Exception
 
 class ImageDaoImpl(private val context: Context,
                    private val interractor: ImageDaoContract.ImageDaoInterractor? = null,
@@ -102,13 +103,15 @@ class ImageDaoImpl(private val context: Context,
         else decodeSampledBitmapFromResource(file.path, 500, 500)
     }
 
-    private fun decodeSampledBitmapFromResource(path: String, reqWidth: Int, reqHeight: Int): Bitmap {
+    private fun decodeSampledBitmapFromResource(path: String, reqWidth: Int, reqHeight: Int): Bitmap? {
         return BitmapFactory.Options().run {
             inJustDecodeBounds = true
             BitmapFactory.decodeFile(path, this)
             inSampleSize = calculateInSampleSize(this, reqWidth, reqHeight)
             inJustDecodeBounds = false
-            BitmapFactory.decodeFile(path, this)
+            try{
+                BitmapFactory.decodeFile(path, this)
+            } catch(e: Exception){ null }
         }
     }
 

@@ -7,11 +7,13 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_download.*
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
+import pl.renesans.renesans.data.curiosity.CuriosityPresenterImpl
 import pl.renesans.renesans.data.realm.RealmContract
 import pl.renesans.renesans.data.realm.RealmDaoImpl
 
@@ -20,18 +22,23 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
     private lateinit var realmDao: RealmContract.RealmDao
     private var timesOfAlertDialogShow = 0
     private var countDownTimer: CountDownTimer? = null
+    private var curiosityCountDownTimer: CountDownTimer? = null
+    private var curiosityPresenter = CuriosityPresenterImpl()
     private var stopTimer = false
+    private var stopCuriosityTimer = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_download)
         changeStatusBarColor()
+        curiosityView.text = curiosityPresenter.getRandomCuriosity()
         realmDao = RealmDaoImpl(this, this)
         realmDao.onCreate()
         retryBtn.setOnClickListener{ downloadDb() }
         downloadDb()
         downloadProgressBar.progressDrawable.setColorFilter(ContextCompat
             .getColor(applicationContext, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
+        initializeCuriosityTimer()
     }
 
     private fun changeStatusBarColor(){
@@ -43,6 +50,7 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
     override fun downloadSuccessful() {
         startActivity(Intent(applicationContext, MainActivity::class.java))
         stopTimer = true
+        stopCuriosityTimer = true
         finish()
     }
 
@@ -130,10 +138,27 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
                 }
             }
 
-            override fun onFinish() {
-                waitView.visibility = View.VISIBLE
-            }
+            override fun onFinish() = showWaitView()
         }
         countDownTimer?.start()
+    }
+
+    private fun showWaitView(){
+        waitView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+        waitView.visibility = View.VISIBLE
+    }
+
+    private fun initializeCuriosityTimer(){
+        curiosityCountDownTimer = object : CountDownTimer(8000, 1000) {
+            override fun onTick(p0: Long) {
+                if(stopCuriosityTimer) curiosityCountDownTimer?.cancel()
+            }
+
+            override fun onFinish() {
+                curiosityCountDownTimer?.start()
+                curiosityView.text = curiosityPresenter.getRandomCuriosity()
+            }
+        }
+        curiosityCountDownTimer?.start()
     }
 }
