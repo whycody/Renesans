@@ -4,7 +4,7 @@
     <dimen name="locationRowRadius">30dp</dimen>
     <dimen name="discoverMargin">20dp</dimen>
     <dimen name="discoverImageWidth">160dp</dimen>
-    <dimen name="discoverImageHeight">130dp</dimen>
+    <dimen name="discoverImageHeight">135dp</dimen>
     <dimen name="articleMargin">20dp</dimen>
     <dimen name="articleBigUpMargin">40dp</dimen>
     <dimen name="articleSmallUpMargin">16dp</dimen>

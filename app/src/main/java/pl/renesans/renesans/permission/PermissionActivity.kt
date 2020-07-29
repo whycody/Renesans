@@ -8,15 +8,18 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.activity_download.*
 import kotlinx.android.synthetic.main.activity_permission.*
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.download.DownloadActivity
 
-class PermissionActivity : AppCompatActivity() {
+class PermissionActivity : AppCompatActivity(), Animation.AnimationListener {
 
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var sharedPrefsEditor: SharedPreferences.Editor
@@ -24,16 +27,26 @@ class PermissionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permission)
-        changeStatusBarColor()
+        startAnimations()
         sharedPrefs = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
         sharedPrefsEditor = sharedPrefs.edit()
-        endBtn.setOnClickListener{askPermission()}
+        endBtn.setOnClickListener{ askPermission() }
         skipNowView.setOnClickListener{
             sharedPrefsEditor.putBoolean(SKIP_PERMISSION, true)
             sharedPrefsEditor.apply()
-            startNewActivity()
+            startFadeOutAnimation()
         }
     }
+
+    private fun startAnimations(){
+        changeStatusBarColor()
+        val fadeInAnim = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
+        val slideUpAnim = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_up)
+        permissionLayout.startAnimation(fadeInAnim)
+        endBtn.startAnimation(slideUpAnim)
+    }
+
+    override fun onBackPressed() {}
 
     private fun changeStatusBarColor(){
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -46,20 +59,32 @@ class PermissionActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode==1 && grantResults.isNotEmpty() &&
             grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            startNewActivity()
+            startFadeOutAnimation()
         }
     }
 
-    private fun askPermission(){
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+    private fun askPermission() = ActivityCompat.requestPermissions(this,
+        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+
+    private fun startFadeOutAnimation(){
+        val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out)
+        animation.setAnimationListener(this)
+        permissionLayout.startAnimation(animation)
     }
+
+    override fun onAnimationRepeat(p0: Animation?) { }
+
+    override fun onAnimationEnd(p0: Animation?) = startNewActivity()
+
+    override fun onAnimationStart(p0: Animation?) { }
 
     private fun startNewActivity(){
         val realmDao = RealmDaoImpl(this)
         realmDao.onCreate()
-        if(!realmDao.realmDatabaseIsEmpty())
-            startActivity(Intent(applicationContext, MainActivity::class.java))
-        else startActivity(Intent(applicationContext, DownloadActivity::class.java))
+        if(realmDao.realmDatabaseIsEmpty()){
+            startActivity(Intent(applicationContext, DownloadActivity::class.java))
+            overridePendingTransition(0, 0)
+        } else startActivity(Intent(applicationContext, MainActivity::class.java))
         finish()
     }
 

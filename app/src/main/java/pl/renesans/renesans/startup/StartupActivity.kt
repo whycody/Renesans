@@ -8,6 +8,8 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -16,17 +18,20 @@ import kotlinx.android.synthetic.main.activity_startup.*
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
 import pl.renesans.renesans.SplashActivity
+import pl.renesans.renesans.data.realm.RealmContract
 import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.download.DownloadActivity
 import pl.renesans.renesans.permission.PermissionActivity
 
-class StartupActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
+class StartupActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
+    Animation.AnimationListener {
 
     private var dots = mutableListOf<View>()
     private var currentPage = 0
     private var permissionGranted = false
     private var prefs: SharedPreferences? = null
     private var editor: SharedPreferences.Editor? = null
+    private lateinit var realmDao: RealmContract.RealmDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,14 +113,29 @@ class StartupActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun startNewActivity() {
-        finish()
         editor?.putBoolean(SplashActivity.firstLogin, false)
         editor?.apply()
-        val realmDao = RealmDaoImpl(applicationContext)
+        realmDao = RealmDaoImpl(applicationContext)
         realmDao.onCreate()
+        val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out)
+        animation.setAnimationListener(this)
+        relativeLayout.startAnimation(animation)
+    }
+
+    override fun onAnimationRepeat(p0: Animation?) {
+
+    }
+
+    override fun onAnimationEnd(p0: Animation?) {
         if(!permissionGranted) startActivity(Intent(this, PermissionActivity::class.java))
         else if(realmDao.realmDatabaseIsEmpty())
             startActivity(Intent(this, DownloadActivity::class.java))
         else startActivity(Intent(this, MainActivity::class.java))
+        overridePendingTransition(0, 0)
+        finish()
+    }
+
+    override fun onAnimationStart(p0: Animation?) {
+
     }
 }

@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_download.*
+import kotlinx.android.synthetic.main.activity_startup.*
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.curiosity.CuriosityPresenterImpl
@@ -31,6 +32,7 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_download)
         changeStatusBarColor()
+        startAnimations()
         curiosityView.text = curiosityPresenter.getRandomCuriosity()
         realmDao = RealmDaoImpl(this, this)
         realmDao.onCreate()
@@ -46,6 +48,13 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
     }
+
+    private fun startAnimations(){
+        val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
+        downloadLayout.startAnimation(animation)
+    }
+
+    override fun onBackPressed() { }
 
     override fun downloadSuccessful() {
         startActivity(Intent(applicationContext, MainActivity::class.java))

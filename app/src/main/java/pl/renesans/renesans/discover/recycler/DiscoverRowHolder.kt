@@ -17,12 +17,14 @@ class DiscoverRowHolder(itemView: View, val context: Context?, val presenter: Di
     RecyclerView.ViewHolder(itemView), DiscoverRowView {
 
     override fun setArticleBitmapPhoto(bitmap: Bitmap) {
-        if(context == null) return
+        if(context == null || bitmap.isRecycled) return
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transform(CenterCrop(),
             RoundedCorners(context.resources.getDimension(R.dimen.relatedArticleViewRadius).toInt()))
-        if(!bitmap.isRecycled)
-            Glide.with(context).load(bitmap).apply(requestOptions).into(itemView.findViewById(R.id.articleImage))
+        Glide.with(context)
+            .load(bitmap)
+            .apply(requestOptions)
+            .into(itemView.findViewById(R.id.articleImage))
     }
 
     override fun setArticleUriPhoto(uri: Uri) {
