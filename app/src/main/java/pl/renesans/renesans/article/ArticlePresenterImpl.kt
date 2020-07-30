@@ -219,21 +219,16 @@ class ArticlePresenterImpl(val activity: ArticleActivity,
         articleFragmentView.addViewToArticleLinear(recyclerView)
     }
 
-    override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
+    override fun loadPhotoFromUri(photoUri: Uri, pos: Int) =
         articleFragmentView.loadUriToImage(photoUri, pos)
-    }
 
-    override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
+    override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) =
         articleFragmentView.loadBitmapToImage(photoBitmap, pos)
-    }
 
-    override fun onSuccess() {
-        showToast(activity.getString(R.string.suggestions_sent))
-    }
+    override fun onSuccess() = showToast(activity.getString(R.string.suggestions_sent))
 
-    override fun onFail() {
-        showToast(activity.getString(R.string.suggestions_fail))
-    }
+
+    override fun onFail() = showToast(activity.getString(R.string.suggestions_fail))
 
     private fun showToast(text: String){
         val view = activity.layoutInflater.inflate(R.layout.toast_suggestion,

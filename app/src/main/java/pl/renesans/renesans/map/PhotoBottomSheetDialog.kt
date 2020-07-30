@@ -52,7 +52,6 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_bottom_sheet_photo, container, false)
         if(arguments!=null) photoArticle = arguments!!.getSerializable("photoArticle") as PhotoArticle
-        setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
         view.articleTitle.text = photoArticle.title
         view.articleParagraph.text = photoArticle.paragraph?.content
         view.photoDescription.text = photoArticle.photo?.description

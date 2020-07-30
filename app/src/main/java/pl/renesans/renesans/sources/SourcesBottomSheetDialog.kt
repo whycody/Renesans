@@ -43,7 +43,6 @@ class SourcesBottomSheetDialog: BottomSheetDialogFragment(), SourcesContract.Sou
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_bottom_sheet_sources,
             container, false)
-        setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
         if(arguments!=null) article = arguments!!.getSerializable("article") as Article
         deviceIsInLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         articlePhoto = view.articlePhoto

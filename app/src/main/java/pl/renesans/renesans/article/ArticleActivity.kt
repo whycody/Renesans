@@ -29,9 +29,7 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
         setFragment()
     }
 
-    private fun getArticleObject(): Article {
-        return intent.getSerializableExtra(ARTICLE) as Article
-    }
+    private fun getArticleObject() = intent.getSerializableExtra(ARTICLE) as Article
 
     private fun setFragment(){
         articleFragment = ArticleFragment(articleActivityView = this)

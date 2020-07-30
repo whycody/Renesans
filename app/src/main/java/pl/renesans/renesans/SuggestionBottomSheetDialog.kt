@@ -40,7 +40,6 @@ class SuggestionBottomSheetDialog:
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_bottom_sheet_suggestion, container)
-        setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
         initializeObjects()
         articlePhoto = view.articlePhoto
         view.articleTitle?.text = article.title
@@ -151,13 +150,9 @@ class SuggestionBottomSheetDialog:
         if(context!=null) Glide.with(context!!).load(photoBitmap).into(articlePhoto)
     }
 
-    override fun afterTextChanged(p0: Editable?) {
+    override fun afterTextChanged(p0: Editable?) { }
 
-    }
-
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-    }
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         val paragraphChanged = paragraph.content!=null &&
