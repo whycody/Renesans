@@ -44,15 +44,22 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
         val popup = PopupMenu(this, articleToolbar)
         popup.menuInflater.inflate(R.menu.article_popup_menu, menu)
         val subMenu = menu!!.getItem(0).subMenu
+        subMenu.add(getString(R.string.content_of_article))
+            .setOnMenuItemClickListener(getOnMenuItemClickListener(0))
         subMenu.add(getString(R.string.new_paragraph))
             .setOnMenuItemClickListener(getOnMenuItemClickListener())
         return true
     }
 
    private fun getOnMenuItemClickListener(index: Int? = null): MenuItem.OnMenuItemClickListener {
-       return MenuItem.OnMenuItemClickListener {
-           SuggestionBottomSheetDialog().newInstance(article, index, articleFragment.getFirebaseInterractor())
-               .show(supportFragmentManager, "Suggest")
+       return if (index == 0) MenuItem.OnMenuItemClickListener {
+           SuggestionBottomSheetDialog().newInstance(article,
+               SuggestionBottomSheetDialog.CONTENT_OF_ARTICLE,
+               articleFragment.getFirebaseInterractor()).show(supportFragmentManager, "Content")
+           true
+       }else MenuItem.OnMenuItemClickListener {
+           SuggestionBottomSheetDialog().newInstance(article, index,
+               articleFragment.getFirebaseInterractor()).show(supportFragmentManager, "Paragraph")
            true
        }
    }

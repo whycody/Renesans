@@ -235,22 +235,22 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
 
     override fun onClusterItemClick(p0: ClusterMarker?): Boolean {
         cameraAnimations = sharedPrefs!!.getBoolean(SettingsPresenterImpl.MAP_ANIMATIONS, false)
-        if(cameraAnimations)
+        if(cameraAnimations && p0?.photoArticle?.objectType != ArticleDaoImpl.CITY_TYPE)
             googleMap?.animateCamera(CameraUpdateFactory.newLatLng(p0?.position), 400, this)
-        else openMarkerBottomSheet(p0)
+        else handleClusterMarkerClick(p0)
         lastClusterMarker = p0
         return true
     }
 
     override fun onFinish() {
-        openMarkerBottomSheet(lastClusterMarker)
+        handleClusterMarkerClick(lastClusterMarker)
     }
 
     override fun onCancel() {
 
     }
 
-    private fun openMarkerBottomSheet(clusterMarker: ClusterMarker?) {
+    private fun handleClusterMarkerClick(clusterMarker: ClusterMarker?) {
         if(clusterMarker!=null && clusterMarker.getClusterType() == ArticleDaoImpl.PLACE_TYPE)
             PhotoBottomSheetDialog().newInstance(clusterMarker.photoArticle)
             .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")

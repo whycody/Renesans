@@ -11,10 +11,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.DisplayMetrics
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -42,29 +39,46 @@ class SuggestionBottomSheetDialog:
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.dialog_bottom_sheet_suggestion,
-            container, false)
+        val view = inflater.inflate(R.layout.dialog_bottom_sheet_suggestion, container)
         setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
         initializeObjects()
         articlePhoto = view.articlePhoto
         view.articleTitle?.text = article.title
-        if(numberOfParagraph != null)
-            view.articleDescription?.text = "Sugerowanie zmian ・akapit ${numberOfParagraph!! + 1}"
-        else view.articleDescription?.text = "Sugerowanie zmian ・ nowy akapit"
+        setArticleDescriptionText(view)
         paragraph = Paragraph()
-        if(numberOfParagraph != null) paragraph = article.listOfParagraphs!![numberOfParagraph!!]
+        if(numberOfParagraph != null && numberOfParagraph != CONTENT_OF_ARTICLE)
+            paragraph = article.listOfParagraphs!![numberOfParagraph!!]
         if(paragraph.subtitle != null) view.titleOfParagraphView?.setText(paragraph.subtitle)
         if(paragraph.content != null) view.contentOfParagraphView?.setText(paragraph.content)
+        checkKindOfSuggestion(view)
         view.sendBtn.setOnClickListener{sendChangesToFirebase(
             Suggestion(article.objectId, numberOfParagraph,
                 view.titleOfParagraphView.text.toString(),
                 view.contentOfParagraphView.text.toString(),
                 commentView.text.toString()))}
-        view.titleOfParagraphView.addTextChangedListener(this)
-        view.contentOfParagraphView.addTextChangedListener(this)
-        view.commentView.addTextChangedListener(this)
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         loadMainPhoto()
         return view
+    }
+
+    private fun setArticleDescriptionText(view: View){
+        view.articleDescription?.text =
+            if(numberOfParagraph == null)
+                "${getString(R.string.suggesting_changes)}${getString(R.string.new_paragraph)}"
+            else if(article.listOfParagraphs?.size!! <= 1 || numberOfParagraph == CONTENT_OF_ARTICLE)
+                "${getString(R.string.suggesting_changes)}${getString(R.string.content_of_article)}"
+            else "${getString(R.string.suggesting_changes)}${getString(R.string.paragraph)} ${numberOfParagraph!! + 1}"
+    }
+
+    private fun checkKindOfSuggestion(view: View){
+        view.commentView.addTextChangedListener(this)
+        if(numberOfParagraph == CONTENT_OF_ARTICLE){
+            view.titleOfParagraphView?.visibility = View.GONE
+            view.contentOfParagraphView?.visibility = View.GONE
+        }else{
+            view.titleOfParagraphView.addTextChangedListener(this)
+            view.contentOfParagraphView.addTextChangedListener(this)
+        }
     }
 
     private fun initializeObjects(){
@@ -155,5 +169,9 @@ class SuggestionBottomSheetDialog:
         val commentFilled = view?.commentView?.text!!.isNotEmpty()
 
         view?.sendBtn?.isEnabled = paragraphChanged || subtitleChanged || commentFilled
+    }
+
+    companion object{
+        const val CONTENT_OF_ARTICLE = -2
     }
 }
