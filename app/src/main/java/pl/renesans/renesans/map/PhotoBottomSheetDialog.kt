@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_tour.view.articlePhoto
 import kotlinx.android.synthetic.main.tour_slide_layout.view.articleParagraph
 import kotlinx.android.synthetic.main.tour_slide_layout.view.articleTitle
 import kotlinx.android.synthetic.main.tour_slide_layout.view.photoDescription
+import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
 import pl.renesans.renesans.SuggestionBottomSheetDialog
 import pl.renesans.renesans.data.*
@@ -112,8 +113,7 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
                 true
             }
             popup.menu.getItem(1).setOnMenuItemClickListener {
-                SuggestionBottomSheetDialog().newInstance(article, 0, this)
-                    .show(activity!!.supportFragmentManager, "Suggest")
+                (activity as MainActivity).showSuggestionBottomSheet(article, 0)
                 true
             }
             popup.show()

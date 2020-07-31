@@ -11,11 +11,14 @@ import kotlinx.android.synthetic.main.activity_article.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.SuggestionBottomSheetDialog
 import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.firebase.FirebaseContract
+import pl.renesans.renesans.toast.ToastHelperImpl
 
-class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView {
+class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView, FirebaseContract.FirebaseInterractor {
 
     private lateinit var article: Article
     private lateinit var articleFragment: ArticleFragment
+    private var toastHelper = ToastHelperImpl(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,16 +54,17 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
 
    private fun getOnMenuItemClickListener(index: Int? = null): MenuItem.OnMenuItemClickListener {
        return if (index == 0) MenuItem.OnMenuItemClickListener {
-           SuggestionBottomSheetDialog().newInstance(article,
-               SuggestionBottomSheetDialog.CONTENT_OF_ARTICLE,
-               articleFragment.getFirebaseInterractor()).show(supportFragmentManager, "Content")
+           showSuggestionBottomSheet(SuggestionBottomSheetDialog.CONTENT_OF_ARTICLE)
            true
        }else MenuItem.OnMenuItemClickListener {
-           SuggestionBottomSheetDialog().newInstance(article, index,
-               articleFragment.getFirebaseInterractor()).show(supportFragmentManager, "Paragraph")
+           showSuggestionBottomSheet(index)
            true
        }
    }
+
+    override fun showSuggestionBottomSheet(paragraph: Int?) =
+        SuggestionBottomSheetDialog().newInstance(article, paragraph)
+            .show(supportFragmentManager, "Paragraph")
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -70,6 +74,10 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
     override fun setTitle(title: String) {
         articleToolbar.title = title
     }
+
+    override fun onSuccess() = toastHelper.showToast(getString(R.string.suggestions_sent))
+
+    override fun onFail() = toastHelper.showToast(getString(R.string.suggestions_fail))
 
     companion object {
         const val ARTICLE = "Article"

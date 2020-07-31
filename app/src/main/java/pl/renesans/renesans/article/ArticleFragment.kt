@@ -111,8 +111,4 @@ class ArticleFragment(var article: Article? = null,
     override fun addViewToHeaderLinear(view: View) {
         headerLinear.addView(view)
     }
-
-    override fun getFirebaseInterractor(): FirebaseContract.FirebaseInterractor? {
-        return presenter.getFirebaseInterractor()
-    }
 }

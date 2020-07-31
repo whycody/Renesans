@@ -9,13 +9,16 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
+import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.article.ArticleDaoImpl
+import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.discover.DiscoverFragment
 import pl.renesans.renesans.map.MapFragment
 import pl.renesans.renesans.settings.SettingsFragment
 import pl.renesans.renesans.settings.SettingsPresenterImpl
+import pl.renesans.renesans.toast.ToastHelperImpl
 
-class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener, FirebaseContract.FirebaseInterractor {
 
     private val firestore = FirebaseFirestore.getInstance()
     private var discoverFragment = DiscoverFragment()
@@ -24,6 +27,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private var refreshMapFragment = false
     private var refreshDiscoverFragment = false
     private var changedOptionOfMapLimit = false
+    private var toastHelper = ToastHelperImpl(this)
     private var currentItem = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +53,10 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             firestore.collection("articles").document(article.objectId!![0].toString())
                 .collection(article.objectId!![0].toString()).document(article.objectId!!).set(article)
     }
+
+    fun showSuggestionBottomSheet(article: Article, paragraph: Int?) =
+        SuggestionBottomSheetDialog().newInstance(article, paragraph)
+            .show(supportFragmentManager, "Paragraph")
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -112,4 +120,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             }
         }
     }
+
+    override fun onSuccess() = toastHelper.showToast(getString(R.string.suggestions_sent))
+
+    override fun onFail() = toastHelper.showToast(getString(R.string.suggestions_fail))
+
 }

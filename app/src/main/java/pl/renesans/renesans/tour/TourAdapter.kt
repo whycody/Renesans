@@ -69,8 +69,7 @@ class TourAdapter(private val activity: TourActivity, private val tour: Tour): P
             }
             popup.menu.getItem(1).setOnMenuItemClickListener {
                 val hereArticle = getArticleWithHereOnStart(article)
-                SuggestionBottomSheetDialog().newInstance(hereArticle, 0, this)
-                    .show(activity.supportFragmentManager, "Suggest")
+                (activity as TourActivity).showSuggestionBottomSheet(hereArticle)
                 true
             }
             popup.show()

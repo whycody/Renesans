@@ -85,8 +85,7 @@ class SuggestionBottomSheetDialog:
             article = arguments!!.getSerializable("article") as Article
             if(arguments!!.containsKey("numberOfParagraph"))
                 numberOfParagraph = arguments!!.getInt("numberOfParagraph")
-            firebaseInterractor = arguments!!.getSerializable("firebaseInterractor")
-                    as FirebaseContract.FirebaseInterractor
+            firebaseInterractor = activity as FirebaseContract.FirebaseInterractor
         }
     }
 
@@ -102,13 +101,10 @@ class SuggestionBottomSheetDialog:
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
-    fun newInstance(article: Article,
-                    numberOfParagraph: Int?,
-                    firebaseInterractor: FirebaseContract.FirebaseInterractor? = null): SuggestionBottomSheetDialog {
+    fun newInstance(article: Article, numberOfParagraph: Int?): SuggestionBottomSheetDialog {
         val args = Bundle()
         args.putSerializable("article", article)
         if(numberOfParagraph!=null) args.putInt("numberOfParagraph", numberOfParagraph)
-        args.putSerializable("firebaseInterractor", firebaseInterractor)
         val suggestSheet = SuggestionBottomSheetDialog()
         suggestSheet.arguments = args
         return suggestSheet

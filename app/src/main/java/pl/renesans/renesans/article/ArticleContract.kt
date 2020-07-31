@@ -19,19 +19,17 @@ interface ArticleContract {
         fun addViewToArticleLinear(view: View)
 
         fun addViewToHeaderLinear(view: View)
-
-        fun getFirebaseInterractor(): FirebaseContract.FirebaseInterractor?
     }
 
     interface ArticleActivityView {
 
         fun setTitle(title: String)
+
+        fun showSuggestionBottomSheet(paragraph: Int?)
     }
 
     interface ArticlePresenter {
 
         fun loadContent()
-
-        fun getFirebaseInterractor(): FirebaseContract.FirebaseInterractor?
     }
 }

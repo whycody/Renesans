@@ -19,20 +19,26 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.activity_tour.*
 import pl.renesans.renesans.R
+import pl.renesans.renesans.SuggestionBottomSheetDialog
+import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.Tour
+import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.map.ClusterManagerRenderer
 import pl.renesans.renesans.map.ClusterMarker
 import pl.renesans.renesans.photo.PhotoActivity
 import pl.renesans.renesans.settings.SettingsPresenterImpl
+import pl.renesans.renesans.toast.ToastHelperImpl
 
 class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
-    ImageDaoContract.ImageDaoInterractor, TourContract.TourView, OnMapReadyCallback {
+    ImageDaoContract.ImageDaoInterractor, TourContract.TourView, OnMapReadyCallback,
+    FirebaseContract.FirebaseInterractor{
 
     private lateinit var tour: Tour
     private lateinit var presenter: TourContract.TourPresenter
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var tourAdapter: TourAdapter
+    private val toastHelper = ToastHelperImpl(this)
     private var dots = mutableListOf<View>()
     private var markers = mutableListOf<ClusterMarker>()
     private var currentPage = 0
@@ -233,7 +239,15 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         googleMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
     }
 
+    override fun showSuggestionBottomSheet(article: Article) =
+        SuggestionBottomSheetDialog().newInstance(article, 0)
+            .show(supportFragmentManager, "Paragraph")
+
     companion object {
         const val TOUR = "tour"
     }
+
+    override fun onSuccess() = toastHelper.showToast(getString(R.string.suggestions_sent))
+
+    override fun onFail() = toastHelper.showToast(getString(R.string.suggestions_fail))
 }

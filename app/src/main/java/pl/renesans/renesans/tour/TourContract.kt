@@ -3,6 +3,7 @@ package pl.renesans.renesans.tour
 import android.graphics.Bitmap
 import android.net.Uri
 import com.google.android.gms.maps.model.LatLng
+import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.Tour
 import pl.renesans.renesans.map.ClusterMarker
 
@@ -21,6 +22,8 @@ interface TourContract {
         fun animateCamera(latLng: LatLng)
 
         fun moveCamera(latLng: LatLng)
+
+        fun showSuggestionBottomSheet(article: Article)
     }
 
     interface TourPresenter {

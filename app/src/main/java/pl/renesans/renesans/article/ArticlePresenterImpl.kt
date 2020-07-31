@@ -29,8 +29,7 @@ import java.lang.StringBuilder
 class ArticlePresenterImpl(val activity: ArticleActivity,
                            private val articleFragmentView: ArticleContract.ArticleFragmentView,
                            private val articleActivityView: ArticleContract.ArticleActivityView? = null):
-    ArticleContract.ArticlePresenter, ImageDaoContract.ImageDaoInterractor,
-    FirebaseContract.FirebaseInterractor {
+    ArticleContract.ArticlePresenter, ImageDaoContract.ImageDaoInterractor {
 
     private lateinit var article: Article
     private var listOfPhotos: List<Photo>? = null
@@ -52,10 +51,6 @@ class ArticlePresenterImpl(val activity: ArticleActivity,
         loadHeader()
         loadParagraphs()
         loadRelations()
-    }
-
-    override fun getFirebaseInterractor(): FirebaseContract.FirebaseInterractor? {
-        return this
     }
 
     private fun loadMainPhoto(){
@@ -158,8 +153,7 @@ class ArticlePresenterImpl(val activity: ArticleActivity,
                 true
             }
             popup.menu.getItem(1).setOnMenuItemClickListener {
-                SuggestionBottomSheetDialog().newInstance(article, index, this)
-                    .show(activity.supportFragmentManager, "Suggest")
+                activity.showSuggestionBottomSheet(index)
                 true
             }
             popup.show()
@@ -224,19 +218,4 @@ class ArticlePresenterImpl(val activity: ArticleActivity,
 
     override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) =
         articleFragmentView.loadBitmapToImage(photoBitmap, pos)
-
-    override fun onSuccess() = showToast(activity.getString(R.string.suggestions_sent))
-
-
-    override fun onFail() = showToast(activity.getString(R.string.suggestions_fail))
-
-    private fun showToast(text: String){
-        val view = activity.layoutInflater.inflate(R.layout.toast_suggestion,
-            activity.findViewById(R.id.toastView))
-        view.findViewById<TextView>(R.id.toastText).text = text
-        val toast = Toast(activity.applicationContext)
-        toast.setGravity(Gravity.BOTTOM or Gravity.FILL_HORIZONTAL, 0, 0)
-        toast.view = view
-        toast.show()
-    }
 }
