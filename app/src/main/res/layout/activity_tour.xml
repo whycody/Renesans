@@ -84,14 +84,16 @@
             android:text="@string/back"
             android:visibility="invisible"/>
 
-        <LinearLayout
-            android:id="@+id/dotsLayout"
+        <ProgressBar
+            android:id="@+id/tourProgress"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
+            android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:gravity="center"
             android:orientation="horizontal"
-            android:padding="20dp" />
+            android:padding="20dp"
+            android:progressDrawable="@drawable/sh_tour_progress" />
 
         <Button
             android:id="@+id/nextBtn"

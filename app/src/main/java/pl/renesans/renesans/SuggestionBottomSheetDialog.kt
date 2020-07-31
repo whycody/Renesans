@@ -15,6 +15,7 @@ import android.view.*
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -55,7 +56,6 @@ class SuggestionBottomSheetDialog:
                 view.titleOfParagraphView.text.toString(),
                 view.contentOfParagraphView.text.toString(),
                 commentView.text.toString()))}
-        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         loadMainPhoto()
         return view
     }
