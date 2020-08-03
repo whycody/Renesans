@@ -49,17 +49,11 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
         this.photoArticlesList = photoArticlesList
     }
 
-    override fun getMarkersList(): MutableList<ClusterMarker> {
-        return photoArticlesList
-    }
+    override fun getMarkersList() = photoArticlesList
 
-    override fun getPhotoArticles(): List<PhotoArticle> {
-        return photoArticles
-    }
+    override fun getPhotoArticles() = photoArticles
 
-    override fun getCurrentLocation(): LatLng? {
-        return currentLocation
-    }
+    override fun getCurrentLocation() = currentLocation
 
     override fun itemClicked(pos: Int) {
         if(pos!=0) mapView?.onClusterItemClick(photoArticlesList[pos])
@@ -87,9 +81,8 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
         }
     }
 
-    private fun sendToast(message: String){
+    private fun sendToast(message: String) =
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
-    }
 
     override fun setLocationManager(){
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -99,9 +92,7 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
         }
     }
 
-    override fun getItemCount(): Int {
-        return photoArticlesList.size
-    }
+    override fun getItemCount() = photoArticlesList.size
 
     override fun onBindViewHolder(holder: LocationRowHolder, position: Int) {
         resetVariables(holder)
@@ -133,15 +124,9 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
         }
     }
 
-    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
+    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) { }
 
-    }
+    override fun onProviderEnabled(p0: String?) { }
 
-    override fun onProviderEnabled(p0: String?) {
-
-    }
-
-    override fun onProviderDisabled(p0: String?) {
-
-    }
+    override fun onProviderDisabled(p0: String?) { }
 }

@@ -218,16 +218,21 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
 
     private fun refreshRecyclerView(newList: MutableList<ClusterMarker>){
         if(!listsEqual(presenter?.getMarkersList()!!, newList)) {
-            presenter?.refreshMarkersList(newList)
+            val refreshedList: MutableList<ClusterMarker> = presenter?.getMarkersList()!!.toMutableList()
+            for (marker in newList)
+                if (!presenter?.getMarkersList()!!.contains(marker)
+                    && marker.photoArticle.objectId != null) refreshedList.add(marker)
+            for (marker in presenter?.getMarkersList()!!)
+                if (!newList.contains(marker)
+                    && marker.photoArticle.objectId != null) refreshedList.remove(marker)
+            presenter?.refreshMarkersList(refreshedList)
             adapter?.notifyDataSetChanged()
         }
     }
 
     private fun listsEqual(list1: List<ClusterMarker>, list2: List<ClusterMarker>): Boolean {
         if (list1.size != list2.size) return false
-        list1.forEachIndexed{ index, marker ->
-            if(list2[index].position!=marker.position) return false
-        }
+        list1.forEach{ if(it.photoArticle.objectId != null && !list2.contains(it)) return false }
         return true
     }
 

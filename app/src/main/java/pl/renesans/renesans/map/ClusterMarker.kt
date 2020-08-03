@@ -6,9 +6,7 @@ import pl.renesans.renesans.data.PhotoArticle
 
 class ClusterMarker(val photoArticle: PhotoArticle): ClusterItem, ClusterView {
 
-    override fun getSnippet(): String {
-        return photoArticle.objectType.toString()
-    }
+    override fun getSnippet() = photoArticle.objectType.toString()
 
     override fun getTitle(): String {
         return if(photoArticle.shortTitle != null) photoArticle.shortTitle!!.toUpperCase()
@@ -21,11 +19,7 @@ class ClusterMarker(val photoArticle: PhotoArticle): ClusterItem, ClusterView {
         else LatLng(1.0, 1.0)
     }
 
-    override fun getClusterType(): Int {
-        return photoArticle.objectType
-    }
+    override fun getClusterType() = photoArticle.objectType
 
-    override fun getFullTitle(): String {
-        return photoArticle.title!!
-    }
+    override fun getFullTitle() = photoArticle.title!!
 }
