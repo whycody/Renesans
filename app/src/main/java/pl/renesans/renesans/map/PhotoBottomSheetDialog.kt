@@ -27,7 +27,6 @@ import kotlinx.android.synthetic.main.tour_slide_layout.view.articleTitle
 import kotlinx.android.synthetic.main.tour_slide_layout.view.photoDescription
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
-import pl.renesans.renesans.SuggestionBottomSheetDialog
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
@@ -57,7 +56,7 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
         view.articleParagraph.text = photoArticle.paragraph?.content
         view.photoDescription.text = photoArticle.photo?.description
         view.articlePhoto.setBackgroundColor(Color.LTGRAY)
-        view.articlePhoto.setOnClickListener{ startPhotoViewActivity(photoArticle.photo?.objectId!!) }
+        view.articlePhoto.setOnClickListener{ startPhotoViewActivity() }
         val articleConverter = ArticleConverterImpl()
         articlePhoto = view.findViewById(R.id.articlePhoto)
         sourcesBtn = view.findViewById(R.id.sourcesBtn)
@@ -152,9 +151,9 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
     private fun startSourceActivity() =
         SourcesBottomSheetDialog().newInstance(article).show(activity!!.supportFragmentManager, "Sources")
 
-    private fun startPhotoViewActivity(id: String){
+    private fun startPhotoViewActivity(){
         val intent = Intent(context, PhotoActivity::class.java)
-        intent.putExtra(PhotoActivity.ARTICLE_ID, id)
+        intent.putExtra(PhotoActivity.ARTICLE, article)
         startActivity(intent)
     }
 

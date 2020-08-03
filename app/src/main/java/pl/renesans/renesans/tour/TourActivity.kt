@@ -21,7 +21,10 @@ import kotlinx.android.synthetic.main.activity_tour.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.SuggestionBottomSheetDialog
 import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.Photo
+import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.data.Tour
+import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.map.ClusterManagerRenderer
@@ -135,16 +138,21 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         setBackBtnProperties(position)
         setNextBtnProperties(position)
         checkUserHasEndedTour(position)
-        articlePhoto.setOnClickListener{
-            val photoId = presenter.getPhotoId(position)
-            if(photoId != null) startPhotoViewActivity(photoId)
-        }
+        articlePhoto.setOnClickListener{ startPhotoViewActivity(position) }
         presenter.onPageSelected(position)
     }
 
-    private fun startPhotoViewActivity(id: String){
+    private val articleConverter = ArticleConverterImpl()
+
+    private fun startPhotoViewActivity(pos: Int){
         val intent = Intent(applicationContext, PhotoActivity::class.java)
-        intent.putExtra(PhotoActivity.ARTICLE_ID, id)
+        val article = articleConverter.convertPhotoArticleToArticle(tour.photosArticlesList!![pos])
+        val listOfPhotos = mutableListOf<Photo>()
+        for(photoArticle in tour.photosArticlesList!!)
+            if(photoArticle.objectId!=null) listOfPhotos.add(Photo(objectId = photoArticle.objectId + "_0"))
+        article.listOfPhotos = listOfPhotos
+        intent.putExtra(PhotoActivity.ARTICLE, article)
+        intent.putExtra(PhotoActivity.POSITION, pos)
         startActivity(intent)
     }
 

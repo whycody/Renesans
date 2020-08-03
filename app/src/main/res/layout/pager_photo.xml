@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".photo.PhotoActivity">
 
-    <pl.renesans.renesans.photo.CustomViewPager
-        android:id="@+id/photoPager"
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/photoImage"
+        android:tag="photoImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black"/>

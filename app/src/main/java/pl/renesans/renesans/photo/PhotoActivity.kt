@@ -1,27 +1,30 @@
 package pl.renesans.renesans.photo
 
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.Target
+import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_photo.*
 import pl.renesans.renesans.R
-import pl.renesans.renesans.data.image.ImageDaoContract
-import pl.renesans.renesans.data.image.ImageDaoImpl
+import pl.renesans.renesans.data.Article
 
-class PhotoActivity : AppCompatActivity(), ImageDaoContract.ImageDaoInterractor {
+class PhotoActivity : AppCompatActivity() {
+
+    private var photoAdapter: PhotoAdapter? = null
+    private var pagerView: ViewPager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo)
         changeStatusBarColor()
-        val imageDao = ImageDaoImpl(this, this)
-        imageDao.loadPhoto(id = getPhotoId())
+        pagerView = photoPager
+        photoAdapter = PhotoAdapter(applicationContext, getArticle())
+        photoPager.adapter = photoAdapter
+        photoPager.offscreenPageLimit = 10
+        photoPager.currentItem = getPosition()
+        photoPager.setPageTransformer(true, ZoomOutPageTransformer())
     }
 
     private fun changeStatusBarColor(){
@@ -31,22 +34,12 @@ class PhotoActivity : AppCompatActivity(), ImageDaoContract.ImageDaoInterractor 
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.black)
     }
 
-    private fun getPhotoId(): String {
-        return intent.getStringExtra(ARTICLE_ID)
-    }
+    private fun getPosition() = intent.getIntExtra(POSITION, 0)
 
-    override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
-        Glide.with(applicationContext).load(photoUri)
-            .placeholder(photoImage.drawable)
-            .override(Target.SIZE_ORIGINAL)
-            .into(photoImage)
-    }
-
-    override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
-        Glide.with(applicationContext).load(photoBitmap).override(Target.SIZE_ORIGINAL).into(photoImage)
-    }
+    private fun getArticle() = intent.getSerializableExtra(ARTICLE) as Article
 
     companion object {
-        const val ARTICLE_ID = "article id"
+        const val ARTICLE = "article"
+        const val POSITION = "position"
     }
 }

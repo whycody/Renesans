@@ -73,14 +73,15 @@ class ArticleFragment(var article: Article? = null,
     private fun showPhotoViewActivityOnImageViewClick(){
         imagesList.forEachIndexed{ index, image ->
             image.setOnClickListener{
-                startPhotoViewActivity(getArticleObject().listOfPhotos!![index].objectId!!)
+                startPhotoViewActivity(getArticleObject(), index)
             }
         }
     }
 
-    private fun startPhotoViewActivity(photoId: String){
+    private fun startPhotoViewActivity(article: Article, position: Int){
         val intent = Intent(context, PhotoActivity::class.java)
-        intent.putExtra(PhotoActivity.ARTICLE_ID, photoId)
+        intent.putExtra(PhotoActivity.ARTICLE, article)
+        intent.putExtra(PhotoActivity.POSITION, position)
         startActivity(intent)
     }
 
