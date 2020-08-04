@@ -1,6 +1,8 @@
 package pl.renesans.renesans.photo
 
+import android.graphics.PorterDuff
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_photo.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Article
 
-class PhotoActivity : AppCompatActivity() {
+class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageChangeListener {
 
     private var photoAdapter: PhotoAdapter? = null
     private var pagerView: ViewPager? = null
@@ -18,13 +20,32 @@ class PhotoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo)
+        setSupportActionBar(photoToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        photoToolbar.navigationIcon?.setColorFilter(ContextCompat.getColor(this,
+            android.R.color.white), PorterDuff.Mode.SRC_ATOP)
         changeStatusBarColor()
         pagerView = photoPager
-        photoAdapter = PhotoAdapter(applicationContext, getArticle())
+        photoAdapter = PhotoAdapter(applicationContext, getArticle(), this)
+        photoPager.addOnPageChangeListener(this)
         photoPager.adapter = photoAdapter
         photoPager.offscreenPageLimit = 10
         photoPager.currentItem = getPosition()
         photoPager.setPageTransformer(true, ZoomOutPageTransformer())
+        photoToolbar.title = getArticle().listOfPhotos!![getPosition()].description
+    }
+
+    override fun photoClicked() = showOrHideToolbar()
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    private fun showOrHideToolbar(){
+        if(photoAppBar.visibility == View.VISIBLE) photoAppBar.visibility = View.INVISIBLE
+        else photoAppBar.visibility = View.VISIBLE
     }
 
     private fun changeStatusBarColor(){
@@ -37,6 +58,15 @@ class PhotoActivity : AppCompatActivity() {
     private fun getPosition() = intent.getIntExtra(POSITION, 0)
 
     private fun getArticle() = intent.getSerializableExtra(ARTICLE) as Article
+
+    override fun onPageScrollStateChanged(state: Int) { }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) { }
+
+    override fun onPageSelected(position: Int) {
+        photoToolbar.title = getArticle().listOfPhotos!![position].description
+        photoAppBar.visibility = View.VISIBLE
+    }
 
     companion object {
         const val ARTICLE = "article"

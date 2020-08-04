@@ -17,7 +17,7 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
     private lateinit var articleDao: ArticleDao
     private var articlesList = listOf<ArticleItem>()
     private var imageDao: ImageDaoContract.ImageDao? = null
-    private val holders: MutableList<DiscoverRowHolder> = mutableListOf()
+    private val holders = hashMapOf<Int, DiscoverRowHolder>()
     private lateinit var articleId: String
 
     override fun onCreate(articleId: String) {
@@ -43,16 +43,11 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
 
     override fun onBindViewHolder(holder: DiscoverRowHolder, position: Int) {
         resetVariables(holder)
-        refreshHoldersList(holder, position)
+        holders[position] = holder
         holder.setArticleTitle(articlesList[position].title!!)
         holder.setArticlePhotoSize(objectType)
         holder.setOnRowClickListener(position)
         imageDao?.loadPhoto(position, "${articlesList[position].objectId!!}_0")
-    }
-
-    private fun refreshHoldersList(holder: DiscoverRowHolder, position: Int){
-        if(holders.size-1<position || holders.isEmpty()) holders.add(position, holder)
-        else holders[position] = holder
     }
 
     private fun resetVariables(holder: DiscoverRowHolder){
@@ -62,10 +57,10 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
-        holders[pos].setArticleUriPhoto(photoUri)
+        holders[pos]?.setArticleUriPhoto(photoUri)
     }
 
     override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
-        holders[pos].setArticleBitmapPhoto(photoBitmap)
+        holders[pos]?.setArticleBitmapPhoto(photoBitmap)
     }
 }

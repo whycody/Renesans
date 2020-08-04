@@ -16,7 +16,8 @@ import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
 
-class PhotoAdapter(private val context: Context, private val article: Article): PagerAdapter(),
+class PhotoAdapter(private val context: Context, private val article: Article,
+                   private val photoInterractor: PhotoInterractor): PagerAdapter(),
     ImageDaoContract.ImageDaoInterractor {
 
     private val views = hashMapOf<Int, View>()
@@ -29,6 +30,8 @@ class PhotoAdapter(private val context: Context, private val article: Article): 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.pager_photo, container, false)
+        view.findViewById<PhotoView>(R.id.photoImage)
+            .setOnClickListener{ photoInterractor.photoClicked() }
         views[position] = view
         imageDao.loadPhoto(position, article.listOfPhotos!![position].objectId!!)
         container.addView(view)

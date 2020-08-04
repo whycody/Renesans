@@ -149,7 +149,9 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         val article = articleConverter.convertPhotoArticleToArticle(tour.photosArticlesList!![pos])
         val listOfPhotos = mutableListOf<Photo>()
         for(photoArticle in tour.photosArticlesList!!)
-            if(photoArticle.objectId!=null) listOfPhotos.add(Photo(objectId = photoArticle.objectId + "_0"))
+            if(photoArticle.objectId!=null)
+                listOfPhotos.add(Photo(objectId = photoArticle.objectId + "_0",
+                    description = photoArticle.photo?.description))
         article.listOfPhotos = listOfPhotos
         intent.putExtra(PhotoActivity.ARTICLE, article)
         intent.putExtra(PhotoActivity.POSITION, pos)

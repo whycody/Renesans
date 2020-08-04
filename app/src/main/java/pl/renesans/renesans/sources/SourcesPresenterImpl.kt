@@ -12,7 +12,7 @@ class SourcesPresenterImpl(val context: Context, val view: SourcesContract.Sourc
 
     private lateinit var article: Article
     private var sourcesList = mutableListOf<Source>()
-    private val holders: MutableList<SourcesRowHolder> = mutableListOf()
+    private val holders = hashMapOf<Int, SourcesRowHolder>()
     private lateinit var imageDao: ImageDaoContract.ImageDao
 
     override fun onCreate() {
@@ -49,16 +49,11 @@ class SourcesPresenterImpl(val context: Context, val view: SourcesContract.Sourc
 
     override fun onBindViewHolder(holder: SourcesRowHolder, position: Int) {
         resetVariables(holder)
-        refreshHoldersList(holder, position)
+        holders[position] = holder
         holder.setDescription(sourcesList[position].page!!)
         holder.setTitle(sourcesList[position].srcDescription!!)
         holder.setOnClickListener(position)
         imageDao.loadPhoto(position, sourcesList[position].photoId!!)
-    }
-
-    private fun refreshHoldersList(holder: SourcesRowHolder, position: Int){
-        if(holders.size-1<position || holders.isEmpty()) holders.add(position, holder)
-        else holders[position] = holder
     }
 
     private fun resetVariables(holder: SourcesRowHolder){
@@ -68,10 +63,10 @@ class SourcesPresenterImpl(val context: Context, val view: SourcesContract.Sourc
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
-        holders[pos].setSourceUriPhoto(photoUri)
+        holders[pos]?.setSourceUriPhoto(photoUri)
     }
 
     override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
-        holders[pos].setSourceBitmapPhoto(photoBitmap)
+        holders[pos]?.setSourceBitmapPhoto(photoBitmap)
     }
 }
