@@ -68,6 +68,7 @@ class RealmDaoImpl(private val context: Context,
 
     private fun downloadArticlesListsWithArticles(firstDownload: Boolean){
         realmInterractor?.startedLoading()
+        downloadedArticlesLists = 0
         if(firstDownload) checkDbVersion(false)
         articlesRef.get().addOnSuccessListener { task ->
             realmInterractor?.downloadedProgress(10)
@@ -75,7 +76,7 @@ class RealmDaoImpl(private val context: Context,
                 val articlesList = document.toObject(ArticlesList::class.java)
                 checkArticlesList(articlesList)
                 allArticlesLists = task.documents.size
-                downloadArticlesFromList(document, articlesList)
+                downloadArticlesFromList(document, articlesList, firstDownload)
             }
         }.addOnFailureListener{ realmInterractor?.downloadFailure() }
     }
@@ -123,13 +124,13 @@ class RealmDaoImpl(private val context: Context,
             .contains("id", id)
             .findFirst()
 
-    private fun downloadArticlesFromList(document: DocumentSnapshot, articlesList: ArticlesList?) {
+    private fun downloadArticlesFromList(document: DocumentSnapshot, articlesList: ArticlesList?, firstDownload: Boolean) {
         articlesRef.document(document.id).collection(document.id).get()
             .addOnSuccessListener { articleTask ->
                 downloadedArticlesLists++
                 realmInterractor?.downloadedProgress(getPercentageOfDownload())
                 checkArticlesDocuments(articleTask, articlesList)
-                checkAllArticlesHasBeenDownloaded()
+                checkAllArticlesHasBeenDownloaded(firstDownload)
             }
     }
 
@@ -172,12 +173,12 @@ class RealmDaoImpl(private val context: Context,
             .contains("objectId", id)
             .findFirst()
 
-    private fun checkAllArticlesHasBeenDownloaded(){
+    private fun checkAllArticlesHasBeenDownloaded(firstDownload: Boolean){
         if(downloadedArticlesLists == allArticlesLists) {
             Log.d("MOJTAG", "Realm database is complete")
             prefsEditor.putBoolean(ALL_DOWNLOADED, true)
             prefsEditor.commit()
-            if(canDownloadPhotos) downloadAllPhotos()
+            if(canDownloadPhotos && firstDownload) downloadAllPhotos()
             else realmInterractor?.downloadSuccessful()
         }
     }
@@ -440,7 +441,6 @@ class RealmDaoImpl(private val context: Context,
     override fun donwloadSuccess() = refreshProgress()
 
     override fun photoExists() = refreshProgress()
-
 
     private fun refreshProgress(){
         downloadedArticlesPhotos++
