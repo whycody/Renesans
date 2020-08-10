@@ -29,21 +29,20 @@ class RealmDaoImpl(private val context: Context,
     private val articlesRef = firestore.collection("articles")
     private val realmMapper = RealmMapperImpl(context)
     private val imageDao = ImageDaoImpl(context, downloadInterractor = this)
-    private lateinit var realm: Realm
+    private var realm: Realm
+    private val articleConverter = ArticleConverterImpl()
+    private val sharedPrefs: SharedPreferences
+    private val prefsEditor: SharedPreferences.Editor
+    private var canDownloadPhotos = false
     private var allArticlesLists = 0
     private var downloadedArticlesLists = 0
     private var allArticles = 0
     private var downloadedArticlesPhotos = 0
-    private val articleConverter = ArticleConverterImpl()
-    private lateinit var sharedPrefs: SharedPreferences
-    private lateinit var prefsEditor: SharedPreferences.Editor
-    private var canDownloadPhotos = false
 
-    override fun onCreate() {
+    init {
         Realm.init(context)
         canDownloadPhotos = permissionIsGranted()
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
-        realmMapper.onCreate()
         sharedPrefs = context.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
         prefsEditor = sharedPrefs.edit()
     }
@@ -448,7 +447,7 @@ class RealmDaoImpl(private val context: Context,
         checkAllDownloaded()
     }
 
-    private fun getPercentageOfDownload(): Int =
+    private fun getPercentageOfDownload() =
         if(canDownloadPhotos) ((downloadedArticlesLists.toDouble()/allArticlesLists.toDouble())*50).toInt() +
                 ((downloadedArticlesPhotos.toDouble()/allArticles.toDouble())*50).toInt()
         else ((downloadedArticlesLists.toDouble()/allArticlesLists.toDouble())*100).toInt()

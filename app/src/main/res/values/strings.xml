@@ -67,6 +67,8 @@
     <string name="tour">Interaktywny szlak</string>
     <string name="cancel">Anuluj</string>
     <string name="city">Miasto</string>
+    <string name="thats_here">To tutaj</string>
+    <string name="no_place">Brak przydzielonego miejsca</string>
     <string name="you_are_offline">Brak połączenia z Internetem.</string>
     <string name="permission_needed">Potrzebujemy twojej zgody do pamięci urządzenia żebyśmy mogli pobierać zdjęcia do twojego urządzenia.</string>
     <string name="not_download_desc">Nie pobieraj zdjęć.</string>

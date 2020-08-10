@@ -11,10 +11,8 @@ class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
 
     private var realmDao: RealmContract.RealmDao? = null
 
-    override fun onCreate(){
-        if(context == null) return
-        realmDao = RealmDaoImpl(context)
-        realmDao?.onCreate()
+    init {
+        if(context != null) realmDao = RealmDaoImpl(context)
     }
 
     override fun getRelatedArticlesList(article: Article): List<Article> {

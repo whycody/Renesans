@@ -116,7 +116,6 @@ class StartupActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         editor?.putBoolean(SplashActivity.firstLogin, false)
         editor?.apply()
         realmDao = RealmDaoImpl(applicationContext)
-        realmDao.onCreate()
         val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out)
         animation.setAnimationListener(this)
         relativeLayout.startAnimation(animation)

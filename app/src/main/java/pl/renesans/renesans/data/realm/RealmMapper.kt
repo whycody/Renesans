@@ -4,8 +4,6 @@ import pl.renesans.renesans.data.*
 
 interface RealmMapper {
 
-    fun onCreate()
-
     fun getDatabaseVersionFromRealm(databaseVersionRealm: DatabaseVersionRealm): DatabaseVersion
 
     fun getDatabaseVersionToRealm(databaseVersion: DatabaseVersion): DatabaseVersionRealm

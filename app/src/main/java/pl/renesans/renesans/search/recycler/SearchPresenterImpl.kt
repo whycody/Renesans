@@ -24,24 +24,18 @@ class SearchPresenterImpl(private val context: Context,
 
     override fun onCreate() {
         realmDao = RealmDaoImpl(context)
-        realmDao.onCreate()
         articlesList = getSearchedArticles()
         imageDao = ImageDaoImpl(context, this)
     }
 
-    override fun getSearchedArticles(): List<ArticleItem> {
-        return realmDao.getArticlesItemsFromSearchHistory()
-    }
+    override fun getSearchedArticles() = realmDao.getArticlesItemsFromSearchHistory()
 
-    override fun getAllArticles(): List<ArticleItem> {
-        return converter.convertArticlesToArticleItemsList(realmDao.getAllArticles())
-    }
+    override fun getAllArticles() =
+        converter.convertArticlesToArticleItemsList(realmDao.getAllArticles())
 
-    override fun getCurrentArticlesList(): List<ArticleItem> {
-        return articlesList
-    }
+    override fun getCurrentArticlesList() = articlesList
 
-    override fun setCurrentArticlesList(articlesList: List<ArticleItem>){
+    override fun setCurrentArticlesList(articlesList: List<ArticleItem> ){
         this.articlesList = articlesList
     }
 
@@ -56,9 +50,7 @@ class SearchPresenterImpl(private val context: Context,
         searchView.viewDeletedAtPos(pos)
     }
 
-    override fun getItemCount(): Int {
-        return articlesList.size
-    }
+    override fun getItemCount() = articlesList.size
 
     override fun onBindViewHolder(holder: SearchRowHolder, position: Int) {
         resetVariables(holder)
@@ -83,11 +75,9 @@ class SearchPresenterImpl(private val context: Context,
         holder.setSearchDrawablePhoto(context.getDrawable(R.drawable.sh_search_recycler_row)!!)
     }
 
-    override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
+    override fun loadPhotoFromUri(photoUri: Uri, pos: Int) =
         holders[pos].setSearchUriPhoto(photoUri)
-    }
 
-    override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
+    override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) =
         holders[pos].setSearchBitmapPhoto(photoBitmap)
-    }
 }

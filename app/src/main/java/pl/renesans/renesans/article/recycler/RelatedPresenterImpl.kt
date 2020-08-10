@@ -23,7 +23,6 @@ class RelatedPresenterImpl(val context: Context, val fragmentManager: FragmentMa
 
     override fun onCreate() {
         val articleDao = ArticleDaoImpl(context)
-        articleDao.onCreate()
         relatedArticlesList = articleDao.getRelatedArticlesList(article)
         imageDao = ImageDaoImpl(context, this)
     }

@@ -9,8 +9,6 @@ interface RealmContract {
 
     interface RealmDao {
 
-        fun onCreate()
-
         fun refreshRealmDatabase(firstDownload: Boolean = false)
 
         fun checkRealm()

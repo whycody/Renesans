@@ -28,7 +28,6 @@ class SplashActivity : AppCompatActivity() {
         permissionGranted = (ContextCompat.checkSelfPermission(this,
             Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
         realmDao = RealmDaoImpl(applicationContext)
-        realmDao.onCreate()
         checkFirstLogin()
     }
 

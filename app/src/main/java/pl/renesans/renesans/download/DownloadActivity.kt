@@ -35,7 +35,6 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
         startAnimations()
         curiosityView.text = curiosityPresenter.getRandomCuriosity()
         realmDao = RealmDaoImpl(this, this)
-        realmDao.onCreate()
         retryBtn.setOnClickListener{ downloadDb() }
         downloadDb()
         downloadProgressBar.progressDrawable.setColorFilter(ContextCompat

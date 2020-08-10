@@ -22,7 +22,6 @@ class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
 
     override fun onCreate(articleId: String) {
         articleDao = ArticleDaoImpl(context)
-        articleDao.onCreate()
         this.articleId = articleId
         articlesList = articleDao.getArticlesItemsList(articleId)
         imageDao = ImageDaoImpl(context, this)

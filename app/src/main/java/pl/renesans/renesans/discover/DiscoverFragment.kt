@@ -33,7 +33,6 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor {
         refreshLayout = view.refreshLayout
         discoverLayout = view.discoverLayout
         realmDao = RealmDaoImpl(activity!!.applicationContext, this)
-        realmDao.onCreate()
         view.clickableSearchView.setOnClickListener{
             startActivity(Intent(context!!.applicationContext, SearchActivity::class.java))
             activity?.overridePendingTransition(0, 0)

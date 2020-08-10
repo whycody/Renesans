@@ -4,11 +4,11 @@ import android.content.Context
 import io.realm.Realm
 import pl.renesans.renesans.data.*
 
-class RealmMapperImpl(private val context: Context): RealmMapper {
+class RealmMapperImpl(context: Context): RealmMapper {
 
-    private lateinit var realm: Realm
+    private var realm: Realm
 
-    override fun onCreate() {
+    init {
         Realm.init(context)
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
     }

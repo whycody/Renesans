@@ -12,7 +12,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.activity_download.*
 import kotlinx.android.synthetic.main.activity_permission.*
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
@@ -80,7 +79,6 @@ class PermissionActivity : AppCompatActivity(), Animation.AnimationListener {
 
     private fun startNewActivity(){
         val realmDao = RealmDaoImpl(this)
-        realmDao.onCreate()
         if(realmDao.realmDatabaseIsEmpty()){
             startActivity(Intent(applicationContext, DownloadActivity::class.java))
             overridePendingTransition(0, 0)
