@@ -145,7 +145,7 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
         val clipboard: ClipboardManager? =
             activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
         val clip = ClipData.newPlainText("Renesans", stringBuilder.toString())
-        clipboard?.primaryClip = clip
+        clipboard?.setPrimaryClip(clip)
     }
 
     private fun startSourceActivity() =

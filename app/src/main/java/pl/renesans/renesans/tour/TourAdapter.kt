@@ -85,7 +85,7 @@ class TourAdapter(private val activity: TourActivity, private val tour: Tour): P
             activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
         val clip = ClipData.newPlainText(
             activity.getString(R.string.app_name), stringBuilder.toString())
-        clipboard?.primaryClip = clip
+        clipboard?.setPrimaryClip(clip)
     }
 
     private fun startSourceActivity(article: Article){

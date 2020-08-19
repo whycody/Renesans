@@ -25,7 +25,7 @@ class DiscoverRecyclerFragment: Fragment() {
         val view = inflater.inflate(R.layout.fragment_discover_recycler, container, false)
         if(arguments!=null) {
             objectType = arguments!!.getInt("objectType")
-            articlesListId = arguments!!.getString("articlesListId")
+            articlesListId = arguments!!.getString("articlesListId")!!
         }
         discoverRecycler = view.findViewById(R.id.discoverRecycler)
         discoverTitle = view.findViewById(R.id.discoverTitle)
