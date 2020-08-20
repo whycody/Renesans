@@ -137,8 +137,6 @@ class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageCha
 
     override fun onPageSelected(position: Int) {
         currentPhoto = getArticle().listOfPhotos!![position]
-        photoSource = currentPhoto?.source
-        photoDesc = currentPhoto?.description
         invalidateOptionsMenu()
         photoToolbar.title = getArticle().listOfPhotos!![position].description
         photoAppBar.visibility = View.VISIBLE
