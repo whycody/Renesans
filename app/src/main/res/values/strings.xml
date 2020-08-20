@@ -79,4 +79,7 @@
     <string name="download_high_quality">Pobieraj w wysokiej jakości</string>
     <string name="suggesting_changes">Sugerowanie zmian ・</string>
     <string name="content_of_article">Treść artykułu</string>
+    <string name="share">Udostępnij</string>
+    <string name="show_source">Wyświetl źródło</string>
+    <string name="search_more_photos">Szukaj więcej zdjęć</string>
 </resources>

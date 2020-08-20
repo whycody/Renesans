@@ -2,12 +2,15 @@ package pl.renesans.renesans.data.image
 
 import android.graphics.Bitmap
 import android.net.Uri
+import java.io.File
 
 interface ImageDaoContract {
 
     interface ImageDao {
 
         fun loadPhoto(pos: Int = 0, id: String, bothQualities: Boolean = true)
+
+        fun getPhotoFile(id: String): File?
     }
 
     interface ImageDaoInterractor {

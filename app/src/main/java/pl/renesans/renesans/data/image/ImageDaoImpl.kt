@@ -29,6 +29,16 @@ class ImageDaoImpl(private val context: Context,
         checkHighQualityPhoto(pos, id, bothQualities)
     }
 
+    override fun getPhotoFile(id: String): File? {
+        val highQualityPhotoFileName = getPhotoPath(id, true)
+        val badQualityPhotoFileName = getPhotoPath(id, false)
+        return if(photoIsDownloaded(highQualityPhotoFileName))
+            File("$externalStorage/photos/$highQualityPhotoFileName")
+        else if(photoIsDownloaded(badQualityPhotoFileName))
+            File("$externalStorage/photos/$badQualityPhotoFileName")
+        else null
+    }
+
     private fun checkHighQualityPhoto(pos: Int, id: String, bothQualities: Boolean){
         val fileName = getPhotoPath(id, true)
         val fileExists = photoIsDownloaded(fileName)

@@ -22,7 +22,6 @@ import pl.renesans.renesans.R
 import pl.renesans.renesans.SuggestionBottomSheetDialog
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.Photo
-import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.data.Tour
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.firebase.FirebaseContract
@@ -151,7 +150,8 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         for(photoArticle in tour.photosArticlesList!!)
             if(photoArticle.objectId!=null)
                 listOfPhotos.add(Photo(objectId = photoArticle.objectId + "_0",
-                    description = photoArticle.photo?.description))
+                    description = photoArticle.photo?.description,
+                    source = photoArticle.photo?.source))
         article.listOfPhotos = listOfPhotos
         intent.putExtra(PhotoActivity.ARTICLE, article)
         intent.putExtra(PhotoActivity.POSITION, pos)
