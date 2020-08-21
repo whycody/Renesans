@@ -8,6 +8,8 @@ interface FirebaseContract {
     interface FirebaseDao {
 
         fun putSuggestionToFirebase(suggestion: Suggestion)
+
+        fun refreshArticles()
     }
 
     interface FirebaseInterractor: Serializable {
