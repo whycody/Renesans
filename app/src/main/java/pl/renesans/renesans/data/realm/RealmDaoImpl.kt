@@ -14,6 +14,7 @@ import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmResults
 import pl.renesans.renesans.R
+import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
@@ -419,7 +420,7 @@ class RealmDaoImpl(private val context: Context,
         else articleConverter.convertPhotoArticleToArticle(getPhotoArticleWithId(id))
     }
 
-    private fun getPhotoArticleWithId(id: String): PhotoArticle {
+    override fun getPhotoArticleWithId(id: String): PhotoArticle {
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         val articlePhoto = realmMapper.getPhotoArticleFromRealm(realm
             .where(PhotoArticleRealm::class.java)
@@ -431,6 +432,15 @@ class RealmDaoImpl(private val context: Context,
                 content = hashMapOf(Pair(context.resources.getString(R.string.city), city)))
         }
         return articlePhoto
+    }
+
+    override fun getTypeOfArticle(id: String): String {
+        val articlePhoto = realm
+            .where(PhotoArticleRealm::class.java)
+            .contains("objectId", id)
+            .findFirst()
+        return if(articlePhoto != null) ArticleActivity.PHOTO_ARTICLE
+        else ArticleActivity.ARTICLE
     }
 
     private fun getCity(cityKey: String) = getCityWithCityKey(cityKey)

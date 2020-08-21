@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_search.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.article.ArticleActivity
-import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.realm.RealmContract
+import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.search.recycler.SearchContract
 import pl.renesans.renesans.search.recycler.SearchPresenterImpl
 import pl.renesans.renesans.search.recycler.SearchRecyclerAdapter
@@ -21,6 +22,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
     private lateinit var presenter: SearchContract.SearchPresenter
     private lateinit var adapter: SearchRecyclerAdapter
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var realmDao: RealmContract.RealmDao
     private var lastFilter: String? = null
     private var searchView: SearchView? = null
     private var lastSearchText: String? = null
@@ -30,6 +32,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         setContentView(R.layout.activity_search)
         setSupportActionBar(searchToolbar)
         checkBundle(savedInstanceState)
+        realmDao = RealmDaoImpl(applicationContext)
         presenter = SearchPresenterImpl(applicationContext, this)
         presenter.onCreate()
         adapter = SearchRecyclerAdapter(applicationContext, presenter)
@@ -81,9 +84,14 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         return false
     }
 
-    override fun startArticleActivity(article: Article) {
+    override fun startArticleActivity(id: String) {
+        val typeOfArticle = realmDao.getTypeOfArticle(id)
+        val article =
+            if(typeOfArticle == ArticleActivity.ARTICLE)
+                realmDao.getArticleWithId(id)
+            else realmDao.getPhotoArticleWithId(id)
         val intent = Intent(this, ArticleActivity::class.java)
-        intent.putExtra(ArticleActivity.ARTICLE, article)
+        intent.putExtra(typeOfArticle, article)
         startActivity(intent)
     }
 
@@ -98,9 +106,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         adapter.notifyItemRangeChanged(pos, adapter.itemCount)
     }
 
-    override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-        return true
-    }
+    override fun onMenuItemActionExpand(item: MenuItem?) = true
 
     override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
         finish()

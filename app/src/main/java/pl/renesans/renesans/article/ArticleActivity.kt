@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.activity_article.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.SuggestionBottomSheetDialog
 import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.PhotoArticle
+import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.toast.ToastHelperImpl
 
@@ -18,7 +20,8 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
 
     private lateinit var article: Article
     private lateinit var articleFragment: ArticleFragment
-    private var toastHelper = ToastHelperImpl(this)
+    private val toastHelper = ToastHelperImpl(this)
+    private val articleConverter = ArticleConverterImpl()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +35,12 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
         setFragment()
     }
 
-    private fun getArticleObject() = intent.getSerializableExtra(ARTICLE) as Article
+    fun getArticleObject(): Article {
+        return if(intent.getSerializableExtra(ARTICLE) != null)
+            intent.getSerializableExtra(ARTICLE) as Article
+        else articleConverter.convertPhotoArticleToArticle(
+            intent.getSerializableExtra(PHOTO_ARTICLE) as PhotoArticle)
+    }
 
     private fun setFragment(){
         articleFragment = ArticleFragment(articleActivityView = this)
@@ -81,5 +89,6 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
 
     companion object {
         const val ARTICLE = "Article"
+        const val PHOTO_ARTICLE = "Photo Article"
     }
 }

@@ -67,6 +67,11 @@ class SourcesBottomSheetDialog: BottomSheetDialogFragment(), SourcesContract.Sou
         return sourcesSheet
     }
 
+    override fun onResume() {
+        super.onResume()
+        activity?.overridePendingTransition(0, 0)
+    }
+
     override fun onStart() {
         super.onStart()
         if(deviceIsInLandscape){

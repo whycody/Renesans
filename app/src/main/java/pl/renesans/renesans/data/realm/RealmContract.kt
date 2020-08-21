@@ -38,6 +38,10 @@ interface RealmContract {
         fun addItemToSearchHistoryRealm(id: String)
 
         fun deleteItemFromSearchHistoryRealm(id: String)
+
+        fun getPhotoArticleWithId(id: String): PhotoArticle
+
+        fun getTypeOfArticle(id: String): String
     }
 
     interface RealmInterractor {

@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.fragment_article.view.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.article.ArticleDaoImpl
-import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 import pl.renesans.renesans.photo.PhotoActivity
 
@@ -85,9 +84,7 @@ class ArticleFragment(var article: Article? = null,
         startActivity(intent)
     }
 
-    override fun getArticleObject(): Article {
-        return activity?.intent?.getSerializableExtra(ArticleActivity.ARTICLE) as Article
-    }
+    override fun getArticleObject() = (activity as ArticleActivity).getArticleObject()
 
     override fun loadBitmapToImage(bitmap: Bitmap, pos: Int) {
         if(!bitmap.isRecycled && context!=null)
@@ -109,7 +106,6 @@ class ArticleFragment(var article: Article? = null,
         if(view is ImageView) imagesList.add(view)
     }
 
-    override fun addViewToHeaderLinear(view: View) {
-        headerLinear.addView(view)
-    }
+    override fun addViewToHeaderLinear(view: View) = headerLinear.addView(view)
+
 }

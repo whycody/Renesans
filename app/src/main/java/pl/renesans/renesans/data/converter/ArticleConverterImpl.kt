@@ -11,6 +11,7 @@ class ArticleConverterImpl: ArticleConverter {
             header = photoArticle.header, source = photoArticle.source)
         if(photoArticle.paragraph!=null) article.listOfParagraphs = listOf(photoArticle.paragraph!!)
         if(photoArticle.photo!=null) article.listOfPhotos = listOf(photoArticle.photo!!)
+        if(photoArticle.position!=null) article.listOfPositions = listOf(photoArticle.position!!)
         return article
     }
 

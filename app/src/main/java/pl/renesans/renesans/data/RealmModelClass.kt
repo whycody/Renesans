@@ -22,7 +22,8 @@ open class ArticleRealm(var objectId: String? = null,
                         var tourRealm: TourRealm? = null,
                         var listOfRelatedArticlesIds: RealmList<String>? = null,
                         var listOfParagraphs: RealmList<ParagraphRealm>? = null,
-                        var listOfPhotos: RealmList<PhotoRealm>? = null): RealmObject()
+                        var listOfPhotos: RealmList<PhotoRealm>? = null,
+                        var listOfPositions: RealmList<PositionRealm>? = null): RealmObject()
 
 open class PhotoArticleRealm(var objectId: String? = null,
                         var objectType: Int? = ArticleDaoImpl.PLACE_TYPE,

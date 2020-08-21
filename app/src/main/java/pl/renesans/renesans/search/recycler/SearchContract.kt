@@ -10,7 +10,7 @@ interface SearchContract {
 
     interface SearchView {
 
-        fun startArticleActivity(article: Article)
+        fun startArticleActivity(id: String)
 
         fun holderIsVisible(pos: Int): Boolean
 

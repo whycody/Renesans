@@ -35,13 +35,13 @@ class SearchPresenterImpl(private val context: Context,
 
     override fun getCurrentArticlesList() = articlesList
 
-    override fun setCurrentArticlesList(articlesList: List<ArticleItem> ){
+    override fun setCurrentArticlesList(articlesList: List<ArticleItem>) {
         this.articlesList = articlesList
     }
 
     override fun itemClicked(pos: Int) {
         realmDao.addItemToSearchHistoryRealm(articlesList[pos].objectId!!)
-        searchView.startArticleActivity(realmDao.getArticleWithId(articlesList[pos].objectId!!))
+        searchView.startArticleActivity(articlesList[pos].objectId!!)
     }
 
     override fun deleteItemClicked(pos: Int) {

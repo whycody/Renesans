@@ -20,6 +20,9 @@ class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
         if(article.tour!=null)
             relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.TOUR,
                 title = context?.getString(R.string.tour), objectId = "Z3"))
+        if(article.listOfPositions != null && article.listOfPositions?.size!! > 0)
+            relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.MAP,
+                title = context.getString(R.string.map), objectId = "Z4"))
         article.listOfRelatedArticlesIds?.forEach { relatedArticles.add(getArticleFromId(it)) }
         if(getObjectTypeFromObjectId(article.objectId!!) != DiscoverRecyclerFragment.OTHER_ERAS)
             relatedArticles.add(getArticleFromId("O4"))

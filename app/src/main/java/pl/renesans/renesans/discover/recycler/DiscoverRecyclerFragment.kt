@@ -48,10 +48,7 @@ class DiscoverRecyclerFragment: Fragment() {
         return discoverFragment
     }
 
-    fun notifyDataSetChanged(){
-        adapter.notifyDataSetChanged()
-        Log.d("MOJTAG", "Notified")
-    }
+    fun notifyDataSetChanged() = adapter.notifyDataSetChanged()
 
     companion object{
         const val PEOPLE = 0
@@ -61,6 +58,7 @@ class DiscoverRecyclerFragment: Fragment() {
         const val SOURCES = 4
         const val PHOTOS = 5
         const val TOUR = 6
+        const val MAP = 7
     }
 
 }

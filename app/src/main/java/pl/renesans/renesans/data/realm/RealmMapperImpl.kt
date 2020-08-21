@@ -57,6 +57,7 @@ class RealmMapperImpl(context: Context): RealmMapper {
         addAllRelatedArticlesIdsToArticle(article, articleRealm)
         addAllParagraphsToArticle(article, articleRealm)
         addAllPhotosToArticle(article, articleRealm)
+        addAllPositionsToArticle(article, articleRealm)
         article.tour = getTourFromRealm(articleRealm?.tourRealm)
         return article
     }
@@ -86,6 +87,12 @@ class RealmMapperImpl(context: Context): RealmMapper {
         article.listOfPhotos = photosList.toList()
     }
 
+    private fun addAllPositionsToArticle(article: Article, articleRealm: ArticleRealm?){
+        val positionLists = mutableListOf<Position>()
+        articleRealm?.listOfPositions?.forEach{ positionLists.add(getPositionFromRealm(it)!!) }
+        article.listOfPositions = positionLists.toList()
+    }
+
     override fun getArticleToRealm(article: Article): ArticleRealm {
         val articleRealm = realm.createObject(ArticleRealm::class.java)
         setPropertiesOfArticleRealm(article, articleRealm)
@@ -104,6 +111,7 @@ class RealmMapperImpl(context: Context): RealmMapper {
         addAllRelatedArticlesIdsToArticleRealm(article, articleRealm)
         addAllParagraphsToArticleRealm(article, articleRealm)
         addAllPhotosToArticleRealm(article, articleRealm)
+        addAllPositionsToArticleRealm(article, articleRealm)
     }
 
     override fun getPhotoArticleToRealm(photoArticle: PhotoArticle): PhotoArticleRealm {
@@ -143,6 +151,12 @@ class RealmMapperImpl(context: Context): RealmMapper {
         if(article?.listOfPhotos!=null)
             for(photo in article.listOfPhotos!!)
                 articleRealm.listOfPhotos?.add(getPhotoToRealm(photo))
+    }
+
+    private fun addAllPositionsToArticleRealm(article: Article?, articleRealm: ArticleRealm){
+        if(article?.listOfPositions!=null)
+            for(position in article.listOfPositions!!)
+                articleRealm.listOfPositions?.add(getPositionToRealm(position))
     }
 
     private fun getTourToRealm(tour: Tour?): TourRealm?{
