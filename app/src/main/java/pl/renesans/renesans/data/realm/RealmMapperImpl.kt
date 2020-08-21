@@ -214,6 +214,7 @@ class RealmMapperImpl(context: Context): RealmMapper {
         val positionRealm = realm.createObject(PositionRealm::class.java)
         positionRealm.lat = position.lat
         positionRealm.lng = position.lng
+        positionRealm.title = position.title
         return positionRealm
     }
 
@@ -270,6 +271,6 @@ class RealmMapperImpl(context: Context): RealmMapper {
 
     private fun getPositionFromRealm(positionRealm: PositionRealm?): Position? {
         return if(positionRealm?.lat == null) null
-        else Position(positionRealm.lat, positionRealm.lng)
+        else Position(positionRealm.lat, positionRealm.lng, positionRealm.title)
     }
 }

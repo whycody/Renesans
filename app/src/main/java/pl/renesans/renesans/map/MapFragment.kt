@@ -263,7 +263,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     }
 
     override fun addClusterMarkerToMap(clusterMarker: ClusterMarker) {
-        addMarker(clusterMarker)
+        markersList.add(clusterMarker)
+        clusterManager?.addItem(clusterMarker)
+        clusterManager?.cluster()
+        adapter?.notifyDataSetChanged()
+        onCameraMove()
     }
 
     override fun moveToLocation(location: LatLng?, zoom: Float) {
@@ -275,14 +279,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
 
     override fun turnOnMyLocationOnMap() {
         googleMap?.isMyLocationEnabled = true
-    }
-
-    private fun addMarker(clusterMarker: ClusterMarker){
-        markersList.add(clusterMarker)
-        clusterManager?.addItem(clusterMarker)
-        clusterManager?.cluster()
-        adapter?.notifyDataSetChanged()
-        onCameraMove()
     }
 
 }

@@ -83,6 +83,7 @@ data class LastCameraPosition(var lat: Double? = null,
                               var bearing: Float? = null): Serializable
 
 data class Position(var lat: Double? = null,
-                    var lng: Double? = null): Serializable
+                    var lng: Double? = null,
+                    var title: String? = null): Serializable
 
 data class DatabaseVersion(var version: Int? = null): Serializable

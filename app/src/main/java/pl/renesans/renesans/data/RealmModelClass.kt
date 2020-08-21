@@ -42,7 +42,8 @@ open class TourRealm(var title: String? = null,
                 var photosArticlesList: RealmList<PhotoArticleRealm>? = null): RealmObject()
 
 open class PositionRealm(var lat: Double? = null,
-                    var lng: Double? = null): RealmObject()
+                         var lng: Double? = null,
+                         var title: String? = null): RealmObject()
 
 open class PhotoRealm(var objectId: String? = null,
                  var numberOfParagraph: Int? = null,
