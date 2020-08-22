@@ -1,6 +1,7 @@
 package pl.renesans.renesans.map
 
 import android.app.Dialog
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -18,13 +19,16 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_map.view.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.LastCameraPosition
 import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
@@ -40,11 +44,15 @@ class MapBottomSheetDialog: BottomSheetDialogFragment(), ImageDaoContract.ImageD
     private var googleMap: GoogleMap? = null
     private var clusterManager: ClusterManager<ClusterMarker>? = null
     private var clusterManagerRenderer: ClusterManagerRenderer? = null
+    private var deviceIsInLandscape = false
+    private var cameraPos: CameraPosition? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_bottom_sheet_map, container)
+        checkBundle(savedInstanceState)
         initializeObjects()
+        deviceIsInLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         articlePhoto = view!!.articlePhoto
         view.articleTitle?.text = article.title
         setupMap()
@@ -56,6 +64,14 @@ class MapBottomSheetDialog: BottomSheetDialogFragment(), ImageDaoContract.ImageD
         val dialog = super.onCreateDialog(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) setWhiteNavigationBar(dialog)
         return dialog
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(deviceIsInLandscape){
+            val bottomSheetBehavior = BottomSheetBehavior.from(view?.parent as View)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
     }
 
     override fun onDestroyView() {
@@ -73,6 +89,32 @@ class MapBottomSheetDialog: BottomSheetDialogFragment(), ImageDaoContract.ImageD
         val mapSheet = MapBottomSheetDialog()
         mapSheet.arguments = args
         return mapSheet
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if(googleMap!=null){
+            val lastCameraPosition = getLastCameraPosition()
+            outState.putSerializable("lastPosition", lastCameraPosition)
+        }
+    }
+
+    private fun getLastCameraPosition(): LastCameraPosition{
+        return LastCameraPosition(
+            googleMap!!.cameraPosition.target.latitude,
+            googleMap!!.cameraPosition.target.longitude,
+            googleMap!!.cameraPosition.zoom,
+            googleMap!!.cameraPosition.tilt,
+            googleMap!!.cameraPosition.bearing)
+    }
+
+    private fun checkBundle(savedInstanceState: Bundle?){
+        if(savedInstanceState?.getSerializable("lastPosition") != null){
+            val lastCameraPos =
+                savedInstanceState.getSerializable("lastPosition") as LastCameraPosition
+            cameraPos = CameraPosition(LatLng(lastCameraPos.lat!!, lastCameraPos.lng!!),
+                lastCameraPos.cameraZoom!!, lastCameraPos.tilt!!, lastCameraPos.bearing!!)
+        }
     }
 
     private fun initializeObjects(){
@@ -121,7 +163,8 @@ class MapBottomSheetDialog: BottomSheetDialogFragment(), ImageDaoContract.ImageD
         setUiSettings()
         prepareManagers()
         addMarkers()
-        moveCameraToFirstMarker()
+        if(cameraPos == null) moveCameraToFirstMarker()
+        else googleMap?.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPos))
     }
 
     private fun moveCameraToFirstMarker(){
