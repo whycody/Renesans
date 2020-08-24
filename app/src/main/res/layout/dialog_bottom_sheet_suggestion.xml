@@ -14,7 +14,7 @@
         android:orientation="horizontal"
         android:background="@android:color/white">
 
-        <ImageView
+        <pl.renesans.renesans.SquareImageView
             android:id="@+id/articlePhoto"
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -65,40 +65,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/paragraph_title"
-                android:background="@null"
+                android:backgroundTint="@color/colorTransparentGray"
                 android:textAppearance="@style/ArticleContentTitleTextViewStyle"
                 android:maxLines="2"
+                android:paddingBottom="15dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="@dimen/dialogSheetPaddingStart"
-                android:layout_marginEnd="@dimen/dialogSheetPaddingStart"/>
+                android:layout_marginEnd="@dimen/dialogSheetPaddingStart"
+                android:inputType="textMultiLine"
+                android:imeOptions="actionNext"/>
 
             <EditText
                 android:id="@+id/contentOfParagraphView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/paragraph_content"
-                android:background="@null"
+                android:paddingBottom="15dp"
+                android:backgroundTint="@color/colorTransparentGray"
                 android:textAppearance="@style/ArticleContentContentTextViewStyle"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="@dimen/dialogSheetPaddingStart"
-                android:layout_marginEnd="@dimen/dialogSheetPaddingStart"/>
+                android:layout_marginEnd="@dimen/dialogSheetPaddingStart"
+                android:inputType="textMultiLine"
+                android:imeOptions="actionNext"/>
 
             <EditText
                 android:id="@+id/commentView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
                 android:hint="@string/comment"
-                android:layout_marginTop="20dp"
+                android:paddingBottom="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="@color/colorTransparentGray"
                 android:layout_marginStart="@dimen/dialogSheetPaddingStart"
-                android:layout_marginEnd="@dimen/dialogSheetPaddingStart"/>
+                android:layout_marginEnd="@dimen/dialogSheetPaddingStart"
+                android:maxLines="1"
+                android:inputType="textMultiLine"
+                android:imeOptions="actionDone"/>
 
             <Button
                 android:id="@+id/sendBtn"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/colorAccent"
-                android:layout_marginTop="20dp"
                 android:text="@string/send"
                 android:layout_marginStart="@dimen/dialogSheetPaddingStart"
                 android:layout_marginEnd="@dimen/dialogSheetPaddingStart"

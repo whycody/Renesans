@@ -15,7 +15,7 @@
         android:orientation="horizontal"
         android:background="@android:color/white">
 
-        <ImageView
+        <pl.renesans.renesans.SquareImageView
             android:id="@+id/articlePhoto"
             android:layout_width="0dp"
             android:layout_height="80dp"

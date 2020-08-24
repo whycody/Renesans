@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.view.*
@@ -55,6 +56,9 @@ class SuggestionBottomSheetDialog:
                 view.titleOfParagraphView.text.toString(),
                 view.contentOfParagraphView.text.toString(),
                 commentView.text.toString()))}
+        view.titleOfParagraphView.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        view.contentOfParagraphView.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        view.commentView.setRawInputType(InputType.TYPE_CLASS_TEXT)
         loadMainPhoto()
         return view
     }
