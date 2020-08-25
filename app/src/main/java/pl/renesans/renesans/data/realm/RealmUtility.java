@@ -4,7 +4,7 @@ import io.realm.RealmConfiguration;
 
 public class RealmUtility {
 
-    private static final int SCHEMA_V_NOW = 5;
+    private static final int SCHEMA_V_NOW = 6;
 
     public static RealmConfiguration getDefaultConfig() {
         return new RealmConfiguration.Builder()

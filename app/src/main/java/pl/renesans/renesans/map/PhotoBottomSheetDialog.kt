@@ -38,20 +38,25 @@ import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.photo.PhotoActivity
 import pl.renesans.renesans.sources.SourcesBottomSheetDialog
+import pl.renesans.renesans.toast.ToastHelperImpl
+import pl.renesans.renesans.utility.BookmarkUtilityImpl
+import pl.renesans.renesans.utility.BookmarkUtilityInterractor
 import java.lang.StringBuilder
 
 class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
-    ImageDaoContract.ImageDaoInterractor, FirebaseContract.FirebaseInterractor {
+    ImageDaoContract.ImageDaoInterractor, FirebaseContract.FirebaseInterractor,
+    BookmarkUtilityInterractor.BookmarkView{
 
     private lateinit var articlePhoto: ImageView
     private lateinit var article: Article
+    private lateinit var bookmarkUtility: BookmarkUtilityInterractor.BookmarkUtility
     private lateinit var sourcesBtn: Button
     private lateinit var articleTitle: TextView
     private lateinit var articleParagraph: TextView
     private lateinit var invisibleView: View
     private lateinit var bookmarkView: ImageView
     private lateinit var photoArticle: PhotoArticle
-    private var bookmarkActive = false
+    private val toastHelper = ToastHelperImpl(activity!!)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -62,7 +67,6 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
         view.photoDescription.text = photoArticle.photo?.description
         view.articlePhoto.setBackgroundColor(Color.LTGRAY)
         view.articlePhoto.setOnClickListener{ startPhotoViewActivity() }
-        view.bookmarkView.setOnClickListener{ handleBookmarkOnClick() }
         val articleConverter = ArticleConverterImpl()
         articlePhoto = view.articlePhoto
         sourcesBtn = view.sourcesBtn
@@ -71,7 +75,9 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
         invisibleView = view.invisibleView
         bookmarkView = view.bookmarkView
         article = articleConverter.convertPhotoArticleToArticle(photoArticle)
+        bookmarkUtility = BookmarkUtilityImpl(context!!, this, article.objectId!!)
         photoArticle.paragraph?.subtitle = photoArticle.title
+        view.bookmarkView.setOnClickListener{ bookmarkUtility.handleBookmarkOnClick() }
         setupPopupMenuOnLongClick()
         setupSourcesBtn()
         loadMainPhoto()
@@ -92,13 +98,8 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
         return photoSheet
     }
 
-    private fun handleBookmarkOnClick() {
-        bookmarkActive = !bookmarkActive
-        changeColorOfBookmark()
-    }
-
-    private fun changeColorOfBookmark() {
-        val colorFilter = if(bookmarkActive) PorterDuffColorFilter(ContextCompat
+    override fun changeColorOfBookmark(active: Boolean) {
+        val colorFilter = if(active) PorterDuffColorFilter(ContextCompat
             .getColor(context!!, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP)
         else PorterDuffColorFilter(ContextCompat
             .getColor(context!!, R.color.colorBookmarkGray), PorterDuff.Mode.SRC_ATOP)
@@ -141,21 +142,11 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
     }
 
     override fun onSuccess() {
-        if (activity!=null) showToast(activity!!.getString(R.string.suggestions_sent))
+        if (activity!=null) toastHelper.showToast(activity!!.getString(R.string.suggestions_sent))
     }
 
     override fun onFail() {
-        if (activity!=null) showToast(activity!!.getString(R.string.suggestions_fail))
-    }
-
-    private fun showToast(text: String){
-        val view = activity!!.layoutInflater.inflate(R.layout.toast_suggestion,
-            activity!!.findViewById(R.id.toastView))
-        view.findViewById<TextView>(R.id.toastText).text = text
-        val toast = Toast(activity!!.applicationContext)
-        toast.setGravity(Gravity.BOTTOM or Gravity.FILL_HORIZONTAL, 0, 0)
-        toast.view = view
-        toast.show()
+        if (activity!=null) toastHelper.showToast(activity!!.getString(R.string.suggestions_fail))
     }
 
     private fun copyParagraph(paragraph: Paragraph){
@@ -203,6 +194,6 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
     }
 
     override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
-        if(context!=null && !photoBitmap.isRecycled) Glide.with(context!!).load(photoBitmap).into(articlePhoto)
+        if(context!=null) Glide.with(context!!).load(photoBitmap).into(articlePhoto)
     }
 }

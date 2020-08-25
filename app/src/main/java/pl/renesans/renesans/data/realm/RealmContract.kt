@@ -33,11 +33,14 @@ interface RealmContract {
 
         fun getArticlesItemsFromListWithId(id: String): List<ArticleItem>
 
-        fun getArticlesItemsFromSearchHistory(): List<ArticleItem>
+        fun getArticlesItemsFromLocalList(localListId: String,
+                                          onlyPhotoArticles: Boolean = false): List<ArticleItem>
 
-        fun addItemToSearchHistoryRealm(id: String)
+        fun addItemToLocalArticlesList(localListId: String, articleId: String)
 
-        fun deleteItemFromSearchHistoryRealm(id: String)
+        fun articleIsInLocalList(localListId: String, articleId: String): Boolean
+
+        fun deleteItemFromLocalArticlesList(localListId: String, articleId: String)
 
         fun getPhotoArticleWithId(id: String): PhotoArticle
 
@@ -55,6 +58,11 @@ interface RealmContract {
         fun downloadedProgress(percentages: Int)
 
         fun databaseIsUpToDate()
+    }
+
+    interface RealmBookmarkInterractor {
+
+        fun changeColorOfBookmark(active: Boolean)
     }
 
 }

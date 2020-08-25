@@ -11,7 +11,6 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import io.realm.Realm
-import io.realm.RealmList
 import io.realm.RealmResults
 import pl.renesans.renesans.R
 import pl.renesans.renesans.article.ArticleActivity
@@ -318,62 +317,68 @@ class RealmDaoImpl(private val context: Context,
         return allArticlesFromList.toList()
     }
 
-    override fun getArticlesItemsFromSearchHistory(): List<ArticleItem> {
+    override fun getArticlesItemsFromLocalList(localListId: String, onlyPhotoArticles: Boolean): List<ArticleItem> {
         val articlesItemsList = mutableListOf<ArticleItem>()
-        getSearchHistoryRealmList()?.forEach {
-            val articleItem = realmMapper.getArticleItem(getArticleWithId(it))
-            articleItem.searchHistoryItem = true
-            articlesItemsList.add(articleItem)
+        getLocalArticlesList(localListId)?.listOfLocalArticles?.forEach {
+            val articleItem = realmMapper.getArticleItem(getArticleWithId(it.id!!))
+            if(localListId == SEARCH_HISTORY) articleItem.searchHistoryItem = true
+            if(!onlyPhotoArticles || it.type == ArticleActivity.PHOTO_ARTICLE)
+                articlesItemsList.add(articleItem)
         }
         return articlesItemsList
     }
 
-    private fun getSearchHistoryRealmList(): RealmList<String>? =
-        getSearchHistoryRealm()?.listOfIdsOfLastSearchedItems
-
-    override fun addItemToSearchHistoryRealm(id: String) {
-        val searchHistoryRealm = getSearchHistoryRealm()
-        if(searchHistoryRealm == null) insertSearchHistoryToRealm(id)
-        else addIdToSearchHistoryRealm(id)
+    override fun addItemToLocalArticlesList(localListId: String, articleId: String) {
+        val searchHistoryRealm = getLocalArticlesList(localListId)
+        if(searchHistoryRealm == null) insertLocalArticlesListToRealm(localListId, articleId)
+        else addArticleToLocalArticlesList(localListId, articleId)
     }
 
-    override fun deleteItemFromSearchHistoryRealm(id: String) {
+    override fun deleteItemFromLocalArticlesList(localListId: String, articleId: String) {
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         realm.beginTransaction()
-        val searchHistoryRealm = getSearchHistoryRealm()
-        val indexOfItem =  searchHistoryRealm?.listOfIdsOfLastSearchedItems!!.indexOf(id)
-        searchHistoryRealm.listOfIdsOfLastSearchedItems?.removeAt(indexOfItem)
+        val localArticlesList = getLocalArticlesList(localListId)
+        val indexOfItem =  localArticlesList?.listOfLocalArticles!!.indexOfFirst { it.id == articleId }
+        localArticlesList.listOfLocalArticles?.removeAt(indexOfItem)
         realm.commitTransaction()
     }
 
-    private fun insertSearchHistoryToRealm(id: String){
+    private fun insertLocalArticlesListToRealm(localListId: String, articleId: String){
         realm.beginTransaction()
-        val searchHistoryRealm =
-            realm.createObject(SearchHistoryRealm::class.java)
-        searchHistoryRealm.listOfIdsOfLastSearchedItems?.add(id)
+        val localArticlesList =
+            realm.createObject(LocalArticlesListRealm::class.java)
+        localArticlesList.id = localListId
+        localArticlesList.listOfLocalArticles?.add(0, LocalArticleRealm(articleId, getTypeOfArticle(articleId)))
         realm.commitTransaction()
     }
 
-    private fun addIdToSearchHistoryRealm(id: String){
+    private fun addArticleToLocalArticlesList(localListId: String, articleId: String){
         realm.beginTransaction()
-        val searchHistoryRealm = getSearchHistoryRealm()
-        if(searchHistoryRealm?.listOfIdsOfLastSearchedItems!!.contains(id))
-            searchHistoryRealm.listOfIdsOfLastSearchedItems!!.move(
-                searchHistoryRealm.listOfIdsOfLastSearchedItems!!.indexOf(id), 0)
-        else searchHistoryRealm.listOfIdsOfLastSearchedItems?.add(0, id)
-        checkSizeOfSavedHistory(searchHistoryRealm)
+        val localArticlesList = getLocalArticlesList(localListId)
+        if(articleIsInLocalList(localListId, articleId)) localArticlesList?.listOfLocalArticles!!
+            .move(localArticlesList.listOfLocalArticles!!.indexOfFirst { it.id == articleId }, 0)
+        else localArticlesList?.listOfLocalArticles?.add(0,
+            LocalArticleRealm(articleId, getTypeOfArticle(articleId)))
+        if(localListId == SEARCH_HISTORY) checkSizeOfSavedHistory(localArticlesList!!)
         realm.commitTransaction()
     }
 
-    private fun checkSizeOfSavedHistory(searchHistoryRealm: SearchHistoryRealm){
-        if(searchHistoryRealm.listOfIdsOfLastSearchedItems?.size!! > 10)
-            searchHistoryRealm.listOfIdsOfLastSearchedItems!!.removeAt(
-                searchHistoryRealm.listOfIdsOfLastSearchedItems?.size!! - 1)
+    override fun articleIsInLocalList(localListId: String, articleId: String): Boolean {
+        val localArticlesList = getLocalArticlesList(localListId)
+        return if(localArticlesList == null) false
+        else localArticlesList.listOfLocalArticles!!.any{ it.id == articleId }
     }
 
-    private fun getSearchHistoryRealm(): SearchHistoryRealm?{
+    private fun checkSizeOfSavedHistory(searchHistoryLocalList: LocalArticlesListRealm){
+        if(searchHistoryLocalList.listOfLocalArticles?.size!! > 10)
+            searchHistoryLocalList.listOfLocalArticles!!.removeAt(
+                searchHistoryLocalList.listOfLocalArticles?.size!! - 1)
+    }
+
+    private fun getLocalArticlesList(id: String): LocalArticlesListRealm? {
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
-        return realm.where(SearchHistoryRealm::class.java).findFirst()
+        return realm.where(LocalArticlesListRealm::class.java)
+            .contains("id", id).findFirst()
     }
 
     private fun getRealmArticlesFromListWithId(id: String?): RealmResults<ArticleRealm> =
@@ -470,5 +475,7 @@ class RealmDaoImpl(private val context: Context,
         const val ARTICLE = "ARTICLE"
         const val PHOTO_ARTICLE = "PHOTO_ARTICLE"
         const val ALL_DOWNLOADED = "ALL_DOWNLOADED"
+        const val SEARCH_HISTORY = "SEARCH_HISTORY"
+        const val MARKED_ARTICLES = "MARKED_ARTICLES"
     }
 }

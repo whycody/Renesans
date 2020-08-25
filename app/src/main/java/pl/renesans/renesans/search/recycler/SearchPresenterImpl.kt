@@ -28,7 +28,7 @@ class SearchPresenterImpl(private val context: Context,
         imageDao = ImageDaoImpl(context, this)
     }
 
-    override fun getSearchedArticles() = realmDao.getArticlesItemsFromSearchHistory()
+    override fun getSearchedArticles() = realmDao.getArticlesItemsFromLocalList(RealmDaoImpl.SEARCH_HISTORY)
 
     override fun getAllArticles() =
         converter.convertArticlesToArticleItemsList(realmDao.getAllArticles())
@@ -40,12 +40,12 @@ class SearchPresenterImpl(private val context: Context,
     }
 
     override fun itemClicked(pos: Int) {
-        realmDao.addItemToSearchHistoryRealm(articlesList[pos].objectId!!)
+        realmDao.addItemToLocalArticlesList(RealmDaoImpl.SEARCH_HISTORY, articlesList[pos].objectId!!)
         searchView.startArticleActivity(articlesList[pos].objectId!!)
     }
 
     override fun deleteItemClicked(pos: Int) {
-        realmDao.deleteItemFromSearchHistoryRealm(articlesList[pos].objectId!!)
+        realmDao.deleteItemFromLocalArticlesList(RealmDaoImpl.SEARCH_HISTORY, articlesList[pos].objectId!!)
         articlesList = getSearchedArticles()
         searchView.viewDeletedAtPos(pos)
     }

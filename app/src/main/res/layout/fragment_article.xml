@@ -49,9 +49,10 @@
                 <ImageView
                     android:id="@+id/articleBookmark"
                     android:layout_width="wrap_content"
-                    android:layout_height="42dp"
-                    android:layout_marginTop="20dp"
-                    android:padding="10dp"
+                    android:layout_height="62dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:paddingStart="@dimen/articleMargin"
                     android:paddingEnd="@dimen/articleMargin"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

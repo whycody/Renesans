@@ -16,18 +16,19 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_photo.view.*
 import kotlinx.android.synthetic.main.fragment_article.view.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 import pl.renesans.renesans.photo.PhotoActivity
+import pl.renesans.renesans.utility.BookmarkUtilityImpl
+import pl.renesans.renesans.utility.BookmarkUtilityInterractor
 
 
 class ArticleFragment(var article: Article? = null,
                       private val articleActivityView: ArticleContract.ArticleActivityView? = null)
-    : Fragment(), ArticleContract.ArticleFragmentView {
+    : Fragment(), ArticleContract.ArticleFragmentView, BookmarkUtilityInterractor.BookmarkView {
 
     private val imagesList = mutableListOf<ImageView>()
     private lateinit var presenter: ArticleContract.ArticlePresenter
@@ -35,7 +36,7 @@ class ArticleFragment(var article: Article? = null,
     private lateinit var articleLinear: LinearLayout
     private lateinit var headerLinear: LinearLayout
     private lateinit var bookmarkView: ImageView
-    private var bookmarkActive = false
+    private lateinit var bookmarkUtility: BookmarkUtilityInterractor.BookmarkUtility
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,27 +45,22 @@ class ArticleFragment(var article: Article? = null,
         articleLinear = view.articleLinear
         headerLinear = view.headerLinear
         bookmarkView = view.articleBookmark
-        bookmarkView.setOnClickListener{ handleBookmarkOnClick() }
         if(article == null) article = getArticleObject()
+        bookmarkUtility = BookmarkUtilityImpl(context!!, this, article?.objectId!!)
+        bookmarkView.setOnClickListener{ bookmarkUtility.handleBookmarkOnClick() }
         imagesList.add(articleImage)
-        val articleDao = ArticleDaoImpl()
-        loadSizeOfImageView(articleDao.getObjectTypeFromObjectId(article?.objectId!!))
+        loadSizeOfImageView(ArticleDaoImpl().getObjectTypeFromObjectId(article?.objectId!!))
         presenter = ArticlePresenterImpl(activity!! as ArticleActivity, this, articleActivityView)
         presenter.loadContent()
         showPhotoViewActivityOnImageViewClick()
         return view
     }
 
-    private fun handleBookmarkOnClick() {
-        bookmarkActive = !bookmarkActive
-        changeColorOfBookmark()
-    }
-
-    private fun changeColorOfBookmark() {
-        val colorFilter = if(bookmarkActive) PorterDuffColorFilter(ContextCompat
+    override fun changeColorOfBookmark(active: Boolean) {
+        val colorFilter = if(active) PorterDuffColorFilter(ContextCompat
             .getColor(context!!, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP)
         else PorterDuffColorFilter(ContextCompat
-            .getColor(context!!, R.color.colorBookmarkGray), PorterDuff.Mode.SRC_ATOP)
+            .getColor(context!!, R.color.colorImageGray), PorterDuff.Mode.SRC_ATOP)
         bookmarkView.drawable.colorFilter = colorFilter
     }
 

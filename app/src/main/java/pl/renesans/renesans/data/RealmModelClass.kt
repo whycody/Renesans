@@ -2,9 +2,7 @@ package pl.renesans.renesans.data
 
 import io.realm.RealmList
 import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
 import pl.renesans.renesans.data.article.ArticleDaoImpl
-import java.io.Serializable
 
 open class ArticlesListRealm(var id: String? = null,
                              var type: String? = null,
@@ -66,4 +64,8 @@ open class ParagraphRealm(var subtitle: String? = null,
 
 open class DatabaseVersionRealm(var version: Int? = null): RealmObject()
 
-open class SearchHistoryRealm(var listOfIdsOfLastSearchedItems: RealmList<String>? = null): RealmObject()
+open class LocalArticlesListRealm(var id: String? = null,
+                                  var listOfLocalArticles: RealmList<LocalArticleRealm>? = null): RealmObject()
+
+open class LocalArticleRealm(var id: String? = null,
+                             var type: String? = null): RealmObject()
