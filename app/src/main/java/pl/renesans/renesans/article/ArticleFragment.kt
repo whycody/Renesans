@@ -3,6 +3,8 @@ package pl.renesans.renesans.article
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Point
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.net.Uri
 import android.os.Bundle
 import android.view.Display
@@ -11,8 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_photo.view.*
 import kotlinx.android.synthetic.main.fragment_article.view.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Article
@@ -30,6 +34,8 @@ class ArticleFragment(var article: Article? = null,
     private lateinit var articleImage: ImageView
     private lateinit var articleLinear: LinearLayout
     private lateinit var headerLinear: LinearLayout
+    private lateinit var bookmarkView: ImageView
+    private var bookmarkActive = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -37,6 +43,8 @@ class ArticleFragment(var article: Article? = null,
         articleImage = view.articleImage
         articleLinear = view.articleLinear
         headerLinear = view.headerLinear
+        bookmarkView = view.articleBookmark
+        bookmarkView.setOnClickListener{ handleBookmarkOnClick() }
         if(article == null) article = getArticleObject()
         imagesList.add(articleImage)
         val articleDao = ArticleDaoImpl()
@@ -45,6 +53,19 @@ class ArticleFragment(var article: Article? = null,
         presenter.loadContent()
         showPhotoViewActivityOnImageViewClick()
         return view
+    }
+
+    private fun handleBookmarkOnClick() {
+        bookmarkActive = !bookmarkActive
+        changeColorOfBookmark()
+    }
+
+    private fun changeColorOfBookmark() {
+        val colorFilter = if(bookmarkActive) PorterDuffColorFilter(ContextCompat
+            .getColor(context!!, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP)
+        else PorterDuffColorFilter(ContextCompat
+            .getColor(context!!, R.color.colorBookmarkGray), PorterDuff.Mode.SRC_ATOP)
+        bookmarkView.drawable.colorFilter = colorFilter
     }
 
     private fun loadSizeOfImageView(objectType: Int){

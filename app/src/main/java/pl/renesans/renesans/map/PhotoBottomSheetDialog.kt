@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
@@ -22,6 +24,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.activity_tour.view.articlePhoto
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_photo.view.*
 import kotlinx.android.synthetic.main.tour_slide_layout.view.articleParagraph
 import kotlinx.android.synthetic.main.tour_slide_layout.view.articleTitle
 import kotlinx.android.synthetic.main.tour_slide_layout.view.photoDescription
@@ -46,7 +49,9 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
     private lateinit var articleTitle: TextView
     private lateinit var articleParagraph: TextView
     private lateinit var invisibleView: View
+    private lateinit var bookmarkView: ImageView
     private lateinit var photoArticle: PhotoArticle
+    private var bookmarkActive = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -57,12 +62,14 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
         view.photoDescription.text = photoArticle.photo?.description
         view.articlePhoto.setBackgroundColor(Color.LTGRAY)
         view.articlePhoto.setOnClickListener{ startPhotoViewActivity() }
+        view.bookmarkView.setOnClickListener{ handleBookmarkOnClick() }
         val articleConverter = ArticleConverterImpl()
-        articlePhoto = view.findViewById(R.id.articlePhoto)
-        sourcesBtn = view.findViewById(R.id.sourcesBtn)
-        articleTitle = view.findViewById(R.id.articleTitle)
-        articleParagraph = view.findViewById(R.id.articleParagraph)
-        invisibleView = view.findViewById(R.id.invisibleView)
+        articlePhoto = view.articlePhoto
+        sourcesBtn = view.sourcesBtn
+        articleTitle = view.articleTitle
+        articleParagraph = view.articleParagraph
+        invisibleView = view.invisibleView
+        bookmarkView = view.bookmarkView
         article = articleConverter.convertPhotoArticleToArticle(photoArticle)
         photoArticle.paragraph?.subtitle = photoArticle.title
         setupPopupMenuOnLongClick()
@@ -85,13 +92,26 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
         return photoSheet
     }
 
-    private fun loadMainPhoto(){
+    private fun handleBookmarkOnClick() {
+        bookmarkActive = !bookmarkActive
+        changeColorOfBookmark()
+    }
+
+    private fun changeColorOfBookmark() {
+        val colorFilter = if(bookmarkActive) PorterDuffColorFilter(ContextCompat
+            .getColor(context!!, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP)
+        else PorterDuffColorFilter(ContextCompat
+            .getColor(context!!, R.color.colorBookmarkGray), PorterDuff.Mode.SRC_ATOP)
+        bookmarkView.drawable.colorFilter = colorFilter
+    }
+
+    private fun loadMainPhoto() {
         val imageDao = ImageDaoImpl(context!!, this)
         if(photoArticle.photo!=null) imageDao.loadPhoto(id = photoArticle.photo!!.objectId!!)
         else imageDao.loadPhoto(id = photoArticle.objectId + "_0")
     }
 
-    private fun setupSourcesBtn(){
+    private fun setupSourcesBtn() {
         val articleDao = ArticleDaoImpl()
         if(!articleDao.articleHasSources(article)) sourcesBtn.visibility = View.GONE
         else sourcesBtn.setOnClickListener{ startSourceActivity() }

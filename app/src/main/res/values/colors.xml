@@ -10,6 +10,7 @@
     <color name="colorGray">#F8F8F8</color>
     <color name="colorLightGray">#FDFDFD</color>
     <color name="colorTransparentGray">#26000000</color>
+    <color name="colorBookmarkGray">#D5D5D5</color>
     <color name="colorGrayToast">#E6000000</color>
     <color name="colorTransparentPrimary">#59C76429</color>
 </resources>

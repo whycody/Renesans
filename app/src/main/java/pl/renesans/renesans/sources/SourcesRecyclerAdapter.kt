@@ -15,12 +15,9 @@ class SourcesRecyclerAdapter(val context: Context, val presenter: SourcesContrac
         return SourcesRowHolder(view, context, presenter)
     }
 
-    override fun getItemCount(): Int {
-        return presenter.getItemCount()
-    }
+    override fun getItemCount() = presenter.getItemCount()
 
-    override fun onBindViewHolder(holder: SourcesRowHolder, position: Int) {
-        return presenter.onBindViewHolder(holder, position)
-    }
+    override fun onBindViewHolder(holder: SourcesRowHolder, position: Int) =
+        presenter.onBindViewHolder(holder, position)
 
 }

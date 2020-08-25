@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:elevation="10dp"
     android:background="@color/colorGray">
 
@@ -24,34 +24,58 @@
             android:layout_height="20dp"
             android:background="@color/colorAccent"/>
 
-        <TextView
-            android:id="@+id/photoDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Example photo description"
-            android:paddingStart="@dimen/dialogSheetPaddingStart"
-            android:paddingEnd="@dimen/dialogSheetPaddingStart"
-            android:paddingTop="10dp"
-            android:textSize="12sp"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/articleTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Example title"
-            android:textStyle="bold"
-            android:textColor="@color/colorTitleGray"
-            android:paddingStart="@dimen/dialogSheetPaddingStart"
-            android:paddingEnd="@dimen/dialogSheetPaddingStart"
-            android:paddingTop="2dp"
-            android:paddingBottom="15dp"
-            android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/photoDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/dialogSheetPaddingStart"
+                android:paddingTop="10dp"
+                android:paddingEnd="@dimen/dialogSheetPaddingStart"
+                android:text="Example photo description"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/bookmarkView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/articleTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/dialogSheetPaddingStart"
+                android:paddingTop="2dp"
+                android:paddingEnd="@dimen/dialogSheetPaddingStart"
+                android:text="Example title"
+                android:textColor="@color/colorTitleGray"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/bookmarkView"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/photoDescription" />
+
+            <ImageView
+                android:id="@+id/bookmarkView"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:padding="10dp"
+                android:paddingEnd="@dimen/dialogSheetPaddingStart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_bookmark" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/invisibleView"
             android:layout_width="1px"
             android:layout_height="1px"
             android:layout_marginStart="18dp"
+            android:layout_marginTop="15dp"
             android:background="@android:color/transparent"/>
 
         <TextView
