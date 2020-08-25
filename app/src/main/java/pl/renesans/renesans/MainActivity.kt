@@ -19,7 +19,7 @@ import pl.renesans.renesans.toast.ToastHelperImpl
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener, FirebaseContract.FirebaseInterractor {
 
-    private var discoverFragment = DiscoverFragment()
+    private val discoverFragment = DiscoverFragment()
     private var mapFragment = MapFragment()
     private val settingsFragment = SettingsFragment()
     private val firebaseDao = FirebaseDaoImpl()
@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkBundle(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(mainToolbar as Toolbar)
         mainNav.setOnNavigationItemSelectedListener(this)
@@ -38,6 +39,13 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             onNavigationItemSelected(mainNav.menu.getItem(savedInstanceState.getInt("lastTab")))
         else changeFragment(discoverFragment, "discover")
         firebaseDao.refreshArticles()
+    }
+
+    private fun checkBundle(savedInstanceState: Bundle?) {
+        if(savedInstanceState != null){
+            val mapFragmentInManager = supportFragmentManager.findFragmentByTag(MAP)
+            if(mapFragmentInManager != null) mapFragment = mapFragmentInManager as MapFragment
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
@@ -72,15 +80,15 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         return when(p0.itemId) {
             R.id.discover -> {
                 currentItem = 0
-                changeFragment(discoverFragment, "discover")
+                changeFragment(discoverFragment, DISCOVER)
                 true
             }R.id.map -> {
                 currentItem = 1
-                changeFragment(mapFragment, "map")
+                changeFragment(mapFragment, MAP)
                 true
             }R.id.settings -> {
                 currentItem = 2
-                changeFragment(settingsFragment, "settings")
+                changeFragment(settingsFragment, SETTINGS)
                 true
             }
             else -> false
@@ -101,6 +109,10 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         fragmentTransaction.setPrimaryNavigationFragment(fragmentTemp)
         fragmentTransaction.setReorderingAllowed(true)
         fragmentTransaction.commitNowAllowingStateLoss()
+        refreshFragments(firstLoadOfFragment, tagFragmentName)
+    }
+
+    private fun refreshFragments(firstLoadOfFragment: Boolean, tagFragmentName: String) {
         if(!firstLoadOfFragment && tagFragmentName == "map") {
             if(refreshMapFragment) mapFragment.reloadMap()
             if(changedOptionOfMapLimit) mapFragment.changedOptionOfMapLimit()
@@ -117,5 +129,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onSuccess() = toastHelper.showToast(getString(R.string.suggestions_sent))
 
     override fun onFail() = toastHelper.showToast(getString(R.string.suggestions_fail))
+
+    companion object {
+        const val DISCOVER = "discover"
+        const val MAP = "map"
+        const val SETTINGS = "settings"
+    }
 
 }
