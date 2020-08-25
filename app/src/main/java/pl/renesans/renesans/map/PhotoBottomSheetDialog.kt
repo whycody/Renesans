@@ -38,6 +38,7 @@ import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.photo.PhotoActivity
 import pl.renesans.renesans.sources.SourcesBottomSheetDialog
+import pl.renesans.renesans.toast.ToastHelper
 import pl.renesans.renesans.toast.ToastHelperImpl
 import pl.renesans.renesans.utility.BookmarkUtilityImpl
 import pl.renesans.renesans.utility.BookmarkUtilityInterractor
@@ -56,7 +57,7 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
     private lateinit var invisibleView: View
     private lateinit var bookmarkView: ImageView
     private lateinit var photoArticle: PhotoArticle
-    private val toastHelper = ToastHelperImpl(activity!!)
+    private lateinit var toastHelper: ToastHelper
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -68,6 +69,7 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
         view.articlePhoto.setBackgroundColor(Color.LTGRAY)
         view.articlePhoto.setOnClickListener{ startPhotoViewActivity() }
         val articleConverter = ArticleConverterImpl()
+        toastHelper = ToastHelperImpl(activity!!)
         articlePhoto = view.articlePhoto
         sourcesBtn = view.sourcesBtn
         articleTitle = view.articleTitle
