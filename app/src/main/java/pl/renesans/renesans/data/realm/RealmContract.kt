@@ -11,6 +11,8 @@ interface RealmContract {
 
         fun refreshRealmDatabase(firstDownload: Boolean = false)
 
+        fun getDatabaseVersion(): String
+
         fun checkRealm()
 
         fun checkRealmLists()
@@ -58,11 +60,6 @@ interface RealmContract {
         fun downloadedProgress(percentages: Int)
 
         fun databaseIsUpToDate()
-    }
-
-    interface RealmBookmarkInterractor {
-
-        fun changeColorOfBookmark(active: Boolean)
     }
 
 }

@@ -3,20 +3,51 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/ripple">
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/listDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings"
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:layout_marginTop="25dp"
+        android:visibility="gone"
+        android:paddingLeft="20dp"/>
+
+    <View
+        android:id="@+id/underline"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.1"
+        android:background="@color/colorParagraphGray"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:paddingLeft="20dp">
+        android:paddingLeft="20dp"
+        android:background="@drawable/ripple">
+
+        <ImageView
+            android:id="@+id/settingImage"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_bookmark"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="5"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
@@ -28,7 +59,7 @@
                 android:textColor="@color/colorTitleGray"/>
 
             <TextView
-                android:id="@+id/settingDescribe"
+                android:id="@+id/settingDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Example setting description"
@@ -47,12 +78,5 @@
             android:layout_marginLeft="20dp"/>
 
     </LinearLayout>
-
-    <View
-        android:id="@+id/underline"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:alpha="0.1"
-        android:background="@color/colorParagraphGray"/>
 
 </LinearLayout>

@@ -37,7 +37,7 @@
                 android:textColor="@color/colorTitleGray"/>
 
             <TextView
-                android:id="@+id/settingDescribe"
+                android:id="@+id/settingDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Example setting description"

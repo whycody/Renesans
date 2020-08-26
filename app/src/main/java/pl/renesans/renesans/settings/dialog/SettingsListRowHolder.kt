@@ -12,7 +12,7 @@ class SettingsListRowHolder(itemView: View, val presenter: SettingsListContract.
     }
 
     override fun setDescription(description: String) {
-        itemView.settingDescribe.settingDescribe.text = description
+        itemView.settingDescription.text = description
     }
 
     override fun setOnClickListener(pos: Int) {

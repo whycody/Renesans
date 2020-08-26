@@ -16,6 +16,8 @@ import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Setting
 import pl.renesans.renesans.data.SettingListItem
+import pl.renesans.renesans.data.SettingsList
+import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.settings.dialog.SettingsDialogFragment
 import pl.renesans.renesans.settings.dialog.SettingsListContract
 
@@ -27,29 +29,51 @@ class SettingsPresenterImpl(private val activity: MainActivity,
     private val sharedPrefs: SharedPreferences =
         activity.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
     private val editor = sharedPrefs.edit()
+    private val realmDao = RealmDaoImpl(activity.applicationContext)
     private val settingsList = getSettings()
     private var currentMapMode = sharedPrefs.getInt(MAP_MODE, 0)
     private var selectedDownloadPhotosSetting = sharedPrefs.getInt(DOWNLOAD_PHOTOS, 0)
     private var downloadPhotosSettingIndex = 0
 
-    private fun getSettings(): List<Setting>{
-        val settingsList = mutableListOf<Setting>()
-        settingsList.add(Setting(ERA, activity.getString(R.string.era),
+    private fun getSettings(): List<Setting> {
+        val listOfSettingsLists =
+            listOf(getLoginSettings(), getBasicSettings(), getMapSettings(), getAppSettings())
+        return getSettingsFromLists(listOfSettingsLists)
+    }
+
+    private fun getLoginSettings(): SettingsList {
+        val loginSettingsList = SettingsList()
+        loginSettingsList.settings.add(Setting(LOGIN, activity.getString(R.string.login),
+            booleanValue = false, imageDrawable = activity.getDrawable(R.drawable.ic_user)))
+        loginSettingsList.settings.add(Setting(BOOKMARKS, activity.getString(R.string.saved_places),
+            booleanValue = false, imageDrawable = activity.getDrawable(R.drawable.ic_bookmark)))
+        return loginSettingsList
+    }
+
+    private fun getBasicSettings(): SettingsList {
+        val basicsSettingsList = SettingsList(activity.getString(R.string.settings))
+        basicsSettingsList.settings.add(Setting(ERA, activity.getString(R.string.era),
             activity.getString(R.string.renesans), false))
-        settingsList.add(Setting(DOWNLOAD_PHOTOS, activity.getString(R.string.download_photos),
+        basicsSettingsList.settings.add(Setting(DOWNLOAD_PHOTOS,
+            activity.getString(R.string.download_photos),
             getDownloadPhotosDescription(getDownloadPhotosMode()),
             booleanValue = false, defaultValue = false,
             listOfOptions = listOf(SettingListItem(NOT_DOWNLOAD,
                 activity.getString(R.string.not_download),
                 getDownloadPhotosDescription(NOT_DOWNLOAD)),
-            SettingListItem(DOWNLOAD_BAD_QUALITY,
-                activity.getString(R.string.download_bad_quality),
-                getDownloadPhotosDescription(DOWNLOAD_BAD_QUALITY)),
-            SettingListItem(DOWNLOAD_HIGH_QUALITY,
-                activity.getString(R.string.download_high_quality),
-                getDownloadPhotosDescription(DOWNLOAD_HIGH_QUALITY))),
+                SettingListItem(DOWNLOAD_BAD_QUALITY,
+                    activity.getString(R.string.download_bad_quality),
+                    getDownloadPhotosDescription(DOWNLOAD_BAD_QUALITY)),
+                SettingListItem(DOWNLOAD_HIGH_QUALITY,
+                    activity.getString(R.string.download_high_quality),
+                    getDownloadPhotosDescription(DOWNLOAD_HIGH_QUALITY))),
             defaultSettingsItemPos = getDownloadPhotosMode()))
-        settingsList.add(Setting(MAP_MODE, activity.getString(R.string.map_mode),
+        return basicsSettingsList
+    }
+
+    private fun getMapSettings(): SettingsList {
+        val mapSettingsList = SettingsList(activity.getString(R.string.map))
+        mapSettingsList.settings.add(Setting(MAP_MODE, activity.getString(R.string.map_mode),
             getMapModeDescription(), booleanValue = false, defaultValue = false,
             listOfOptions = listOf(
                 SettingListItem(ALL_BUILDINGS,
@@ -62,18 +86,38 @@ class SettingsPresenterImpl(private val activity: MainActivity,
                     activity.getString(R.string.era_buildings),
                     getMapModeDescription(ERA_BUILDINGS))),
             defaultSettingsItemPos = sharedPrefs.getInt(MAP_MODE, 0)))
-        settingsList.add(Setting(MAP_FUNCTIONALITIES, activity.getString(R.string.map_functionalities),
+        mapSettingsList.settings.add(Setting(MAP_FUNCTIONALITIES,
+            activity.getString(R.string.map_functionalities),
             activity.getString(R.string.map_functionalities_desc),
             true, sharedPrefs.getBoolean(MAP_FUNCTIONALITIES, !freeRamMemoryIsEnough())))
-        settingsList.add(Setting(MAP_ANIMATIONS, activity.getString(R.string.map_animations),
+        mapSettingsList.settings.add(Setting(MAP_ANIMATIONS,
+            activity.getString(R.string.map_animations),
             activity.getString(R.string.map_animations_desc),
             true, sharedPrefs.getBoolean(MAP_ANIMATIONS, false)))
-        settingsList.add(Setting(MAP_OPACITY, activity.getString(R.string.tour_view),
+        mapSettingsList.settings.add(Setting(MAP_OPACITY,
+            activity.getString(R.string.tour_view),
             activity.getString(R.string.tour_view_desc),
             true, sharedPrefs.getBoolean(MAP_OPACITY, true)))
-        settingsList.add(Setting(APP_VERSION,
+        return mapSettingsList
+    }
+
+    private fun getAppSettings(): SettingsList {
+        val appSettingsList = SettingsList(activity.getString(R.string.app))
+        appSettingsList.settings.add(Setting(APP_VERSION,
             activity.getString(R.string.app_version), BuildConfig.VERSION_NAME, false))
-        return settingsList
+        appSettingsList.settings.add(Setting(APP_VERSION,
+            activity.getString(R.string.db_version), realmDao.getDatabaseVersion(), false))
+        return appSettingsList
+    }
+
+    private fun getSettingsFromLists(listOfSettingsLists: List<SettingsList>): List<Setting> {
+        val allSettings = mutableListOf<Setting>()
+        for(settingsList in listOfSettingsLists){
+            if(settingsList.description != null)
+                settingsList.settings[0].listDescription = settingsList.description
+            for(setting in settingsList.settings) allSettings.add(setting)
+        }
+        return allSettings
     }
 
     private fun getDownloadPhotosMode(): Int {
@@ -81,7 +125,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         else sharedPrefs.getInt(DOWNLOAD_PHOTOS, DOWNLOAD_BAD_QUALITY)
     }
 
-    private fun getMapModeDescription(index: Int = sharedPrefs.getInt(MAP_MODE, 0)): String{
+    private fun getMapModeDescription(index: Int = sharedPrefs.getInt(MAP_MODE, 0)): String {
         return when (index) {
             ALL_BUILDINGS -> activity.getString(R.string.all_buildings_desc)
             ALL_TO_CHOOSED_ERA -> activity.getString(R.string.all_to_choosed_era_desc)
@@ -89,7 +133,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         }
     }
 
-    private fun getDownloadPhotosDescription(index: Int): String{
+    private fun getDownloadPhotosDescription(index: Int): String {
         return when (index) {
             NOT_DOWNLOAD -> activity.getString(R.string.not_download_desc)
             DOWNLOAD_BAD_QUALITY -> activity.getString(R.string.download_bad_quality_desc)
@@ -114,7 +158,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         if(settingsList[pos].settingId == MAP_FUNCTIONALITIES) settingsView.changedOptionOfMapLimit()
     }
 
-    private fun showDownloadPhotosDialog(setting: Setting, settingPos: Int){
+    private fun showDownloadPhotosDialog(setting: Setting, settingPos: Int) {
         downloadPhotosSettingIndex = settingPos
         val dialog = SettingsDialogFragment(object : SettingsListContract.SettingsListView{
             override fun getSettingItemsList(): List<SettingListItem> {
@@ -139,7 +183,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
     private fun downloadPhotosPermisionIsGranted() = (ContextCompat.checkSelfPermission(activity,
         Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 
-    private fun showMapModeDialog(setting: Setting, settingPos: Int){
+    private fun showMapModeDialog(setting: Setting, settingPos: Int) {
         currentMapMode = setting.defaultSettingsItemPos
         val dialog = SettingsDialogFragment(object : SettingsListContract.SettingsListView{
             override fun getSettingItemsList(): List<SettingListItem> {
@@ -158,7 +202,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         dialog.show(activity.supportFragmentManager, "MapMode")
     }
 
-    private fun showDownloadPhotosPermissionDialog(){
+    private fun showDownloadPhotosPermissionDialog() {
         val dialog = AlertDialog.Builder(activity)
             .setTitle(activity.getString(R.string.warning))
             .setMessage(activity.getString(R.string.permission_needed))
@@ -171,7 +215,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         dialog.show()
     }
 
-    private fun showMapModeWarningDialog(settingsPos: Int){
+    private fun showMapModeWarningDialog(settingsPos: Int) {
         val dialog = AlertDialog.Builder(activity)
             .setTitle(activity.getString(R.string.warning))
             .setMessage(activity.getString(R.string.warning_desc))
@@ -183,14 +227,14 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         dialog.show()
     }
 
-    private fun setColorsOfButtonsOfDialog(dialog: AlertDialog){
+    private fun setColorsOfButtonsOfDialog(dialog: AlertDialog) {
         dialog.setOnShowListener{
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.GRAY)
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.GRAY)
         }
     }
 
-    private fun refreshDownloadPhotosSetting(downloadPhotosMode: Int, settingsPos: Int){
+    private fun refreshDownloadPhotosSetting(downloadPhotosMode: Int, settingsPos: Int) {
         val setting = settingsList[settingsPos]
         editor.putInt(DOWNLOAD_PHOTOS, downloadPhotosMode)
         editor.apply()
@@ -199,7 +243,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         settingsView.notifyItemChangedAtPosition(settingsPos)
     }
 
-    private fun refreshMapModeSetting(mapModePos: Int, settingsPos: Int){
+    private fun refreshMapModeSetting(mapModePos: Int, settingsPos: Int) {
         val setting = settingsList[settingsPos]
         editor.putInt(MAP_MODE, mapModePos)
         editor.apply()
@@ -214,31 +258,60 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         resetVariables(holder)
         refreshHoldersList(holder, position)
         holder.setSettingTitle(settingsList[position].settingTitle!!)
-        if(settingsList[position].settingDescription!=null)
-            holder.setSettingDescribe(settingsList[position].settingDescription!!)
-        if(settingsList[position].booleanValue)
-            holder.setCheckBoxChecked(settingsList[position].defaultValue)
-        else holder.setCheckBoxVisibility(View.INVISIBLE)
+        setupSettingDescription(holder, position)
+        setupCheckBox(holder, position)
+        setupListDescription(holder, position)
+        setupSettingImage(holder, position)
+        setUnderlineVisibility(holder, position)
         holder.setOnRowClickListener(position)
-        if(position == settingsList.size-1) holder.setUnderlineVisibility(View.INVISIBLE)
+    }
+
+    private fun refreshHoldersList(holder: SettingsRowHolder, position: Int) {
+        if(holders.size-1<position || holders.isEmpty()) holders.add(position, holder)
+        else holders[position] = holder
+    }
+
+    private fun resetVariables(holder: SettingsRowHolder) {
+        holder.setSettingTitle(" ")
+        holder.setOnRowClickListener(0)
+    }
+
+    private fun setupSettingDescription(holder: SettingsRowHolder, position: Int) {
+        if(settingsList[position].settingDescription!=null)
+            holder.setupSettingDescription(View.VISIBLE, settingsList[position].settingDescription!!)
+        else holder.setupSettingDescription(View.GONE)
+    }
+
+    private fun setupCheckBox(holder: SettingsRowHolder, position: Int) {
+        if(settingsList[position].booleanValue)
+            holder.setupCheckBox(View.VISIBLE, settingsList[position].defaultValue)
+        else holder.setupCheckBox(View.INVISIBLE)
+    }
+
+    private fun setupListDescription(holder: SettingsRowHolder, position: Int) {
+        if(settingsList[position].listDescription != null)
+            holder.setupListDescription(View.VISIBLE, settingsList[position].listDescription)
+        else holder.setupListDescription(View.GONE)
+    }
+
+    private fun setupSettingImage(holder: SettingsRowHolder, position: Int) {
+        if(settingsList[position].imageDrawable != null)
+            holder.setupSettingImage(View.VISIBLE, settingsList[position].imageDrawable)
+        else holder.setupSettingImage(View.GONE)
+    }
+
+    private fun setUnderlineVisibility(holder: SettingsRowHolder, position: Int) {
+        if(position == 0 || settingsList[position].listDescription != null)
+            holder.setUnderlineVisibility(View.INVISIBLE)
         else holder.setUnderlineVisibility(View.VISIBLE)
     }
 
     override fun writeExternalStoragePermissionGranted() =
         refreshDownloadPhotosSetting(selectedDownloadPhotosSetting, downloadPhotosSettingIndex)
 
-    private fun refreshHoldersList(holder: SettingsRowHolder, position: Int){
-        if(holders.size-1<position || holders.isEmpty()) holders.add(position, holder)
-        else holders[position] = holder
-    }
-
-    private fun resetVariables(holder: SettingsRowHolder){
-        holder.setSettingTitle(" ")
-        holder.setSettingDescribe(" ")
-        holder.setOnRowClickListener(0)
-    }
-
     companion object{
+        const val LOGIN = "login"
+        const val BOOKMARKS = "bookmarks"
         const val ERA = "era"
         const val DOWNLOAD_PHOTOS = "download photos"
         const val MAP_FUNCTIONALITIES = "map functionalities"

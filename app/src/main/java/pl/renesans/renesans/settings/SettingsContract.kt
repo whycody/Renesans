@@ -1,5 +1,7 @@
 package pl.renesans.renesans.settings
 
+import android.graphics.drawable.Drawable
+
 interface SettingsContract {
 
     interface SettingsView{
@@ -17,13 +19,15 @@ interface SettingsContract {
 
         fun setSettingTitle(title: String)
 
-        fun setSettingDescribe(describe: String)
+        fun setupSettingDescription(visibility: Int, description: String? = null)
 
-        fun setCheckBoxChecked(checked: Boolean)
-
-        fun setCheckBoxVisibility(visibility: Int)
+        fun setupCheckBox(visibility: Int, checked: Boolean = false)
 
         fun setUnderlineVisibility(visibility: Int)
+
+        fun setupListDescription(visibility: Int, description: String? = null)
+
+        fun setupSettingImage(visibility: Int, drawable: Drawable? = null)
 
         fun setOnRowClickListener(pos: Int)
     }

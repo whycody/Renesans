@@ -1,5 +1,6 @@
 package pl.renesans.renesans.data
 
+import android.graphics.drawable.Drawable
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import java.io.Serializable
 
@@ -55,13 +56,18 @@ data class ArticleItem(var objectId: String? = null,
                 var title: String? = null,
                 var searchHistoryItem: Boolean = false)
 
+data class SettingsList(var description: String? = null,
+                        var settings: MutableList<Setting> = mutableListOf())
+
 data class Setting(var settingId: String? = null,
                    var settingTitle: String? = null,
                    var settingDescription: String? = null,
                    var booleanValue: Boolean = true,
                    var defaultValue: Boolean = false,
                    var listOfOptions: List<SettingListItem>? = null,
-                   var defaultSettingsItemPos: Int = 0)
+                   var defaultSettingsItemPos: Int = 0,
+                   var imageDrawable: Drawable? = null,
+                   var listDescription: String? = null)
 
 data class SettingListItem(var settingsItemId: Int? = null,
                 var settingItemTitle: String? = null,

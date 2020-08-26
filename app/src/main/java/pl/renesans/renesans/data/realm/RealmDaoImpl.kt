@@ -92,6 +92,12 @@ class RealmDaoImpl(private val context: Context,
             }.addOnFailureListener{ if(refreshDatabase) realmInterractor?.downloadFailure() }
     }
 
+    override fun getDatabaseVersion(): String {
+        val version = getRealmDatabaseVersion()
+        return if(version?.version != null) version.version.toString()
+        else context.getString(R.string.no_information)
+    }
+
     private fun updateDatabaseVersion(databaseVersion: DatabaseVersion?){
         realm.executeTransaction{ getRealmDatabaseVersion()?.deleteFromRealm() }
         insertDatabaseVersion(databaseVersion)
