@@ -84,8 +84,9 @@
     <string name="search_more_photos">Szukaj więcej zdjęć</string>
     <string name="position">Położenie</string>
     <string name="login">Zaloguj się</string>
-    <string name="saved_places">Zapisane miejsca</string>
+    <string name="bookmarks">Zakładki</string>
     <string name="app">Aplikacja</string>
     <string name="db_version">Wersja bazy danych</string>
     <string name="no_information">Brak informacji</string>
+    <string name="general">Ogólne</string>
 </resources>

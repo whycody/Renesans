@@ -45,13 +45,13 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         val loginSettingsList = SettingsList()
         loginSettingsList.settings.add(Setting(LOGIN, activity.getString(R.string.login),
             booleanValue = false, imageDrawable = activity.getDrawable(R.drawable.ic_user)))
-        loginSettingsList.settings.add(Setting(BOOKMARKS, activity.getString(R.string.saved_places),
+        loginSettingsList.settings.add(Setting(BOOKMARKS, activity.getString(R.string.bookmarks),
             booleanValue = false, imageDrawable = activity.getDrawable(R.drawable.ic_bookmark)))
         return loginSettingsList
     }
 
     private fun getBasicSettings(): SettingsList {
-        val basicsSettingsList = SettingsList(activity.getString(R.string.settings))
+        val basicsSettingsList = SettingsList(activity.getString(R.string.general))
         basicsSettingsList.settings.add(Setting(ERA, activity.getString(R.string.era),
             activity.getString(R.string.renesans), false))
         basicsSettingsList.settings.add(Setting(DOWNLOAD_PHOTOS,
@@ -302,7 +302,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
 
     private fun setUnderlineVisibility(holder: SettingsRowHolder, position: Int) {
         if(position == 0 || settingsList[position].listDescription != null)
-            holder.setUnderlineVisibility(View.INVISIBLE)
+            holder.setUnderlineVisibility(View.GONE)
         else holder.setUnderlineVisibility(View.VISIBLE)
     }
 
