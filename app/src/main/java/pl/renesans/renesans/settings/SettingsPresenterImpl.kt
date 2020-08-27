@@ -11,9 +11,11 @@ import android.graphics.Color
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import pl.renesans.renesans.BuildConfig
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
+import pl.renesans.renesans.bookmark.BookmarkBottomSheetDialog
 import pl.renesans.renesans.data.Setting
 import pl.renesans.renesans.data.SettingListItem
 import pl.renesans.renesans.data.SettingsList
@@ -154,6 +156,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
             editor.apply()
         }else if(settingsList[pos].settingId == MAP_MODE) showMapModeDialog(settingsList[pos], pos)
         else if(settingsList[pos].settingId == DOWNLOAD_PHOTOS) showDownloadPhotosDialog(settingsList[pos], pos)
+        else if(settingsList[pos].settingId == BOOKMARKS) showBookmarkBottomSheetDialog()
         if(settingsList[pos].settingId == MAP_MODE) settingsView.refreshMapFragment()
         if(settingsList[pos].settingId == MAP_FUNCTIONALITIES) settingsView.changedOptionOfMapLimit()
     }
@@ -225,6 +228,11 @@ class SettingsPresenterImpl(private val activity: MainActivity,
             }.create()
         setColorsOfButtonsOfDialog(dialog)
         dialog.show()
+    }
+
+    private fun showBookmarkBottomSheetDialog() {
+        val bookmarkBottomSheet = BookmarkBottomSheetDialog()
+        bookmarkBottomSheet.show(activity.supportFragmentManager, "bookmark")
     }
 
     private fun setColorsOfButtonsOfDialog(dialog: AlertDialog) {

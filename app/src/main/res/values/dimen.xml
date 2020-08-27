@@ -11,5 +11,7 @@
     <dimen name="discoverRecyclerMarginEnd">16dp</dimen>
     <dimen name="relatedArticleViewRadius">10dp</dimen>
     <dimen name="searchArticleViewRadius">3dp</dimen>
+    <dimen name="bookmarkBottomSheetPeekHeight">445dp</dimen>
+    <dimen name="sourcesItemRowMargin">35dp</dimen>
 </resources>
 

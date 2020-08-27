@@ -1,4 +1,4 @@
-package pl.renesans.renesans;
+package pl.renesans.renesans.views;
 
 import android.content.Context;
 import android.content.res.Configuration;

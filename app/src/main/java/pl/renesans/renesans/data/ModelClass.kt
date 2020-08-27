@@ -9,6 +9,12 @@ data class Source(var srcDescription: String? = null,
                   var url: String? = null,
                   var page: String? = null): Serializable
 
+data class Bookmark(var mode: String? = null,
+                    var photoId: String? = null,
+                    var bookmarkTitle: String? = null,
+                    var articleId: String? = null,
+                    var bookmarkDescription: String? = null): Serializable
+
 data class Photo(var objectId: String? = null,
                  var numberOfParagraph: Int? = null,
                  var description: String? = null,

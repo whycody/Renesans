@@ -89,4 +89,7 @@
     <string name="db_version">Wersja bazy danych</string>
     <string name="no_information">Brak informacji</string>
     <string name="general">Ogólne</string>
+    <string name="all">Wszystkie</string>
+    <string name="saved_places">Zapisane miejsca</string>
+    <string name="saved_articles">Zapisane artykuły</string>
 </resources>

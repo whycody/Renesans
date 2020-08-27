@@ -1,59 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorGray"
-    android:elevation="10dp"
-    android:orientation="vertical"
-    android:paddingBottom="25dp">
+    android:layout_height="wrap_content"
+    android:background="@color/colorGray">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@android:color/white">
-
-        <pl.renesans.renesans.SquareImageView
-            android:id="@+id/articlePhoto"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:scaleType="centerCrop"
-            tools:srcCompat="@tools:sample/backgrounds/scenic"
-            android:layout_weight="1" />
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp">
+            android:orientation="horizontal"
+            android:background="@android:color/white">
 
-            <TextView
-                android:id="@+id/articleTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mikołaj Kopernik"
-                android:textSize="16sp"
-                android:textColor="@color/colorTitleGray"/>
+            <pl.renesans.renesans.views.SquareImageView
+                android:id="@+id/articlePhoto"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:scaleType="centerCrop"
+                tools:srcCompat="@tools:sample/backgrounds/scenic"
+                android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/articleDescription"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/sources"
-                android:textSize="13sp"
-                android:textColor="@color/colorParagraphGray"/>
+                android:layout_weight="4"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp">
+
+                <TextView
+                    android:id="@+id/articleTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mikołaj Kopernik"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorTitleGray"/>
+
+                <TextView
+                    android:id="@+id/articleDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sources"
+                    android:textSize="13sp"
+                    android:textColor="@color/colorParagraphGray"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sourcesRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/sourcesRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

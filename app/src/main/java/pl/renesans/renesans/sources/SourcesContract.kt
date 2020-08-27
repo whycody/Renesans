@@ -28,8 +28,6 @@ interface SourcesContract {
 
     interface SourcesPresenter {
 
-        fun onCreate()
-
         fun itemClicked(pos: Int)
 
         fun getItemCount(): Int

@@ -13,7 +13,7 @@
         android:orientation="horizontal"
         android:background="@android:color/white">
 
-        <pl.renesans.renesans.SquareImageView
+        <pl.renesans.renesans.views.SquareImageView
             android:id="@+id/articlePhoto"
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -49,7 +49,7 @@
 
     </LinearLayout>
 
-    <pl.renesans.renesans.SquareLinearLayout
+    <pl.renesans.renesans.views.SquareLinearLayout
         android:id="@+id/mapLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -61,6 +61,6 @@
             android:layout_height="match_parent"
             tools:context=".tour.TourActivity"/>
 
-    </pl.renesans.renesans.SquareLinearLayout>
+    </pl.renesans.renesans.views.SquareLinearLayout>
 
 </LinearLayout>

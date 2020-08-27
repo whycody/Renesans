@@ -48,13 +48,13 @@ class SourcesBottomSheetDialog: BottomSheetDialogFragment(), SourcesContract.Sou
         articlePhoto = view.articlePhoto
         view.articleTitle?.text = article.title
         presenter = SourcesPresenterImpl(activity!!.applicationContext, this)
-        presenter.onCreate()
         val adapter = SourcesRecyclerAdapter(activity!!.applicationContext, presenter)
         val layoutManager =
             if(deviceIsInLandscape) GridLayoutManager(activity!!.applicationContext, 2)
             else LinearLayoutManager(activity!!.applicationContext)
         view.sourcesRecycler?.layoutManager = layoutManager
         view.sourcesRecycler?.adapter = adapter
+        view.sourcesRecycler?.addItemDecoration(SourcesRecyclerDecoration(context!!, presenter.getItemCount()))
         loadMainPhoto()
         return view
     }

@@ -10,13 +10,12 @@ import pl.renesans.renesans.data.image.ImageDaoImpl
 class SourcesPresenterImpl(val context: Context, val view: SourcesContract.SourcesView):
     SourcesContract.SourcesPresenter, ImageDaoContract.ImageDaoInterractor {
 
-    private lateinit var article: Article
+    private val article: Article = view.getArticleObject()
     private var sourcesList = mutableListOf<Source>()
     private val holders = hashMapOf<Int, SourcesRowHolder>()
-    private lateinit var imageDao: ImageDaoContract.ImageDao
+    private val imageDao: ImageDaoContract.ImageDao
 
-    override fun onCreate() {
-        article = view.getArticleObject()
+    init {
         imageDao = ImageDaoImpl(context, this)
         getSourcesList()
     }
