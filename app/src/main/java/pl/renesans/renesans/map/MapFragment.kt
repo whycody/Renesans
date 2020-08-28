@@ -44,6 +44,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private var limitOfMapFunctionality = true
     private var sharedPrefs: SharedPreferences? = null
     private var currentZoomIsMin = false
+    private var animateCameraToLastMarker = false
     private var cameraPos: CameraPosition? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -116,10 +117,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(googleMap.cameraPosition.target, zoomLevel))
         setUiSettings()
         prepareManagers()
-        prepareFusedLocationClient()
         googleMap.setOnCameraMoveListener(this)
         presenter?.addMarkers()
         presenter?.setLocationManager()
+        if(animateCameraToLastMarker) animateCameraToBookmarkMarker()
+        else prepareFusedLocationClient()
     }
 
     private fun setUiSettings(){
@@ -239,12 +241,29 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     private var lastClusterMarker: ClusterMarker? = null
 
     override fun onClusterItemClick(p0: ClusterMarker?): Boolean {
-        cameraAnimations = sharedPrefs!!.getBoolean(SettingsPresenterImpl.MAP_ANIMATIONS, false)
-        if(cameraAnimations && p0?.photoArticle?.objectType != ArticleDaoImpl.CITY_TYPE)
-            googleMap?.animateCamera(CameraUpdateFactory.newLatLng(p0?.position), 400, this)
-        else handleClusterMarkerClick(p0)
         lastClusterMarker = p0
+        cameraAnimations = sharedPrefs!!.getBoolean(SettingsPresenterImpl.MAP_ANIMATIONS, false)
+        if(cameraAnimations && p0?.photoArticle?.objectType == ArticleDaoImpl.PLACE_TYPE)
+            googleMap?.animateCamera(CameraUpdateFactory.newLatLng(p0.position), 400, this)
+        else if(p0?.photoArticle?.objectType == ArticleDaoImpl.BOOKMARK_TYPE){
+            if(googleMap != null) animateCameraToBookmarkMarker()
+            else animateCameraToLastMarker = true
+        }else handleClusterMarkerClick(p0)
         return true
+    }
+
+    private fun animateCameraToBookmarkMarker() {
+        animateCameraToLastMarker = false
+        val cameraUpdate = CameraUpdateFactory
+            .newLatLngZoom(lastClusterMarker?.position, lastClusterMarker?.photoArticle!!.zoom)
+        googleMap?.animateCamera(cameraUpdate, getDurationOfAnimation(), this)
+    }
+
+    private fun getDurationOfAnimation(): Int {
+        val bounds = googleMap?.projection?.visibleRegion?.latLngBounds
+        return if(bounds!!.contains(lastClusterMarker?.position) &&
+            googleMap?.cameraPosition!!.zoom >= limitOfZoom) 1000
+        else 2000
     }
 
     override fun onFinish() {
@@ -256,10 +275,15 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraMoveListen
     }
 
     private fun handleClusterMarkerClick(clusterMarker: ClusterMarker?) {
-        if(clusterMarker!=null && clusterMarker.getClusterType() == ArticleDaoImpl.PLACE_TYPE)
-            PhotoBottomSheetDialog().newInstance(clusterMarker.photoArticle)
-            .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
+        if(clusterMarker!=null && (clusterMarker.getClusterType() == ArticleDaoImpl.PLACE_TYPE ||
+                    clusterMarker.getClusterType() == ArticleDaoImpl.BOOKMARK_TYPE))
+            showPhotoBottomSheetDialog(clusterMarker.photoArticle)
         else if (clusterMarker!=null) moveToLocation(clusterMarker.position, clusterMarker.photoArticle.zoom)
+    }
+
+    private fun showPhotoBottomSheetDialog(photoArticle: PhotoArticle) {
+        PhotoBottomSheetDialog().newInstance(photoArticle)
+            .show(activity!!.supportFragmentManager, "photoBottomSheetDialog")
     }
 
     override fun addClusterMarkerToMap(clusterMarker: ClusterMarker) {

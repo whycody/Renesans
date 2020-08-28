@@ -96,5 +96,6 @@ class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
     companion object{
         const val PLACE_TYPE = 10
         const val CITY_TYPE = 11
+        const val BOOKMARK_TYPE = 12
     }
 }

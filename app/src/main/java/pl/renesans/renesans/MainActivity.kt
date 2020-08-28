@@ -15,7 +15,10 @@ import pl.renesans.renesans.data.article.ArticleDao
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.data.firebase.FirebaseDaoImpl
+import pl.renesans.renesans.data.realm.RealmContract
+import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.discover.DiscoverFragment
+import pl.renesans.renesans.map.ClusterMarker
 import pl.renesans.renesans.map.MapFragment
 import pl.renesans.renesans.settings.SettingsFragment
 import pl.renesans.renesans.settings.SettingsPresenterImpl
@@ -31,6 +34,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private var refreshDiscoverFragment = false
     private var changedOptionOfMapLimit = false
     private var toastHelper = ToastHelperImpl(this)
+    private lateinit var realmDao: RealmContract.RealmDao
     private lateinit var articleDao: ArticleDao
     private var currentItem = 0
 
@@ -38,6 +42,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         checkBundle(savedInstanceState)
         setContentView(R.layout.activity_main)
+        realmDao = RealmDaoImpl(applicationContext)
         articleDao = ArticleDaoImpl(applicationContext)
         setSupportActionBar(mainToolbar as Toolbar)
         mainNav.setOnNavigationItemSelectedListener(this)
@@ -72,8 +77,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     fun showPhotoArticleOnMap(id: String) {
-        changeFragment(mapFragment, "map")
-
+        mainNav.selectedItemId = R.id.map
+        val photoArticle = realmDao.getPhotoArticleWithId(id)
+        photoArticle.objectType = ArticleDaoImpl.BOOKMARK_TYPE
+        val clusterMarker = ClusterMarker(photoArticle)
+        mapFragment.onClusterItemClick(clusterMarker)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

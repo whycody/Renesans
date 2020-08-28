@@ -169,6 +169,7 @@ class BookmarkBottomSheetDialog:
     }
 
     override fun openPhotoBottomSheet(articleId: String) {
+        dismiss()
         (activity as MainActivity).showPhotoArticleOnMap(articleId)
     }
 }
