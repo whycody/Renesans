@@ -65,6 +65,16 @@
 
         </pl.renesans.renesans.views.MyNestedScrollView>
 
+        <TextView
+            android:id="@+id/noBookmarksView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_bookmarks"
+            android:gravity="center"
+            android:paddingTop="50dp"
+            android:paddingBottom="50dp"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

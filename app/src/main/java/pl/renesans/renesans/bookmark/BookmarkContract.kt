@@ -9,6 +9,8 @@ interface BookmarkContract {
         fun startArticleActivity(articleId: String)
 
         fun openPhotoBottomSheet(articleId: String)
+
+        fun showNoBookmarksView()
     }
 
     interface BookmarkPresenter {

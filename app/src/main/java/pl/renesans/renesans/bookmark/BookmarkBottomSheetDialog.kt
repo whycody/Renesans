@@ -40,6 +40,7 @@ class BookmarkBottomSheetDialog:
 
     private lateinit var headerPhoto: ImageView
     private lateinit var headerDescription: TextView
+    private lateinit var noBookmarksView: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var presenter: BookmarkPresenterImpl
     private lateinit var adapter: SourcesRecyclerAdapter
@@ -53,6 +54,7 @@ class BookmarkBottomSheetDialog:
         val view = inflater.inflate(R.layout.dialog_bottom_sheet_sources, container)
         headerPhoto = view.articlePhoto
         headerDescription = view.articleDescription
+        noBookmarksView = view.noBookmarksView
         recyclerView = view.sourcesRecycler
         presenter = BookmarkPresenterImpl(context!!, this)
         checkBundle(savedInstanceState)
@@ -171,5 +173,9 @@ class BookmarkBottomSheetDialog:
     override fun openPhotoBottomSheet(articleId: String) {
         dismiss()
         (activity as MainActivity).showPhotoArticleOnMap(articleId)
+    }
+
+    override fun showNoBookmarksView() {
+        noBookmarksView.visibility = View.VISIBLE
     }
 }

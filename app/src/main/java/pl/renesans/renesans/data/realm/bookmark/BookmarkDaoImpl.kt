@@ -60,5 +60,6 @@ class BookmarkDaoImpl(private val context: Context): BookmarkDao {
         const val LISTS_MODE = "lists mode"
         const val ALL_ARTICLES_MODE = "all articles mode"
         const val PLACES_MODE = "places mode"
+        const val NO_BOOKMARKS = "no bookmarks"
     }
 }

@@ -27,10 +27,12 @@ class BookmarkPresenterImpl(context: Context,
         bookmarkDao = BookmarkDaoImpl(context)
         mode = getMode()
         bookmarksList = getBookmarksList()
+        if(bookmarksList.isEmpty()) bookmarkView.showNoBookmarksView()
     }
 
     private fun getMode(): String{
-        return if(bookmarkDao.mapBookmarksAreAvailable()) BookmarkDaoImpl.LISTS_MODE
+        return if(!bookmarkDao.bookmarksAreAvailable()) BookmarkDaoImpl.NO_BOOKMARKS
+        else if(bookmarkDao.mapBookmarksAreAvailable()) BookmarkDaoImpl.LISTS_MODE
         else BookmarkDaoImpl.ALL_ARTICLES_MODE
     }
 
@@ -38,7 +40,8 @@ class BookmarkPresenterImpl(context: Context,
         return when(mode){
             BookmarkDaoImpl.LISTS_MODE -> bookmarkDao.getListsOfBookmarks()!!
             BookmarkDaoImpl.ALL_ARTICLES_MODE -> bookmarkDao.getAllBookmarks()!!
-            else -> bookmarkDao.getMapBookmarks()!!
+            BookmarkDaoImpl.PLACES_MODE -> bookmarkDao.getMapBookmarks()!!
+            else -> listOf()
         }
     }
 

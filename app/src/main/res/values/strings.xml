@@ -92,4 +92,5 @@
     <string name="all">Wszystkie</string>
     <string name="saved_places">Zapisane miejsca</string>
     <string name="saved_articles">Zapisane artykuły</string>
+    <string name="no_bookmarks">Na ten moment nie masz żadnych zakładek</string>
 </resources>
