@@ -1,5 +1,6 @@
 package pl.renesans.renesans
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
@@ -8,7 +9,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.article.ArticleDao
+import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.data.firebase.FirebaseDaoImpl
 import pl.renesans.renesans.discover.DiscoverFragment
@@ -27,12 +31,14 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private var refreshDiscoverFragment = false
     private var changedOptionOfMapLimit = false
     private var toastHelper = ToastHelperImpl(this)
+    private lateinit var articleDao: ArticleDao
     private var currentItem = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkBundle(savedInstanceState)
         setContentView(R.layout.activity_main)
+        articleDao = ArticleDaoImpl(applicationContext)
         setSupportActionBar(mainToolbar as Toolbar)
         mainNav.setOnNavigationItemSelectedListener(this)
         if(savedInstanceState?.getInt("lastTab") != null)
@@ -58,6 +64,17 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     fun showSuggestionBottomSheet(article: Article, paragraph: Int?) =
         SuggestionBottomSheetDialog().newInstance(article, paragraph)
             .show(supportFragmentManager, "Paragraph")
+
+    fun startArticleActivity(id: String) {
+        val intent = Intent(applicationContext, ArticleActivity::class.java)
+        intent.putExtra(ArticleActivity.ARTICLE, articleDao.getArticleFromId(id))
+        startActivity(intent)
+    }
+
+    fun showPhotoArticleOnMap(id: String) {
+        changeFragment(mapFragment, "map")
+
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

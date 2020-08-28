@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_sources.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_suggestion.view.articleDescription
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_suggestion.view.articlePhoto
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_suggestion.view.articleTitle
+import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
@@ -78,7 +79,7 @@ class BookmarkBottomSheetDialog:
 
     private fun loadMainPhoto() {
         val imageDao = ImageDaoImpl(context!!, this)
-        imageDao.loadPhoto(id = "Z0_0")
+        imageDao.loadPhoto(id = "Z6_0")
     }
 
     private fun setLayoutManagerOfRecycler() {
@@ -164,10 +165,10 @@ class BookmarkBottomSheetDialog:
     }
 
     override fun startArticleActivity(articleId: String) {
-
+        (activity as MainActivity).startArticleActivity(articleId)
     }
 
     override fun openPhotoBottomSheet(articleId: String) {
-
+        (activity as MainActivity).showPhotoArticleOnMap(articleId)
     }
 }
