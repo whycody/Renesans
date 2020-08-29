@@ -69,6 +69,11 @@ class BookmarkBottomSheetDialog:
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.onResume()
+    }
+
     private fun checkBundle(savedInstanceState: Bundle?){
         if(savedInstanceState?.getString(MODE) != null)
             presenter.setMode(savedInstanceState.getString(MODE)!!)

@@ -20,6 +20,8 @@ interface BookmarkContract {
         fun setMode(mode: String)
 
         fun getCurrentMode(): String
+
+        fun onResume()
     }
 
 

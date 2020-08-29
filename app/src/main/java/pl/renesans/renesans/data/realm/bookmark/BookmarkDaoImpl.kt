@@ -13,15 +13,14 @@ class BookmarkDaoImpl(private val context: Context): BookmarkDao {
 
     private var realm: Realm
     private val realmDao: RealmContract.RealmDao
-    private val allBookmarksArticlesItems: List<ArticleItem>
-    private val mapBookmarksArticlesItems: List<ArticleItem>
+    private lateinit var allBookmarksArticlesItems: List<ArticleItem>
+    private lateinit var mapBookmarksArticlesItems: List<ArticleItem>
 
     init {
         Realm.init(context)
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         realmDao = RealmDaoImpl(context)
-        allBookmarksArticlesItems = realmDao.getArticlesItemsFromLocalList(RealmDaoImpl.MARKED_ARTICLES)
-        mapBookmarksArticlesItems = realmDao.getArticlesItemsFromLocalList(RealmDaoImpl.MARKED_ARTICLES, true)
+        refreshBookmarksLists()
     }
 
     override fun bookmarksAreAvailable() = allBookmarksArticlesItems.isNotEmpty()
@@ -39,6 +38,7 @@ class BookmarkDaoImpl(private val context: Context): BookmarkDao {
     }
 
     override fun getAllBookmarks(): List<Bookmark>? {
+        refreshBookmarksLists()
         val allBookmarks = mutableListOf<Bookmark>()
         allBookmarksArticlesItems.forEach{
             allBookmarks.add(Bookmark(ALL_ARTICLES_MODE,
@@ -48,12 +48,18 @@ class BookmarkDaoImpl(private val context: Context): BookmarkDao {
     }
 
     override fun getMapBookmarks(): List<Bookmark>? {
+        refreshBookmarksLists()
         val mapBookmarks = mutableListOf<Bookmark>()
         mapBookmarksArticlesItems.forEach{
             mapBookmarks.add(Bookmark(PLACES_MODE,
                 "${it.objectId!!}_0", it.title, it.objectId))
         }
         return mapBookmarks
+    }
+
+    private fun refreshBookmarksLists(){
+        allBookmarksArticlesItems = realmDao.getArticlesItemsFromLocalList(RealmDaoImpl.MARKED_ARTICLES)
+        mapBookmarksArticlesItems = realmDao.getArticlesItemsFromLocalList(RealmDaoImpl.MARKED_ARTICLES, true)
     }
 
     companion object {

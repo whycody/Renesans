@@ -27,6 +27,11 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter?.onResume()
+    }
+
     override fun refreshMapFragment() {
         (activity as MainActivity).refreshMapFragment()
     }

@@ -34,6 +34,8 @@ interface SettingsContract {
 
     interface SettingsPresenter {
 
+        fun onResume()
+
         fun itemClicked(pos: Int, checkBoxValue: Boolean)
 
         fun getItemCount(): Int

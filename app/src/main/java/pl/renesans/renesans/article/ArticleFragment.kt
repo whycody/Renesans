@@ -58,7 +58,7 @@ class ArticleFragment(var article: Article? = null,
 
     override fun changeColorOfBookmark(active: Boolean) {
         val colorFilter = if(active) PorterDuffColorFilter(ContextCompat
-            .getColor(context!!, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP)
+            .getColor(context!!, R.color.colorTitleGray), PorterDuff.Mode.SRC_ATOP)
         else PorterDuffColorFilter(ContextCompat
             .getColor(context!!, R.color.colorImageGray), PorterDuff.Mode.SRC_ATOP)
         bookmarkView.drawable.colorFilter = colorFilter

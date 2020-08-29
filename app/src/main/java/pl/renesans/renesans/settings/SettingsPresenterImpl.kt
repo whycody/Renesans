@@ -11,7 +11,6 @@ import android.graphics.Color
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import pl.renesans.renesans.BuildConfig
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
@@ -36,6 +35,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
     private var currentMapMode = sharedPrefs.getInt(MAP_MODE, 0)
     private var selectedDownloadPhotosSetting = sharedPrefs.getInt(DOWNLOAD_PHOTOS, 0)
     private var downloadPhotosSettingIndex = 0
+    private var bookmarkBottomSheet: BookmarkBottomSheetDialog? = null
 
     private fun getSettings(): List<Setting> {
         val listOfSettingsLists =
@@ -150,6 +150,12 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         return (mi.availMem / 1048576L) >= 400
     }
 
+    override fun onResume() {
+        if(bookmarkBottomSheet != null && !bookmarkBottomSheet?.isHidden!!){
+            bookmarkBottomSheet?.onResume()
+        }
+    }
+
     override fun itemClicked(pos: Int, checkBoxValue: Boolean) {
         if(settingsList[pos].booleanValue && settingsList[pos].settingId != DOWNLOAD_PHOTOS){
             editor.putBoolean(settingsList[pos].settingId!!, checkBoxValue)
@@ -231,8 +237,8 @@ class SettingsPresenterImpl(private val activity: MainActivity,
     }
 
     private fun showBookmarkBottomSheetDialog() {
-        val bookmarkBottomSheet = BookmarkBottomSheetDialog()
-        bookmarkBottomSheet.show(activity.supportFragmentManager, "bookmark")
+        bookmarkBottomSheet = BookmarkBottomSheetDialog()
+        bookmarkBottomSheet?.show(activity.supportFragmentManager, "bookmark")
     }
 
     private fun setColorsOfButtonsOfDialog(dialog: AlertDialog) {

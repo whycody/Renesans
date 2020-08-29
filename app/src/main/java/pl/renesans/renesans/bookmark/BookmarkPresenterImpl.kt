@@ -30,7 +30,7 @@ class BookmarkPresenterImpl(context: Context,
         if(bookmarksList.isEmpty()) bookmarkView.showNoBookmarksView()
     }
 
-    private fun getMode(): String{
+    private fun getMode(): String {
         return if(!bookmarkDao.bookmarksAreAvailable()) BookmarkDaoImpl.NO_BOOKMARKS
         else if(bookmarkDao.mapBookmarksAreAvailable()) BookmarkDaoImpl.LISTS_MODE
         else BookmarkDaoImpl.ALL_ARTICLES_MODE
@@ -98,4 +98,12 @@ class BookmarkPresenterImpl(context: Context,
     }
 
     override fun getCurrentMode() = mode
+
+    override fun onResume() {
+        if(mode == BookmarkDaoImpl.ALL_ARTICLES_MODE && !bookmarkDao.bookmarksAreAvailable())
+            mode = BookmarkDaoImpl.NO_BOOKMARKS
+        bookmarksList = getBookmarksList()
+        bookmarkView.notifyBookmarksDataSetChanged(mode)
+        if(bookmarksList.isEmpty()) bookmarkView.showNoBookmarksView()
+    }
 }
