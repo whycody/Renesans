@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.DocumentSnapshot
@@ -19,7 +18,7 @@ import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
-import java.lang.Exception
+import pl.renesans.renesans.utility.ConnectionUtilityImpl
 
 class RealmDaoImpl(private val context: Context,
     private val realmInterractor: RealmContract.RealmInterractor? = null): RealmContract.RealmDao,
@@ -29,6 +28,7 @@ class RealmDaoImpl(private val context: Context,
     private val articlesRef = firestore.collection("articles")
     private val realmMapper = RealmMapperImpl(context)
     private val imageDao = ImageDaoImpl(context, downloadInterractor = this)
+    private val connectionUtility = ConnectionUtilityImpl(context)
     private var realm: Realm
     private val articleConverter = ArticleConverterImpl()
     private val sharedPrefs: SharedPreferences
@@ -51,18 +51,9 @@ class RealmDaoImpl(private val context: Context,
             Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 
     override fun refreshRealmDatabase(firstDownload: Boolean){
-        if(!isConnectionAvailable()) realmInterractor?.downloadFailure(true)
+        if(!connectionUtility.isConnectionAvailable()) realmInterractor?.downloadFailure(true)
         else if(firstDownload) downloadArticlesListsWithArticles(firstDownload)
         else checkDbVersion(true)
-    }
-
-    private fun isConnectionAvailable(): Boolean {
-        return try {
-            val cm = context
-                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val networkInfo = cm.activeNetworkInfo
-            networkInfo != null && networkInfo.isConnected
-        } catch (_: Exception) { false }
     }
 
     private fun downloadArticlesListsWithArticles(firstDownload: Boolean) {
@@ -462,7 +453,7 @@ class RealmDaoImpl(private val context: Context,
 
     override fun downloadFailed() = refreshProgress()
 
-    override fun donwloadSuccess() = refreshProgress()
+    override fun downloadSuccess() = refreshProgress()
 
     override fun photoExists() = refreshProgress()
 

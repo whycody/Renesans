@@ -93,4 +93,7 @@
     <string name="saved_places">Zapisane miejsca</string>
     <string name="saved_articles">Zapisane artykuły</string>
     <string name="no_bookmarks">Na ten moment nie masz żadnych zakładek</string>
+    <string name="photo_download_successfully">Poprawnie pobrano zdjęcie</string>
+    <string name="photo_is_already_downloaded">Zdjęcie jest już pobrane</string>
+    <string name="save">Zapisz</string>
 </resources>

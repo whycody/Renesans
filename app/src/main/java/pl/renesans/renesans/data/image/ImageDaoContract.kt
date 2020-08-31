@@ -10,7 +10,13 @@ interface ImageDaoContract {
 
         fun loadPhoto(pos: Int = 0, id: String, bothQualities: Boolean = true)
 
+        fun savePhotoToExternalStorage(id: String)
+
+        fun highQualityPhotoIsAvailable(id: String): Boolean
+
         fun getPhotoFile(id: String): File?
+
+        fun getPhotoUri(id: String)
     }
 
     interface ImageDaoInterractor {
@@ -24,7 +30,7 @@ interface ImageDaoContract {
 
         fun downloadFailed()
 
-        fun donwloadSuccess()
+        fun downloadSuccess()
 
         fun photoExists()
     }

@@ -1,32 +1,35 @@
 package pl.renesans.renesans.photo
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_photo.*
-import pl.renesans.renesans.BuildConfig
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.Photo
 import pl.renesans.renesans.data.Source
+import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
-import java.io.File
+import pl.renesans.renesans.utility.ConnectionUtility
+import pl.renesans.renesans.utility.ConnectionUtilityImpl
 
-class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageChangeListener {
+class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageChangeListener,
+    ImageDaoContract.ImageDaoDownloadInterractor, ImageDaoContract.ImageDaoInterractor {
 
     private var photoAdapter: PhotoAdapter? = null
     private var pagerView: ViewPager? = null
     private var photoSource: Source? = null
     private var photoDesc: String? = null
-    private var photoFile: File? = null
     private var currentPhoto: Photo? = null
     private lateinit var imageDao: ImageDaoImpl
+    private lateinit var connectionUtility: ConnectionUtility
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +40,8 @@ class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageCha
         photoToolbar.navigationIcon?.setColorFilter(ContextCompat
             .getColor(this, android.R.color.white), PorterDuff.Mode.SRC_ATOP)
         changeStatusBarColor()
-        imageDao = ImageDaoImpl(applicationContext)
+        imageDao = ImageDaoImpl(applicationContext, this, this)
+        connectionUtility = ConnectionUtilityImpl(this)
         pagerView = photoPager
         photoAdapter = PhotoAdapter(applicationContext, getArticle(), this)
         photoPager.addOnPageChangeListener(this)
@@ -57,7 +61,6 @@ class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageCha
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if(currentPhoto == null) currentPhoto = getPhoto()
-        photoFile = imageDao.getPhotoFile(currentPhoto?.objectId!!)
         photoSource = currentPhoto?.source
         photoDesc = currentPhoto?.description
         addItemsToMenu(menu)
@@ -65,31 +68,30 @@ class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageCha
     }
 
     private fun addItemsToMenu(menu: Menu?) {
-        if(photoFile!=null)
-            menu?.add(0, 0, 0, getString(R.string.share))
-        if(photoSource!=null)
-            menu?.add(0, 1, 0, getString(R.string.show_source))
-        if(photoDesc!=null)
-            menu?.add(0, 2, 0, getString(R.string.search_more_photos))
+        if(imageDao.highQualityPhotoIsAvailable(currentPhoto?.objectId!!))
+            addSharingPhotoMenuItems(menu)
+        if(connectionUtility.isConnectionAvailable()) addSearchMenuItems(menu)
+    }
+
+    private fun addSharingPhotoMenuItems(menu: Menu?) {
+        menu?.add(0, 0, 0, getString(R.string.save))
+        menu?.add(0, 1, 0, getString(R.string.share))
+    }
+
+    private fun addSearchMenuItems(menu: Menu?) {
+        if(photoSource!=null) menu?.add(0, 2, 0, getString(R.string.show_source))
+        if(photoDesc!=null) menu?.add(0, 3, 0, getString(R.string.search_more_photos))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            0 -> sharePhoto(photoFile!!)
-            1 -> openSource()
-            2 -> searchMorePhotos()
+            0 -> imageDao.savePhotoToExternalStorage(currentPhoto?.objectId!!)
+            1 -> imageDao.getPhotoUri(currentPhoto?.objectId!!)
+            2 -> openSource()
+            3 -> searchMorePhotos()
             android.R.id.home -> onBackPressed()
         }
         return true
-    }
-
-    private fun sharePhoto(file: File){
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        intent.putExtra(Intent.EXTRA_TEXT, photoDesc)
-        intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", file))
-        intent.type = "image/*"
-        startActivity(Intent.createChooser(intent, photoDesc))
     }
 
     private fun openSource(){
@@ -137,6 +139,29 @@ class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageCha
         photoToolbar.title = getArticle().listOfPhotos!![position].description
         photoAppBar.visibility = View.VISIBLE
     }
+
+    override fun downloadFailed() =
+        Toast.makeText(applicationContext, getString(R.string.try_again_later), Toast.LENGTH_SHORT).show()
+
+    override fun downloadSuccess() =
+        Toast.makeText(applicationContext, getString(R.string.photo_download_successfully), Toast.LENGTH_SHORT).show()
+
+    override fun photoExists() =
+        Toast.makeText(applicationContext, getString(R.string.photo_is_already_downloaded), Toast.LENGTH_SHORT).show()
+
+    override fun loadPhotoFromUri(photoUri: Uri, pos: Int) = sharePhoto(photoUri)
+
+    private fun sharePhoto(photoUri: Uri){
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra(Intent.EXTRA_TEXT, photoDesc)
+        intent.putExtra(Intent.EXTRA_TITLE, photoDesc)
+        intent.putExtra(Intent.EXTRA_STREAM, photoUri)
+        intent.type = "image/*"
+        startActivity(Intent.createChooser(intent, photoDesc))
+    }
+
+    override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) { }
 
     companion object {
         const val ARTICLE = "article"
