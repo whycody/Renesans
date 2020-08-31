@@ -65,7 +65,7 @@ class RealmDaoImpl(private val context: Context,
         } catch (_: Exception) { false }
     }
 
-    private fun downloadArticlesListsWithArticles(firstDownload: Boolean){
+    private fun downloadArticlesListsWithArticles(firstDownload: Boolean) {
         realmInterractor?.startedLoading()
         downloadedArticlesLists = 0
         if(firstDownload) checkDbVersion(false)
@@ -80,7 +80,7 @@ class RealmDaoImpl(private val context: Context,
         }.addOnFailureListener{ realmInterractor?.downloadFailure() }
     }
 
-    private fun checkDbVersion(refreshDatabase: Boolean){
+    private fun checkDbVersion(refreshDatabase: Boolean) {
         firestore.collection("version").document("current-db")
             .get().addOnSuccessListener {
                 val dbVersion = it.toObject(DatabaseVersion::class.java)
@@ -98,12 +98,12 @@ class RealmDaoImpl(private val context: Context,
         else context.getString(R.string.no_information)
     }
 
-    private fun updateDatabaseVersion(databaseVersion: DatabaseVersion?){
+    private fun updateDatabaseVersion(databaseVersion: DatabaseVersion?) {
         realm.executeTransaction{ getRealmDatabaseVersion()?.deleteFromRealm() }
         insertDatabaseVersion(databaseVersion)
     }
 
-    private fun insertDatabaseVersion(databaseVersion: DatabaseVersion?){
+    private fun insertDatabaseVersion(databaseVersion: DatabaseVersion?) {
         realm.beginTransaction()
         val realmDatabaseVersion = realm.createObject(DatabaseVersionRealm::class.java)
         realmDatabaseVersion.version = databaseVersion?.version
@@ -190,11 +190,15 @@ class RealmDaoImpl(private val context: Context,
 
     private fun downloadAllPhotos(){
         for(article in getAllArticles())
-            if(article.objectId != null) {
-                allArticles ++
-                val id = article.objectId!! + "_0"
-                imageDao.loadPhoto(id = id, bothQualities = false)
-            }
+            if (article.objectId != null) downloadPhotoWithId(article.objectId!!)
+        val additionalPhotos = listOf("Z0", "Z1", "Z2", "Z3", "Z4", "Z5", "Z6", "Z7")
+        for(id in additionalPhotos) downloadPhotoWithId(id)
+    }
+
+    private fun downloadPhotoWithId(id: String) {
+        allArticles++
+        val photoId = id + "_0"
+        imageDao.loadPhoto(id = photoId, bothQualities = false)
     }
 
     private fun articleListExists(articlesList: ArticlesList?): Boolean

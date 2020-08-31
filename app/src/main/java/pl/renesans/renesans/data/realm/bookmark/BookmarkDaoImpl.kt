@@ -31,7 +31,7 @@ class BookmarkDaoImpl(private val context: Context): BookmarkDao {
         val allArticlesBookmark = Bookmark(ALL_ARTICLES_MODE, "Z5_0",
             context.getString(R.string.all), null,
             allBookmarksArticlesItems.size.toString())
-        val mapBookmarks = Bookmark(PLACES_MODE, "Z8_0",
+        val mapBookmarks = Bookmark(PLACES_MODE, "Z7_0",
             context.getString(R.string.saved_places), null,
             mapBookmarksArticlesItems.size.toString())
         return listOf(allArticlesBookmark, mapBookmarks)
@@ -57,7 +57,7 @@ class BookmarkDaoImpl(private val context: Context): BookmarkDao {
         return mapBookmarks
     }
 
-    private fun refreshBookmarksLists(){
+    private fun refreshBookmarksLists() {
         allBookmarksArticlesItems = realmDao.getArticlesItemsFromLocalList(RealmDaoImpl.MARKED_ARTICLES)
         mapBookmarksArticlesItems = realmDao.getArticlesItemsFromLocalList(RealmDaoImpl.MARKED_ARTICLES, true)
     }
