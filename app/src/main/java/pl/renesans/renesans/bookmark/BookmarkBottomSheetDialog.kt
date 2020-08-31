@@ -74,6 +74,11 @@ class BookmarkBottomSheetDialog:
         presenter.onResume()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        behavior?.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
     private fun checkBundle(savedInstanceState: Bundle?){
         if(savedInstanceState?.getString(MODE) != null)
             presenter.setMode(savedInstanceState.getString(MODE)!!)
@@ -165,7 +170,8 @@ class BookmarkBottomSheetDialog:
         behavior?.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
-    private fun setDescription(mode: String){
+    private fun setDescription(mode: String) {
+        if(context == null) return
         if(mode == BookmarkDaoImpl.PLACES_MODE) headerDescription.text = context?.getText(R.string.saved_places)
         else if(mode == BookmarkDaoImpl.ALL_ARTICLES_MODE) headerDescription.text = context?.getText(R.string.all)
         else headerDescription.text = getString(R.string.saved_articles)
@@ -183,4 +189,6 @@ class BookmarkBottomSheetDialog:
     override fun showNoBookmarksView() {
         noBookmarksView.visibility = View.VISIBLE
     }
+
+    override fun getState() = behavior?.state
 }

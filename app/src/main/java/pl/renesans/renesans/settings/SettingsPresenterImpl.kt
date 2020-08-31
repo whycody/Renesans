@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import pl.renesans.renesans.BuildConfig
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
@@ -151,7 +152,9 @@ class SettingsPresenterImpl(private val activity: MainActivity,
     }
 
     override fun onResume() {
-        if(bookmarkBottomSheet != null && !bookmarkBottomSheet?.isHidden!!){
+        val state = bookmarkBottomSheet?.getState()
+        if(bookmarkBottomSheet != null && state != BottomSheetBehavior.STATE_HIDDEN
+            && state != BottomSheetBehavior.STATE_SETTLING) {
             bookmarkBottomSheet?.onResume()
         }
     }

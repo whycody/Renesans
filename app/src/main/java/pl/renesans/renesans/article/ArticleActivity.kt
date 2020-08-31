@@ -22,7 +22,6 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
     private lateinit var articleFragment: ArticleFragment
     private val toastHelper = ToastHelperImpl(this)
     private val articleConverter = ArticleConverterImpl()
-    private var bookmarkActive = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

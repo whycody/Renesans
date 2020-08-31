@@ -11,6 +11,8 @@ interface BookmarkContract {
         fun openPhotoBottomSheet(articleId: String)
 
         fun showNoBookmarksView()
+
+        fun getState(): Int?
     }
 
     interface BookmarkPresenter {
@@ -23,6 +25,5 @@ interface BookmarkContract {
 
         fun onResume()
     }
-
 
 }

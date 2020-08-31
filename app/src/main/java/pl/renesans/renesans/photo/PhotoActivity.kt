@@ -55,11 +55,6 @@ class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageCha
 
     override fun photoClicked() = showOrHideToolbar()
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if(currentPhoto == null) currentPhoto = getPhoto()
         photoFile = imageDao.getPhotoFile(currentPhoto?.objectId!!)
@@ -83,6 +78,7 @@ class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageCha
             0 -> sharePhoto(photoFile!!)
             1 -> openSource()
             2 -> searchMorePhotos()
+            android.R.id.home -> onBackPressed()
         }
         return true
     }
