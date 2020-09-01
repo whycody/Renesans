@@ -19,7 +19,7 @@ class StartupAdapter(private val context: Context): PagerAdapter() {
 
     private val descriptions = listOf("Czy wiedziałeś, że Leonardo był leworęczny? Ale to nie wszystko." +
             " Oprócz tego pisał od prawej do lewej strony.","Słyszysz sztuka - myślisz Mona Lisa? Z nami " +
-            "znacznie rozszerzysz tą definicję. Poznasz literaturę, kulturę i muzykę minionych wieków."
+            "znacznie rozszerzysz tę definicję. Poznasz literaturę, kulturę i muzykę minionych wieków."
             ,"Osobiście zobacz krakowski zamek oczami Kopernika, poczuj smak toruńskich pierników," +
                 " czy wybierz się do Starego Rynku w Olsztynie.")
 

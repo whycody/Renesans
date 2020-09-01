@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
-import android.net.ConnectivityManager
 import android.os.Environment
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -16,6 +15,7 @@ import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
 import pl.renesans.renesans.BuildConfig
 import pl.renesans.renesans.settings.SettingsPresenterImpl
+import pl.renesans.renesans.utility.ConnectionUtilityImpl
 import java.io.File
 
 class ImageDaoImpl(private val context: Context,
@@ -29,6 +29,7 @@ class ImageDaoImpl(private val context: Context,
     private val internalStorage = context.filesDir.path
     private val externalStorage = Environment.getExternalStorageDirectory()
     private val sharedPrefs = context.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
+    private val connectionUtility = ConnectionUtilityImpl(context)
     private var permissionGranted = false
     private var downloadPhotosMode = 0
 
@@ -52,16 +53,7 @@ class ImageDaoImpl(private val context: Context,
         val highQualityPhotoFileName = getPhotoPath(id, true)
         val localFile = File(getFilePath(highQualityPhotoFileName))
         return if(localFile.exists()) true
-        else isConnectionAvailable()
-    }
-
-    private fun isConnectionAvailable(): Boolean {
-        return try {
-            val cm = context
-                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val networkInfo = cm.activeNetworkInfo
-            networkInfo != null && networkInfo.isConnected
-        } catch (_: java.lang.Exception) { false }
+        else connectionUtility.isConnectionAvailable()
     }
 
     private fun copyFileFromInternalToExternalStorage(id: String, localFile: File) {

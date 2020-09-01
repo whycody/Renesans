@@ -1,6 +1,8 @@
 package pl.renesans.renesans.photo
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.net.Uri
@@ -17,6 +19,7 @@ import pl.renesans.renesans.data.Photo
 import pl.renesans.renesans.data.Source
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
+import pl.renesans.renesans.utility.AlertDialogUtilityImpl
 import pl.renesans.renesans.utility.ConnectionUtility
 import pl.renesans.renesans.utility.ConnectionUtilityImpl
 
@@ -28,6 +31,7 @@ class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageCha
     private var photoSource: Source? = null
     private var photoDesc: String? = null
     private var currentPhoto: Photo? = null
+    private val alertDialogUtility = AlertDialogUtilityImpl(this)
     private lateinit var imageDao: ImageDaoImpl
     private lateinit var connectionUtility: ConnectionUtility
 
@@ -85,7 +89,7 @@ class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageCha
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            0 -> imageDao.savePhotoToExternalStorage(currentPhoto?.objectId!!)
+            0 -> checkDownloadPhotosPermissions()
             1 -> imageDao.getPhotoUri(currentPhoto?.objectId!!)
             2 -> openSource()
             3 -> searchMorePhotos()
@@ -93,6 +97,15 @@ class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageCha
         }
         return true
     }
+
+    private fun checkDownloadPhotosPermissions() {
+        if(downloadPhotosPermissionIsGranted())
+            imageDao.savePhotoToExternalStorage(currentPhoto?.objectId!!)
+        else alertDialogUtility.getDownloadPhotosPermissionDialog().show()
+    }
+
+    private fun downloadPhotosPermissionIsGranted() = (ContextCompat.checkSelfPermission(applicationContext,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 
     private fun openSource(){
         val url = photoSource?.url

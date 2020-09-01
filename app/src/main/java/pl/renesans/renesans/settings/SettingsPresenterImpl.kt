@@ -7,9 +7,7 @@ import android.content.Context
 import android.content.Context.ACTIVITY_SERVICE
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.view.View
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import pl.renesans.renesans.BuildConfig
@@ -22,6 +20,7 @@ import pl.renesans.renesans.data.SettingsList
 import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.settings.dialog.SettingsDialogFragment
 import pl.renesans.renesans.settings.dialog.SettingsListContract
+import pl.renesans.renesans.utility.AlertDialogUtilityImpl
 
 class SettingsPresenterImpl(private val activity: MainActivity,
                             private val settingsView: SettingsContract.SettingsView)
@@ -37,6 +36,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
     private var selectedDownloadPhotosSetting = sharedPrefs.getInt(DOWNLOAD_PHOTOS, 0)
     private var downloadPhotosSettingIndex = 0
     private var bookmarkBottomSheet: BookmarkBottomSheetDialog? = null
+    private val alertDialogUtility = AlertDialogUtilityImpl(activity)
 
     private fun getSettings(): List<Setting> {
         val listOfSettingsLists =
@@ -124,7 +124,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
     }
 
     private fun getDownloadPhotosMode(): Int {
-        return if(!downloadPhotosPermisionIsGranted()) NOT_DOWNLOAD
+        return if(!downloadPhotosPermissionIsGranted()) NOT_DOWNLOAD
         else sharedPrefs.getInt(DOWNLOAD_PHOTOS, DOWNLOAD_BAD_QUALITY)
     }
 
@@ -184,7 +184,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
             override fun radioBtnChoosed(selectedSettingPos: Int) {
                 selectedDownloadPhotosSetting = selectedSettingPos
                 if((selectedSettingPos == DOWNLOAD_BAD_QUALITY || selectedSettingPos == DOWNLOAD_HIGH_QUALITY)
-                    && !downloadPhotosPermisionIsGranted())
+                    && !downloadPhotosPermissionIsGranted())
                     showDownloadPhotosPermissionDialog()
                 else refreshDownloadPhotosSetting(selectedSettingPos, settingPos)
             }
@@ -192,7 +192,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         dialog.show(activity.supportFragmentManager, "DownloadPhotos")
     }
 
-    private fun downloadPhotosPermisionIsGranted() = (ContextCompat.checkSelfPermission(activity,
+    private fun downloadPhotosPermissionIsGranted() = (ContextCompat.checkSelfPermission(activity,
         Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 
     private fun showMapModeDialog(setting: Setting, settingPos: Int) {
@@ -214,18 +214,8 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         dialog.show(activity.supportFragmentManager, "MapMode")
     }
 
-    private fun showDownloadPhotosPermissionDialog() {
-        val dialog = AlertDialog.Builder(activity)
-            .setTitle(activity.getString(R.string.warning))
-            .setMessage(activity.getString(R.string.permission_needed))
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                ActivityCompat.requestPermissions(activity,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_EXTERNAL_STORAGE) }
-            .setNegativeButton(android.R.string.cancel, null)
-            .create()
-        setColorsOfButtonsOfDialog(dialog)
-        dialog.show()
-    }
+    private fun showDownloadPhotosPermissionDialog() =
+        alertDialogUtility.getDownloadPhotosPermissionDialog().show()
 
     private fun showMapModeWarningDialog(settingsPos: Int) {
         val dialog = AlertDialog.Builder(activity)
@@ -235,20 +225,13 @@ class SettingsPresenterImpl(private val activity: MainActivity,
             .setNegativeButton(android.R.string.cancel) { _, _ ->
                 refreshMapModeSetting(currentMapMode, settingsPos)
             }.create()
-        setColorsOfButtonsOfDialog(dialog)
+        alertDialogUtility.setColorsOfButtonsOfDialog(dialog)
         dialog.show()
     }
 
     private fun showBookmarkBottomSheetDialog() {
         bookmarkBottomSheet = BookmarkBottomSheetDialog()
         bookmarkBottomSheet?.show(activity.supportFragmentManager, "bookmark")
-    }
-
-    private fun setColorsOfButtonsOfDialog(dialog: AlertDialog) {
-        dialog.setOnShowListener{
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.GRAY)
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.GRAY)
-        }
     }
 
     private fun refreshDownloadPhotosSetting(downloadPhotosMode: Int, settingsPos: Int) {
