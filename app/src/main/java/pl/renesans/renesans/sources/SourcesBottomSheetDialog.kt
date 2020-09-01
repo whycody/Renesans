@@ -1,7 +1,6 @@
 package pl.renesans.renesans.sources
 
 import android.app.Dialog
-import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -30,6 +29,8 @@ import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
+import pl.renesans.renesans.utility.ConnectionUtility
+import pl.renesans.renesans.utility.ConnectionUtilityImpl
 
 class SourcesBottomSheetDialog: BottomSheetDialogFragment(), SourcesContract.SourcesView,
     ImageDaoContract.ImageDaoInterractor {
@@ -37,6 +38,7 @@ class SourcesBottomSheetDialog: BottomSheetDialogFragment(), SourcesContract.Sou
     private lateinit var article: Article
     private lateinit var articlePhoto: ImageView
     private lateinit var presenter: SourcesContract.SourcesPresenter
+    private lateinit var connectionUtility: ConnectionUtility
     private var deviceIsInLandscape = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +50,7 @@ class SourcesBottomSheetDialog: BottomSheetDialogFragment(), SourcesContract.Sou
         articlePhoto = view.articlePhoto
         view.articleTitle?.text = article.title
         presenter = SourcesPresenterImpl(activity!!.applicationContext, this)
+        connectionUtility = ConnectionUtilityImpl(activity!!.applicationContext)
         val adapter = SourcesRecyclerAdapter(activity!!.applicationContext, presenter)
         val layoutManager =
             if(deviceIsInLandscape) GridLayoutManager(activity!!.applicationContext, 2)
@@ -109,9 +112,7 @@ class SourcesBottomSheetDialog: BottomSheetDialogFragment(), SourcesContract.Sou
     override fun getArticleObject() = article
 
     override fun startUrlActivity(url: String) {
-        val uriUrl = Uri.parse(url)
-        val launchBrowser = Intent(Intent.ACTION_VIEW, uriUrl)
-        startActivity(launchBrowser)
+        connectionUtility.startUrlActivity(url)
         activity?.overridePendingTransition(0, 0)
     }
 

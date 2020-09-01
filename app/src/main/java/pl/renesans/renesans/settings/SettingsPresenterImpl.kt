@@ -21,6 +21,7 @@ import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.settings.dialog.SettingsDialogFragment
 import pl.renesans.renesans.settings.dialog.SettingsListContract
 import pl.renesans.renesans.utility.AlertDialogUtilityImpl
+import pl.renesans.renesans.utility.ConnectionUtilityImpl
 
 class SettingsPresenterImpl(private val activity: MainActivity,
                             private val settingsView: SettingsContract.SettingsView)
@@ -31,6 +32,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
         activity.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
     private val editor = sharedPrefs.edit()
     private val realmDao = RealmDaoImpl(activity.applicationContext)
+    private val connectionUtility = ConnectionUtilityImpl(activity.applicationContext)
     private val settingsList = getSettings()
     private var currentMapMode = sharedPrefs.getInt(MAP_MODE, 0)
     private var selectedDownloadPhotosSetting = sharedPrefs.getInt(DOWNLOAD_PHOTOS, 0)
@@ -50,6 +52,8 @@ class SettingsPresenterImpl(private val activity: MainActivity,
             booleanValue = false, imageDrawable = activity.getDrawable(R.drawable.ic_user)))
         loginSettingsList.settings.add(Setting(BOOKMARKS, activity.getString(R.string.bookmarks),
             booleanValue = false, imageDrawable = activity.getDrawable(R.drawable.ic_bookmark)))
+        loginSettingsList.settings.add(Setting(QUESTIONNAIRE, activity.getString(R.string.questionnaire),
+            booleanValue = false, imageDrawable = activity.getDrawable(R.drawable.ic_questionnaire)))
         return loginSettingsList
     }
 
@@ -160,12 +164,14 @@ class SettingsPresenterImpl(private val activity: MainActivity,
     }
 
     override fun itemClicked(pos: Int, checkBoxValue: Boolean) {
-        if(settingsList[pos].booleanValue && settingsList[pos].settingId != DOWNLOAD_PHOTOS){
+        val settingId = settingsList[pos].settingId
+        if(settingsList[pos].booleanValue && settingId != DOWNLOAD_PHOTOS){
             editor.putBoolean(settingsList[pos].settingId!!, checkBoxValue)
             editor.apply()
-        }else if(settingsList[pos].settingId == MAP_MODE) showMapModeDialog(settingsList[pos], pos)
-        else if(settingsList[pos].settingId == DOWNLOAD_PHOTOS) showDownloadPhotosDialog(settingsList[pos], pos)
-        else if(settingsList[pos].settingId == BOOKMARKS) showBookmarkBottomSheetDialog()
+        }else if(settingId == MAP_MODE) showMapModeDialog(settingsList[pos], pos)
+        else if(settingId == DOWNLOAD_PHOTOS) showDownloadPhotosDialog(settingsList[pos], pos)
+        else if(settingId == BOOKMARKS) showBookmarkBottomSheetDialog()
+        else if(settingId == QUESTIONNAIRE) connectionUtility.startUrlActivity("https://forms.gle/Ue9j1Jsv8o3oKVpe8")
         if(settingsList[pos].settingId == MAP_MODE) settingsView.refreshMapFragment()
         if(settingsList[pos].settingId == MAP_FUNCTIONALITIES) settingsView.changedOptionOfMapLimit()
     }
@@ -312,6 +318,7 @@ class SettingsPresenterImpl(private val activity: MainActivity,
     companion object{
         const val LOGIN = "login"
         const val BOOKMARKS = "bookmarks"
+        const val QUESTIONNAIRE = "questionnaire"
         const val ERA = "era"
         const val DOWNLOAD_PHOTOS = "download photos"
         const val MAP_FUNCTIONALITIES = "map functionalities"

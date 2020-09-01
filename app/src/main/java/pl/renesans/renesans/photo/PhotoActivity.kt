@@ -118,9 +118,7 @@ class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageCha
     }
 
     private fun startUrlActivity(url: String) {
-        val uriUrl = Uri.parse(url)
-        val launchBrowser = Intent(Intent.ACTION_VIEW, uriUrl)
-        startActivity(launchBrowser)
+        connectionUtility.startUrlActivity(url)
         overridePendingTransition(0, 0)
     }
 

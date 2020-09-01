@@ -1,7 +1,10 @@
 package pl.renesans.renesans.utility
 
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.ConnectivityManager
+import android.net.Uri
 import java.lang.Exception
 
 class ConnectionUtilityImpl(private val context: Context): ConnectionUtility {
@@ -13,5 +16,12 @@ class ConnectionUtilityImpl(private val context: Context): ConnectionUtility {
             val networkInfo = cm.activeNetworkInfo
             networkInfo != null && networkInfo.isConnected
         } catch (_: Exception) { false }
+    }
+
+    override fun startUrlActivity(url: String) {
+        val uriUrl = Uri.parse(url)
+        val launchBrowser = Intent(Intent.ACTION_VIEW, uriUrl)
+        launchBrowser.addFlags(FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(launchBrowser)
     }
 }
