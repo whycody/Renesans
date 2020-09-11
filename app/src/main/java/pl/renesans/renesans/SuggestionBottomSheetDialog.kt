@@ -63,7 +63,7 @@ class SuggestionBottomSheetDialog:
         return view
     }
 
-    private fun setArticleDescriptionText(view: View){
+    private fun setArticleDescriptionText(view: View) {
         view.articleDescription?.text =
             if(numberOfParagraph == null)
                 "${getString(R.string.suggesting_changes)}${getString(R.string.new_paragraph)}"
@@ -72,22 +72,22 @@ class SuggestionBottomSheetDialog:
             else "${getString(R.string.suggesting_changes)}${getString(R.string.paragraph)} ${numberOfParagraph!! + 1}"
     }
 
-    private fun checkKindOfSuggestion(view: View){
+    private fun checkKindOfSuggestion(view: View) {
         view.commentView.addTextChangedListener(this)
-        if(numberOfParagraph == CONTENT_OF_ARTICLE){
+        if(numberOfParagraph == CONTENT_OF_ARTICLE) {
             view.titleOfParagraphView?.visibility = View.GONE
             view.contentOfParagraphView?.visibility = View.GONE
-        }else{
+        }else {
             view.titleOfParagraphView.addTextChangedListener(this)
             view.contentOfParagraphView.addTextChangedListener(this)
         }
     }
 
-    private fun initializeObjects(){
-        if(arguments!=null){
-            article = arguments!!.getSerializable("article") as Article
-            if(arguments!!.containsKey("numberOfParagraph"))
-                numberOfParagraph = arguments!!.getInt("numberOfParagraph")
+    private fun initializeObjects() {
+        if(arguments!=null) {
+            article = arguments!!.getSerializable(ARTICLE) as Article
+            if(arguments!!.containsKey(NUMBER_OF_PARAGRAPH))
+                numberOfParagraph = arguments!!.getInt(NUMBER_OF_PARAGRAPH)
             firebaseInterractor = activity as FirebaseContract.FirebaseInterractor
         }
     }
@@ -106,8 +106,8 @@ class SuggestionBottomSheetDialog:
 
     fun newInstance(article: Article, numberOfParagraph: Int?): SuggestionBottomSheetDialog {
         val args = Bundle()
-        args.putSerializable("article", article)
-        if(numberOfParagraph!=null) args.putInt("numberOfParagraph", numberOfParagraph)
+        args.putSerializable(ARTICLE, article)
+        if(numberOfParagraph!=null) args.putInt(NUMBER_OF_PARAGRAPH, numberOfParagraph)
         val suggestSheet = SuggestionBottomSheetDialog()
         suggestSheet.arguments = args
         return suggestSheet
@@ -128,13 +128,13 @@ class SuggestionBottomSheetDialog:
         window.setBackgroundDrawable(windowBackground)
     }
 
-    private fun sendChangesToFirebase(suggestion: Suggestion){
+    private fun sendChangesToFirebase(suggestion: Suggestion) {
         val firebaseDao = FirebaseDaoImpl(firebaseInterractor)
         firebaseDao.putSuggestionToFirebase(suggestion)
         dismiss()
     }
 
-    private fun loadMainPhoto(){
+    private fun loadMainPhoto() {
         val imageDao = ImageDaoImpl(context!!, this)
         if(article.listOfPhotos!=null && article.listOfPhotos!![0].objectId!=null)
             imageDao.loadPhoto(id = article.listOfPhotos!![0].objectId!!)
@@ -167,5 +167,7 @@ class SuggestionBottomSheetDialog:
 
     companion object{
         const val CONTENT_OF_ARTICLE = -2
+        const val ARTICLE = "article"
+        const val NUMBER_OF_PARAGRAPH = "number of paragraph"
     }
 }

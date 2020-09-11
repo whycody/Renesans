@@ -28,21 +28,24 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
     private var locationManager: LocationManager? = null
     private var isWaitingToMoveToCurrentLocation = false
     private val sharedPrefs = activity.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
+    private val articleDao = ArticleDaoImpl(activity.applicationContext)
     private lateinit var photoArticles: List<PhotoArticle>
 
     override fun addMarkers() {
-        val articleDao = ArticleDaoImpl(activity.applicationContext)
         val mapModeSetting = sharedPrefs.getInt(SettingsPresenterImpl.MAP_MODE, SettingsPresenterImpl.ALL_BUILDINGS)
-        photoArticles = when (mapModeSetting) {
+        photoArticles = getPhotoArticles(mapModeSetting)
+        photoArticles.forEach{
+            val cluster = ClusterMarker(it)
+            mapView?.addClusterMarkerToMap(cluster)
+        }
+    }
+
+    private fun getPhotoArticles(mapModeSetting: Int) =
+        when (mapModeSetting) {
             SettingsPresenterImpl.ALL_BUILDINGS -> articleDao.getPhotoArticlesList()
             SettingsPresenterImpl.ALL_TO_CHOOSED_ERA -> articleDao.getPhotoArticlesListBuiltToYear(1630)
             else -> articleDao.getPhotoArticlesListBuiltInYears(1450, 1630)
         }
-        photoArticles.forEach{ photoArticle ->
-            val cluster = ClusterMarker(photoArticle)
-            mapView?.addClusterMarkerToMap(cluster)
-        }
-    }
 
     override fun refreshMarkersList(photoArticlesList: MutableList<ClusterMarker>) {
         this.photoArticlesList = photoArticlesList
@@ -95,22 +98,40 @@ class LocationPresenterImpl(val mapView: MapView? = null, val activity: Activity
 
     override fun onBindViewHolder(holder: LocationRowHolder, position: Int) {
         resetVariables(holder)
-        if(position == 0){
-            holder.setText(activity.getString(R.string.my_location))
-            holder.setDrawable(activity.getDrawable(R.drawable.sh_my_location_row)!!)
-            holder.setTextColor(R.color.colorGray)
-        }else if(photoArticlesList[position].getClusterType() == ArticleDaoImpl.CITY_TYPE) {
-            holder.setText(photoArticlesList[position].getFullTitle())
-            holder.setDrawable(activity.getDrawable(R.drawable.sh_red_location_row)!!)
-        }else holder.setText(photoArticlesList[position].getFullTitle())
+        setupLocationRowHolder(holder, position)
         holder.setOnRowClickListener(position)
     }
 
-    private fun resetVariables(holder: LocationRowHolder){
-        holder.setText(" ")
-        holder.setTextColor(Color.WHITE)
-        holder.setDrawable(activity.getDrawable(R.drawable.sh_orange_location_row)!!)
-        holder.setOnRowClickListener(0)
+    private fun setupLocationRowHolder(holder: LocationRowHolder, position: Int) {
+        if(position == 0)
+            setMyLocationHolder(holder, position)
+        else if(photoArticlesList[position].getClusterType() == ArticleDaoImpl.CITY_TYPE)
+            setCityTypeHolder(holder, position)
+        else holder.setText(photoArticlesList[position].getFullTitle())
+    }
+
+    private fun setMyLocationHolder(holder: LocationRowHolder, position: Int) {
+        with(holder) {
+            setText(activity.getString(R.string.my_location))
+            setDrawable(ContextCompat.getDrawable(activity, R.drawable.sh_my_location_row)!!)
+            setTextColor(R.color.colorGray)
+        }
+    }
+
+    private fun setCityTypeHolder(holder: LocationRowHolder, position: Int) {
+        with(holder) {
+            setText(photoArticlesList[position].getFullTitle())
+            setDrawable(ContextCompat.getDrawable(activity, R.drawable.sh_red_location_row)!!)
+        }
+    }
+
+    private fun resetVariables(holder: LocationRowHolder) {
+        with(holder) {
+            setText(" ")
+            setTextColor(Color.WHITE)
+            setDrawable(ContextCompat.getDrawable(activity, R.drawable.sh_orange_location_row)!!)
+            setOnRowClickListener(0)
+        }
     }
 
     override fun onLocationChanged(p0: Location?) {

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import pl.renesans.renesans.R
 
-class DiscoverRecyclerAdapter(val context: Context, val presenter: DiscoverRecyclerPresenter):
+class DiscoverRecyclerAdapter(val context: Context, val presenter: DiscoverContract.DiscoverRecyclerPresenter):
     RecyclerView.Adapter<DiscoverRowHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscoverRowHolder {
@@ -15,11 +15,8 @@ class DiscoverRecyclerAdapter(val context: Context, val presenter: DiscoverRecyc
         return DiscoverRowHolder(view, context, presenter)
     }
 
-    override fun getItemCount(): Int {
-        return presenter.getItemCount()
-    }
+    override fun getItemCount() = presenter.getItemCount()
 
-    override fun onBindViewHolder(holder: DiscoverRowHolder, position: Int) {
+    override fun onBindViewHolder(holder: DiscoverRowHolder, position: Int) =
         presenter.onBindViewHolder(holder, position)
-    }
 }

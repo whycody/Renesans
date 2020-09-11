@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.tour_slide_layout.view.articleTitle
 import kotlinx.android.synthetic.main.tour_slide_layout.view.photoDescription
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
+import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
@@ -62,7 +63,8 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_bottom_sheet_photo, container, false)
-        if(arguments!=null) photoArticle = arguments!!.getSerializable("photoArticle") as PhotoArticle
+        if(arguments!=null)
+            photoArticle = arguments!!.getSerializable(ArticleActivity.PHOTO_ARTICLE) as PhotoArticle
         view.articleTitle.text = photoArticle.title
         view.articleParagraph.text = photoArticle.paragraph?.content
         view.photoDescription.text = photoArticle.photo?.description
@@ -94,7 +96,7 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
 
     fun newInstance(photoArticle: PhotoArticle): PhotoBottomSheetDialog {
         val args = Bundle()
-        args.putSerializable("photoArticle", photoArticle)
+        args.putSerializable(ArticleActivity.PHOTO_ARTICLE, photoArticle)
         val photoSheet = PhotoBottomSheetDialog()
         photoSheet.arguments = args
         return photoSheet

@@ -34,21 +34,20 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         checkBundle(savedInstanceState)
         realmDao = RealmDaoImpl(applicationContext)
         presenter = SearchPresenterImpl(applicationContext, this)
-        presenter.onCreate()
         adapter = SearchRecyclerAdapter(applicationContext, presenter)
         layoutManager = LinearLayoutManager(this)
         searchRecycler.adapter = adapter
         searchRecycler.layoutManager = layoutManager
     }
 
-    private fun checkBundle(savedInstanceState: Bundle?){
-        if(savedInstanceState?.getString("searchText") != null)
-            lastSearchText = savedInstanceState.getString("searchText")
+    private fun checkBundle(savedInstanceState: Bundle?) {
+        if(savedInstanceState?.getString(SEARCH_TEXT) != null)
+            lastSearchText = savedInstanceState.getString(SEARCH_TEXT)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("searchText", searchView?.query.toString())
+        outState.putString(SEARCH_TEXT, searchView?.query.toString())
     }
 
     override fun onBackPressed() {
@@ -74,9 +73,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         return true
     }
 
-    override fun onQueryTextSubmit(p0: String?): Boolean {
-        return false
-    }
+    override fun onQueryTextSubmit(p0: String?) = false
 
     override fun onQueryTextChange(p0: String?): Boolean {
         adapter.filter.filter(p0)
@@ -112,5 +109,9 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Sear
         finish()
         overridePendingTransition(0, 0)
         return true
+    }
+
+    companion object {
+        const val SEARCH_TEXT = "searchText"
     }
 }

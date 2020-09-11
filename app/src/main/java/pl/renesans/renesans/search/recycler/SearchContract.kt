@@ -3,7 +3,6 @@ package pl.renesans.renesans.search.recycler
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.ArticleItem
 
 interface SearchContract {
@@ -35,8 +34,6 @@ interface SearchContract {
     }
 
     interface SearchPresenter {
-
-        fun onCreate()
 
         fun getSearchedArticles(): List<ArticleItem>
 

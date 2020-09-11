@@ -13,8 +13,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import pl.renesans.renesans.R
 
-class DiscoverRowHolder(itemView: View, val context: Context?, val presenter: DiscoverRecyclerPresenter) :
-    RecyclerView.ViewHolder(itemView), DiscoverRowView {
+class DiscoverRowHolder(itemView: View, val context: Context?,
+                        val presenter: DiscoverContract.DiscoverRecyclerPresenter) :
+    RecyclerView.ViewHolder(itemView), DiscoverContract.DiscoverRowView {
 
     override fun setArticleBitmapPhoto(bitmap: Bitmap) {
         if(context == null || bitmap.isRecycled) return
@@ -62,7 +63,6 @@ class DiscoverRowHolder(itemView: View, val context: Context?, val presenter: Di
         itemView.findViewById<TextView>(R.id.articleTitle).text = title
     }
 
-    override fun setOnRowClickListener(pos: Int) {
+    override fun setOnRowClickListener(pos: Int) =
         itemView.setOnClickListener{presenter.itemClicked(pos)}
-    }
 }

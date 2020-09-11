@@ -15,9 +15,8 @@ class ArticleConverterImpl: ArticleConverter {
         return article
     }
 
-    override fun convertArticleToArticleItem(article: Article): ArticleItem {
-        return ArticleItem(article.objectId, article.title)
-    }
+    override fun convertArticleToArticleItem(article: Article) =
+        ArticleItem(article.objectId, article.title)
 
     override fun convertArticlesToArticleItemsList(articlesList: List<Article>): List<ArticleItem> {
         val articleItemsList = mutableListOf<ArticleItem>()

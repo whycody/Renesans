@@ -3,6 +3,7 @@ package pl.renesans.renesans.download
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
@@ -11,12 +12,12 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_download.*
-import kotlinx.android.synthetic.main.activity_startup.*
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.curiosity.CuriosityPresenterImpl
 import pl.renesans.renesans.data.realm.RealmContract
 import pl.renesans.renesans.data.realm.RealmDaoImpl
+import pl.renesans.renesans.utility.AlertDialogUtilityImpl
 
 class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
 
@@ -33,22 +34,22 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
         setContentView(R.layout.activity_download)
         changeStatusBarColor()
         startAnimations()
+        realmDao = RealmDaoImpl(applicationContext, this)
         curiosityView.text = curiosityPresenter.getRandomCuriosity()
-        realmDao = RealmDaoImpl(this, this)
         retryBtn.setOnClickListener{ downloadDb() }
-        downloadDb()
-        downloadProgressBar.progressDrawable.setColorFilter(ContextCompat
+        downloadProgressBar.progressDrawable.colorFilter = PorterDuffColorFilter(ContextCompat
             .getColor(applicationContext, R.color.colorPrimary), PorterDuff.Mode.SRC_IN)
         initializeCuriosityTimer()
+        downloadDb()
     }
 
-    private fun changeStatusBarColor(){
+    private fun changeStatusBarColor() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
     }
 
-    private fun startAnimations(){
+    private fun startAnimations() {
         val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
         downloadLayout.startAnimation(animation)
     }
@@ -57,6 +58,10 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
 
     override fun downloadSuccessful() {
         startActivity(Intent(applicationContext, MainActivity::class.java))
+        finishActivity()
+    }
+
+    private fun finishActivity() {
         stopTimer = true
         stopCuriosityTimer = true
         finish()
@@ -69,17 +74,13 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
         showAlertDialog(connectionProblem)
     }
 
-    override fun startedLoading() {
-
-    }
+    override fun startedLoading() { }
 
     override fun downloadedProgress(percentages: Int) {
         downloadProgressBar.progress = percentages
     }
 
-    override fun databaseIsUpToDate() {
-
-    }
+    override fun databaseIsUpToDate() { }
 
     private fun showAlertDialog(connectionProblem: Boolean){
         timesOfAlertDialogShow++
@@ -87,7 +88,9 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
         else showRetryLaterDialog(connectionProblem)
     }
 
-    private fun showWarningDialog(){
+    private val dialogUtility = AlertDialogUtilityImpl()
+
+    private fun showWarningDialog() {
         val dialog = AlertDialog.Builder(this)
             .setTitle(getString(R.string.something_went_wrong))
             .setMessage(getString(R.string.try_again))
@@ -97,37 +100,26 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
                 retryBtn.visibility = View.VISIBLE
                 downloadProgressBar.visibility = View.INVISIBLE
             }.create()
-
-        dialog.setOnShowListener{
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(applicationContext, R.color.colorPrimaryDark))
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(applicationContext, R.color.colorPrimaryDark))
-        }
-
+        dialogUtility.setColorsOfButtonsOfDialog(dialog)
         dialog.show()
     }
 
-    private fun showRetryLaterDialog(connectionProblem: Boolean){
-        val message = if(!connectionProblem) getString(R.string.try_again_later)
-        else getString(R.string.retry_with_connection)
-
+    private fun showRetryLaterDialog(connectionProblem: Boolean) {
         val dialog = AlertDialog.Builder(this)
             .setTitle(getString(R.string.something_went_wrong))
-            .setMessage(message)
+            .setMessage(getMessage(connectionProblem))
             .setPositiveButton(android.R.string.ok){_,_ ->
                 retryBtn.isEnabled = true
                 retryBtn.visibility = View.VISIBLE
                 downloadProgressBar.visibility = View.INVISIBLE
             }.create()
-
-        dialog.setOnShowListener{
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(applicationContext, R.color.colorPrimaryDark))
-        }
-
+        dialogUtility.setColorsOfButtonsOfDialog(dialog)
         dialog.show()
     }
+
+    private fun getMessage(connectionProblem: Boolean) =
+        if(!connectionProblem) getString(R.string.try_again_later)
+        else getString(R.string.retry_with_connection)
 
     private fun downloadDb(){
         downloadProgressBar.progress = 0

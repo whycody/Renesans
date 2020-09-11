@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable
 
 interface SettingsContract {
 
-    interface SettingsView{
+    interface SettingsView {
 
         fun refreshMapFragment()
 

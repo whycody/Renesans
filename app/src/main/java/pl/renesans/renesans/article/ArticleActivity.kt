@@ -42,7 +42,7 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
             intent.getSerializableExtra(PHOTO_ARTICLE) as PhotoArticle)
     }
 
-    private fun setFragment(){
+    private fun setFragment() {
         articleFragment = ArticleFragment(articleActivityView = this)
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.articleFrame, articleFragment)

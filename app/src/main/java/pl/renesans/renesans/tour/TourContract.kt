@@ -28,8 +28,6 @@ interface TourContract {
 
     interface TourPresenter {
 
-        fun onCreate()
-
         fun getPhotoId(position: Int): String?
 
         fun onPageSelected(position: Int)

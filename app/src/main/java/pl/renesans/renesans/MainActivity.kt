@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.renesans.renesans.article.ArticleActivity
@@ -46,9 +47,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         articleDao = ArticleDaoImpl(applicationContext)
         setSupportActionBar(mainToolbar as Toolbar)
         mainNav.setOnNavigationItemSelectedListener(this)
-        if(savedInstanceState?.getInt("lastTab") != null)
-            onNavigationItemSelected(mainNav.menu.getItem(savedInstanceState.getInt("lastTab")))
-        else changeFragment(discoverFragment, "discover")
+        if(savedInstanceState?.getInt(LAST_TAB) != null)
+            onNavigationItemSelected(mainNav.menu.getItem(savedInstanceState.getInt(LAST_TAB)))
+        else changeFragment(discoverFragment, DISCOVER)
         firebaseDao.refreshArticles()
     }
 
@@ -68,11 +69,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     fun showSuggestionBottomSheet(article: Article, paragraph: Int?) =
         SuggestionBottomSheetDialog().newInstance(article, paragraph)
-            .show(supportFragmentManager, "Paragraph")
+            .show(supportFragmentManager, PARAGRAPH)
 
     fun startArticleActivity(id: String) {
         val intent = Intent(applicationContext, ArticleActivity::class.java)
-        intent.putExtra(ArticleActivity.ARTICLE, articleDao.getArticleFromId(id))
+        intent.putExtra(ArticleActivity.ARTICLE, realmDao.getArticleWithId(id))
         startActivity(intent)
     }
 
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("lastTab", currentItem)
+        outState.putInt(LAST_TAB, currentItem)
     }
 
     fun refreshMapFragment() {
@@ -131,20 +132,26 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             fragmentTemp = fragment
             fragmentTransaction.add(R.id.mainFrameLayout, fragmentTemp, tagFragmentName)
         } else fragmentTransaction.show(fragmentTemp)
-        fragmentTransaction.setPrimaryNavigationFragment(fragmentTemp)
-        fragmentTransaction.setReorderingAllowed(true)
-        fragmentTransaction.commitNowAllowingStateLoss()
+        setupFragmentTransaction(fragmentTransaction, fragmentTemp)
         refreshFragments(firstLoadOfFragment, tagFragmentName)
     }
 
+    private fun setupFragmentTransaction(fragmentTransaction: FragmentTransaction, fragmentTemp: Fragment?) {
+        with(fragmentTransaction) {
+            setPrimaryNavigationFragment(fragmentTemp)
+            setReorderingAllowed(true)
+            commitNowAllowingStateLoss()
+        }
+    }
+
     private fun refreshFragments(firstLoadOfFragment: Boolean, tagFragmentName: String) {
-        if(!firstLoadOfFragment && tagFragmentName == "map") {
+        if(!firstLoadOfFragment && tagFragmentName == MAP) {
             if(refreshMapFragment) mapFragment.reloadMap()
             if(changedOptionOfMapLimit) mapFragment.changedOptionOfMapLimit()
             refreshMapFragment = false
             changedOptionOfMapLimit = false
-        }else if(!firstLoadOfFragment && tagFragmentName == "discover"){
-            if(refreshDiscoverFragment){
+        }else if(!firstLoadOfFragment && tagFragmentName == DISCOVER) {
+            if(refreshDiscoverFragment) {
                 discoverFragment.refreshFragment()
                 refreshDiscoverFragment = false
             }
@@ -159,6 +166,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         const val DISCOVER = "discover"
         const val MAP = "map"
         const val SETTINGS = "settings"
+        const val LAST_TAB = "last tab"
+        const val PARAGRAPH = "paragraph"
     }
 
 }

@@ -40,7 +40,6 @@ class MapBottomSheetDialog: BottomSheetDialogFragment(), ImageDaoContract.ImageD
     private lateinit var articlePhoto: ImageView
     private lateinit var article: Article
     private var mapFragment: SupportMapFragment? = null
-
     private var googleMap: GoogleMap? = null
     private var clusterManager: ClusterManager<ClusterMarker>? = null
     private var clusterManagerRenderer: ClusterManagerRenderer? = null
@@ -85,7 +84,7 @@ class MapBottomSheetDialog: BottomSheetDialogFragment(), ImageDaoContract.ImageD
 
     fun newInstance(article: Article): MapBottomSheetDialog {
         val args = Bundle()
-        args.putSerializable("article", article)
+        args.putSerializable(ARTICLE, article)
         val mapSheet = MapBottomSheetDialog()
         mapSheet.arguments = args
         return mapSheet
@@ -95,7 +94,7 @@ class MapBottomSheetDialog: BottomSheetDialogFragment(), ImageDaoContract.ImageD
         super.onSaveInstanceState(outState)
         if(googleMap!=null){
             val lastCameraPosition = getLastCameraPosition()
-            outState.putSerializable("lastPosition", lastCameraPosition)
+            outState.putSerializable(LAST_POSITION, lastCameraPosition)
         }
     }
 
@@ -109,9 +108,9 @@ class MapBottomSheetDialog: BottomSheetDialogFragment(), ImageDaoContract.ImageD
     }
 
     private fun checkBundle(savedInstanceState: Bundle?){
-        if(savedInstanceState?.getSerializable("lastPosition") != null){
+        if(savedInstanceState?.getSerializable(LAST_POSITION) != null){
             val lastCameraPos =
-                savedInstanceState.getSerializable("lastPosition") as LastCameraPosition
+                savedInstanceState.getSerializable(LAST_POSITION) as LastCameraPosition
             cameraPos = CameraPosition(LatLng(lastCameraPos.lat!!, lastCameraPos.lng!!),
                 lastCameraPos.cameraZoom!!, lastCameraPos.tilt!!, lastCameraPos.bearing!!)
         }
@@ -119,7 +118,7 @@ class MapBottomSheetDialog: BottomSheetDialogFragment(), ImageDaoContract.ImageD
 
     private fun initializeObjects(){
         if(arguments!=null)
-            article = arguments!!.getSerializable("article") as Article
+            article = arguments!!.getSerializable(ARTICLE) as Article
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -198,6 +197,11 @@ class MapBottomSheetDialog: BottomSheetDialogFragment(), ImageDaoContract.ImageD
             clusterManagerRenderer?.prepareMarker()
             clusterManager?.renderer = clusterManagerRenderer
         }
+    }
+
+    companion object {
+        const val ARTICLE = "article"
+        const val LAST_POSITION = "lastPosition"
     }
 
 }

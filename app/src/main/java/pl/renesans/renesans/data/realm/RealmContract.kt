@@ -13,10 +13,6 @@ interface RealmContract {
 
         fun getDatabaseVersion(): String
 
-        fun checkRealm()
-
-        fun checkRealmLists()
-
         fun realmDatabaseIsEmpty(): Boolean
 
         fun getCityWithCityKey(cityKey: String): String?

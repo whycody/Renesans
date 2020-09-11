@@ -16,18 +16,18 @@ import pl.renesans.renesans.startup.StartupActivity
 
 class SplashActivity : AppCompatActivity() {
 
-    private var permissionGranted = false
-    private lateinit var sharedPrefs: SharedPreferences
-    private var skipPermission = false
     private lateinit var realmDao: RealmContract.RealmDao
+    private lateinit var sharedPrefs: SharedPreferences
+    private var permissionGranted = false
+    private var skipPermission = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        realmDao = RealmDaoImpl(applicationContext)
         sharedPrefs = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)
         skipPermission = sharedPrefs.getBoolean(PermissionActivity.SKIP_PERMISSION, false)
         permissionGranted = (ContextCompat.checkSelfPermission(this,
             Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-        realmDao = RealmDaoImpl(applicationContext)
         checkFirstLogin()
     }
 

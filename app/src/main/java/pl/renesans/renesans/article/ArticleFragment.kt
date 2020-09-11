@@ -103,13 +103,11 @@ class ArticleFragment(var article: Article? = null,
 
     override fun getArticleObject() = (activity as ArticleActivity).getArticleObject()
 
+    private fun getImageAtPos(pos: Int) = imagesList[pos]
+
     override fun loadBitmapToImage(bitmap: Bitmap, pos: Int) {
         if(!bitmap.isRecycled && context!=null)
             Glide.with(context!!.applicationContext).load(bitmap).into(getImageAtPos(pos))
-    }
-
-    private fun getImageAtPos(pos: Int): ImageView{
-        return imagesList[pos]
     }
 
     override fun loadUriToImage(uri: Uri, pos: Int) {

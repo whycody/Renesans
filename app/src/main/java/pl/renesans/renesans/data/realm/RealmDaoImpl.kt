@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -105,22 +104,23 @@ class RealmDaoImpl(private val context: Context,
         realm.where<DatabaseVersionRealm>(DatabaseVersionRealm::class.java)
             .findFirst()
 
-    private fun checkArticlesList(articlesList: ArticlesList?){
+    private fun checkArticlesList(articlesList: ArticlesList?) {
         if(!articleListExists(articlesList)) insertArticlesList(articlesList)
         else if(!articlesListIsEqualWithDb(articlesList)) updateArticlesList(articlesList)
     }
 
-    private fun updateArticlesList(articlesList: ArticlesList?){
+    private fun updateArticlesList(articlesList: ArticlesList?) {
         realm.executeTransaction{ getRealmArticlesListWithId(articlesList?.id)?.deleteFromRealm() }
         insertArticlesList(articlesList)
     }
 
     private fun getRealmArticlesListWithId(id: String?): ArticlesListRealm? =
         realm.where<ArticlesListRealm>(ArticlesListRealm::class.java)
-            .contains("id", id)
+            .contains(ID, id)
             .findFirst()
 
-    private fun downloadArticlesFromList(document: DocumentSnapshot, articlesList: ArticlesList?, firstDownload: Boolean) {
+    private fun downloadArticlesFromList(document: DocumentSnapshot,
+                                         articlesList: ArticlesList?, firstDownload: Boolean) {
         articlesRef.document(document.id).collection(document.id).get()
             .addOnSuccessListener { articleTask ->
                 downloadedArticlesLists++
@@ -137,41 +137,40 @@ class RealmDaoImpl(private val context: Context,
         }
     }
 
-    private fun checkArticle(articleDoc: DocumentSnapshot){
+    private fun checkArticle(articleDoc: DocumentSnapshot) {
         val article = articleDoc.toObject(Article::class.java)
         if(!articleExists(article)) insertArticle(article)
         else if(!articleIsEqualWithDb(article)) updateArticle(article)
     }
 
-    private fun updateArticle(article: Article?){
+    private fun updateArticle(article: Article?) {
         realm.executeTransaction{ getRealmArticleWithId(article?.objectId)?.deleteFromRealm() }
         insertArticle(article)
     }
 
     private fun getRealmArticleWithId(id: String?): ArticleRealm? =
         realm.where<ArticleRealm>(ArticleRealm::class.java)
-            .contains("objectId", id)
+            .contains(OBJECT_ID, id)
             .findFirst()
 
-    private fun checkPhotoArticle(articleDoc: DocumentSnapshot){
+    private fun checkPhotoArticle(articleDoc: DocumentSnapshot) {
         val photoArticle = articleDoc.toObject(PhotoArticle::class.java)
         if(!photoArticleExists(photoArticle)) insertPhotoArticle(photoArticle)
         if(!photoArticleIsEqualWithDb(photoArticle)) updatePhotoArticle(photoArticle)
     }
 
-    private fun updatePhotoArticle(photoArticle: PhotoArticle?){
+    private fun updatePhotoArticle(photoArticle: PhotoArticle?) {
         realm.executeTransaction{ getRealmPhotoArticleWithId(photoArticle?.objectId)?.deleteFromRealm() }
         insertPhotoArticle(photoArticle)
     }
 
     private fun getRealmPhotoArticleWithId(id: String?): PhotoArticleRealm? =
         realm.where<PhotoArticleRealm>(PhotoArticleRealm::class.java)
-            .contains("objectId", id)
+            .contains(OBJECT_ID, id)
             .findFirst()
 
-    private fun checkAllArticlesHasBeenDownloaded(firstDownload: Boolean){
+    private fun checkAllArticlesHasBeenDownloaded(firstDownload: Boolean) {
         if(downloadedArticlesLists == allArticlesLists) {
-            Log.d("MOJTAG", "Realm database is complete")
             prefsEditor.putBoolean(ALL_DOWNLOADED, true)
             prefsEditor.commit()
             if(canDownloadPhotos && firstDownload) downloadAllPhotos()
@@ -179,7 +178,7 @@ class RealmDaoImpl(private val context: Context,
         }
     }
 
-    private fun downloadAllPhotos(){
+    private fun downloadAllPhotos() {
         for(article in getAllArticles())
             if (article.objectId != null) downloadPhotoWithId(article.objectId!!)
         val additionalPhotos = listOf("Z0", "Z1", "Z2", "Z3", "Z4", "Z5", "Z6", "Z7")
@@ -194,26 +193,26 @@ class RealmDaoImpl(private val context: Context,
 
     private fun articleListExists(articlesList: ArticlesList?): Boolean
             = realm.where(ArticlesListRealm::class.java)
-            .equalTo("id", articlesList?.id).findFirst() != null
+            .equalTo(ID, articlesList?.id).findFirst() != null
 
     private fun articlesListIsEqualWithDb(articlesList: ArticlesList?): Boolean
             = articlesList == getArticlesListWithId(articlesList?.id!!)
 
     private fun articleExists(article: Article?): Boolean
             = realm.where(ArticleRealm::class.java)
-            .equalTo("objectId", article?.objectId).findFirst() != null
+            .equalTo(OBJECT_ID, article?.objectId).findFirst() != null
 
     private fun articleIsEqualWithDb(article: Article?): Boolean
         = article == getArticleWithId(article?.objectId!!)
 
     private fun photoArticleExists(photoArticle: PhotoArticle?): Boolean
             = realm.where(PhotoArticleRealm::class.java)
-        .equalTo("objectId", photoArticle?.objectId).findFirst() != null
+        .equalTo(OBJECT_ID, photoArticle?.objectId).findFirst() != null
 
     private fun photoArticleIsEqualWithDb(photoArticle: PhotoArticle?): Boolean
             = photoArticle == getPhotoArticleWithId(photoArticle?.objectId!!)
 
-    private fun insertArticlesList(articlesList: ArticlesList?){
+    private fun insertArticlesList(articlesList: ArticlesList?) {
         realm.beginTransaction()
         val realmArticlesList =
             realm.createObject(ArticlesListRealm::class.java)
@@ -221,7 +220,7 @@ class RealmDaoImpl(private val context: Context,
         realm.commitTransaction()
     }
 
-    private fun insertArticle(article: Article?){
+    private fun insertArticle(article: Article?) {
         realm.beginTransaction()
         val realmArticle =
             realm.createObject(ArticleRealm::class.java)
@@ -229,38 +228,12 @@ class RealmDaoImpl(private val context: Context,
         realm.commitTransaction()
     }
 
-    private fun insertPhotoArticle(photoArticle: PhotoArticle?){
+    private fun insertPhotoArticle(photoArticle: PhotoArticle?) {
         realm.beginTransaction()
         val realmPhotoArticle =
             realm.createObject(PhotoArticleRealm::class.java)
         realmMapper.setPropertiesOfPhotoArticleRealm(photoArticle, realmPhotoArticle)
         realm.commitTransaction()
-    }
-
-    override fun checkRealm(){
-        val allArticlesLists: RealmResults<ArticlesListRealm> = realm
-            .where<ArticlesListRealm>(ArticlesListRealm::class.java).findAll().sort("id")
-        val allArticles: RealmResults<ArticleRealm> = realm
-            .where<ArticleRealm>(ArticleRealm::class.java).findAll().sort("objectId")
-        val allPhotoArticles: RealmResults<PhotoArticleRealm> = realm
-            .where<PhotoArticleRealm>(PhotoArticleRealm::class.java).findAll().sort("objectId")
-        for(articlesList in allArticlesLists)
-            Log.d("MOJTAG", "ArticlesList: $articlesList")
-        for(article in allArticles)
-            Log.d("MOJTAG", "Article: $article")
-        for(photoArticle in allPhotoArticles)
-            Log.d("MOJTAG", "PhotoArticle: $photoArticle")
-    }
-
-    override fun checkRealmLists(){
-        val allArticlesLists: RealmResults<ArticlesListRealm> = realm
-            .where<ArticlesListRealm>(ArticlesListRealm::class.java).findAll().sort("index")
-        allArticlesLists.forEach{
-            Log.d("MOJTAG", "List: ${it.name}")
-            val allArticles = getRealmArticlesFromListWithId(it.id)
-            allArticles.forEach{ Log.d("MOJTAG", "Article: $it") }
-            Log.d("MOJTAG", " ")
-        }
     }
 
     override fun realmDatabaseIsEmpty(): Boolean =
@@ -269,8 +242,8 @@ class RealmDaoImpl(private val context: Context,
 
     override fun getCityWithCityKey(cityKey: String) =
         realm.where(PhotoArticleRealm::class.java)
-            .equalTo("cityKey", cityKey)
-            .equalTo("objectType", ArticleDaoImpl.CITY_TYPE)
+            .equalTo(CITY_KEY, cityKey)
+            .equalTo(OBJECT_TYPE, ArticleDaoImpl.CITY_TYPE)
             .findFirst()?.title
 
     override fun getAllArticles(): List<Article> {
@@ -281,15 +254,15 @@ class RealmDaoImpl(private val context: Context,
         return allArticlesFromList.toList()
     }
 
-    private fun addAllArticlesToList(allArticlesFromList: MutableList<Article>){
+    private fun addAllArticlesToList(allArticlesFromList: MutableList<Article>) {
         val allArticles: RealmResults<ArticleRealm> =
             realm.where<ArticleRealm>(ArticleRealm::class.java)
                 .findAll()
-                .sort("objectId")
+                .sort(OBJECT_ID)
         allArticles.forEach{ allArticlesFromList.add(realmMapper.getArticleFromRealm(it)!!) }
     }
 
-    private fun addAllPhotoArticlesToList(allArticlesFromList: MutableList<Article>){
+    private fun addAllPhotoArticlesToList(allArticlesFromList: MutableList<Article>) {
         val allPhotoArticles = getPhotoArticles(false)
         allPhotoArticles.forEach{
             allArticlesFromList.add(articleConverter.convertPhotoArticleToArticle(it))
@@ -318,7 +291,8 @@ class RealmDaoImpl(private val context: Context,
         return allArticlesFromList.toList()
     }
 
-    override fun getArticlesItemsFromLocalList(localListId: String, onlyPhotoArticles: Boolean): List<ArticleItem> {
+    override fun getArticlesItemsFromLocalList(localListId: String,
+                                               onlyPhotoArticles: Boolean): List<ArticleItem> {
         val articlesItemsList = mutableListOf<ArticleItem>()
         getLocalArticlesList(localListId)?.listOfLocalArticles?.forEach {
             val articleItem = realmMapper.getArticleItem(getArticleWithId(it.id!!))
@@ -379,14 +353,14 @@ class RealmDaoImpl(private val context: Context,
     private fun getLocalArticlesList(id: String): LocalArticlesListRealm? {
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         return realm.where(LocalArticlesListRealm::class.java)
-            .contains("id", id).findFirst()
+            .contains(ID, id).findFirst()
     }
 
     private fun getRealmArticlesFromListWithId(id: String?): RealmResults<ArticleRealm> =
         realm.where<ArticleRealm>(ArticleRealm::class.java)
-            .contains("objectId", id)
+            .contains(OBJECT_ID, id)
             .findAll()
-            .sort("index")
+            .sort(INDEX)
 
     override fun getPhotoArticles(withCities: Boolean): List<PhotoArticle> {
         val photoArticlesList = getPhotosArticlesListRealm()
@@ -400,27 +374,26 @@ class RealmDaoImpl(private val context: Context,
 
     private fun getPhotosArticlesListRealm(): ArticlesListRealm? =
         realm.where<ArticlesListRealm>(ArticlesListRealm::class.java)
-            .equalTo("type", PHOTO_ARTICLE)
+            .equalTo(TYPE, PHOTO_ARTICLE)
             .findFirst()
 
     private fun getPhotosArticlesFromList(id: String?): RealmResults<PhotoArticleRealm> =
         realm.where<PhotoArticleRealm>(PhotoArticleRealm::class.java)
-            .contains("objectId", id)
+            .contains(OBJECT_ID, id)
             .findAll()
-            .sort("objectType")
+            .sort(OBJECT_TYPE)
 
-    override fun getArticlesListWithId(id: String): ArticlesList {
-        return realmMapper.getArticlesListFromRealm(realm
+    override fun getArticlesListWithId(id: String) =
+        realmMapper.getArticlesListFromRealm(realm
             .where<ArticlesListRealm>(ArticlesListRealm::class.java)
-            .contains("id", id)
+            .contains(ID, id)
             .findFirst())
-    }
 
     override fun getArticleWithId(id: String): Article {
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         val articleRealm = realm
             .where<ArticleRealm>(ArticleRealm::class.java)
-            .contains("objectId", id)
+            .contains(OBJECT_ID, id)
             .findFirst()
         return if(articleRealm != null) realmMapper.getArticleFromRealm(articleRealm)!!
         else articleConverter.convertPhotoArticleToArticle(getPhotoArticleWithId(id))
@@ -430,10 +403,10 @@ class RealmDaoImpl(private val context: Context,
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
         val articlePhoto = realmMapper.getPhotoArticleFromRealm(realm
             .where(PhotoArticleRealm::class.java)
-            .contains("objectId", id)
+            .contains(OBJECT_ID, id)
             .findFirst())
         if(articlePhoto.cityKey != null){
-            val city = getCity(articlePhoto.cityKey!!)
+            val city = getCityWithCityKey(articlePhoto.cityKey!!)
             if(city!=null) articlePhoto.header = Header(
                 content = hashMapOf(Pair(context.resources.getString(R.string.city), city)))
         }
@@ -443,13 +416,11 @@ class RealmDaoImpl(private val context: Context,
     override fun getTypeOfArticle(id: String): String {
         val articlePhoto = realm
             .where(PhotoArticleRealm::class.java)
-            .contains("objectId", id)
+            .contains(OBJECT_ID, id)
             .findFirst()
         return if(articlePhoto != null) ArticleActivity.PHOTO_ARTICLE
         else ArticleActivity.ARTICLE
     }
-
-    private fun getCity(cityKey: String) = getCityWithCityKey(cityKey)
 
     override fun downloadFailed() = refreshProgress()
 
@@ -469,7 +440,8 @@ class RealmDaoImpl(private val context: Context,
         else ((downloadedArticlesLists.toDouble()/allArticlesLists.toDouble())*100).toInt()
 
     private fun checkAllDownloaded() {
-        if(allArticles == downloadedArticlesPhotos) realmInterractor?.downloadSuccessful()
+        if(allArticles == downloadedArticlesPhotos)
+            realmInterractor?.downloadSuccessful()
     }
 
     companion object{
@@ -478,5 +450,12 @@ class RealmDaoImpl(private val context: Context,
         const val ALL_DOWNLOADED = "ALL_DOWNLOADED"
         const val SEARCH_HISTORY = "SEARCH_HISTORY"
         const val MARKED_ARTICLES = "MARKED_ARTICLES"
+
+        const val OBJECT_ID = "objectId"
+        const val OBJECT_TYPE = "objectType"
+        const val ID = "id"
+        const val TYPE = "type"
+        const val INDEX = "index"
+        const val CITY_KEY = "cityKey"
     }
 }

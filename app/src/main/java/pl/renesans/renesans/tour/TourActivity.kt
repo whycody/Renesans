@@ -18,10 +18,12 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.activity_tour.*
+import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
 import pl.renesans.renesans.SuggestionBottomSheetDialog
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.Photo
+import pl.renesans.renesans.data.PhotoArticle
 import pl.renesans.renesans.data.Tour
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.firebase.FirebaseContract
@@ -42,7 +44,6 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
     private lateinit var tourAdapter: TourAdapter
     private val toastHelper = ToastHelperImpl(this)
     private var markers = mutableListOf<ClusterMarker>()
-    private var currentPage = 0
     private var numberOfPages = 0
 
     private var googleMap: GoogleMap? = null
@@ -67,11 +68,10 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         tourPager.addOnPageChangeListener(this)
         backBtn.setOnClickListener{ showPreviousPage() }
         nextBtn.setOnClickListener{ showNextPage() }
-        presenter.onCreate()
         onPageSelected(0)
     }
 
-    private fun setupMap(){
+    private fun setupMap() {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
@@ -82,7 +82,7 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         if(!mapOpacity) shadowView.visibility = View.INVISIBLE
     }
 
-    private fun getDeviceRotation(){
+    private fun getDeviceRotation() {
         landscapeRotation = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         portraitRotation = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
     }
@@ -95,15 +95,17 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         presenter.addMarkers()
     }
 
-    private fun setUiSettings(){
-        googleMap?.uiSettings?.isMapToolbarEnabled = false
-        googleMap?.uiSettings?.isZoomControlsEnabled = false
-        googleMap?.uiSettings?.isCompassEnabled = false
-        googleMap?.uiSettings?.isMyLocationButtonEnabled = false
-        googleMap?.setMapStyle(MapStyleOptions.loadRawResourceStyle(applicationContext, R.raw.map_style))
+    private fun setUiSettings() {
+        with(googleMap) {
+            this?.uiSettings?.isMapToolbarEnabled = false
+            this?.uiSettings?.isZoomControlsEnabled = false
+            this?.uiSettings?.isCompassEnabled = false
+            this?.uiSettings?.isMyLocationButtonEnabled = false
+            this?.setMapStyle(MapStyleOptions.loadRawResourceStyle(applicationContext, R.raw.map_style))
+        }
     }
 
-    private fun prepareManagers(){
+    private fun prepareManagers() {
         if(clusterManager == null) clusterManager = ClusterManager(this, googleMap)
         if(clusterManagerRenderer == null){
             clusterManagerRenderer = ClusterManagerRenderer(this, googleMap!!, clusterManager!!)
@@ -112,17 +114,11 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         }
     }
 
-    override fun getTourObject(): Tour {
-        return intent.getSerializableExtra(TOUR) as Tour
-    }
+    override fun getTourObject() = intent.getSerializableExtra(TOUR) as Tour
 
-    private fun showNextPage() {
-        tourPager.currentItem = currentPage + 1
-    }
+    private fun showNextPage() = tourPager.currentItem++
 
-    private fun showPreviousPage() {
-        tourPager.currentItem = currentPage - 1
-    }
+    private fun showPreviousPage() = tourPager.currentItem--
 
     override fun onPageScrollStateChanged(state: Int) { }
 
@@ -132,9 +128,8 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         checkTourLayout()
         tour.photosArticlesList!![position].paragraph?.subtitle =
             tour.photosArticlesList!![position].photo?.description
-        currentPage = position
         tourProgress.progress = (((position + 2).toDouble() / (numberOfPages + 1).toDouble()) * 100).toInt()
-        setBackBtnProperties(position)
+        setBackBtnVisibility(position)
         setNextBtnProperties(position)
         checkUserHasEndedTour(position)
         articlePhoto.setOnClickListener{ startPhotoViewActivity(position) }
@@ -143,31 +138,38 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
 
     private val articleConverter = ArticleConverterImpl()
 
-    private fun startPhotoViewActivity(pos: Int){
-        val intent = Intent(applicationContext, PhotoActivity::class.java)
+    private fun startPhotoViewActivity(pos: Int) {
         val article = articleConverter.convertPhotoArticleToArticle(tour.photosArticlesList!![pos])
         val listOfPhotos = mutableListOf<Photo>()
         for(photoArticle in tour.photosArticlesList!!)
             if(photoArticle.objectId!=null)
-                listOfPhotos.add(Photo(objectId = photoArticle.objectId + "_0",
-                    description = photoArticle.photo?.description,
-                    source = photoArticle.photo?.source))
+                listOfPhotos.add(getPhotoFromPhotoArticle(photoArticle))
         article.listOfPhotos = listOfPhotos
+        startPhotoActivity(article, pos)
+    }
+
+    private fun getPhotoFromPhotoArticle(photoArticle: PhotoArticle) =
+        Photo(objectId = photoArticle.objectId + "_0",
+            description = photoArticle.photo?.description,
+            source = photoArticle.photo?.source)
+
+    private fun startPhotoActivity(article: Article, pos: Int) {
+        val intent = Intent(applicationContext, PhotoActivity::class.java)
         intent.putExtra(PhotoActivity.ARTICLE, article)
         intent.putExtra(PhotoActivity.POSITION, pos)
         startActivity(intent)
     }
 
-    private fun checkUserHasEndedTour(position: Int){
+    private fun checkUserHasEndedTour(position: Int) {
         if(position == numberOfPages - 1) showAllTour()
     }
 
-    private fun setBackBtnProperties(position: Int){
+    private fun setBackBtnVisibility(position: Int) {
         if(position==0) backBtn.visibility = View.INVISIBLE
         else backBtn.visibility = View.VISIBLE
     }
 
-    private fun checkTourLayout(){
+    private fun checkTourLayout() {
         val params = mapConstraint.layoutParams as LinearLayout.LayoutParams
         if(articlePhoto.visibility == View.GONE){
             params.weight = 1f
@@ -175,24 +177,24 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
         }
     }
 
-    private fun setNextBtnProperties(position: Int){
-        if(position == numberOfPages-1){
+    private fun setNextBtnProperties(position: Int) {
+        if(position == numberOfPages-1) {
             nextBtn.text = getString(R.string.end)
             nextBtn.setOnClickListener{ finish() }
-        }else{
+        }else {
             nextBtn.text = getString(R.string.next)
             nextBtn.setOnClickListener{ showNextPage() }
         }
     }
 
-    private fun showAllTour(){
+    private fun showAllTour() {
         val params = mapConstraint.layoutParams as LinearLayout.LayoutParams
         if(portraitRotation) params.weight = 2f
         articlePhoto.visibility = View.GONE
         animateWholeTourCamera()
     }
 
-    private fun animateWholeTourCamera(){
+    private fun animateWholeTourCamera() {
         if(markers.isEmpty()) return
         val builder = LatLngBounds.Builder()
         for (marker in markers) builder.include(marker.position)
@@ -228,13 +230,13 @@ class TourActivity : AppCompatActivity(), ViewPager.OnPageChangeListener,
 
     override fun showSuggestionBottomSheet(article: Article) =
         SuggestionBottomSheetDialog().newInstance(article, 0)
-            .show(supportFragmentManager, "Paragraph")
-
-    companion object {
-        const val TOUR = "tour"
-    }
+            .show(supportFragmentManager, MainActivity.PARAGRAPH)
 
     override fun onSuccess() = toastHelper.showToast(getString(R.string.suggestions_sent))
 
     override fun onFail() = toastHelper.showToast(getString(R.string.suggestions_fail))
+
+    companion object {
+        const val TOUR = "tour"
+    }
 }

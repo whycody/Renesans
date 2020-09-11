@@ -8,14 +8,14 @@ import androidx.core.app.ActivityCompat
 import pl.renesans.renesans.R
 import pl.renesans.renesans.settings.SettingsPresenterImpl
 
-class AlertDialogUtilityImpl(val activity: Activity): AlertDialogUtility {
+class AlertDialogUtilityImpl(val activity: Activity? = null): AlertDialogUtility {
 
     override fun getDownloadPhotosPermissionDialog(): AlertDialog {
         val dialog = AlertDialog.Builder(activity)
-            .setTitle(activity.getString(R.string.warning))
-            .setMessage(activity.getString(R.string.permission_needed))
+            .setTitle(activity?.getString(R.string.warning))
+            .setMessage(activity?.getString(R.string.permission_needed))
             .setPositiveButton(android.R.string.ok) { _, _ ->
-                ActivityCompat.requestPermissions(activity,
+                ActivityCompat.requestPermissions(activity!!,
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                     SettingsPresenterImpl.WRITE_EXTERNAL_STORAGE) }
             .setNegativeButton(android.R.string.cancel, null)

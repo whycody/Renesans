@@ -4,31 +4,25 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
+import androidx.core.content.ContextCompat
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
-import pl.renesans.renesans.data.realm.RealmContract
 import pl.renesans.renesans.data.realm.RealmDaoImpl
 
-class SearchPresenterImpl(private val context: Context,
-                          private val searchView: SearchContract.SearchView):
+class SearchPresenterImpl(context: Context, private val searchView: SearchContract.SearchView):
     SearchContract.SearchPresenter, ImageDaoContract.ImageDaoInterractor {
 
-    private lateinit var articlesList: List<ArticleItem>
-    private lateinit var imageDao: ImageDaoContract.ImageDao
-    private lateinit var realmDao: RealmContract.RealmDao
-    private val holders: MutableList<SearchRowHolder> = mutableListOf()
+    private val realmDao = RealmDaoImpl(context)
+    private var articlesList = getSearchedArticles()
+    private val imageDao = ImageDaoImpl(context, this)
+    private val holders = hashMapOf<Int, SearchRowHolder>()
     private val converter = ArticleConverterImpl()
 
-    override fun onCreate() {
-        realmDao = RealmDaoImpl(context)
-        articlesList = getSearchedArticles()
-        imageDao = ImageDaoImpl(context, this)
-    }
-
-    override fun getSearchedArticles() = realmDao.getArticlesItemsFromLocalList(RealmDaoImpl.SEARCH_HISTORY)
+    override fun getSearchedArticles() =
+        realmDao.getArticlesItemsFromLocalList(RealmDaoImpl.SEARCH_HISTORY)
 
     override fun getAllArticles() =
         converter.convertArticlesToArticleItemsList(realmDao.getAllArticles())
@@ -54,30 +48,35 @@ class SearchPresenterImpl(private val context: Context,
 
     override fun onBindViewHolder(holder: SearchRowHolder, position: Int) {
         resetVariables(holder)
-        refreshHoldersList(holder, position)
-        holder.setSearchTitle(articlesList[position].title!!)
-        holder.setOnClickListener(position)
-        holder.setOnDeleteViewClickListener(position)
-        if(articlesList[position].searchHistoryItem) holder.setVisibilityOfDeleteBtn(View.VISIBLE)
+        setupSearchRowHolder(holder, position)
         imageDao.loadPhoto(position, articlesList[position].objectId + "_0", false)
     }
 
-    private fun refreshHoldersList(holder: SearchRowHolder, position: Int){
-        if(holders.size-1<position || holders.isEmpty()) holders.add(position, holder)
-        else holders[position] = holder
+    private fun setupSearchRowHolder(holder: SearchRowHolder, position: Int) {
+        with(holder) {
+            holders[position] = this
+            setSearchTitle(articlesList[position].title!!)
+            setOnClickListener(position)
+            setOnDeleteViewClickListener(position)
+            if(articlesList[position].searchHistoryItem)
+                setVisibilityOfDeleteBtn(View.VISIBLE)
+        }
     }
 
     private fun resetVariables(holder: SearchRowHolder){
-        holder.setSearchTitle(" ")
-        holder.setOnClickListener(0)
-        holder.setOnDeleteViewClickListener(0)
-        holder.setVisibilityOfDeleteBtn(View.GONE)
-        holder.setSearchDrawablePhoto(context.getDrawable(R.drawable.sh_search_recycler_row)!!)
+        with(holder) {
+            setSearchTitle(" ")
+            setOnClickListener(0)
+            setOnDeleteViewClickListener(0)
+            setVisibilityOfDeleteBtn(View.GONE)
+            setSearchDrawablePhoto(ContextCompat
+                .getDrawable(context, R.drawable.sh_search_recycler_row)!!)
+        }
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) =
-        holders[pos].setSearchUriPhoto(photoUri)
+        holders[pos]!!.setSearchUriPhoto(photoUri)
 
     override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) =
-        holders[pos].setSearchBitmapPhoto(photoBitmap)
+        holders[pos]!!.setSearchBitmapPhoto(photoBitmap)
 }

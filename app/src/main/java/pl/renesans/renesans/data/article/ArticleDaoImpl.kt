@@ -3,17 +3,14 @@ package pl.renesans.renesans.data.article
 import android.content.Context
 import pl.renesans.renesans.R
 import pl.renesans.renesans.data.*
-import pl.renesans.renesans.data.realm.RealmContract
 import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
 
 class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
 
-    private var realmDao: RealmContract.RealmDao? = null
-
-    init {
-        if(context != null) realmDao = RealmDaoImpl(context)
-    }
+    private val realmDao =
+        if(context!=null) RealmDaoImpl(context)
+        else null
 
     override fun getRelatedArticlesList(article: Article): List<Article> {
         val relatedArticles = mutableListOf<Article>()
@@ -23,13 +20,17 @@ class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
         if(article.listOfPositions != null && article.listOfPositions?.size!! > 0)
             relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.MAP,
                 title = context?.getString(R.string.position), objectId = "Z4"))
-        article.listOfRelatedArticlesIds?.forEach { relatedArticles.add(getArticleFromId(it)) }
+        article.listOfRelatedArticlesIds?.forEach { relatedArticles.add(realmDao!!.getArticleWithId(it)) }
         if(getObjectTypeFromObjectId(article.objectId!!) != DiscoverRecyclerFragment.OTHER_ERAS)
-            relatedArticles.add(getArticleFromId("O4"))
+            relatedArticles.add(realmDao!!.getArticleWithId("O4"))
+        addSourcesToRelatedArticles(relatedArticles, article)
+        return relatedArticles
+    }
+
+    private fun addSourcesToRelatedArticles(relatedArticles: MutableList<Article>, article: Article) {
         if(articleHasSources(article))
             relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.SOURCES,
                 title = context?.resources?.getString(R.string.sources), objectId = "Z0"))
-        return relatedArticles
     }
 
     override fun articleHasSources(article: Article): Boolean {
@@ -39,18 +40,6 @@ class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
         return false
     }
 
-    override fun getAllArticlesWithTextInTitle(text: String): List<Article> {
-        val allFilteredArticles = getAllArticles()
-        allFilteredArticles.filter { article ->  article.title!!.toLowerCase().contains(text.toLowerCase())}
-        return allFilteredArticles
-    }
-
-    override fun getArticlesListTitle(id: String) = realmDao!!.getArticlesListWithId(id).name!!
-
-    override fun getAllArticles(): List<Article> = realmDao!!.getAllArticles()
-
-    override fun getArticleFromId(objectId: String) = realmDao!!.getArticleWithId(objectId)
-
     override fun getObjectTypeFromObjectId(objectID: String) = when(objectID.first()) {
             'P' -> DiscoverRecyclerFragment.PEOPLE
             'A' -> DiscoverRecyclerFragment.ARTS
@@ -59,12 +48,6 @@ class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
             'S' -> DiscoverRecyclerFragment.SOURCES
             else -> DiscoverRecyclerFragment.PHOTOS
     }
-
-    override fun getArticlesList(articleId: String): List<Article>
-            = realmDao!!.getArticlesFromListWithId(articleId)
-
-    override fun getArticlesItemsList(articleId: String): List<ArticleItem>
-            = realmDao!!.getArticlesItemsFromListWithId(articleId)
 
     override fun getPhotoArticlesListBuiltToYear(year: Int): List<PhotoArticle> {
         val photoArticles = getPhotoArticlesList()

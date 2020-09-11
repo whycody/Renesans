@@ -15,12 +15,14 @@ import pl.renesans.renesans.map.MapBottomSheetDialog
 import pl.renesans.renesans.sources.SourcesBottomSheetDialog
 import pl.renesans.renesans.tour.TourActivity
 
-class RelatedPresenterImpl(val context: Context, val fragmentManager: FragmentManager, val article: Article):
+class RelatedPresenterImpl(private val context: Context,
+                           private val fragmentManager: FragmentManager,
+                           private val article: Article):
     RelatedContract.RelatedPresenter, ImageDaoContract.ImageDaoInterractor {
 
     private lateinit var relatedArticlesList: List<Article>
     private var imageDao: ImageDaoContract.ImageDao? = null
-    private val holders: MutableList<RelatedRowHolder> = mutableListOf()
+    private val holders = hashMapOf<Int, RelatedRowHolder>()
 
     override fun onCreate() {
         val articleDao = ArticleDaoImpl(context)
@@ -29,13 +31,15 @@ class RelatedPresenterImpl(val context: Context, val fragmentManager: FragmentMa
     }
 
     override fun itemClicked(pos: Int) {
-        if(relatedArticlesList[pos].objectType==DiscoverRecyclerFragment.SOURCES)
-            SourcesBottomSheetDialog().newInstance(article).show(fragmentManager, "Sources")
-        else if(relatedArticlesList[pos].objectType==DiscoverRecyclerFragment.MAP)
-            MapBottomSheetDialog().newInstance(article).show(fragmentManager, "Map")
-        else if(relatedArticlesList[pos].objectType==DiscoverRecyclerFragment.TOUR)
-            startTourActivity()
-        else startArticleActivity(pos)
+        when (relatedArticlesList[pos].objectType) {
+            DiscoverRecyclerFragment.SOURCES ->
+                SourcesBottomSheetDialog().newInstance(article).show(fragmentManager, "Sources")
+            DiscoverRecyclerFragment.MAP ->
+                MapBottomSheetDialog().newInstance(article).show(fragmentManager, "Map")
+            DiscoverRecyclerFragment.TOUR ->
+                startTourActivity()
+            else -> startArticleActivity(pos)
+        }
     }
 
     private fun startTourActivity(){
@@ -52,33 +56,34 @@ class RelatedPresenterImpl(val context: Context, val fragmentManager: FragmentMa
         context.startActivity(intent)
     }
 
-    override fun getItemCount(): Int {
-        return relatedArticlesList.size
-    }
+    override fun getItemCount() = relatedArticlesList.size
 
     override fun onBindViewHolder(holder: RelatedRowHolder, position: Int) {
         resetVariables(holder)
-        refreshHoldersList(holder, position)
-        holder.setArticleTitle(relatedArticlesList[position].title!!)
-        holder.setOnRowClickListener(position)
+        setupRelatedRowHolder(holder, position)
         imageDao?.loadPhoto(position, "${relatedArticlesList[position].objectId}_0")
     }
 
-    private fun refreshHoldersList(holder: RelatedRowHolder, position: Int){
-        if(holders.size-1<position || holders.isEmpty()) holders.add(position, holder)
-        else holders[position] = holder
+    private fun setupRelatedRowHolder(holder: RelatedRowHolder, position: Int) {
+        with(holder) {
+            holders[position] = this
+            setArticleTitle(relatedArticlesList[position].title!!)
+            setOnRowClickListener(position)
+        }
     }
 
-    private fun resetVariables(holder: RelatedRowHolder){
-        holder.setArticleTitle(" ")
-        holder.setOnRowClickListener(0)
+    private fun resetVariables(holder: RelatedRowHolder) {
+        with(holder) {
+            setArticleTitle(" ")
+            setOnRowClickListener(0)
+        }
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
-        holders[pos].setArticleUriPhoto(photoUri)
+        holders[pos]?.setArticleUriPhoto(photoUri)
     }
 
     override fun loadPhotoFromBitmap(photoBitmap: Bitmap, pos: Int) {
-        holders[pos].setArticleBitmapPhoto(photoBitmap)
+        holders[pos]?.setArticleBitmapPhoto(photoBitmap)
     }
 }

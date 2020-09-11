@@ -13,11 +13,11 @@ import pl.renesans.renesans.map.ClusterMarker
 class TourPresenterImpl(val context: Context, val view: TourContract.TourView): TourContract.TourPresenter,
     ImageDaoContract.ImageDaoInterractor {
 
-    private lateinit var imageDao: ImageDaoContract.ImageDao
-    private lateinit var tour: Tour
+    private val imageDao: ImageDaoContract.ImageDao
+    private val tour: Tour
     private var currentPage = 0
 
-    override fun onCreate() {
+    init {
         imageDao = ImageDaoImpl(context, this)
         tour = view.getTourObject()
     }
@@ -54,9 +54,7 @@ class TourPresenterImpl(val context: Context, val view: TourContract.TourView): 
         }
     }
 
-    override fun mapReady() {
-        onPageSelected(currentPage)
-    }
+    override fun mapReady() = onPageSelected(currentPage)
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {
         if(currentPage == pos) view.loadPhotoFromUri(photoUri, pos)

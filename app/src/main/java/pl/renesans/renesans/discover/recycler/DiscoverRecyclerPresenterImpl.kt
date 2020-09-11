@@ -6,53 +6,61 @@ import android.graphics.Bitmap
 import android.net.Uri
 import pl.renesans.renesans.article.ArticleActivity
 import pl.renesans.renesans.data.*
-import pl.renesans.renesans.data.article.ArticleDao
-import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
+import pl.renesans.renesans.data.realm.RealmContract
+import pl.renesans.renesans.data.realm.RealmDaoImpl
 
-class DiscoverRecyclerPresenterImpl(val objectType: Int, val context: Context):
-    DiscoverRecyclerPresenter, ImageDaoContract.ImageDaoInterractor {
+class DiscoverRecyclerPresenterImpl(private val articleId: String,
+                                    private val objectType: Int,
+                                    private val context: Context):
+    DiscoverContract.DiscoverRecyclerPresenter, ImageDaoContract.ImageDaoInterractor {
 
-    private lateinit var articleDao: ArticleDao
-    private var articlesList = listOf<ArticleItem>()
-    private var imageDao: ImageDaoContract.ImageDao? = null
+    private val realmDao: RealmContract.RealmDao
+    private val imageDao: ImageDaoContract.ImageDao
+    private val articlesList: List<ArticleItem>
     private val holders = hashMapOf<Int, DiscoverRowHolder>()
-    private lateinit var articleId: String
 
-    override fun onCreate(articleId: String) {
-        articleDao = ArticleDaoImpl(context)
-        this.articleId = articleId
-        articlesList = articleDao.getArticlesItemsList(articleId)
+    init {
+        realmDao = RealmDaoImpl(context)
         imageDao = ImageDaoImpl(context, this)
+        articlesList = realmDao.getArticlesItemsFromListWithId(articleId)
     }
 
-    override fun getArticlesListTitle() = articleDao.getArticlesListTitle(articleId)
+    override fun itemClicked(pos: Int) =
+        startArticleActivity(realmDao.getArticleWithId(articlesList[pos].objectId!!))
 
-    override fun itemClicked(pos: Int) {
+    private fun startArticleActivity(article: Article) {
         val intent = Intent(context, ArticleActivity::class.java)
-        intent.putExtra(ArticleActivity.ARTICLE,
-            articleDao.getArticleFromId(articlesList[pos].objectId!!))
+        intent.putExtra(ArticleActivity.ARTICLE, article)
         context.startActivity(intent)
     }
 
-    override fun getItemCount(): Int {
-       return articlesList.size
-    }
+    override fun getArticlesListTitle() = realmDao.getArticlesListWithId(articleId).name!!
+
+    override fun getItemCount() = articlesList.size
 
     override fun onBindViewHolder(holder: DiscoverRowHolder, position: Int) {
         resetVariables(holder)
-        holders[position] = holder
-        holder.setArticleTitle(articlesList[position].title!!)
-        holder.setArticlePhotoSize(objectType)
-        holder.setOnRowClickListener(position)
-        imageDao?.loadPhoto(position, "${articlesList[position].objectId!!}_0")
+        setupDiscoverRowHolder(holder, position)
+        imageDao.loadPhoto(position, "${articlesList[position].objectId!!}_0")
     }
 
-    private fun resetVariables(holder: DiscoverRowHolder){
-        holder.setArticleTitle(" ")
-        holder.setOnRowClickListener(0)
-        holder.setArticleDrawablePhoto()
+    private fun setupDiscoverRowHolder(holder: DiscoverRowHolder, position: Int) {
+        with(holder) {
+            holders[position] = this
+            setArticleTitle(articlesList[position].title!!)
+            setArticlePhotoSize(objectType)
+            setOnRowClickListener(position)
+        }
+    }
+
+    private fun resetVariables(holder: DiscoverRowHolder) {
+        with(holder) {
+            setArticleTitle(" ")
+            setOnRowClickListener(0)
+            setArticleDrawablePhoto()
+        }
     }
 
     override fun loadPhotoFromUri(photoUri: Uri, pos: Int) {

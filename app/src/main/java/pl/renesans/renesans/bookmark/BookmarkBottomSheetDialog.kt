@@ -106,7 +106,7 @@ class BookmarkBottomSheetDialog:
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) setWhiteNavigationBar(dialog)
-        dialog.setOnKeyListener{ dialog, keycode, event -> presenter.onBackPressed() }
+        dialog.setOnKeyListener{ _, _, _ -> presenter.onBackPressed() }
         dialog.setOnShowListener{
             val bottomSheet: BottomSheetDialog = dialog as BottomSheetDialog
             val bottomSheetInternal: View =
@@ -177,9 +177,8 @@ class BookmarkBottomSheetDialog:
         else headerDescription.text = getString(R.string.saved_articles)
     }
 
-    override fun startArticleActivity(articleId: String) {
+    override fun startArticleActivity(articleId: String) =
         (activity as MainActivity).startArticleActivity(articleId)
-    }
 
     override fun openPhotoBottomSheet(articleId: String) {
         dismiss()
