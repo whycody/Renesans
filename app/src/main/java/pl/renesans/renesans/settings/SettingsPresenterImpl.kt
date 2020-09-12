@@ -20,8 +20,8 @@ import pl.renesans.renesans.data.SettingsList
 import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.settings.dialog.SettingsDialogFragment
 import pl.renesans.renesans.settings.dialog.SettingsListContract
-import pl.renesans.renesans.utility.AlertDialogUtilityImpl
-import pl.renesans.renesans.utility.ConnectionUtilityImpl
+import pl.renesans.renesans.utility.alert.dialog.AlertDialogUtilityImpl
+import pl.renesans.renesans.utility.connection.ConnectionUtilityImpl
 
 class SettingsPresenterImpl(private val activity: MainActivity,
                             private val settingsView: SettingsContract.SettingsView)

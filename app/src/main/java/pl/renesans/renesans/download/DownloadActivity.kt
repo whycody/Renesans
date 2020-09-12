@@ -17,7 +17,7 @@ import pl.renesans.renesans.R
 import pl.renesans.renesans.data.curiosity.CuriosityPresenterImpl
 import pl.renesans.renesans.data.realm.RealmContract
 import pl.renesans.renesans.data.realm.RealmDaoImpl
-import pl.renesans.renesans.utility.AlertDialogUtilityImpl
+import pl.renesans.renesans.utility.alert.dialog.AlertDialogUtilityImpl
 
 class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
 

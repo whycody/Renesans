@@ -41,8 +41,8 @@ import pl.renesans.renesans.photo.PhotoActivity
 import pl.renesans.renesans.sources.SourcesBottomSheetDialog
 import pl.renesans.renesans.toast.ToastHelper
 import pl.renesans.renesans.toast.ToastHelperImpl
-import pl.renesans.renesans.utility.BookmarkUtilityImpl
-import pl.renesans.renesans.utility.BookmarkUtilityInterractor
+import pl.renesans.renesans.utility.bookmark.BookmarkUtilityImpl
+import pl.renesans.renesans.utility.bookmark.BookmarkUtilityInterractor
 import java.lang.StringBuilder
 
 class PhotoBottomSheetDialog: BottomSheetDialogFragment(),

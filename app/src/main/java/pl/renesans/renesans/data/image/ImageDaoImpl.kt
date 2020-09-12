@@ -15,7 +15,7 @@ import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
 import pl.renesans.renesans.BuildConfig
 import pl.renesans.renesans.settings.SettingsPresenterImpl
-import pl.renesans.renesans.utility.ConnectionUtilityImpl
+import pl.renesans.renesans.utility.connection.ConnectionUtilityImpl
 import java.io.File
 
 class ImageDaoImpl(private val context: Context,

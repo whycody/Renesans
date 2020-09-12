@@ -18,8 +18,6 @@ interface RelatedContract {
 
     interface RelatedPresenter {
 
-        fun onCreate()
-
         fun itemClicked(pos: Int)
 
         fun getItemCount(): Int

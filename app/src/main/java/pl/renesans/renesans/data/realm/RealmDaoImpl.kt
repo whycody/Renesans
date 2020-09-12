@@ -17,7 +17,7 @@ import pl.renesans.renesans.data.article.ArticleDaoImpl
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
-import pl.renesans.renesans.utility.ConnectionUtilityImpl
+import pl.renesans.renesans.utility.connection.ConnectionUtilityImpl
 
 class RealmDaoImpl(private val context: Context,
     private val realmInterractor: RealmContract.RealmInterractor? = null): RealmContract.RealmDao,

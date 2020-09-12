@@ -19,9 +19,9 @@ import pl.renesans.renesans.data.Photo
 import pl.renesans.renesans.data.Source
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
-import pl.renesans.renesans.utility.AlertDialogUtilityImpl
-import pl.renesans.renesans.utility.ConnectionUtility
-import pl.renesans.renesans.utility.ConnectionUtilityImpl
+import pl.renesans.renesans.utility.alert.dialog.AlertDialogUtilityImpl
+import pl.renesans.renesans.utility.connection.ConnectionUtility
+import pl.renesans.renesans.utility.connection.ConnectionUtilityImpl
 
 class PhotoActivity : AppCompatActivity(), PhotoInterractor, ViewPager.OnPageChangeListener,
     ImageDaoContract.ImageDaoDownloadInterractor, ImageDaoContract.ImageDaoInterractor {

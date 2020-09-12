@@ -10,18 +10,13 @@ import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_article.*
 import pl.renesans.renesans.R
 import pl.renesans.renesans.SuggestionBottomSheetDialog
-import pl.renesans.renesans.data.Article
-import pl.renesans.renesans.data.PhotoArticle
-import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.firebase.FirebaseContract
 import pl.renesans.renesans.toast.ToastHelperImpl
 
 class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView, FirebaseContract.FirebaseInterractor {
 
-    private lateinit var article: Article
     private lateinit var articleFragment: ArticleFragment
     private val toastHelper = ToastHelperImpl(this)
-    private val articleConverter = ArticleConverterImpl()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,17 +24,9 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
         setSupportActionBar(articleToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        article = getArticleObject()
         articleToolbar.navigationIcon?.setColorFilter(ContextCompat.getColor(this,
             android.R.color.white), PorterDuff.Mode.SRC_ATOP)
         setFragment()
-    }
-
-    fun getArticleObject(): Article {
-        return if(intent.getSerializableExtra(ARTICLE) != null)
-            intent.getSerializableExtra(ARTICLE) as Article
-        else articleConverter.convertPhotoArticleToArticle(
-            intent.getSerializableExtra(PHOTO_ARTICLE) as PhotoArticle)
     }
 
     private fun setFragment() {
@@ -70,16 +57,18 @@ class ArticleActivity : AppCompatActivity(), ArticleContract.ArticleActivityView
        }
    }
 
-    override fun showSuggestionBottomSheet(paragraph: Int?) =
-        SuggestionBottomSheetDialog().newInstance(article, paragraph)
+    override fun showSuggestionBottomSheet(paragraph: Int?): Boolean {
+        SuggestionBottomSheetDialog().newInstance(articleFragment.getArticleObject(), paragraph)
             .show(supportFragmentManager, "Paragraph")
+        return true
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
 
-    override fun setTitle(title: String) {
+    override fun setToolbarTitle(title: String) {
         articleToolbar.title = title
     }
 

@@ -20,11 +20,11 @@ class RelatedPresenterImpl(private val context: Context,
                            private val article: Article):
     RelatedContract.RelatedPresenter, ImageDaoContract.ImageDaoInterractor {
 
-    private lateinit var relatedArticlesList: List<Article>
-    private var imageDao: ImageDaoContract.ImageDao? = null
+    private val relatedArticlesList: List<Article>
+    private val imageDao: ImageDaoContract.ImageDao
     private val holders = hashMapOf<Int, RelatedRowHolder>()
 
-    override fun onCreate() {
+    init {
         val articleDao = ArticleDaoImpl(context)
         relatedArticlesList = articleDao.getRelatedArticlesList(article)
         imageDao = ImageDaoImpl(context, this)
@@ -61,7 +61,7 @@ class RelatedPresenterImpl(private val context: Context,
     override fun onBindViewHolder(holder: RelatedRowHolder, position: Int) {
         resetVariables(holder)
         setupRelatedRowHolder(holder, position)
-        imageDao?.loadPhoto(position, "${relatedArticlesList[position].objectId}_0")
+        imageDao.loadPhoto(position, "${relatedArticlesList[position].objectId}_0")
     }
 
     private fun setupRelatedRowHolder(holder: RelatedRowHolder, position: Int) {

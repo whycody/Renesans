@@ -1,4 +1,4 @@
-package pl.renesans.renesans.utility
+package pl.renesans.renesans.utility.alert.dialog
 
 import android.Manifest
 import android.app.Activity
@@ -7,6 +7,7 @@ import android.graphics.Color
 import androidx.core.app.ActivityCompat
 import pl.renesans.renesans.R
 import pl.renesans.renesans.settings.SettingsPresenterImpl
+import pl.renesans.renesans.utility.alert.dialog.AlertDialogUtility
 
 class AlertDialogUtilityImpl(val activity: Activity? = null): AlertDialogUtility {
 

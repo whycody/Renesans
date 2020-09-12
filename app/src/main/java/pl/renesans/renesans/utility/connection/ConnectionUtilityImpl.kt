@@ -1,10 +1,11 @@
-package pl.renesans.renesans.utility
+package pl.renesans.renesans.utility.connection
 
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.ConnectivityManager
 import android.net.Uri
+import pl.renesans.renesans.utility.connection.ConnectionUtility
 import java.lang.Exception
 
 class ConnectionUtilityImpl(private val context: Context): ConnectionUtility {

@@ -1,4 +1,4 @@
-package pl.renesans.renesans.utility
+package pl.renesans.renesans.utility.connection
 
 interface ConnectionUtility {
 

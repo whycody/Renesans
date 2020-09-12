@@ -1,4 +1,4 @@
-package pl.renesans.renesans.utility
+package pl.renesans.renesans.utility.bookmark
 
 import android.content.Context
 import pl.renesans.renesans.data.realm.RealmContract

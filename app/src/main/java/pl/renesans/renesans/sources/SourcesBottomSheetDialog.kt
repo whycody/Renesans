@@ -29,8 +29,8 @@ import pl.renesans.renesans.R
 import pl.renesans.renesans.data.Article
 import pl.renesans.renesans.data.image.ImageDaoContract
 import pl.renesans.renesans.data.image.ImageDaoImpl
-import pl.renesans.renesans.utility.ConnectionUtility
-import pl.renesans.renesans.utility.ConnectionUtilityImpl
+import pl.renesans.renesans.utility.connection.ConnectionUtility
+import pl.renesans.renesans.utility.connection.ConnectionUtilityImpl
 
 class SourcesBottomSheetDialog: BottomSheetDialogFragment(), SourcesContract.SourcesView,
     ImageDaoContract.ImageDaoInterractor {
