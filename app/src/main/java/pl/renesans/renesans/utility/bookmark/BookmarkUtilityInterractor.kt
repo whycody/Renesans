@@ -9,6 +9,6 @@ interface BookmarkUtilityInterractor {
 
     interface BookmarkView {
 
-        fun changeColorOfBookmark(active: Boolean)
+        fun changeColorOfBookmark(bookmarkIsActive: Boolean)
     }
 }

@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             changedOptionOfMapLimit = false
         }else if(!firstLoadOfFragment && tagFragmentName == DISCOVER) {
             if(refreshDiscoverFragment) {
-                discoverFragment.refreshFragment()
+                discoverFragment.refreshDiscoverFragments()
                 refreshDiscoverFragment = false
             }
         }

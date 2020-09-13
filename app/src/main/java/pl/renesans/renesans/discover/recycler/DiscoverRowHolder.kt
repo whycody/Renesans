@@ -13,15 +13,26 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import pl.renesans.renesans.R
 
-class DiscoverRowHolder(itemView: View, val context: Context?,
-                        val presenter: DiscoverContract.DiscoverRecyclerPresenter) :
+class DiscoverRowHolder(itemView: View,
+                        private val context: Context?,
+                        private val presenter: DiscoverContract.DiscoverRecyclerPresenter) :
     RecyclerView.ViewHolder(itemView), DiscoverContract.DiscoverRowView {
+
+    private val requestOptions: RequestOptions
+    private val articleImageHeight: Int
+    private val articleImageWidth: Int
+
+    init {
+        requestOptions = getRequestOptions()
+        articleImageHeight = context?.resources?.getDimension(R.dimen.discoverImageHeight)!!.toInt()
+        articleImageWidth = context.resources.getDimension(R.dimen.discoverImageWidth).toInt()
+    }
+
+    private fun getRequestOptions() = RequestOptions().transform(CenterCrop(),
+        RoundedCorners(context?.resources?.getDimension(R.dimen.relatedArticleViewRadius)!!.toInt()))
 
     override fun setArticleBitmapPhoto(bitmap: Bitmap) {
         if(context == null || bitmap.isRecycled) return
-        var requestOptions = RequestOptions()
-        requestOptions = requestOptions.transform(CenterCrop(),
-            RoundedCorners(context.resources.getDimension(R.dimen.relatedArticleViewRadius).toInt()))
         Glide.with(context)
             .load(bitmap)
             .apply(requestOptions)
@@ -30,9 +41,6 @@ class DiscoverRowHolder(itemView: View, val context: Context?,
 
     override fun setArticleUriPhoto(uri: Uri) {
         if(context == null) return
-        var requestOptions = RequestOptions()
-        requestOptions = requestOptions.transform(CenterCrop(),
-            RoundedCorners(context.resources.getDimension(R.dimen.relatedArticleViewRadius).toInt()))
         Glide.with(context)
             .load(uri)
             .apply(requestOptions)
@@ -41,22 +49,27 @@ class DiscoverRowHolder(itemView: View, val context: Context?,
     }
 
     override fun setArticleDrawablePhoto() {
-        if(context != null) Glide.with(context)
+        if(context == null) return
+        Glide.with(context)
             .load(R.drawable.sh_discover_recycler_row)
             .into(itemView.findViewById(R.id.articleImage))
     }
 
     override fun setArticlePhotoSize(objectType: Int) {
         val articleImage = itemView.findViewById<ImageView>(R.id.articleImage)
-        val articleImageHeight = context?.resources?.getDimension(R.dimen.discoverImageHeight)!!.toInt()
-        val articleImageWidth = context.resources.getDimension(R.dimen.discoverImageWidth).toInt()
-        if(objectType == DiscoverRecyclerFragment.ARTS){
-            articleImage.layoutParams.height = (articleImageHeight * 1.5).toInt()
-        }else if(objectType == DiscoverRecyclerFragment.EVENTS ||
-            objectType == DiscoverRecyclerFragment.OTHER_ERAS){
-            articleImage.layoutParams.width = (articleImageWidth * 1.8).toInt()
-            articleImage.layoutParams.height = (articleImageHeight * 1.2).toInt()
-        }
+        if(objectType == DiscoverRecyclerFragment.ARTS)
+            setArtsDiscoverRecyclerHeight(articleImage)
+        else if(objectType != DiscoverRecyclerFragment.PEOPLE)
+            setEventsDiscoverRecyclerDimensions(articleImage)
+    }
+
+    private fun setArtsDiscoverRecyclerHeight(articleImage: ImageView) {
+        articleImage.layoutParams.height = (articleImageHeight * 1.5).toInt()
+    }
+
+    private fun setEventsDiscoverRecyclerDimensions(articleImage: ImageView) {
+        articleImage.layoutParams.width = (articleImageWidth * 1.8).toInt()
+        articleImage.layoutParams.height = (articleImageHeight * 1.2).toInt()
     }
 
     override fun setArticleTitle(title: String) {

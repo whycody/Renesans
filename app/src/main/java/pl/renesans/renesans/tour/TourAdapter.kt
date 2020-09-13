@@ -24,6 +24,9 @@ import java.lang.StringBuilder
 class TourAdapter(private val activity: TourActivity, private val tour: Tour): PagerAdapter(),
     FirebaseContract.FirebaseInterractor {
 
+    private val articleDao = ArticleDaoImpl()
+    private val articleConverter = ArticleConverterImpl()
+
     override fun isViewFromObject(view: View, `object`: Any) = view == `object` as ScrollView
 
     override fun getCount(): Int = tour.photosArticlesList!!.size
@@ -32,16 +35,22 @@ class TourAdapter(private val activity: TourActivity, private val tour: Tour): P
         val layoutInflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.tour_slide_layout, container, false)
         val photoArticle = tour.photosArticlesList!![position]
-        view.findViewById<TextView>(R.id.photoDescription).text = getPhotoDescription(photoArticle)
-        view.findViewById<TextView>(R.id.articleTitle).text = photoArticle.photo?.description
-        view.findViewById<TextView>(R.id.articleParagraph).text = photoArticle.paragraph?.content
-        val onTextLongClickListener =
-            getOnTextViewLongClick(photoArticle.paragraph!!, view.articleParagraph, position)
-        view.articleParagraph.setOnLongClickListener(onTextLongClickListener)
-        view.articleTitle.setOnLongClickListener(onTextLongClickListener)
-        setupSourceBtn(view.findViewById(R.id.sourcesBtn), position)
-        container.addView(view)
+        setupView(view, position, photoArticle)
         return view
+    }
+
+    private fun setupView(view: View, position: Int, photoArticle: PhotoArticle) {
+        fillTextViews(view, photoArticle)
+        setOnTextViewLongClickListener(view, position, photoArticle)
+        setupSourceBtn(view.sourcesBtn, position)
+    }
+
+    private fun fillTextViews(view: View, photoArticle: PhotoArticle) {
+        with(view) {
+            photoDescription.text = getPhotoDescription(photoArticle)
+            articleTitle.text = photoArticle.photo?.description
+            articleParagraph.text = photoArticle.paragraph?.content
+        }
     }
 
     private fun getPhotoDescription(photoArticle: PhotoArticle): String{
@@ -49,9 +58,16 @@ class TourAdapter(private val activity: TourActivity, private val tour: Tour): P
         else photoArticle.title!!
     }
 
+    private fun setOnTextViewLongClickListener(view: View, position: Int, photoArticle: PhotoArticle) {
+        with(view) {
+            val onTextLongClickListener =
+                getOnTextViewLongClick(photoArticle.paragraph!!, view.articleParagraph, position)
+            articleParagraph.setOnLongClickListener(onTextLongClickListener)
+            articleTitle.setOnLongClickListener(onTextLongClickListener)
+        }
+    }
+
     private fun setupSourceBtn(sourcesBtn: Button, pos: Int){
-        val articleDao = ArticleDaoImpl()
-        val articleConverter = ArticleConverterImpl()
         val article = articleConverter.convertPhotoArticleToArticle(tour.photosArticlesList!![pos])
         if(!articleDao.articleHasSources(article)) sourcesBtn.visibility = View.GONE
         else sourcesBtn.setOnClickListener{ startSourceActivity(article) }
@@ -61,30 +77,41 @@ class TourAdapter(private val activity: TourActivity, private val tour: Tour): P
         val converter = ArticleConverterImpl()
         val article = converter.convertPhotoArticleToArticle(tour.photosArticlesList!![pos])
         return View.OnLongClickListener {
-            val popup = PopupMenu(activity, view)
-            popup.menuInflater.inflate(R.menu.article_paragraph_popup_menu, popup.menu)
-            popup.menu.getItem(0).setOnMenuItemClickListener {
-                copyParagraph(paragraph)
-                true
-            }
-            popup.menu.getItem(1).setOnMenuItemClickListener {
-                activity.showSuggestionBottomSheet(article)
-                true
-            }
-            popup.show()
+            showPopupMenu(paragraph, view, article)
             true
         }
     }
 
-    private fun copyParagraph(paragraph: Paragraph){
+    private fun showPopupMenu(paragraph: Paragraph, view: View, article: Article) {
+        val popup = PopupMenu(activity, view)
+        popup.menuInflater.inflate(R.menu.article_paragraph_popup_menu, popup.menu)
+        popup.menu.getItem(0).setOnMenuItemClickListener {
+            copyParagraph(paragraph)
+            true
+        }
+        popup.menu.getItem(1).setOnMenuItemClickListener {
+            activity.showSuggestionBottomSheet(article)
+            true
+        }
+        popup.show()
+    }
+
+    private fun copyParagraph(paragraph: Paragraph) =
+        copyTextToClipboard(getParagraphToString(paragraph))
+
+    private fun getParagraphToString(paragraph: Paragraph): String {
         val stringBuilder = StringBuilder()
         if(paragraph.subtitle != null)
             stringBuilder.append("${paragraph.subtitle} - ${activity.getString(R.string.thats_here)}. ")
         stringBuilder.append(paragraph.content)
+        return stringBuilder.toString()
+    }
+
+    private fun copyTextToClipboard(text: String) {
         val clipboard: ClipboardManager? =
             activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
         val clip = ClipData.newPlainText(
-            activity.getString(R.string.app_name), stringBuilder.toString())
+            activity.getString(R.string.app_name), text)
         clipboard?.setPrimaryClip(clip)
     }
 

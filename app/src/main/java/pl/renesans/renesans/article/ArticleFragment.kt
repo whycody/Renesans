@@ -77,13 +77,15 @@ class ArticleFragment(private var article: Article? = null,
         return view
     }
 
-    override fun changeColorOfBookmark(active: Boolean) {
-        val colorFilter = if(active) PorterDuffColorFilter(ContextCompat
-            .getColor(context!!, R.color.colorTitleGray), PorterDuff.Mode.SRC_ATOP)
-        else PorterDuffColorFilter(ContextCompat
-            .getColor(context!!, R.color.colorImageGray), PorterDuff.Mode.SRC_ATOP)
+    override fun changeColorOfBookmark(bookmarkIsActive: Boolean) {
+        val colorFilter = PorterDuffColorFilter(ContextCompat
+            .getColor(context!!, getColorOfBookmark(bookmarkIsActive)), PorterDuff.Mode.SRC_IN)
         bookmarkView.drawable.colorFilter = colorFilter
     }
+    
+    private fun getColorOfBookmark(bookmarkIsActive: Boolean) =
+        if(bookmarkIsActive) R.color.colorTitleGray
+        else R.color.colorImageGray
 
     override fun setDefaultHeightOfArticleImage() {
         val display: Display = activity?.windowManager!!.defaultDisplay
@@ -110,12 +112,23 @@ class ArticleFragment(private var article: Article? = null,
 
     override fun getArticleObject(): Article {
         return if (article != null) article!!
-        else if (activity?.intent?.getSerializableExtra(ArticleActivity.ARTICLE) != null)
-            activity?.intent?.getSerializableExtra(ArticleActivity.ARTICLE) as Article
-        else articleConverter.convertPhotoArticleToArticle(
-            activity?.intent?.getSerializableExtra(ArticleActivity.PHOTO_ARTICLE) as PhotoArticle
-        )
+        else getArticleObjectFromSerializable()
     }
+
+    private fun getArticleObjectFromSerializable(): Article {
+        val article = getArticleFromSerializable()
+        return if (article != null) article as Article
+        else getArticleFromPhotoArticle(getPhotoArticleFromSerializable() as PhotoArticle)
+    }
+
+    private fun getArticleFromSerializable() =
+        activity?.intent?.getSerializableExtra(ArticleActivity.ARTICLE)
+
+    private fun getArticleFromPhotoArticle(photoArticle: PhotoArticle) =
+        articleConverter.convertPhotoArticleToArticle(photoArticle)
+
+    private fun getPhotoArticleFromSerializable() =
+        activity?.intent?.getSerializableExtra(ArticleActivity.PHOTO_ARTICLE)
 
     override fun setArticleImageHeight(height: Int) {
         articleImage.layoutParams.height = height
@@ -148,7 +161,7 @@ class ArticleFragment(private var article: Article? = null,
     override fun addHeaderContentView(text: String?)
             = addViewToHeaderLinear(articleViewsUtility.getHeaderContentView(text))
 
-    override fun addRelatedRecyclerView() {
+    override fun tryToAddRelatedRecyclerView() {
         val relatedPresenter = RelatedPresenterImpl(
             activity!!.applicationContext, activity!!.supportFragmentManager, article!!)
         if(relatedPresenter.getItemCount()!=0)

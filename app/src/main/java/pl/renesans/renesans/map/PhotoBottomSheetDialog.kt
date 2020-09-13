@@ -102,13 +102,15 @@ class PhotoBottomSheetDialog: BottomSheetDialogFragment(),
         return photoSheet
     }
 
-    override fun changeColorOfBookmark(active: Boolean) {
-        val colorFilter = if(active) PorterDuffColorFilter(ContextCompat
-            .getColor(context!!, R.color.colorTitleGray), PorterDuff.Mode.SRC_ATOP)
-        else PorterDuffColorFilter(ContextCompat
-            .getColor(context!!, R.color.colorBookmarkGray), PorterDuff.Mode.SRC_ATOP)
+    override fun changeColorOfBookmark(bookmarkIsActive: Boolean) {
+        val colorFilter =  PorterDuffColorFilter(ContextCompat
+            .getColor(context!!, getColorOfBookmark(bookmarkIsActive)), PorterDuff.Mode.SRC_IN)
         bookmarkView.drawable.colorFilter = colorFilter
     }
+
+    private fun getColorOfBookmark(bookmarkIsActive: Boolean) =
+        if(bookmarkIsActive) R.color.colorTitleGray
+        else R.color.colorBookmarkGray
 
     private fun loadMainPhoto() {
         val imageDao = ImageDaoImpl(context!!, this)

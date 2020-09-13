@@ -107,7 +107,7 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
     private fun showRetryLaterDialog(connectionProblem: Boolean) {
         val dialog = AlertDialog.Builder(this)
             .setTitle(getString(R.string.something_went_wrong))
-            .setMessage(getMessage(connectionProblem))
+            .setMessage(getMessageOfRetryDialog(connectionProblem))
             .setPositiveButton(android.R.string.ok){_,_ ->
                 retryBtn.isEnabled = true
                 retryBtn.visibility = View.VISIBLE
@@ -117,7 +117,7 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
         dialog.show()
     }
 
-    private fun getMessage(connectionProblem: Boolean) =
+    private fun getMessageOfRetryDialog(connectionProblem: Boolean) =
         if(!connectionProblem) getString(R.string.try_again_later)
         else getString(R.string.retry_with_connection)
 
@@ -144,9 +144,13 @@ class DownloadActivity : AppCompatActivity(), RealmContract.RealmInterractor {
     }
 
     private fun showWaitView(){
-        waitView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+        startWaitViewAnimation()
         waitView.visibility = View.VISIBLE
     }
+
+    private fun startWaitViewAnimation() =
+        waitView.startAnimation(AnimationUtils
+            .loadAnimation(applicationContext, android.R.anim.fade_in))
 
     private fun initializeCuriosityTimer(){
         curiosityCountDownTimer = object : CountDownTimer(8000, 1000) {

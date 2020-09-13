@@ -19,7 +19,7 @@ class ArticlePresenterImpl(private val article: Article,
         loadMainPhoto()
         loadHeader()
         loadParagraphs()
-        articleFragmentView.addRelatedRecyclerView()
+        articleFragmentView.tryToAddRelatedRecyclerView()
     }
 
     override fun setArticleImageHeight(height: Int, objectType: Int) {

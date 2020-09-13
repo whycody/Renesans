@@ -1,5 +1,6 @@
 package pl.renesans.renesans.discover.recycler
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +10,19 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pl.renesans.renesans.R
+import pl.renesans.renesans.article.ArticleActivity
+import pl.renesans.renesans.data.Article
+import pl.renesans.renesans.data.image.ImageDaoContract
+import pl.renesans.renesans.data.image.ImageDaoImpl
+import pl.renesans.renesans.data.realm.RealmDaoImpl
 
 class DiscoverRecyclerFragment: Fragment(), DiscoverContract.DiscoverView {
 
     private lateinit var discoverRecycler: RecyclerView
     private lateinit var discoverTitle: TextView
-    private lateinit var presenter: DiscoverContract.DiscoverRecyclerPresenter
-    private lateinit var adapter: DiscoverRecyclerAdapter
+    private lateinit var presenter: DiscoverRecyclerPresenterImpl
+    private lateinit var imageDao: ImageDaoContract.ImageDao
+    private lateinit var discoverAdapter: DiscoverRecyclerAdapter
     private lateinit var articlesListId: String
     private var objectType = 0
 
@@ -25,18 +32,28 @@ class DiscoverRecyclerFragment: Fragment(), DiscoverContract.DiscoverView {
         if(arguments!=null) getVariablesFromArguments()
         discoverRecycler = view.findViewById(R.id.discoverRecycler)
         discoverTitle = view.findViewById(R.id.discoverTitle)
-        presenter = DiscoverRecyclerPresenterImpl(articlesListId, objectType, context!!)
-        adapter = DiscoverRecyclerAdapter(context!!, presenter)
-        discoverRecycler.adapter = adapter
-        discoverRecycler.layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.HORIZONTAL, false)
-        discoverRecycler.addItemDecoration(DiscoverRecyclerDecoration(context!!))
-        discoverTitle.text = presenter.getArticlesListTitle()
+        presenter = DiscoverRecyclerPresenterImpl(articlesListId, RealmDaoImpl(context!!), this)
+        imageDao = ImageDaoImpl(context!!.applicationContext, presenter)
+        discoverAdapter = DiscoverRecyclerAdapter(context!!, presenter)
+        setupDiscoverRecycler(discoverAdapter)
         return view
+    }
+
+    private fun setupDiscoverRecycler(discoverAdapter: DiscoverRecyclerAdapter) {
+        with(discoverRecycler) {
+            adapter = discoverAdapter
+            layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.HORIZONTAL, false)
+            addItemDecoration(DiscoverRecyclerDecoration(context!!))
+        }
     }
 
     private fun getVariablesFromArguments() {
         objectType = arguments!!.getInt(OBJECT_TYPE)
         articlesListId = arguments!!.getString(ARTICLES_LIST_ID)!!
+    }
+
+    override fun setDiscoverTitle(title: String) {
+        discoverTitle.text = title
     }
 
     override fun newInstance(objectType: Int, articlesListId: String): DiscoverRecyclerFragment {
@@ -48,7 +65,17 @@ class DiscoverRecyclerFragment: Fragment(), DiscoverContract.DiscoverView {
         return discoverFragment
     }
 
-    override fun notifyDataSetChanged() = adapter.notifyDataSetChanged()
+    override fun startArticleActivity(article: Article) {
+        val intent = Intent(context, ArticleActivity::class.java)
+        intent.putExtra(ArticleActivity.ARTICLE, article)
+        startActivity(intent)
+    }
+
+    override fun getObjectType() = objectType
+
+    override fun loadPhoto(pos: Int, id: String) = imageDao.loadPhoto(pos, id)
+
+    override fun notifyDataSetChanged() = discoverAdapter.notifyDataSetChanged()
 
     companion object{
         const val PEOPLE = 0

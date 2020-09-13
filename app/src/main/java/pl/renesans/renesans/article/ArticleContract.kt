@@ -21,7 +21,7 @@ interface ArticleContract {
 
         fun addHeaderContentView(text: String?)
 
-        fun addRelatedRecyclerView()
+        fun tryToAddRelatedRecyclerView()
 
         fun addParagraphTitleView(text: String?, index: Int? = null)
 

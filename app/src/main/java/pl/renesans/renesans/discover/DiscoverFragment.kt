@@ -13,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_discover.view.*
 import pl.renesans.renesans.MainActivity
 import pl.renesans.renesans.R
+import pl.renesans.renesans.data.ArticlesList
 import pl.renesans.renesans.data.realm.RealmContract
 import pl.renesans.renesans.data.realm.RealmDaoImpl
 import pl.renesans.renesans.discover.recycler.DiscoverRecyclerFragment
@@ -26,6 +27,7 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor, View.OnClic
     private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var discoverLayout: LinearLayout
     private lateinit var toastHelper: ToastHelper
+    private val fragMan: FragmentManager? = fragmentManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -42,44 +44,62 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor, View.OnClic
     }
 
     private fun addFragmentsToDiscoverLayout(){
-        val fragMan: FragmentManager? = fragmentManager
         val fragTransaction: FragmentTransaction = fragMan!!.beginTransaction()
         addDiscoverRecyclerFragmentsToLayout(fragTransaction)
         fragTransaction.commit()
     }
 
     private fun addDiscoverRecyclerFragmentsToLayout(fragTransaction: FragmentTransaction) {
-        realmDao.getArticlesLists().forEach{
-            val frag = DiscoverRecyclerFragment().newInstance(it.objectType!!, it.id!!)
-            if(it.type == RealmDaoImpl.ARTICLE)
-                fragTransaction.add(discoverLayout.id, frag, "${it.id}Frag")
+        realmDao.getArticlesLists().forEach {
+            if(it.type != RealmDaoImpl.ARTICLE)
+                addDiscoverRecyclerFragment(it, fragTransaction)
         }
     }
 
+    private fun addDiscoverRecyclerFragment(articlesList: ArticlesList,
+                                            fragTransaction: FragmentTransaction) {
+        val frag =
+            DiscoverRecyclerFragment().newInstance(articlesList.objectType!!, articlesList.id!!)
+        fragTransaction.add(discoverLayout.id, frag, "${articlesList.id}Frag")
+    }
+
     override fun downloadSuccessful() {
-        val fragMan: FragmentManager? = fragmentManager
-        val fragTransaction: FragmentTransaction = fragMan!!.beginTransaction()
-        for(fragment in fragMan.fragments)
-            if(fragment is DiscoverRecyclerFragment) fragTransaction.remove(fragment)
-        fragTransaction.commit()
+        removeAllDiscoverFragmentsFromLayout()
         (activity as MainActivity).refreshMapFragment()
         addFragmentsToDiscoverLayout()
-        toastHelper.showToast(getString(R.string.updated_database_successfully))
+        showInformationAboutDbUpdatedSuccessfully()
         refreshLayout.isRefreshing = false
     }
 
-    fun refreshFragment(){
+    private fun showInformationAboutDbUpdatedSuccessfully() =
+        toastHelper.showToast(getString(R.string.updated_database_successfully))
+
+    private fun removeAllDiscoverFragmentsFromLayout() {
+        val fragTransaction: FragmentTransaction = fragMan!!.beginTransaction()
+        for(fragment in fragMan.fragments)
+            if(fragment is DiscoverRecyclerFragment)
+                fragTransaction.remove(fragment)
+        fragTransaction.commit()
+    }
+
+    fun refreshDiscoverFragments() {
         val fragMan: FragmentManager? = fragmentManager
         for(fragment in fragMan!!.fragments)
             if(fragment is DiscoverRecyclerFragment)
-                fragment.notifyDataSetChanged()
+                refreshFragment(fragment)
     }
+
+    private fun refreshFragment(fragment: DiscoverRecyclerFragment) = fragment.notifyDataSetChanged()
 
     override fun downloadFailure(connectionProblem: Boolean) {
         if(!refreshLayout.isRefreshing) return
+        showInformationAboutTheProblem(connectionProblem)
+        refreshLayout.isRefreshing = false
+    }
+
+    private fun showInformationAboutTheProblem(connectionProblem: Boolean) {
         if(!connectionProblem) toastHelper.showToast(activity!!.getString(R.string.suggestions_fail))
         else toastHelper.showToast(getString(R.string.you_are_offline))
-        refreshLayout.isRefreshing = false
     }
 
     override fun startedLoading() {
@@ -89,10 +109,13 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor, View.OnClic
     override fun downloadedProgress(percentages: Int) { }
 
     override fun databaseIsUpToDate() {
-        if(refreshLayout.isRefreshing)
-            toastHelper.showToast(getString(R.string.database_up_to_date))
+        if(!refreshLayout.isRefreshing) return
+        showInformationAboutDatabaseIsUpToDate()
         refreshLayout.isRefreshing = false
     }
+
+    private fun showInformationAboutDatabaseIsUpToDate() =
+        toastHelper.showToast(getString(R.string.database_up_to_date))
 
     override fun onClick(v: View?) {
         startActivity(Intent(context!!.applicationContext, SearchActivity::class.java))

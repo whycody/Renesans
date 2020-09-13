@@ -2,12 +2,21 @@ package pl.renesans.renesans.discover.recycler
 
 import android.graphics.Bitmap
 import android.net.Uri
+import pl.renesans.renesans.data.Article
 
 interface DiscoverContract {
 
     interface DiscoverView {
 
+        fun setDiscoverTitle(title: String)
+
         fun newInstance(objectType: Int, articlesListId: String): DiscoverRecyclerFragment
+
+        fun startArticleActivity(article: Article)
+
+        fun getObjectType(): Int
+
+        fun loadPhoto(pos: Int, id: String)
 
         fun notifyDataSetChanged()
     }
@@ -15,8 +24,6 @@ interface DiscoverContract {
     interface DiscoverRecyclerPresenter {
 
         fun itemClicked(pos: Int)
-
-        fun getArticlesListTitle(): String
 
         fun getItemCount(): Int
 
