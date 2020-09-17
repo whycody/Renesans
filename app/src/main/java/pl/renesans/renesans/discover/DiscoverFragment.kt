@@ -27,7 +27,7 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor, View.OnClic
     private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var discoverLayout: LinearLayout
     private lateinit var toastHelper: ToastHelper
-    private val fragMan: FragmentManager? = fragmentManager
+    private lateinit var fragMan: FragmentManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -36,6 +36,7 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor, View.OnClic
         refreshLayout = view.refreshLayout
         discoverLayout = view.discoverLayout
         toastHelper = ToastHelperImpl(activity!!)
+        fragMan = fragmentManager!!
         if(savedInstanceState == null) addFragmentsToDiscoverLayout()
         view.clickableSearchView.setOnClickListener(this)
         realmDao.refreshRealmDatabase()
@@ -44,14 +45,14 @@ class DiscoverFragment : Fragment(), RealmContract.RealmInterractor, View.OnClic
     }
 
     private fun addFragmentsToDiscoverLayout(){
-        val fragTransaction: FragmentTransaction = fragMan!!.beginTransaction()
+        val fragTransaction: FragmentTransaction = fragMan.beginTransaction()
         addDiscoverRecyclerFragmentsToLayout(fragTransaction)
         fragTransaction.commit()
     }
 
     private fun addDiscoverRecyclerFragmentsToLayout(fragTransaction: FragmentTransaction) {
         realmDao.getArticlesLists().forEach {
-            if(it.type != RealmDaoImpl.ARTICLE)
+            if(it.type == RealmDaoImpl.ARTICLE)
                 addDiscoverRecyclerFragment(it, fragTransaction)
         }
     }

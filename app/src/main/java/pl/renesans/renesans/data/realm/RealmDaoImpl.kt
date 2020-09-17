@@ -20,7 +20,7 @@ import pl.renesans.renesans.data.image.ImageDaoImpl
 import pl.renesans.renesans.utility.connection.ConnectionUtilityImpl
 
 class RealmDaoImpl(private val context: Context,
-    private val realmInterractor: RealmContract.RealmInterractor? = null): RealmContract.RealmDao,
+    private var realmInterractor: RealmContract.RealmInterractor? = null): RealmContract.RealmDao,
     ImageDaoContract.ImageDaoDownloadInterractor {
 
     private val firestore = FirebaseFirestore.getInstance()
@@ -48,6 +48,10 @@ class RealmDaoImpl(private val context: Context,
 
     private fun permissionIsGranted() = (ContextCompat.checkSelfPermission(context,
             Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+
+    override fun setRealmInterractor(realmInterractor: RealmContract.RealmInterractor) {
+        this.realmInterractor = realmInterractor
+    }
 
     override fun refreshRealmDatabase(firstDownload: Boolean){
         if(!connectionUtility.isConnectionAvailable()) realmInterractor?.downloadFailure(true)

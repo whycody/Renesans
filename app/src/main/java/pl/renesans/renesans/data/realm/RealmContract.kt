@@ -9,6 +9,8 @@ interface RealmContract {
 
     interface RealmDao {
 
+        fun setRealmInterractor(realmInterractor: RealmInterractor)
+
         fun refreshRealmDatabase(firstDownload: Boolean = false)
 
         fun getDatabaseVersion(): String

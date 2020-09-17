@@ -20,7 +20,7 @@ class CuriosityPresenterImpl: CuriosityPresenter {
     private var currentCuriosity = 0
 
     override fun getRandomCuriosity(): String {
-        if(currentCuriosities == null || currentCuriosity >= currentCuriosities!!.size){
+        if(currentCuriosities == null || currentCuriosity == currentCuriosities!!.size - 1) {
             curiositiesList.shuffle()
             currentCuriosities = curiositiesList
             currentCuriosity = 0
