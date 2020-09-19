@@ -1,23 +1,20 @@
 package pl.renesans.renesans.search.recycler
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
-import androidx.core.content.ContextCompat
-import pl.renesans.renesans.R
 import pl.renesans.renesans.data.*
 import pl.renesans.renesans.data.converter.ArticleConverterImpl
 import pl.renesans.renesans.data.image.ImageDaoContract
-import pl.renesans.renesans.data.image.ImageDaoImpl
+import pl.renesans.renesans.data.realm.RealmContract
 import pl.renesans.renesans.data.realm.RealmDaoImpl
 
-class SearchPresenterImpl(context: Context, private val searchView: SearchContract.SearchView):
+class SearchPresenterImpl(private val realmDao: RealmContract.RealmDao,
+                          private val imageDao: ImageDaoContract.ImageDao,
+                          private val view: SearchContract.SearchView):
     SearchContract.SearchPresenter, ImageDaoContract.ImageDaoInterractor {
 
-    private val realmDao = RealmDaoImpl(context)
     private var articlesList = getSearchedArticles()
-    private val imageDao = ImageDaoImpl(context, this)
     private val holders = hashMapOf<Int, SearchRowHolder>()
     private val converter = ArticleConverterImpl()
 
@@ -35,22 +32,25 @@ class SearchPresenterImpl(context: Context, private val searchView: SearchContra
 
     override fun itemClicked(pos: Int) {
         realmDao.addItemToLocalArticlesList(RealmDaoImpl.SEARCH_HISTORY, articlesList[pos].objectId!!)
-        searchView.startArticleActivity(articlesList[pos].objectId!!)
+        view.startArticleActivity(articlesList[pos].objectId!!)
     }
 
     override fun deleteItemClicked(pos: Int) {
         realmDao.deleteItemFromLocalArticlesList(RealmDaoImpl.SEARCH_HISTORY, articlesList[pos].objectId!!)
         articlesList = getSearchedArticles()
-        searchView.viewDeletedAtPos(pos)
+        view.viewDeletedAtPos(pos)
     }
 
     override fun getItemCount() = articlesList.size
 
     override fun onBindViewHolder(holder: SearchRowHolder, position: Int) {
-        resetVariables(holder)
+        resetHolderVariables(holder)
         setupSearchRowHolder(holder, position)
-        imageDao.loadPhoto(position, articlesList[position].objectId + "_0", false)
+        loadPhoto(position)
     }
+
+    private fun loadPhoto(position: Int) =
+        imageDao.loadPhoto(position, articlesList[position].objectId + "_0", false)
 
     private fun setupSearchRowHolder(holder: SearchRowHolder, position: Int) {
         with(holder) {
@@ -63,14 +63,13 @@ class SearchPresenterImpl(context: Context, private val searchView: SearchContra
         }
     }
 
-    private fun resetVariables(holder: SearchRowHolder){
+    private fun resetHolderVariables(holder: SearchRowHolder){
         with(holder) {
             setSearchTitle(" ")
             setOnClickListener(0)
             setOnDeleteViewClickListener(0)
             setVisibilityOfDeleteBtn(View.GONE)
-            setSearchDrawablePhoto(ContextCompat
-                .getDrawable(context, R.drawable.sh_search_recycler_row)!!)
+            setSearchDrawablePhoto(view.getSearchDefaultDrawable())
         }
     }
 

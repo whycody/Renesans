@@ -11,7 +11,7 @@ interface SearchContract {
 
         fun startArticleActivity(id: String)
 
-        fun holderIsVisible(pos: Int): Boolean
+        fun getSearchDefaultDrawable(): Drawable
 
         fun viewDeletedAtPos(pos: Int)
     }
