@@ -32,10 +32,11 @@ class TourAdapter(private val activity: TourActivity, private val tour: Tour): P
     override fun getCount(): Int = tour.photosArticlesList!!.size
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val layoutInflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layoutInflater = LayoutInflater.from(container.context) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.tour_slide_layout, container, false)
         val photoArticle = tour.photosArticlesList!![position]
         setupView(view, position, photoArticle)
+        container.addView(view)
         return view
     }
 
@@ -53,7 +54,7 @@ class TourAdapter(private val activity: TourActivity, private val tour: Tour): P
         }
     }
 
-    private fun getPhotoDescription(photoArticle: PhotoArticle): String{
+    private fun getPhotoDescription(photoArticle: PhotoArticle): String {
         return if(photoArticle.position == null) activity.getString(R.string.no_place)
         else photoArticle.title!!
     }
@@ -67,15 +68,14 @@ class TourAdapter(private val activity: TourActivity, private val tour: Tour): P
         }
     }
 
-    private fun setupSourceBtn(sourcesBtn: Button, pos: Int){
+    private fun setupSourceBtn(sourcesBtn: Button, pos: Int) {
         val article = articleConverter.convertPhotoArticleToArticle(tour.photosArticlesList!![pos])
         if(!articleDao.articleHasSources(article)) sourcesBtn.visibility = View.GONE
         else sourcesBtn.setOnClickListener{ startSourceActivity(article) }
     }
 
-    private fun getOnTextViewLongClick(paragraph: Paragraph, view: View, pos: Int): View.OnLongClickListener{
-        val converter = ArticleConverterImpl()
-        val article = converter.convertPhotoArticleToArticle(tour.photosArticlesList!![pos])
+    private fun getOnTextViewLongClick(paragraph: Paragraph, view: View, pos: Int): View.OnLongClickListener {
+        val article = articleConverter.convertPhotoArticleToArticle(tour.photosArticlesList!![pos])
         return View.OnLongClickListener {
             showPopupMenu(paragraph, view, article)
             true
@@ -115,12 +115,17 @@ class TourAdapter(private val activity: TourActivity, private val tour: Tour): P
         clipboard?.setPrimaryClip(clip)
     }
 
-    private fun startSourceActivity(article: Article){
+    private fun startSourceActivity(article: Article) {
+        val articleWithTitle = getArticleWithTitle(article)
+        SourcesBottomSheetDialog().newInstance(articleWithTitle)
+            .show(activity.supportFragmentManager, "Sources")
+    }
+
+    private fun getArticleWithTitle(article: Article): Article {
         val articleWithTitle = article.copy()
         if(article.listOfPhotos != null && article.listOfPhotos!![0].description != null)
             articleWithTitle.title = article.listOfPhotos!![0].description
-        SourcesBottomSheetDialog().newInstance(articleWithTitle)
-            .show(activity.supportFragmentManager, "Sources")
+        return articleWithTitle
     }
 
     private val toastHelper = ToastHelperImpl(activity)
