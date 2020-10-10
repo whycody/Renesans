@@ -20,7 +20,7 @@ class DiscoverRecyclerPresenterImpl(private val articleId: String,
 
     private fun getArticlesListTitle() = realmDao.getArticlesListWithId(articleId).name!!
 
-    override fun itemClicked(pos: Int) = discoverView.startArticleActivity(getArticleFromPos(pos))
+    override fun itemClicked(pos: Int) = discoverView.startArticleActivity(getArticleFromPos(pos)!!)
 
     private fun getArticleFromPos(pos: Int) = realmDao.getArticleWithId(articlesList[pos].objectId!!)
 

@@ -14,18 +14,37 @@ class ArticleDaoImpl(private val context: Context? = null): ArticleDao {
 
     override fun getRelatedArticlesList(article: Article): List<Article> {
         val relatedArticles = mutableListOf<Article>()
-        if(article.tour!=null)
-            relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.TOUR,
-                title = context?.getString(R.string.tour), objectId = "Z3"))
-        if(article.listOfPositions != null && article.listOfPositions?.size!! > 0)
-            relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.MAP,
-                title = context?.getString(R.string.position), objectId = "Z4"))
-        article.listOfRelatedArticlesIds?.forEach { relatedArticles.add(realmDao!!.getArticleWithId(it)) }
-        if(getObjectTypeFromObjectId(article.objectId!!) != DiscoverRecyclerFragment.OTHER_ERAS)
-            relatedArticles.add(realmDao!!.getArticleWithId("O4"))
+        if(article.tour!=null) addTourToRelated(relatedArticles)
+        if(articleHasPosition(article)) addPositionToRelated(relatedArticles)
+        addArticlesToRelated(article, relatedArticles)
+        if(articleIsEraType(article)) addRenaissanceArticleToRelated(article, relatedArticles)
         addSourcesToRelatedArticles(relatedArticles, article)
         return relatedArticles
     }
+
+    private fun addTourToRelated(relatedArticles: MutableList<Article>) =
+        relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.TOUR,
+            title = context?.getString(R.string.tour), objectId = "Z3"))
+
+    private fun articleHasPosition(article: Article) =
+        article.listOfPositions != null && article.listOfPositions?.size!! > 0
+
+    private fun addPositionToRelated(relatedArticles: MutableList<Article>) =
+        relatedArticles.add(Article(objectType = DiscoverRecyclerFragment.MAP,
+            title = context?.getString(R.string.position), objectId = "Z4"))
+
+    private fun addArticlesToRelated(article: Article, relatedArticles: MutableList<Article>) {
+        article.listOfRelatedArticlesIds?.forEach {
+            val articleFromDb = realmDao!!.getArticleWithId(it)
+            if(articleFromDb!=null) relatedArticles.add(articleFromDb)
+        }
+    }
+
+    private fun articleIsEraType(article: Article) =
+        getObjectTypeFromObjectId(article.objectId!!) != DiscoverRecyclerFragment.OTHER_ERAS
+
+    private fun addRenaissanceArticleToRelated(article: Article, relatedArticles: MutableList<Article>) =
+        relatedArticles.add(realmDao!!.getArticleWithId("O4")!!)
 
     private fun addSourcesToRelatedArticles(relatedArticles: MutableList<Article>, article: Article) {
         if(articleHasSources(article))

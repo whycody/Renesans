@@ -125,7 +125,7 @@ class RealmDaoImpl(private val context: Context,
 
     private fun downloadArticlesFromList(document: DocumentSnapshot,
                                          articlesList: ArticlesList?, firstDownload: Boolean) {
-        articlesRef.document(document.id).collection(document.id).get()
+        articlesRef.document(document.id).collection(document.id).whereEqualTo("published", true).get()
             .addOnSuccessListener { articleTask ->
                 downloadedArticlesLists++
                 realmInterractor?.downloadedProgress(getPercentageOfDownload())
@@ -322,7 +322,7 @@ class RealmDaoImpl(private val context: Context,
         realm.commitTransaction()
     }
 
-    private fun insertLocalArticlesListToRealm(localListId: String, articleId: String){
+    private fun insertLocalArticlesListToRealm(localListId: String, articleId: String) {
         realm.beginTransaction()
         val localArticlesList =
             realm.createObject(LocalArticlesListRealm::class.java)
@@ -331,7 +331,7 @@ class RealmDaoImpl(private val context: Context,
         realm.commitTransaction()
     }
 
-    private fun addArticleToLocalArticlesList(localListId: String, articleId: String){
+    private fun addArticleToLocalArticlesList(localListId: String, articleId: String) {
         realm.beginTransaction()
         val localArticlesList = getLocalArticlesList(localListId)
         if(articleIsInLocalList(localListId, articleId)) localArticlesList?.listOfLocalArticles!!
@@ -348,7 +348,7 @@ class RealmDaoImpl(private val context: Context,
         else localArticlesList.listOfLocalArticles!!.any{ it.id == articleId }
     }
 
-    private fun checkSizeOfSavedHistory(searchHistoryLocalList: LocalArticlesListRealm){
+    private fun checkSizeOfSavedHistory(searchHistoryLocalList: LocalArticlesListRealm) {
         if(searchHistoryLocalList.listOfLocalArticles?.size!! > 10)
             searchHistoryLocalList.listOfLocalArticles!!.removeAt(
                 searchHistoryLocalList.listOfLocalArticles?.size!! - 1)
@@ -393,14 +393,14 @@ class RealmDaoImpl(private val context: Context,
             .contains(ID, id)
             .findFirst())
 
-    override fun getArticleWithId(id: String): Article {
+    override fun getArticleWithId(id: String): Article? {
         realm = Realm.getInstance(RealmUtility.getDefaultConfig())
-        val articleRealm = realm
-            .where<ArticleRealm>(ArticleRealm::class.java)
-            .contains(OBJECT_ID, id)
-            .findFirst()
-        return if(articleRealm != null) realmMapper.getArticleFromRealm(articleRealm)!!
-        else articleConverter.convertPhotoArticleToArticle(getPhotoArticleWithId(id))
+        val articleRealm = getRealmArticleWithId(id)
+        if(articleRealm != null) return realmMapper.getArticleFromRealm(articleRealm)!!
+        val articleRealmPhoto = getRealmPhotoArticleWithId(id)
+        return if(articleRealmPhoto != null)
+            articleConverter.convertPhotoArticleToArticle(getPhotoArticleWithId(id))
+        else null
     }
 
     override fun getPhotoArticleWithId(id: String): PhotoArticle {

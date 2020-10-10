@@ -27,7 +27,7 @@ interface RealmContract {
 
         fun getArticlesListWithId(id: String): ArticlesList
 
-        fun getArticleWithId(id: String): Article
+        fun getArticleWithId(id: String): Article?
 
         fun getArticlesFromListWithId(id: String): List<Article>
 
